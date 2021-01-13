@@ -1,0 +1,13 @@
+<Context>
+  <!-- Datasource
+  <Resource name="jdbc/dsApplication" auth="Container" type="javax.sql.DataSource"
+               maxActive="100" maxIdle="30" maxWait="10000"
+               username="app" password="memory" driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
+               url="jdbc:derby:memory:databases/DEPI-DepositoIdentificado;create=true"/>
+	-->
+  <!-- JavaMail session factory
+  <Resource name="mail/bsmail" auth="Container" type="javax.mail.Session"
+    mail.debug="true"  mail.transport.protocol="smtp"
+    mail.smtp.host="localhost" mail.smtp.port="2500"  />
+     -->
+</Context>

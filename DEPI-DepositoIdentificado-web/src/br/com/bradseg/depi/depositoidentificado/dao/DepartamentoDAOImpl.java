@@ -1,0 +1,353 @@
+/**
+ * 
+ */
+package br.com.bradseg.depi.depositoidentificado.dao;
+
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.stereotype.Repository;
+
+import br.com.bradseg.bsad.framework.core.exception.BusinessException;
+import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
+import br.com.bradseg.depi.depositoidentificado.dao.mapper.DepartamentoDataMapper;
+import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
+import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+
+/**
+ * Dao que representa a entidade Departamento
+ * @author Globality
+ */
+@Repository
+public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
+
+	/** A Constante LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoDAOImpl.class);
+	
+	/** A(O) data source. */
+	@Autowired
+	private DataSource dataSource;
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.bsad.framework.core.jdbc.JdbcDao#getDataSource()
+	 */
+	@Override
+	public DataSource getDataSource() {		
+		return dataSource;
+	}
+    /**
+     * {@inheritDoc}
+     */
+	@Override
+    public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e)    {
+ 
+    	StringBuilder query = null;
+        String msg = "";
+       
+        try {
+
+ 
+            if (e.equals(Tabelas.GRUPO_ACESSO)) {
+            	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEGRUPOACESSO);
+                msg = " um Grupo de Acesso vinculado ao usuário.";
+            } else if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
+            	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO);
+                msg = " um Parametro de Depósito ou Grupo de Acesso vinculado ao usuário.";
+            } else if (e.equals(Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO)) {
+            	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODECONTACORRENTEMOTIVODEPOSITO);
+                msg = " uma Associação de Motivo ou Grupo de Acesso vinculado ao usuário.";
+            } else if (e.equals(Tabelas.DEPOSITO)) {
+            	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEDEPOSITO);
+                msg = " um Depósito ou Grupo de Acesso vinculado ao usuário.";
+            } else {
+                throw new IntegrationException("Enum inválido.");
+            }
+
+            MapSqlParameterSource params = new MapSqlParameterSource();
+            params.addValue(":whr1",codigoCia);
+            params.addValue(":whr2",codigoUsuario);
+            
+            List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+            
+            
+            if (departamentoVO == null || departamentoVO.isEmpty() ) {
+                    throw new IntegrationException(ConstantesDEPI.ERRO_RELACIONAMENTOS_NAO_CADASTRADOS + " - " + new StringBuilder(msg).toString());
+                }
+                return departamentoVO;
+            } finally {
+            	LOGGER.info("obterComRestricaoDeGrupoAcesso(int codigoCia, BigDecimal codigoUsuario, Tabelas e)");
+        }
+        
+	}
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void alterar(DepartamentoVO vo){
+    	 
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_EXISTS);
+        	
+       	try {
+        		
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("whr1", vo.getSiglaDepartamento().trim());
+
+			List<DepartamentoVO> departamentos = (List<DepartamentoVO>) getJdbcTemplate().query(query.toString(), params, new DepartamentoDataMapper());
+			  
+            if (!departamentos.isEmpty()) {
+            	int i = 0;
+            	while (i <= departamentos.size()) {
+                    if (!(vo.getCodigoDepartamento() == departamentos.get(++i).getCodigoDepartamento()) && departamentos.get(++i).getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_ATIVO)) {
+                        throw new IntegrationException(ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO +  " - " +  new StringBuilder(" Sigla: ").append(vo.getSiglaDepartamento()).toString());
+                    }
+                    ++i;
+               }
+            }
+            
+            StringBuilder queryUpd = new StringBuilder(QuerysDepi.DEPARTAMENTO_UPDATE);
+
+			MapSqlParameterSource paramsUpd = new MapSqlParameterSource();
+
+			paramsUpd.addValue("prm1", vo.getSiglaDepartamento());
+			paramsUpd.addValue("prm2", vo.getNomeDepartamento());
+			paramsUpd.addValue("prm3", vo.getCodigoResponsavelUltimaAtualizacao());
+			paramsUpd.addValue("whr1", vo.getCodigoDepartamento());
+    		
+			Integer count = getJdbcTemplate().update(queryUpd.toString(), params);
+
+            if (count == 0) {
+                throw new BusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+            }
+
+        } finally {
+        	LOGGER.info("alterar(DepartamentoVO vo)"); 
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void excluir(List<DepartamentoVO> vos) {
+    	try { 
+            for (DepartamentoVO dep : vos) {
+                this.excluir(dep);
+            }
+    	} finally {
+    		LOGGER.info("excluir(List<DepartamentoVO> vos)"); 
+    	}
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean isReferenciado(DepartamentoVO vo) {
+
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_REFERENCIADO_COMPANHIADEPARTAMENTO);
+
+        try {
+			
+        	MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("whr1", vo.getCodigoDepartamento());
+
+			
+			 List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			 
+			 if (!departamentoVO.isEmpty()) {
+				 return true;
+			 }
+
+ 
+			 
+        } finally {
+        	LOGGER.info("isReferenciado(DepartamentoVO vo)"); 
+        }
+        return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DepartamentoVO obterPorChave(DepartamentoVO vo) {
+
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE);
+
+        try {
+			
+        	MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue("whr1", vo.getCodigoDepartamento());
+
+			
+			DepartamentoVO departamentoVO = (DepartamentoVO) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			return departamentoVO;
+			 
+        } finally {
+        	LOGGER.info("obterPorChave(DepartamentoVO vo) "); 
+        }
+     
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<DepartamentoVO> obterPorFiltro(FiltroUtil filtro) {
+
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE);
+
+        try {
+			
+        	MapSqlParameterSource params = new MapSqlParameterSource();
+        	
+
+	        /**
+	         * Parametros.
+	         */
+			if (!filtro.getDescricaoBasica().isEmpty()) {
+				query.append("WHERE IDEPTO_DEP_IDTFD = :whr1");
+		    	params.addValue("whr1", filtro.getNome());			
+			} else if (!filtro.getDescricaoDetalhada().isEmpty()) {
+				query.append("WHERE CSGL_DEPTO_DEP = :whr1");
+		    	params.addValue("whr1", filtro.getSigla());			
+			}
+			
+			List<DepartamentoVO>  departamentoVO = (List<DepartamentoVO> ) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			return departamentoVO;
+			 
+        } finally {
+        	LOGGER.info("obterPorChave(DepartamentoVO vo) "); 
+        }
+     
+    }
+    
+    
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<DepartamentoVO> obterTodos() {
+
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERTODOS);
+
+        try {
+			
+        	MapSqlParameterSource params = new MapSqlParameterSource();
+			
+        	List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			return departamentoVO;
+			 
+        } finally {
+        	LOGGER.info("obterPorTodos() "); 
+        }
+     
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void excluir(DepartamentoVO vo) {
+ 
+     	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_INATIVAR);
+     	
+        try {
+        	
+        	MapSqlParameterSource params = new MapSqlParameterSource();
+        	
+        	params.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
+        	params.addValue("whr1", vo.getCodigoDepartamento());
+  
+			getJdbcTemplate().update(query.toString(), params);
+
+        } finally {
+        	LOGGER.info("excluir(DepartamentoVO vo)"); 
+        } 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void inserir(DepartamentoVO vo) {
+
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_EXISTS);
+        
+    	try {
+    		
+    		MapSqlParameterSource params = new MapSqlParameterSource();
+    
+    		params.addValue("whr1", vo.getSiglaDepartamento());
+
+			 List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			 
+        	if (!departamentoVO.isEmpty()) {
+           
+            	int i = 0;
+                while (i <= departamentoVO.size()) {
+                    if (departamentoVO.get(i).getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_ATIVO)) {
+                        throw new IntegrationException(ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO +  " - " + new StringBuilder(" Sigla: ").append(vo.getSiglaDepartamento()).toString());                   
+                    }
+                    ++i;
+               }
+        	}
+        	
+        	query = new StringBuilder(QuerysDepi.DEPARTAMENTO_INSERT);
+
+    		MapSqlParameterSource paramsIns = new MapSqlParameterSource();
+    	    
+    		params.addValue("prm1", vo.getSiglaDepartamento());        	
+    		params.addValue("prm2", vo.getNomeDepartamento());
+    		params.addValue("prm3", vo.getCodigoResponsavelUltimaAtualizacao());
+
+    		getJdbcTemplate().update(query.toString(), paramsIns);
+    		
+    		
+    	} finally {
+        	LOGGER.info( "inserir(DepartamentoVO vo)"); 
+        }
+    }
+
+    /**
+     * Obtem registros de Departamento por filtro
+     * @param vo CompanhiaSeguradoraVO
+     * @return List Retorna um lista de VO de Departamentos filtrados.
+     * @Exceção de aplicação
+     */
+    @Override
+    public List<DepartamentoVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) {
+    	
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERPORCOMPANHIASEGURADORA);
+        
+        try {
+        	
+        	MapSqlParameterSource params = new MapSqlParameterSource();
+        	params.addValue("whr1", vo.getCodigoCompanhia());
+        	
+        	List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());       
+        	
+        	return departamentoVO;
+
+        } finally {
+        	LOGGER.info( "obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo)"); 
+        }
+
+    }
+    
+}

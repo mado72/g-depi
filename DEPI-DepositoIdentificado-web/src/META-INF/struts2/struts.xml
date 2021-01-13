@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<!--
+		Include da configuração padrão da framework BSAD para o Struts2.
+	 -->
+	<include file="META-INF/bsad/struts2/struts-config.xml" />
+	
+	<package name="default" namespace="/" extends="bsad-default">
+	
+		<action name="index" class="indexAction">
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/layout/vazio.jsp</param>
+			</result>
+		</action>
+
+		<action name="menu" class="menuAction" method="menu">
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/layout/menu.jsp</param>
+			</result>
+			<result name="error">
+			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+			</result>
+        </action>
+
+		<action name="ConsultarDepartamento" class="consultarDepartamentoAction" 
+			method="menu">
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/includes/cadastro/ConsultarDepartamento.jsp</param>
+			</result>
+			<result name="error">
+			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+			</result>
+        </action>
+<!-- 
+		<action name="/cadastro/Consultar*" class="consultar{1}Action" 
+			method="menu">
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/includes/cadastro/Consultar{1}.jsp</param>
+			</result>
+			<result name="error">
+			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+			</result>
+        </action>
+ -->
+        <action name="navegador">
+            <result>/WEB-INF/pages/navegador.jsp</result>
+        </action>        
+
+<!--	<action name="sobre" class="VersaoAction" method="execute">
+			<result>/WEB-INF/jsp/layout/versao.jsp</result>
+		</action> -->
+		
+	</package>
+	
+	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito" extends="bsad-default">
+		
+		<action name="filtro" class="consultarMotivoDepositoFiltroAction">
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoFiltro.jsp</param>
+			</result>
+        </action>
+
+		<action name="index" class="motivoDepositoConsultarAction">
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
+			</result>
+			<result name="error">
+			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+			</result>
+        </action>
+
+		<action name="consultar" class="motivoDepositoConsultarAction" method="consultar">
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
+			</result>
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
+			</result>
+			<result name="error">
+			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+			</result>
+        </action>
+
+	</package>
+</struts>

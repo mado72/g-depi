@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<define name="applicationName" class="br.com.bradseg.bsad.framework.core.logging.utils.ApplicationPropertyDefiner" />
+	<define name="targetPath" class="br.com.bradseg.bsad.framework.core.logging.utils.LogTargetPathPropertyDefiner" />
+	
+	<jmxConfigurator />
+	
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${targetPath}/${applicationName}.log</file>
+		<encoder>
+			<pattern>%-40(%d{ISO8601} [%thread]) ${applicationName} %-5level %-60logger - %msg%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${targetPath}/${applicationName}-%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+			<TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>10MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>
+
+	<logger name="org.apache" level="INFO" />
+	<logger name="com.opensymphony" level="INFO" />
+	<logger name="org.springframework" level="INFO" />
+	<logger name="br.com.bradseg.bsad.framework" level="INFO" />
+	
+	<root level="ERROR">
+		<appender-ref ref="FILE" />
+	</root>
+	
+	<!-- 
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%-40(%d{ISO8601} [%thread]) ${applicationName} %-5level %-60logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+		
+	<logger name="br" level="DEBUG" />
+
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+	-->
+</configuration>

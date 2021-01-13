@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+
+a.button {
+	border: 0;
+	text-decoration: false;
+	padding: 2px;
+	margin: 2px;
+}
+
+#depi-app #menu_horizontal .dropdown {
+	border-bottom: 1px solid #bc0000;
+	top: 90px;
+	width: 200px;
+}
+#depi-app #menu_horizontal #s1 {
+	left: 30px;
+}
+
+#depi-app #menu_horizontal #s2 {
+	left: 239px;
+}
+
+#carregandoImg {
+	display: none;
+}
+
+#Lista {
+	WIDTH: 400px; 
+	Z-INDEX: 1;
+}

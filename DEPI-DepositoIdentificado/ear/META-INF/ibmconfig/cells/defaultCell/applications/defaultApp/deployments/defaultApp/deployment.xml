@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appdeployment:Deployment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:appdeployment="http://www.ibm.com/websphere/appserver/schemas/5.0/appdeployment.xmi" xmi:id="Dep_202010210832184">
+  <deployedObject xmi:type="appdeployment:ApplicationDeployment" xmi:id="AppDep_202010210832184" startingWeight="10">
+    <modules xmi:type="appdeployment:WebModuleDeployment" xmi:id="WebDep_202010210832184" startingWeight="10000" uri="DEPI-DepositoIdentificado-web.war"/>
+    <classloader xmi:id="CL_202010210832184" mode="PARENT_LAST">
+      <libraries xmi:id="LibraryRef_1607988522964" libraryName="BSAD3"/>
+      <libraries xmi:id="LibraryRef_1608663583808" libraryName="BSAD"/>
+    </classloader>
+  </deployedObject>
+</appdeployment:Deployment>
