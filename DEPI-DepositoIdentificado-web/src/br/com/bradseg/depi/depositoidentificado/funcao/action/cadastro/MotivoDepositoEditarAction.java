@@ -89,10 +89,10 @@ public class MotivoDepositoEditarAction extends FiltroAction<MotivoDepositoEdita
 	}
 	
 	private void preencherFormulario() {
-		String codigo = request.getParameter("codigo");
-		
+		int codigo = Integer.parseInt(this.getModel().getCodigo());
+
 		MotivoDepositoVO vo = new MotivoDepositoVO();
-		vo.setCodigoMotivoDeposito(Integer.parseInt(codigo));
+		vo.setCodigoMotivoDeposito(codigo);
 		
 		MotivoDepositoVO instancia = facade.obterPorChave(vo);
 		

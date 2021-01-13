@@ -84,10 +84,6 @@
 	</script>
 </s:if>
 <c:if test="${param.scriptOff != 'true'}">
-<%--
-FIXME
-	<script type="text/javascript" src="<s:url value="/includes/script/depi-cadastro.js"/>" charset="utf-8"></script>
- --%>
 	<script type="text/javascript" src="${estatico}/script/depi-cadastro.js" charset="utf-8"></script>
 	<c:out value="${scriptPage}" default="" escapeXml="false" />
 </c:if>

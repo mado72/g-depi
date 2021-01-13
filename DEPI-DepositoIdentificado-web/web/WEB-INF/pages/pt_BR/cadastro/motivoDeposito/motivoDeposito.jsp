@@ -62,7 +62,7 @@ JSON: ${json}
 			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoMotivoDeposito}"/>"/>
 		</td>
 		<td class="descricao">
-			<s:url action="detalhar" namespace="/consulta/motivoDeposito/editar" var="linkExibir">
+			<s:url action="detalhar" namespace="/cadastro/motivoDeposito/editar" var="linkExibir">
 				<s:param name="codigo">${item.codigoMotivoDeposito}</s:param>
 			</s:url>
 			<s:a href="%{linkExibir}">

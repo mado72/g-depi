@@ -8,8 +8,7 @@ pre.debug {
 
 a.button {
 	border: 0;
-	text-decoration: false;
-	padding: 2px;
+	text-decoration: none;
 	margin: 2px;
 }
 

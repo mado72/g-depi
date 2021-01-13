@@ -1,10 +1,6 @@
-<%@ page language="java"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page"%>
-<%@ taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>
 <html>
 <head>
 <meta name="titulo" content="Erro interno">
@@ -16,9 +12,9 @@
 			<td>
 				<ul>
 					<li>Ocorreu um erro interno. Tente novamente em alguns minutos.<br/><br/>
-					Caso o erro persista, favor entrar em contato com o analista responsável e informar o código do erro: "<s:text name="exception.requestId" />".</li>
+					Caso o erro persista, favor entrar em contato com o analista responsÃ¡vel e informar o cÃ³digo do erro: "<s:text name="exception.requestId" />".</li>
 				</ul>
-				<pre style="display:none">
+				<pre style="display:none" class="error">
 Mensagem:
 ---------
 <s:text name="exception"/>
