@@ -1,0 +1,9 @@
+.metadata
+.svn
+DEPI-DP06*
+Servidores
+.project
+.settings
+DEPI-DepositoIdentificado-web/.classpath
+DEPI-DepositoIdentificado-web/.factorypath
+DEPI-DepositoIdentificado-web/target/*
