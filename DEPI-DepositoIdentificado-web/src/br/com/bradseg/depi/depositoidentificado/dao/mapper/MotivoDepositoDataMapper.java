@@ -29,6 +29,7 @@ public class MotivoDepositoDataMapper implements RowMapper<MotivoDepositoVO> {
 		motivoDepositoVO.setCodigoMotivoDeposito(rs.getInt("CUSUAR_RESP_ATULZ"));
 		motivoDepositoVO.setCodigoEventoContabil(rs.getInt("CTPO_EVNTO_NEGOC"));
 		motivoDepositoVO.setCodigoItemContabil(rs.getInt("CTPO_ITEM_NEGOC"));
+		motivoDepositoVO.setUltimaAtualizacao(rs.getDate("DHORA_ULT_ATULZ"));
 		
 		return motivoDepositoVO;
 	}

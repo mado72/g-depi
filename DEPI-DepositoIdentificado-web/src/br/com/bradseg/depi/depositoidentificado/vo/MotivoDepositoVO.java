@@ -1,6 +1,8 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
 
 /**
  * Classe Anotada de Mapeamento com a tabela MOTVO_DEP_CTA_CORR.
@@ -18,7 +20,7 @@ public class MotivoDepositoVO implements Serializable {
     /**
      * Código do Arquivo.
      */
-    private int codigoMotivoDeposito;
+    private Integer codigoMotivoDeposito;
 
     /**
      * descriçao básica.
@@ -36,13 +38,13 @@ public class MotivoDepositoVO implements Serializable {
      * Evento Contábil
      */
 //    @TableField(name = "CTPO_EVNTO_NEGOC")
-    private int codigoEventoContabil;
+    private Integer codigoEventoContabil;
 
     /**
      * Item Contábil
      */
 //    @TableField(name = "CTPO_ITEM_NEGOC")
-    private int codigoItemContabil;
+    private Integer codigoItemContabil;
 
     /**
      * Item Contábil
@@ -62,7 +64,11 @@ public class MotivoDepositoVO implements Serializable {
     private Integer codigoResponsavelUltimaAtualizacao;
     
     
-    
+    /**
+     * Atributo que receberá um depósito vinculado ao motivo
+     */   
+    private Date ultimaAtualizacao;
+       
     
     
 	/**
@@ -213,4 +219,22 @@ public class MotivoDepositoVO implements Serializable {
     public void setDeposito(DepositoVO deposito) {
         this.deposito = deposito;
     }
+    
+    
+    /**
+     * Retorna o ultima atualizacao.
+     * @return O atributo ultima atualizacao.
+     */
+    public Date getUltimaAtualizacao() {
+        return (Date) ultimaAtualizacao.clone();
+    }
+
+      /**
+     * Especifica o data ultima atualizacao.
+     * @param ultima atualizacao a ser setado
+     */
+    public void setUltimaAtualizacao(Date ultimaAtualizacao) {
+        this.ultimaAtualizacao = (Date) ultimaAtualizacao.clone();
+    }
+
 }
