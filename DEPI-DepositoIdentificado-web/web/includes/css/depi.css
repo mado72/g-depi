@@ -1,5 +1,11 @@
 @CHARSET "UTF-8";
 
+pre.debug {
+	width: 100%;
+	overflow: auto;
+	overflow-wrap: anywhere;
+}
+
 a.button {
 	border: 0;
 	text-decoration: false;
@@ -30,10 +36,17 @@ a.button {
 }
 
 #tabela_interna, .tabela_botoes {
-	width: 90%;
 	display: table;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+#tabela_interna {
+	width: 90%;
+}
+
+.tabela_botoes {
+	width: 95%;
 }
 
 .MotivoDeposito .selecao {

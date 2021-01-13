@@ -84,9 +84,9 @@ JSON: ${json}
 		<tr>
 			<td align="center">
 				<div id="tabela_botoes">
-					<a role="button" class="button" id="BtnIncluir"><img src="<c:url value="/includes/images/bt_incluir.jpg"/>"></a>
-					<a role="button" class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/includes/images/bt_alterar.jpg"/>"></a>
-					<a role="button" class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/includes/images/bt_excluir.jpg"/>"></a>
+					<a role="button" class="button" id="BtnIncluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></a>
+					<a role="button" class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
+					<a role="button" class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
 				</div>
 			</td>
 		</tr>

@@ -2,8 +2,6 @@
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-FILTRO
-
 <!--mensagem de erro de negocio-->
 <s:if test="hasActionMessages()">
 <span id="box_msg_erro">
@@ -54,23 +52,26 @@ FILTRO
 			<td style="width: 200px">
 			</td>
 			<td>
-				<a class="button" id="BtnPlus"><img src="<c:url value="/includes/images/plus.gif"/>"></a>
-				<a class="button" id="BtnMinus"><img src="<c:url value="/includes/images/minus.gif"/>"></a>
+				<a class="button" id="BtnPlus"><img src="<c:url value="${www3}padroes_web/intranet/imagens/plus.gif"/>"></a>
+				<a class="button" id="BtnMinus"><img src="<c:url value="${www3}padroes_web/intranet/imagens/minus.gif"/>"></a>
 			</td>
 		</tr>
 	</table>
 	<br />
-	<table width="95%" class="tabela_botoes" align="center">
+	<table class="tabela_botoes">
 		<tr>
 			<td align="center">
 				<div class="tabela_botoes">
-					<a class="button" id="BtnConsultar"><img src="<c:url value="/includes/images/bt_consultar.jpg"/>"></a>
+				<s:if test="!colecaoDados">
+					<a role="button" class="button" id="BtnIncluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></a>
+				</s:if>
+					<a role="button" class="button" id="BtnConsultar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_consultar.jpg"/>"></a>
 				</div>
 			</td>
 		</tr>
 	</table>
 	
-	<table style="tabela_botoes" align="center" width="90%">
+	<table class="tabela_botoes">
 		<tr>
 			<td align="center"><div id="box_loading"></div></td>
 		</tr>
@@ -96,7 +97,7 @@ jQuery(document).ready(function($){
 					})
 				};
 			}),
-			recipiente: []
+			recipiente: <c:out value="${model.recipienteListJson}" default="[]" escapeXml="false"/>
 		}
 	);
 }(jQuery));

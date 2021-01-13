@@ -98,8 +98,8 @@ var fnReady = function ($) {
 			var optSecundario = jqSecundario.find("option:selected");
 
 			var item = {
-				principal: jqPrincipal.val(),
-				secundario: jqSecundario.val(),
+				principal: optPrincipal.text(),
+				secundario: optSecundario.val(),
 				valor: jqValor.val().toLocaleUpperCase(),
 			}
 
@@ -130,9 +130,10 @@ var fnReady = function ($) {
 			jqRecipiente.find("option").each(function(idx) {
 					var item = dados.recipiente[idx];
 					$([
-						$('<input>', { name: "campo[" + idx + "]" , value: item.principal}),
-						$('<input>', { name: "operacao[" + idx + "]" , value: item.secundario}),
-						$('<input>', { name: "valor[" + idx + "]" , value: item.valor}),
+						$('<input>', { type:"hidden", name: "campo[" + idx + "]" , value: item.principal}),
+						$('<input>', { type:"hidden", name: "operacao[" + idx + "]" , value: item.secundario}),
+						$('<input>', { type:"hidden", name: "valor[" + idx + "]" , value: item.valor}),
+						$('<input>', { type:"hidden", name: "criterios[" + idx + "]" , value: item.texto}),
 					])
 					.each(function(i, item){
 						elements = elements.add(item);

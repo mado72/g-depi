@@ -56,14 +56,8 @@
 	</package>
 	
 	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito" extends="bsad-default">
-		
-		<action name="filtro" class="consultarMotivoDepositoFiltroAction">
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoFiltro.jsp</param>
-			</result>
-        </action>
 
-		<action name="index" class="motivoDepositoConsultarAction">
+		<action name="index" class="motivoDepositoConsultarAction" method="iniciarFormulario">
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
 			</result>
@@ -72,12 +66,40 @@
 			</result>
         </action>
 
+		<action name="listar" class="motivoDepositoConsultarAction" method="execute">
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
+			</result>
+			<result name="error">
+			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+			</result>
+        </action>
+<!-- 		
+		<action name="filtro" class="consultarMotivoDepositoFiltroAction">
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoFiltro.jsp</param>
+			</result>
+        </action>
+ 
 		<action name="consultar" class="motivoDepositoConsultarAction" method="consultar">
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
 			</result>
-			<result name="success">
+			<result name="success" type="redirectAction">
+			    <param name="actionName">listar</param>
+			</result>
+			<result name="error">
+			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+			</result>
+        </action>
+ -->
+ 
+		<action name="*" class="motivoDepositoConsultarAction" method="{1}">
+			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">listar</param>
 			</result>
 			<result name="error">
 			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>

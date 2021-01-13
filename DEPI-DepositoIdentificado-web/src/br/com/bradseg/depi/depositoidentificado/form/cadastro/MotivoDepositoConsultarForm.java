@@ -2,7 +2,9 @@ package br.com.bradseg.depi.depositoidentificado.form.cadastro;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import br.com.bradseg.depi.depositoidentificado.form.AdmfinBPFiltroForm;
 import br.com.bradseg.depi.depositoidentificado.model.cadastro.MotivoDepositoTipoOperacao;
@@ -20,9 +22,11 @@ public class MotivoDepositoConsultarForm extends AdmfinBPFiltroForm {
 
 	private DepiObjectMapper mapper = new DepiObjectMapper();
 	
-	public static final String NOME_FORM = MotivoDepositoFiltroForm.class.getSimpleName();
+	public static final String NOME_FORM = MotivoDepositoConsultarForm.class.getSimpleName();
 	
 	private List<MotivoDepositoTipoOperacao> motivoOperacaoList;
+	
+	private List<String> criterios;
 	
 	public MotivoDepositoConsultarForm() {
 		motivoOperacaoList = new ArrayList<>();
@@ -53,4 +57,32 @@ public class MotivoDepositoConsultarForm extends AdmfinBPFiltroForm {
 		}
 	}
 
+	public String getRecipienteListJson() {
+		if (getCriterios() == null)
+			return null;
+		
+		try {
+			List<Object> data = new ArrayList<>();
+			for (int i = 0; i < getCampo().size(); i++) {
+				
+				Map<String, String> criterio = new HashMap<>();
+				criterio.put("campo", getCampo().get(i));
+				criterio.put("operacao", getOperacao().get(i));
+				criterio.put("valor", getValor().get(i));
+				criterio.put("texto", getCriterios().get(i));
+				data.add(criterio);
+			}
+			return new String(mapper.writeValueAsBytes(data), "UTF-8");
+		} catch (IOException e) {
+			throw new RuntimeException("Falha ao converter em json", e);
+		}
+	}
+	
+	public List<String> getCriterios() {
+		return criterios;
+	}
+	
+	public void setCriterios(List<String> criterios) {
+		this.criterios = criterios;
+	}
 }

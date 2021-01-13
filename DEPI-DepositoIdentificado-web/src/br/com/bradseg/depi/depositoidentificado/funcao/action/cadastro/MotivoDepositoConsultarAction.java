@@ -3,15 +3,11 @@ package br.com.bradseg.depi.depositoidentificado.funcao.action.cadastro;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
@@ -20,6 +16,9 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesView;
 import br.com.bradseg.depi.depositoidentificado.util.json.DepiObjectMapper;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.opensymphony.xwork2.Action;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -38,9 +37,6 @@ public class MotivoDepositoConsultarAction extends FiltroAction<MotivoDepositoCo
 	
 	@Autowired
 	private MotivoDepositoFacade facade;
-
-	@Resource
-	private transient String www3;
 	
 	@Override
 	public MotivoDepositoConsultarForm getModel() {
@@ -58,27 +54,37 @@ public class MotivoDepositoConsultarAction extends FiltroAction<MotivoDepositoCo
 		_model = new MotivoDepositoConsultarForm();
 		sessionData.put(MotivoDepositoConsultarForm.NOME_FORM, _model);
 	}
-
-	public String getWww3() {
-		return www3;
-	}
 	
+	/**
+	 * Apenas redireciona a saída para SUCCESS. Usado para apresentar o
+	 * formulário armazenado na sessão.
+	 * 
+	 * @return {@link Action#SUCCESS}
+	 */
 	public String execute() {
-		super.prepararFiltro();
-		
-		super.persistirContextoFiltro();
-		
 		return SUCCESS;
 	}
 	
+	/**
+	 * Processa os dados do filtro.
+	 * 
+	 * @return {@link Action#SUCCESS}, quando consegue realizar a consulta. Senão {@link Action#ERROR}
+	 */
 	public String consultar() {
-		processarFiltro(); 
+		try {
+			processarFiltro();
+			
+			return SUCCESS;
+		} catch (DEPIIntegrationException e) {
+			LOGGER.error("Falha na consulta", e);
+			addActionError(e.getMessage());
+			
+			return ERROR;
+		}
 		
-		return SUCCESS;
 	}
 
 	private void processarFiltro() {
-
 /*
         CriterioFiltroUtil filtro = new CriterioFiltroUtil();
         List<CriterioFiltroUtil> listCriterios = new ArrayList<CriterioFiltroUtil>();
@@ -93,33 +99,34 @@ public class MotivoDepositoConsultarAction extends FiltroAction<MotivoDepositoCo
         listCriterios.add(CriterioFiltroUtil.getDefaultCriterioAtivo());
         filtro.setCriterios(listCriterios);
 */
-		try {
-//            List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
-			List<MotivoDepositoVO> retorno = facade.obterTodosMotivoDepositvo();
 
-			getModel().setColecaoDados(retorno);
-			
-			DepiObjectMapper mapper = new DepiObjectMapper();
-			try {
-				for (Iterator<MotivoDepositoVO> iterator = retorno.iterator(); iterator.hasNext();) {
-					MotivoDepositoVO item = (MotivoDepositoVO) iterator.next();
-					if ("N".equals(item.getIndicadorAtivo())) {
-						iterator.remove();
-					}
-				}
-				String json = mapper.writeValueAsString(retorno);
-				request.setAttribute("json", json);
-			} catch (JsonProcessingException e) {
-			}
-
-            if (retorno == null || retorno.isEmpty()) {
-            	String message = super.getText(ConstantesView.MSG_CONSULTA_RETORNO_VAZIO);
-                addActionMessage(message);
-            }
-        } catch (DEPIIntegrationException e) {
-        	LOGGER.error("Falha na consulta", e);
-            addActionError(e.getMessage());
+        for (int i = 0; i < getModel().getCampo().size(); i++) {
+        	
         }
+
+		List<MotivoDepositoVO> retorno = facade.obterTodosMotivoDepositvo();
+		
+		getModel().setColecaoDados(retorno);
+		
+		
+/*		
+		DepiObjectMapper mapper = new DepiObjectMapper();
+		try {
+			for (Iterator<MotivoDepositoVO> iterator = retorno.iterator(); iterator.hasNext();) {
+				MotivoDepositoVO item = (MotivoDepositoVO) iterator.next();
+				if ("N".equals(item.getIndicadorAtivo())) {
+					iterator.remove();
+				}
+			}
+			String json = mapper.writeValueAsString(retorno);
+			request.setAttribute("json", json);
+		} catch (JsonProcessingException e) {
+		}
+*/		
+		if (retorno == null || retorno.isEmpty()) {
+			String message = super.getText(ConstantesView.MSG_CONSULTA_RETORNO_VAZIO);
+			addActionMessage(message);
+		}
 	}
 
 }
