@@ -191,13 +191,8 @@ var fnReady = function ($) {
 	$.consulta.prepararFormulario = function(formSeletor) {
 		var jqForm = $(formSeletor)
 
-		var btnIncluir = jqForm.find("#BtnIncluir"),
-			btnExcluir = jqForm.find("#BtnExcluir"),
+		var btnExcluir = jqForm.find("#BtnExcluir"),
 			btnAlterar = jqForm.find("#BtnAlterar");
-		
-		btnIncluir.click(function(ev) {
-			alert('Incluir');
-		})
 		
 		btnExcluir.click(function(ev) {
 			alert('Excluir');

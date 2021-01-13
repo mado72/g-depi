@@ -1,7 +1,7 @@
 <%@ page language="java" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %>
-<img src="<c:url value="/includes/images/carregando.gif"/>" id="carregandoImg"/>
+<img src="<c:url value="${www3}padroes_web/intranet/imagens/carregando.gif"/>" id="carregandoImg"/>
 <%-- 
 	<frw:image midiaAcesso="intranet" complement="/imagens/tit_depi_dp06.gif"/><br>
 --%>

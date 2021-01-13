@@ -13,6 +13,13 @@ a.button {
 	margin: 2px;
 }
 
+button.btn-img {
+	background-color: transparent;
+	border: 0;
+	padding: 0;
+	margin-right: 2px;
+}
+
 #depi-app #menu_horizontal .dropdown {
 	border-bottom: 1px solid #bc0000;
 	top: 90px;
@@ -33,6 +40,10 @@ a.button {
 #Lista {
 	WIDTH: 400px; 
 	Z-INDEX: 1;
+}
+
+#tabela_interna caption {
+	text-align: left;
 }
 
 #tabela_interna, .tabela_botoes {

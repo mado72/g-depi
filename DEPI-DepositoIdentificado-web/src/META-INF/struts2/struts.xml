@@ -8,7 +8,19 @@
 	 -->
 	<include file="META-INF/bsad/struts2/struts-config.xml" />
 	
-	<package name="default" namespace="/" extends="bsad-default">
+	<package name="depi-default" abstract="true" extends="bsad-default">
+	
+		<default-action-ref name="index"></default-action-ref>
+
+		<global-results>
+			<result name="error">
+			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+			</result>
+		</global-results>
+
+	</package>
+	
+	<package name="root" namespace="/" extends="depi-default">
 	
 		<action name="index" class="indexAction">
 			<result name="success">
@@ -55,14 +67,11 @@
 		
 	</package>
 	
-	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito" extends="bsad-default">
+	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito/consultar" extends="depi-default">
 
 		<action name="index" class="motivoDepositoConsultarAction" method="iniciarFormulario">
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
-			</result>
-			<result name="error">
-			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
 			</result>
         </action>
 
@@ -70,30 +79,8 @@
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
 			</result>
-			<result name="error">
-			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
-			</result>
         </action>
-<!-- 		
-		<action name="filtro" class="consultarMotivoDepositoFiltroAction">
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoFiltro.jsp</param>
-			</result>
-        </action>
- 
-		<action name="consultar" class="motivoDepositoConsultarAction" method="consultar">
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
-			</result>
-			<result name="success" type="redirectAction">
-			    <param name="actionName">listar</param>
-			</result>
-			<result name="error">
-			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
-			</result>
-        </action>
- -->
- 
+        
 		<action name="*" class="motivoDepositoConsultarAction" method="{1}">
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
@@ -101,10 +88,30 @@
 			<result name="success" type="redirectAction">
 			    <param name="actionName">listar</param>
 			</result>
-			<result name="error">
-			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+			<result name="incluirAcao" type="redirectAction">
+			    <param name="actionName">novo</param>
+			    <param name="namespace">/cadastro/motivoDeposito/editar</param>
+			</result>
+			<result name="alterarAcao" type="redirectAction">
+			    <param name="actionName">alterar</param>
+			    <param name="namespace">/cadastro/motivoDeposito/editar</param>
 			</result>
         </action>
 
 	</package>
+	
+	<package name="cadastroMotivoDepositoEditar" namespace="/cadastro/motivoDeposito/editar" extends="depi-default">
+        
+        <action name="*" class="motivoDepositoEditarAction" method="{1}">
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoForm.jsp</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
+			</result>
+        </action>
+        
+	</package>
+	
 </struts>

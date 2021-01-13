@@ -62,16 +62,17 @@ JSON: ${json}
 			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoMotivoDeposito}"/>"/>
 		</td>
 		<td class="descricao">
-			<s:url action="exibir" namespace="/consulta/motivoDeposito" var="linkExibir">
+			<s:url action="detalhar" namespace="/consulta/motivoDeposito/editar" var="linkExibir">
 				<s:param name="codigo">${item.codigoMotivoDeposito}</s:param>
 			</s:url>
 			<s:a href="%{linkExibir}">
-				${item.descricaoDetalhada}
+				${item.descricaoBasica}
 			</s:a>
 		</td>
 		<td class="responsavel">${item.codigoResponsavelUltimaAtualizacao}</td>
 		<td class="atualizacao">
 		<%--
+		 FIXME Incluir campo com a data de atualização. Este campo não está disponível no VO
 		 <c:out value="${item.atualizacao}" default="" /></td>
 		 --%>
 		</tr>
@@ -84,7 +85,7 @@ JSON: ${json}
 		<tr>
 			<td align="center">
 				<div id="tabela_botoes">
-					<a role="button" class="button" id="BtnIncluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></a>
+					<s:a action="incluir" class="button" id="BtnIncluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
 					<a role="button" class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
 					<a role="button" class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
 				</div>

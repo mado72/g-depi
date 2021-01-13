@@ -5,7 +5,7 @@
 	<div class="itemmenu" onmouseover="over(1)" onmouseout="out(1)">
 		<a href="<s:url value="/index.do"/>" class="menu_horizontal">Cadastros</a>
 		<div class="dropdown" id="s1">
-			<a href="<s:url value="/cadastro/motivoDeposito/index.do?acao=firstOpening"/>">Motivos de Depósito</a>
+			<a href="<s:url value="/cadastro/motivoDeposito/consultar/index.do?acao=firstOpening"/>">Motivos de Depósito</a>
 			<a href="<s:url value="/cadastro/departamento/index.do?acao=firstOpening"/>">Departamento</a>
 			<a href="<s:url value="/cadastro/ConsultarDepartamentoCompanhia.do?acao=firstOpening"/>">Associação Departamentos x Cia</a>
 			<a href="<s:url value="/cadastro/ConsultarGrupoAcesso.do?acao=firstOpening"/>">Grupo de Acesso</a>
