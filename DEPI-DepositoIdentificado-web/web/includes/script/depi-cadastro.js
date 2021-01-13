@@ -49,7 +49,6 @@ var fnReady = function ($) {
 			jqValor = jqForm.find("#Valor"),
 			jqRecipiente = jqForm.find("#Lista"),
 			btnConsultar = jqForm.find("#BtnConsultar"),
-			btnIncluir = jqForm.find("#BtnIncluir"),
 			btnPlus = jqForm.find("#BtnPlus"),
 			btnMinus = jqForm.find("#BtnMinus");
 
@@ -149,10 +148,6 @@ var fnReady = function ($) {
 			jqForm.find("input:hidden").remove().end();
 		})
 
-		btnIncluir.click(function(ev) {
-			alert('Incluir');
-		})
-		
 		// Definir valores iniciais
 		$(dados.principal).each(function(idx, item) {
 			var opt = jqPrincipal.append($('<option>', {text: item.texto, value: item.valor}));
@@ -186,6 +181,38 @@ var fnReady = function ($) {
 			jqValor.val(jqValor.val().toLocaleUpperCase());
 		}
 	}
+
+	// consulta
+	// ---------------------------------------------------------------------
+	// definition
+	$.namespace( '$.consulta' );
+
+	$.consulta.prepararFormulario = function(formSeletor) {
+		var jqForm = $(formSeletor)
+
+		var btnIncluir = jqForm.find("#BtnIncluir"),
+			btnExcluir = jqForm.find("#BtnExcluir"),
+			btnAlterar = jqForm.find("#BtnAlterar");
+		
+		btnIncluir.click(function(ev) {
+			alert('Incluir');
+		})
+		
+		btnExcluir.click(function(ev) {
+			alert('Excluir');
+		})
+		
+		btnAlterar.click(function(ev) {
+			alert('Alterar');
+		})
+
+		jqForm.find(".checkTodos").click(function(){
+			jqForm.find(".checkTodos")
+				.parents("table:first")
+				.find("input:checkbox")
+				.prop("checked", $(".checkTodos").prop("checked"));
+		});
+	};
 
 	// motivoDeposito
 	// ---------------------------------------------------------------------

@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action.cadastro;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -33,7 +34,7 @@ public class MotivoDepositoConsultarAction extends FiltroAction<MotivoDepositoCo
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	private MotivoDepositoConsultarForm model = new MotivoDepositoConsultarForm();
+	private MotivoDepositoConsultarForm _model;
 	
 	@Autowired
 	private MotivoDepositoFacade facade;
@@ -43,7 +44,19 @@ public class MotivoDepositoConsultarAction extends FiltroAction<MotivoDepositoCo
 	
 	@Override
 	public MotivoDepositoConsultarForm getModel() {
-		return model;
+		if (sessionData.containsKey(MotivoDepositoConsultarForm.NOME_FORM)) {
+			_model = (MotivoDepositoConsultarForm) sessionData.get(MotivoDepositoConsultarForm.NOME_FORM);
+		}
+		else {
+			this.novaInstanciaModel();
+		}
+		return _model;
+	}
+	
+	@Override
+	protected void novaInstanciaModel() {
+		_model = new MotivoDepositoConsultarForm();
+		sessionData.put(MotivoDepositoConsultarForm.NOME_FORM, _model);
 	}
 
 	public String getWww3() {
@@ -84,10 +97,16 @@ public class MotivoDepositoConsultarAction extends FiltroAction<MotivoDepositoCo
 //            List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
 			List<MotivoDepositoVO> retorno = facade.obterTodosMotivoDepositvo();
 
-			model.setColecaoDados(retorno);
+			getModel().setColecaoDados(retorno);
 			
 			DepiObjectMapper mapper = new DepiObjectMapper();
 			try {
+				for (Iterator<MotivoDepositoVO> iterator = retorno.iterator(); iterator.hasNext();) {
+					MotivoDepositoVO item = (MotivoDepositoVO) iterator.next();
+					if ("N".equals(item.getIndicadorAtivo())) {
+						iterator.remove();
+					}
+				}
 				String json = mapper.writeValueAsString(retorno);
 				request.setAttribute("json", json);
 			} catch (JsonProcessingException e) {

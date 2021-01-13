@@ -16,7 +16,7 @@ public abstract class FiltroAction<T extends AdmfinBPFiltroForm> extends BaseAct
 
 	private static final long serialVersionUID = 935947361413242271L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(IndexAction.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FiltroAction.class);
 
 	protected Map<String, Object> sessionData;
 	
@@ -25,12 +25,16 @@ public abstract class FiltroAction<T extends AdmfinBPFiltroForm> extends BaseAct
 		this.sessionData = sessionData;
 	}
 	
+	abstract protected void novaInstanciaModel(); 
+	
 	protected void prepararFiltro() {
 		LOGGER.info("Preparando contexto de filtro da consulta");
 		
 		String acao = request.getParameter("acao");
 		if ("firstOpening".equals(acao)) {
+			LOGGER.debug("Removendo formulário do contexto de sessão e criando nova instância");
 			sessionData.remove(this.getModel().getContextoFiltro());
+			this.novaInstanciaModel();
 		}
 	}
 	
