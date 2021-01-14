@@ -4,7 +4,7 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
  * @author fernando.menezes
- * @refactor Marcelo Damasceno
+ * @refactoredBy Marcelo Damasceno
  */
 public enum MotivoDepositoCampo implements IEntidadeCampo {
     /**
@@ -86,6 +86,20 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
             }
         }
         return null;
+    }
+    
+    /**
+     * retorna o nome
+     * @param nome - nome do campo de motivo depósito
+     * @return - retorna o nome do campo
+     */
+    public static MotivoDepositoCampo obterPorDescricao(String descricao) {
+    	for (MotivoDepositoCampo campo : MotivoDepositoCampo.values()) {
+    		if (campo.getDescricao().equals(descricao)) {
+    			return campo;
+    		}
+    	}
+    	return null;
     }
 
     /**

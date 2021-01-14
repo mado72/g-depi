@@ -4,8 +4,8 @@ import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 /**
- * Classe de exceÁ„o de aplicaÁ„o com mensagem de negocio amig·vel.
- * @author fabio.pinto
+ * Classe de exce√ß√£o de aplica√ß√£o com mensagem de negocio amig√°vel.
+ * @refactoredBy Marcelo Damasceno
  */
 public class DEPIIntegrationException
     extends IntegrationException {
@@ -35,9 +35,9 @@ public class DEPIIntegrationException
     }
 
     /**
-     * Construtor genÈrico
+     * Construtor gen√©rico
      * @param chave Chave da mensagem
-     * @param params Par‚metros da mensagem
+     * @param params Par√¢metros da mensagem
      */
     public DEPIIntegrationException(String chave, String... params) {
         super(BaseUtil.getInstance().getMensagem(chave, params));
@@ -46,10 +46,10 @@ public class DEPIIntegrationException
     }
 
     /**
-     * Construtor genÈrico
-     * @param excecao ExceÁ„o nativa
+     * Construtor gen√©rico
+     * @param excecao Exce√ß√£o nativa
      * @param chave Chave da mensagem
-     * @param params Par‚metros da mensagem
+     * @param params Par√¢metros da mensagem
      */
     public DEPIIntegrationException(Exception excecao, String chave, String... params) {
         super(BaseUtil.getInstance().getMensagem(chave, params), excecao);
@@ -69,8 +69,8 @@ public class DEPIIntegrationException
     }
 
     /**
-     * Obter os par‚metros da mensagem
-     * @return Retorna os par‚metros da mensagem
+     * Obter os par√¢metros da mensagem
+     * @return Retorna os par√¢metros da mensagem
      */
     public String[] getParametros() {
         if (this.parametros != null) {

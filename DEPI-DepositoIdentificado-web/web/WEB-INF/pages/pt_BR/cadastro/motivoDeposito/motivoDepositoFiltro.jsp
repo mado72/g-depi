@@ -91,8 +91,8 @@ jQuery(document).ready(function($){
 					valor: item.entidade.tipo,
 					sublista: item.operacoes.map(function(subitem){
 						return {
-							texto: subitem.descricao,
-							valor: subitem.descricao
+							texto: subitem.d,
+							valor: subitem.n
 						};
 					})
 				};

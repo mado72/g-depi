@@ -80,11 +80,11 @@ var fnReady = function ($) {
 				var opt = jqRecipiente.find("option:selected");
 				
 				if (opt.length == 1) {
-					var recp = dados.recipiente[opt.index()];
-					jqPrincipal.val(recp.principal);
+					var value = opt.val().split(';');
+					jqPrincipal.val(value[0]);
 					jqPrincipal.change();
-					jqSecundario.val(recp.secundario);
-					jqValor.val(recp.valor);
+					jqSecundario.val(value[1]);
+					jqValor.val(value[2]);
 				}
 			});
 		
@@ -103,7 +103,8 @@ var fnReady = function ($) {
 				valor: jqValor.val().toLocaleUpperCase(),
 			}
 
-			item.texto = [optPrincipal.text(), optSecundario.text(), item.valor].join(' ')
+			item.texto = [optPrincipal.text(), optSecundario.text(), item.valor].join(' ');
+		    item.prop = [optPrincipal.text(), optSecundario.val(), item.valor].join(';');
 			
 			dados.recipiente.push(item);
 
@@ -141,7 +142,7 @@ var fnReady = function ($) {
 						$('<input>', { type:"hidden", name: "campo[" + idx + "]" , value: item.principal}),
 						$('<input>', { type:"hidden", name: "operacao[" + idx + "]" , value: item.secundario}),
 						$('<input>', { type:"hidden", name: "valor[" + idx + "]" , value: item.valor}),
-						$('<input>', { type:"hidden", name: "criterios[" + idx + "]" , value: item.texto}),
+						$('<input>', { type:"hidden", name: "criterios[" + idx + "]" , value: item.prop}),
 					])
 					.each(function(i, item){
 						elements = elements.add(item);
@@ -163,12 +164,25 @@ var fnReady = function ($) {
 
 		// Definir valores iniciais
 		$(dados.principal).each(function(idx, item) {
-			var opt = jqPrincipal.append($('<option>', {text: item.texto, value: item.valor}));
+			var opt = jqPrincipal.append($('<option>', {text: item.texto}));
 			opt.data("sublista", item.sublista);
 		});
 
 		if (dados.recipiente) {
-			$(dados.recipiente).each(function(idx, item) {
+			$(dados.recipiente).each(function(idx, criterio) {
+				var valores = criterio.split(';');
+				var pri = dados.principal.find(function(v){
+					return v.texto === valores[0];
+				})
+				var sec = pri.sublista.find(function(v){
+					return v.valor === valores[1];
+				})
+				
+				var item = {
+					prop: criterio,
+					texto: [valores[0], sec.texto, valores[2]].join(' ')
+				}
+
 				$.filtro.adicionarCriterio(jqRecipiente, item);
 			});
 		}
@@ -180,7 +194,7 @@ var fnReady = function ($) {
 	};
 
 	$.filtro.adicionarCriterio = function(jqRecipiente, item) {
-		var opt = jqRecipiente.append($('<option>', {text: item.texto}));
+		var opt = jqRecipiente.append($('<option>', {text: item.texto, value: item.prop}));
 		opt.data("dados", item);
 	};
 

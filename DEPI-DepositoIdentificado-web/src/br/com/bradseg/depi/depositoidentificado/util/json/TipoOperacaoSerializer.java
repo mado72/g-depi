@@ -20,8 +20,9 @@ public class TipoOperacaoSerializer extends
 		TipoCampo tipoCampo = tipoOperacao.getTipoCampo();
 
 		generator.writeStartObject();
-		generator.writeObjectField("descricao", tipoOperacao.getDescricao());
-		generator.writeObjectField("tipoCampo", tipoCampo);
+		generator.writeObjectField("n", tipoOperacao.name());
+		generator.writeObjectField("d", tipoOperacao.getDescricao());
+		generator.writeObjectField("t", tipoCampo);
 		generator.writeEndObject();
 	}
 

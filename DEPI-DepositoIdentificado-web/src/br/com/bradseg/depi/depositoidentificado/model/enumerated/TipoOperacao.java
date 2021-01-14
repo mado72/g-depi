@@ -1,22 +1,23 @@
 package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Enumerator TipoOperacao
- * @refactor Marcelo Damasceno
+ * @refactoredBy Marcelo Damasceno
  */
 public enum TipoOperacao {
     /**
      * Alfanumérico Obrigatório
      */
-    IgualAlfanumericoObrigatorio("Igual", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) = ''{1}''"), 
-    DiferenteAlfanumericoObrigatorio("Diferente", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) <> ''{1}''"), 
-    ContemObrigatorio("Contém", TipoCampo.ALFA_OBRIG, true,"UPPER({0}) LIKE ''%{1}%''"), 
-    NaoContemObrigatorio("Não contém", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) NOT LIKE ''%{1}%''"), 
-    IniciaComObrigatorio("Inicia com", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) LIKE ''{1}%''"), 
-    TerminaComObrigatorio("Termina com", TipoCampo.ALFA_OBRIG, true, "RTRIM (UPPER({0})) LIKE ''%{1}''"),
+    IgualAlfanumericoObrigatorio("Igual", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) = :{1}", null), 
+    DiferenteAlfanumericoObrigatorio("Diferente", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) <> :{1}", null), 
+    ContemObrigatorio("Contém", TipoCampo.ALFA_OBRIG, true,"UPPER({0}) LIKE :{1}", "%{0}%"), 
+    NaoContemObrigatorio("Não contém", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) NOT LIKE :{1}", "%{0}%"), 
+    IniciaComObrigatorio("Inicia com", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) LIKE :{1}", "{0}%"), 
+    TerminaComObrigatorio("Termina com", TipoCampo.ALFA_OBRIG, true, "RTRIM (UPPER({0})) LIKE :{1}", "%{0}"),
 
     /**
      * Alfanumérico Opcional
@@ -27,7 +28,7 @@ public enum TipoOperacao {
     NaoContemOpcional(TipoCampo.ALFA_OPT, NaoContemObrigatorio),
     IniciaComOpcional(TipoCampo.ALFA_OPT, IniciaComObrigatorio),
     TerminaComOpcional(TipoCampo.ALFA_OPT, TerminaComObrigatorio), 
-    EmBrancoOpcional("Em branco", TipoCampo.ALFA_OPT, false, "RTRIM (UPPER({0})) = ''''"),
+    EmBrancoOpcional("Em branco", TipoCampo.ALFA_OPT, false, "RTRIM ({0}) = ''''", ""),
 
     /**
      * Alfanumérico Obrigatório Big
@@ -40,34 +41,36 @@ public enum TipoOperacao {
     /**
      * Numérico
      */
-    IgualNumerico("Igual", TipoCampo.NUM, true, "{0} = {1}"), 
-    DiferenteNumerico("Diferente", TipoCampo.NUM, true, "{0} <> {1}"), 
-//    ContemNumerico("Contém", TipoCampo.NUM, true, "{0} IN ({1})"), 
-    MenorQue("Menor que", TipoCampo.NUM, true, "{0} < {1}"), 
-    MaiorQue("Maior que", TipoCampo.NUM, true, "{0} > {1}"), 
-    MenorIgual("Menor igual", TipoCampo.NUM, true, "{0} <= {1}"), 
-    MaiorIgual("Maior igual", TipoCampo.NUM, true, "{0} >= {1}");
+    IgualNumerico("Igual", TipoCampo.NUM, true, "{0} = :{1}", null), 
+    DiferenteNumerico("Diferente", TipoCampo.NUM, true, "{0} <> :{1}", null), 
+    MenorQue("Menor que", TipoCampo.NUM, true, "{0} < :{1}", null), 
+    MaiorQue("Maior que", TipoCampo.NUM, true, "{0} > :{1}", null), 
+    MenorIgual("Menor igual", TipoCampo.NUM, true, "{0} <= :{1}", null), 
+    MaiorIgual("Maior igual", TipoCampo.NUM, true, "{0} >= :{1}", null);
 
-    private String descricao;
+    private final String descricao;
 
-    private String clausula;
+    private final String clausula;
+    
+    private final String formatoValor;
 
-    private TipoCampo tipoCampo;
+    private final TipoCampo tipoCampo;
 
-    private boolean temValor;
+    private final boolean temValor;
 
     /**
      * Construtor
      * @param descricao Descrição da operação
      * @param tipoCampo TipoCampo
      * @param temValor Se tem valor operando
-     * @param clausula Clausula associada
+     * @param clausula Cláusula associada
      */
-    TipoOperacao(String descricao, TipoCampo tipoCampo, boolean temValor, String clausula) {
+    TipoOperacao(String descricao, TipoCampo tipoCampo, boolean temValor, String clausula, String formatoValor) {
         this.descricao = descricao;
         this.tipoCampo = tipoCampo;
         this.temValor = temValor;
         this.clausula = clausula;
+        this.formatoValor = formatoValor;
     }
 
     /**
@@ -80,11 +83,12 @@ public enum TipoOperacao {
         this.descricao = tipoOperacao.descricao;
         this.temValor = tipoOperacao.temValor;
         this.clausula = tipoOperacao.clausula;
+        this.formatoValor = tipoOperacao.formatoValor;
     }
 
     /**
      * Obter descricao
-     * @return Descricao
+     * @return Descrição
      */
     public String getDescricao() {
         return descricao;
@@ -108,10 +112,29 @@ public enum TipoOperacao {
 
     /**
      * Obter clausula
-     * @return Clausula
+     * @return Cláusula
      */
     public String getClausula() {
         return clausula;
+    }
+    
+    /**
+     * Obter formato do valor
+     * @return Formato Valor
+     */
+    public String getFormatoValor() {
+		return formatoValor;
+	}
+    
+    public String formatarClausula(String campo, String nomeParametro) {
+    	return MessageFormat.format(clausula, campo, nomeParametro);
+    }
+    
+    public String formatarValor(String valor) {
+    	if (this.formatoValor == null)
+    		return valor;
+    	
+    	return MessageFormat.format(formatoValor, valor);
     }
 
     /**
@@ -131,7 +154,7 @@ public enum TipoOperacao {
 
     /**
      * Obter TipoOperacao por código
-     * @param codigo Codigo do TipoOperacao
+     * @param codigo Código do TipoOperacao
      * @return TipoOperacao
      */
     public static TipoOperacao obterPorCodigo(String codigo) {

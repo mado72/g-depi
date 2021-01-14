@@ -3,6 +3,7 @@
  */
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -10,18 +11,21 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import br.com.bradseg.bsad.framework.core.exception.BusinessException;
-import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
-import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.MotivoDepositoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+
+import br.com.bradseg.bsad.framework.core.exception.BusinessException;
+import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 
 /**
  * Dao que representa a entidade MOTVO_DEP_IDTFD
@@ -46,8 +50,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 	}
 
     /**
-     * Mï¿½todo responsï¿½vel por inserir um Motivo Depï¿½sito.
-     * @param vo - Motivo Depï¿½sito a ser inserido.
+     * Método responsável por inserir um Motivo Depósito.
+     * @param vo - Motivo Depósito a ser inserido.
      */
     @Override
     public void inserir(MotivoDepositoVO vo) {
@@ -65,7 +69,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 			if (motivoDepto.size() >= 1 ) {
                 if (motivoDepto.get(1).getIndicadorAtivo().equals("S")) {
                     throw new BusinessException(ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO + " : "  + new StringBuilder(
-                        " Descriï¿½ï¿½o Bï¿½sica: ").append(vo.getDescricaoBasica()).append(".").toString());
+                        " Descrição Básica: ").append(vo.getDescricaoBasica()).append(".").toString());
                 } else {
 
                     params.addValue("prm1", vo.getDescricaoDetalhada().trim());
@@ -95,8 +99,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
 
     /**
-     * Mï¿½todo responsï¿½vel por alterar um Motivo Depï¿½sito.
-     * @param vo - Motivo Depï¿½sito a ser alterado.
+     * Método responsável por alterar um Motivo Depósito.
+     * @param vo - Motivo Depósito a ser alterado.
      */
     @Override
     public void alterar(MotivoDepositoVO vo){
@@ -114,8 +118,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 			MotivoDepositoVO motivoExistente = findPorDescricaoBasica (motivoDepto , vo );
 
             if (motivoExistente != null) {
-                StringBuilder sb = new StringBuilder("Motivo Depï¿½sito com Descriï¿½ï¿½o Bï¿½sica: ").append(vo.getDescricaoBasica())
-                    .append(" jï¿½ estï¿½ cadastrado");
+                StringBuilder sb = new StringBuilder("Motivo Depósito com Descrição Básica: ").append(vo.getDescricaoBasica())
+                    .append(" já está cadastrado");
                 if (motivoExistente.getIndicadorAtivo().equals("N")) {
                     sb.append(" com status inativo");
                 }
@@ -144,8 +148,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
 
     /**
-     * Mï¿½todo responsï¿½vel por excluir um Motivo Depï¿½sito.
-     * @param vo - Motivo Depï¿½sito a ser excluï¿½do.
+     * Método responsável por excluir um Motivo Depósito.
+     * @param vo - Motivo Depósito a ser excluído.
      */
     @Override
     public void excluir(MotivoDepositoVO vo) {
@@ -169,8 +173,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
     
     /**
-     * Mï¿½todo responsï¿½vel por excluir lista um Motivo Depï¿½sito.
-     * @param vo - Motivo Depï¿½sito a ser excluï¿½do.
+     * Método responsável por excluir lista um Motivo Depósito.
+     * @param vo - Motivo Depósito a ser excluído.
      */
     @Override
     public void excluirLista(List<MotivoDepositoVO> listvo) {
@@ -182,20 +186,20 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
                     codsMotivos.append("; ");
                 }
                 MotivoDepositoVO m = obterPorChave(vo);
-                codsMotivos.append("Motivo Depï¿½sito: ").append(m.getDescricaoBasica());
+                codsMotivos.append("Motivo Depósito: ").append(m.getDescricaoBasica());
             } else {
             	excluir(vo);
             }
         }
         if (codsMotivos.length() > 0) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA + " - " + codsMotivos.toString() + "Parï¿½metros de Depï¿½sito");
+            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA + " - " + codsMotivos.toString() + "Parâmetros de Depósito");
         }
         
     }
     
     
     /**
-     * isReferenciado retorna se o registro ï¿½ utilizado nas tabelas como FK. {@inheritDoc}
+     * isReferenciado retorna se o registro é utilizado nas tabelas como FK. {@inheritDoc}
      */
     @Override
     public synchronized Boolean isReferenciado(MotivoDepositoVO vo){
@@ -224,7 +228,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
 
     /**
-     * Obtï¿½m apenas os Motivos que estï¿½o associados a Parametros de Depï¿½sito.
+     * Obtém apenas os Motivos que estão associados a Parametros de Depósito.
      * @param codigoCia - int.
      * @param codigoDep - int.
      * @param codigoUsuario - BigDecimal.
@@ -242,15 +246,15 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 
             if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
             	query.append(QuerysDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO);
-                msg = " um Parï¿½metro de Depï¿½sito ou Grupo de Acesso vinculado ao usuï¿½rio.";
+                msg = " um Parâmetro de Depósito ou Grupo de Acesso vinculado ao usuário.";
             } else if (e.equals(Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO)) {
             	query.append(QuerysDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODECONTACORRENTEMOTIVODEPOSITO);
-                msg = " uma Associaï¿½ï¿½o de Motivo ou Grupo de Acesso vinculado ao usuï¿½rio";
+                msg = " uma Associação de Motivo ou Grupo de Acesso vinculado ao usuário";
             } else if (e.equals(Tabelas.DEPOSITO)) {
             	query.append(QuerysDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODEDEPOSITO);
-                msg = " um Depï¿½sito ou Grupo de Acesso vinculado ao usuï¿½rio";
+                msg = " um Depósito ou Grupo de Acesso vinculado ao usuário";
             } else {
-                throw new IntegrationException("Enum invï¿½lido.");
+                throw new IntegrationException("Enum inválido.");
             }
 
             /**
@@ -274,7 +278,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
     
     /**
-     * Obtï¿½m apenas os Motivos por Chave.
+     * Obtém apenas os Motivos por Chave.
      * @param MotivoDepositoVO - MotivoDepositoVO
      * @return List<MotivoDepositoVO>.
      */
@@ -308,7 +312,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
 
     /**
-     * Obtï¿½m apenas os Motivos por Filtro.
+     * Obtém apenas os Motivos por Filtro.
      * @param MotivoDepositoVO - MotivoDepositoVO
      * @return List<MotivoDepositoVO>.
      */
@@ -347,7 +351,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 
 	
     /**
-     * Obtï¿½m todos os Motivos.
+     * Obtém todos os Motivos.
      * @return List<MotivoDepositoVO>.
      */
 	@Override

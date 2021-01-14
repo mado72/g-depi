@@ -3,9 +3,7 @@ package br.com.bradseg.depi.depositoidentificado.form.cadastro;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import br.com.bradseg.depi.depositoidentificado.model.cadastro.EntidadeCampoOperacoesFiltro;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
@@ -16,54 +14,67 @@ import br.com.bradseg.depi.depositoidentificado.util.json.DepiObjectMapper;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
- * Representa o modelo do formulário de filtro, com entidades alinhadas com as
- * operações.
+ * Representa o modelo do formulário de filtro, com entidade alinhadas com as
+ * operações disponíveis, elegíveis por duas dropbox: a primeira, para definir a
+ * entidade e a segunda a operação (cláusula de consulta).
  * 
  * @author Marcelo Damasceno
  */
-public class FiltroConsultarForm<T extends IEntidadeCampo> extends ActionSupport {
+public class FiltroConsultarForm<T extends IEntidadeCampo> extends
+		ActionSupport {
 
 	private static final long serialVersionUID = -1473697395894253132L;
 
+	/**
+	 * Usado internamente para montar um JSON usado na passagem de valores para
+	 * os dropbox.
+	 */
 	private DepiObjectMapper mapper = new DepiObjectMapper();
-	
+
+	/**
+	 * Possui a lista de entidades relacionadas com as possíveis operações de
+	 * consulta
+	 */
 	private List<EntidadeCampoOperacoesFiltro<T>> parametroFiltroList;
-	
+
+	/**
+	 * Armazena os critérios enviados (selecionados) pelo usuário
+	 */
 	private List<String> criterios;
-	
+
+	/**
+	 * Armazena os dados, resultado da consulta.
+	 */
 	private List<?> colecaoDados;
-	
-    /**
-     * Todos os filtros usados na página.
-     */
-    private List<String> campo;
 
-    private List<String> operacao;
-
-    private List<String> valor;
-
-	
+	/**
+	 * @param fornecedor
+	 */
 	public FiltroConsultarForm(FornecedorObjeto<Collection<T>> fornecedor) {
 		Collection<T> lista = fornecedor.get();
-		
+
 		parametroFiltroList = new ArrayList<>();
 		for (T entidade : lista) {
-			List<TipoOperacao> operacoes = TipoOperacao.obterPorTipoCampo(entidade.getTipoCampo());
-			
+			List<TipoOperacao> operacoes = TipoOperacao
+					.obterPorTipoCampo(entidade.getTipoCampo());
+
 			EntidadeCampoOperacoesFiltro<T> item = new EntidadeCampoOperacoesFiltro<>();
 			item.setEntidadeCampo(entidade);
 			item.setOperacoes(operacoes);
-			
+
 			parametroFiltroList.add(item);
 		}
 	}
 
 	/**
-	 * @return JSON com a estrutura de dados utilizados para o funcionamento do filtro.
+	 * @return JSON com a estrutura de dados utilizados para o funcionamento do
+	 *         filtro.
 	 */
 	public String getParametrosFiltroJson() {
 		try {
-			return new String(mapper.writeValueAsBytes(parametroFiltroList), "UTF-8");
+			String json = new String(mapper.writeValueAsBytes(parametroFiltroList),
+					"UTF-8");
+			return json;
 		} catch (IOException e) {
 			throw new RuntimeException("Falha ao converter em json", e);
 		}
@@ -72,28 +83,19 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends ActionSupport
 	public String getRecipienteListJson() {
 		if (getCriterios() == null)
 			return null;
-		
+
 		try {
-			List<Object> data = new ArrayList<>();
-			for (int i = 0; i < getCampo().size(); i++) {
-				
-				Map<String, String> criterio = new HashMap<>();
-				criterio.put("campo", getCampo().get(i));
-				criterio.put("operacao", getOperacao().get(i));
-				criterio.put("valor", getValor().get(i));
-				criterio.put("texto", getCriterios().get(i));
-				data.add(criterio);
-			}
-			return new String(mapper.writeValueAsBytes(data), "UTF-8");
+			String json = new String(mapper.writeValueAsBytes(getCriterios()), "UTF-8");
+			return json;
 		} catch (IOException e) {
 			throw new RuntimeException("Falha ao converter em json", e);
 		}
 	}
-	
+
 	public List<String> getCriterios() {
 		return criterios;
 	}
-	
+
 	public void setCriterios(List<String> criterios) {
 		this.criterios = criterios;
 	}
@@ -104,29 +106,5 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends ActionSupport
 
 	public void setColecaoDados(List<?> colecaoDados) {
 		this.colecaoDados = colecaoDados;
-	}
-
-	public List<String> getCampo() {
-		return campo;
-	}
-
-	public void setCampo(List<String> campo) {
-		this.campo = campo;
-	}
-
-	public List<String> getOperacao() {
-		return operacao;
-	}
-
-	public void setOperacao(List<String> operacao) {
-		this.operacao = operacao;
-	}
-
-	public List<String> getValor() {
-		return valor;
-	}
-
-	public void setValor(List<String> valor) {
-		this.valor = valor;
 	}
 }

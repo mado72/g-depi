@@ -1,6 +1,8 @@
 package br.com.bradseg.depi.depositoidentificado.util;
 
 import java.util.Date;
+import java.util.List;
+
 /**
  * A(O)FiltroUtil.
  * @return the FiltroUtil
@@ -28,6 +30,8 @@ public class FiltroUtil {
     private String  descricaoDetalhada;
 	private String  sigla;
     private String  nome;
+    
+    private List<CriterioConsultaVO> criterios;
 	
 	/**
 	 * Obtem ip.
@@ -302,7 +306,19 @@ public class FiltroUtil {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+	/**
+	 * @return Lista com critérios para filtrar consulta
+	 */
+	public List<CriterioConsultaVO> getCriterios() {
+		return criterios;
+	}
+	/**
+	 * Define a lista com critérios para filtrar consulta
+	 * @param criterios Lista com critérios
+	 */
+	public void setCriterios(List<CriterioConsultaVO> criterios) {
+		this.criterios = criterios;
+	}
 	
 
 }
