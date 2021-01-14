@@ -131,15 +131,15 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             // * Proteção da rotina.
             // *
             if (vo.getCodigoGrupoAcesso() <= 0) {
-                throw new DEPIIntegrationException("Código Grupo de Acesso inválido na atualização.");
+                throw new IntegrationException("Código Grupo de Acesso inválido na atualização.");
             }
 
             if (vo.getUsuarios() == null) {
-                throw new DEPIIntegrationException("Lista de usuários inválida na atualização.");
+                throw new IntegrationException("Lista de usuários inválida na atualização.");
             }
 
             if (vo.getCodigoResponsavelUltimaAtualizacao().doubleValue() <= 0) {
-                throw new DEPIIntegrationException("Código do responsável pela última atualização inválido na atualização.");
+                throw new IntegrationException("Código do responsável pela última atualização inválido na atualização.");
             }
 
             ds = getDAO().getDataSource();
@@ -348,10 +348,10 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 
         } catch (SQLException e) {
         	LOGGER.error(e);
-            throw new DEPIIntegrationException(e);
+            throw new IntegrationException(e);
         } catch (DAOException e) {
         	LOGGER.error(e);
-            throw new DEPIIntegrationException(e);
+            throw new IntegrationException(e);
         } finally {
         	//Verificar MHG
         	closeResultSet(rs); 
@@ -388,10 +388,10 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             
         } catch (SQLException e) {
         	LOGGER.error(e);
-            throw new DEPIIntegrationException(e);
+            throw new IntegrationException(e);
         } catch (DAOException e) {
         	LOGGER.error(e);
-            throw new DEPIIntegrationException(e);
+            throw new IntegrationException(e);
         } finally {
         	closeResultSet(rs); 
         	closeStatement(pstm);

@@ -15,7 +15,7 @@ public interface RelatorioEnvioRetornoDAO {
     /**
      * Método obterDadosAnalitico
      * @param filtro do relatório
-     * @throws DEPIIntegrationException - trata erro de negócio
+     * @throws IntegrationException - trata erro de negócio
      * @return List<DadosEnvioRetornoAnaliticoVO>
      */
     List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro);
@@ -23,7 +23,7 @@ public interface RelatorioEnvioRetornoDAO {
     /**
      * Método obterDadosSintetico
      * @param filtro do relatório
-     * @throws DEPIIntegrationException - trata erro de negócio
+     * @throws IntegrationException - trata erro de negócio
      * @return List<DadosEnvioRetornoSinteticoVO>
      */
     List<RelatorioEnvioRetornoSinteticoVO> obterDadosSintetico(FiltroUtil filtro);

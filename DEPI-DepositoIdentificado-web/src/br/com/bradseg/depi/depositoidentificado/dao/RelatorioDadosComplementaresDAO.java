@@ -13,7 +13,7 @@ public interface RelatorioDadosComplementaresDAO {
 	/**
      * Método obterDadosComplementaresAnalitico
      * @param filtro do relatório
-     * @throws DEPIIntegrationException - trata erro de negócio
+     * @throws IntegrationException - trata erro de negócio
      * @return List<DadosEnvioRetornoAnaliticoVO>
      */
     List<RelatorioDadosComplementaresVO> obterDadosComplementaresAnalitico(FiltroUtil filtro);

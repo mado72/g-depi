@@ -3,7 +3,6 @@
  */
 package br.com.bradseg.depi.depositoidentificado.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -11,8 +10,6 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
@@ -375,15 +372,16 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
         	LOGGER.info("obterPorFiltro(FiltroUtil filtro)"); 
         }
 	}
-
-private MotivoDepositoVO findPorDescricaoBasica (List<MotivoDepositoVO> motivoDepto , MotivoDepositoVO vo ) {
 	
-    for(MotivoDepositoVO motivo : motivoDepto) {
-        if(motivo.getDescricaoBasica().equals(vo.getDescricaoBasica().trim())) {
-            return motivo;
-        }
-    }
-    return null;
-}
+
+	private MotivoDepositoVO findPorDescricaoBasica (List<MotivoDepositoVO> motivoDepto , MotivoDepositoVO vo ) {
+	
+	    for(MotivoDepositoVO motivo : motivoDepto) {
+	        if(motivo.getDescricaoBasica().equals(vo.getDescricaoBasica().trim())) {
+	            return motivo;
+	        }
+	    }
+	    return null;
+	}
 	
 }

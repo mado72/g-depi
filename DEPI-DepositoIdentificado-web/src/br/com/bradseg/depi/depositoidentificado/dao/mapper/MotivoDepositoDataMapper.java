@@ -31,6 +31,7 @@ public class MotivoDepositoDataMapper implements RowMapper<MotivoDepositoVO> {
 		motivoDepositoVO.setUltimaAtualizacao(rs.getDate("DHORA_ULT_ATULZ"));
 		
 		return motivoDepositoVO;
+		
 	}
 
 }

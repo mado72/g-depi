@@ -127,8 +127,11 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 		
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(criterios);
+
+//		FIXME Descomentar este código para passar a usar o filtro
+//		List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
 		
-		List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
+		List<MotivoDepositoVO> retorno = facade.obterTodosMotivoDepositvo();
 		
 		model.setColecaoDados(retorno);
 
