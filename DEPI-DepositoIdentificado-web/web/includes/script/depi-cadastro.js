@@ -395,6 +395,83 @@ var fnReady = function ($) {
 	    		&& submitForm('excluir', PAGE_CONTEXT + '/deposito/CadastrarDeposito.do'));
 	};
 
+
+	// paginacao
+	// ---------------------------------------------------------------------
+	// definition
+	$.namespace( '$.paginacao' );
+
+	$.paginacao.paginar = function(opcoes) {
+		var jqTbl = opcoes.jqTbl = $(opcoes.tblSeletor);
+		var jqTrs = opcoes.jqTrs = jqTbl.find("TBODY TR");
+		
+		jqTbl.data("pagcorrente", 0);
+		jqTbl.data("total", jqTrs.length);
+		jqTrs.hide();
+
+		var ctrls = $(["<span class='paginacao_info'></span>",
+			"<span class='pre_pages'><a class='GoFirst'>Primeiro</a>/<a class='GoPrev'>Anterior</a></span>",
+			"<span class='nav_pages'></span>",
+			"<span class='pos_pages'><a class='GoNext'>Próximo</a>/<a class='GoLast'>Último</a></span>|"].join('|'));
+		const pagSel = $(opcoes.pagSeletor);
+		pagSel.append(ctrls);
+		
+		opcoes.info = pagSel.find(".paginacao_info");
+		opcoes.pgs =  Math.floor(opcoes.jqTrs.length / opcoes.registros) + 1;
+
+		var pages = [];
+		for (var i = 1; i <= opcoes.pgs; i++) {
+			var epg = "<a class='GoPage' page='"+(i-1)+"'>"+i+"</a>";
+			pages.push(epg)
+		}
+
+		pagSel.find('.nav_pages').append($(pages.join(',')));
+		pagSel.find('.GoPage').click(function(ev){
+			var page = parseInt($(this).attr("page"));
+			$.paginacao.irPara(opcoes, page);
+		});
+
+		pagSel.find('.GoFirst').click(function(){$.paginacao.goFirst(opcoes)});
+		pagSel.find('.GoPrev').click(function(){$.paginacao.goPrev(opcoes)});
+		pagSel.find('.GoNext').click(function(){$.paginacao.goNext(opcoes)});
+		pagSel.find('.GoLast').click(function(){$.paginacao.goLast(opcoes)});
+
+		$.paginacao.goFirst(opcoes);
+	}
+	
+	$.paginacao.irPara = function(opcoes, pagina) {
+		opcoes.corrente = pagina;
+		opcoes.idxInicial = opcoes.registros * pagina;
+		opcoes.idxFinal = opcoes.idxInicial + opcoes.registros - 1;
+
+		opcoes.jqTrs.hide();
+		var pgTrs = opcoes.jqTrs.slice(opcoes.idxInicial, opcoes.idxFinal);
+		pgTrs.show();
+
+		var idxi = opcoes.idxInicial+1;
+		var idxf = Math.min(opcoes.idxFinal + 1, opcoes.jqTrs.length);
+
+		opcoes.info.text(function(){
+			var txt = opcoes.pattern.replace(/:reg/, opcoes.jqTrs.length).replace(/:idxIni/, idxi).replace(/:idxFin/, idxf);
+			return txt;
+		})
+	}
+
+	$.paginacao.goFirst = function(opcoes) {
+		$.paginacao.irPara(opcoes, 0);
+	}
+
+	$.paginacao.goPrev = function(opcoes) {
+		$.paginacao.irPara(opcoes, opcoes.corrente - 1);
+	}
+
+	$.paginacao.goNext = function(opcoes) {
+		$.paginacao.irPara(opcoes, opcoes.corrente + 1);
+	}
+
+	$.paginacao.goLast = function(opcoes) {
+		$.paginacao.irPara(opcoes, pgs - 1 );
+	}
 };
 
 jQuery(document).ready(fnReady(jQuery));

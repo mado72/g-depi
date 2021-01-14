@@ -84,3 +84,9 @@ button.btn-img {
 .lista .atualizacao {
 	text-align: center;
 }
+
+.paginacao {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}

@@ -64,6 +64,7 @@
 	</s:iterator>
  	</tbody>
 </table>
+<div class="paginacao"></div>
 <br/>
 	<br/>
 	<table width="90%" style="tabela_botoes" align="center">
@@ -85,6 +86,14 @@
 <script>
 jQuery(document).ready(function($){
 	$.consulta.prepararFormulario("#AcaoForm");
+	<s:if test="colecaoDados">
+	$.paginacao.paginar({
+		tblSeletor: ".MotivoDeposito",
+		pagSeletor: ".paginacao",
+		registros: 7,
+		pattern: ":reg itens encontrados, mostrando :idxIni até :idxFin."
+	});
+	</s:if>
 }(jQuery));
 </script>
 </c:set>
