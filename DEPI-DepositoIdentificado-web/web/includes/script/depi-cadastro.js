@@ -470,7 +470,7 @@ var fnReady = function ($) {
 	}
 
 	$.paginacao.goLast = function(opcoes) {
-		$.paginacao.irPara(opcoes, pgs - 1 );
+		$.paginacao.irPara(opcoes, opcoes.pgs - 1 );
 	}
 };
 
