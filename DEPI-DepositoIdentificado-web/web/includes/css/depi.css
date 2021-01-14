@@ -1,5 +1,8 @@
 @CHARSET "UTF-8";
 
+input:disabled {
+	color: #999999;
+}
 pre.debug {
 	width: 100%;
 	overflow: auto;
@@ -76,4 +79,8 @@ button.btn-img {
 
 .MotivoDeposito .atualizacao {
 	width: 18%;
+}
+
+.lista .atualizacao {
+	text-align: center;
 }

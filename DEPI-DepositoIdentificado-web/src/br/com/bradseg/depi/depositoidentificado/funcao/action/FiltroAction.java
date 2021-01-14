@@ -1,45 +1,19 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import br.com.bradseg.depi.depositoidentificado.form.AdmfinBPFiltroForm;
+import br.com.bradseg.depi.depositoidentificado.form.cadastro.FiltroConsultarForm;
 
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ModelDriven;
 
 @Component
-public abstract class FiltroAction<T extends AdmfinBPFiltroForm> extends BaseAction implements ModelDriven<T>, SessionAware {
+public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends BaseModelAction<T> {
 
 	private static final long serialVersionUID = 935947361413242271L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FiltroAction.class);
-
-	protected Map<String, Object> sessionData;
-
-	@Resource
-	private transient String www3;
-	
-	@Override
-	public void setSession(Map<String, Object> sessionData) {
-		this.sessionData = sessionData;
-	}
-
-	public String getWww3() {
-		return www3;
-	}
-	
-	public String getEstatico() {
-		return request.getContextPath() + "/includes";
-	}
-	
-	abstract protected void novaInstanciaModel(); 
 	
 	protected void prepararFiltro() {
 		LOGGER.info("Preparando contexto de filtro da consulta");
@@ -49,7 +23,8 @@ public abstract class FiltroAction<T extends AdmfinBPFiltroForm> extends BaseAct
 		}
 		
 		LOGGER.debug("Removendo formulário do contexto de sessão e criando nova instância");
-		sessionData.remove(this.getModel().getContextoFiltro());
+		String actionName = this.getClass().getSimpleName();
+		sessionData.remove(actionName);
 		this.getModel().setColecaoDados(null);
 		
 		this.novaInstanciaModel();
@@ -60,7 +35,8 @@ public abstract class FiltroAction<T extends AdmfinBPFiltroForm> extends BaseAct
 	protected void persistirContextoFiltro() {
 		T model = getModel();
 		
-		sessionData.put(model.getContextoFiltro(), model);
+		String actionName = this.getClass().getSimpleName();
+		sessionData.put(actionName, model);
 	}
 	
 	/**

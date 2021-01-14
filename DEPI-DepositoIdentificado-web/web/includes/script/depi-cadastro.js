@@ -127,7 +127,15 @@ var fnReady = function ($) {
 			var elements = $();
 			var data = [];
 
-			jqRecipiente.find("option").each(function(idx) {
+			var criterios = jqRecipiente.find("option");
+			if (criterios.length == 0) {
+				if (! window.confirm(MENSAGEM["msg.confirmacao.consulta"])) {
+					ev.stopPropagation();
+					return;
+				}
+			}
+
+			criterios.each(function(idx) {
 					var item = dados.recipiente[idx];
 					$([
 						$('<input>', { type:"hidden", name: "campo[" + idx + "]" , value: item.principal}),
@@ -142,6 +150,10 @@ var fnReady = function ($) {
 					data.push(item);
 				});
 			
+			if (elements.length == 0) {
+
+			}
+
 			jqForm.append(elements);
 
 			jqForm.submit();
@@ -188,7 +200,7 @@ var fnReady = function ($) {
 	// definition
 	$.namespace( '$.consulta' );
 
-	$.consulta.prepararFormulario = function(formSeletor) {
+	$.consulta.prepararFormulario = function(formSeletor, formEditorSelector) {
 		var jqForm = $(formSeletor)
 
 		var btnExcluir = jqForm.find("#BtnExcluir"),
@@ -199,7 +211,23 @@ var fnReady = function ($) {
 		})
 		
 		btnAlterar.click(function(ev) {
-			alert('Alterar');
+			var marcados = jqForm.find(".checkTodos")
+				.parents("table:first")
+				.find("input:checkbox:checked");
+			
+			switch (marcados.length) {
+				case 1:
+					var jqFormEditor = $(formEditorSelector);
+					var codigo = $(marcados[0]).val();
+					var url = window.location.href;
+					url = url.replace(/\/\w+\/\w+.do/, "/editar/alterar.do?codigo=" + codigo);
+					window.location = url;
+					return;
+				default:
+					alert(MENSAGEM["msg.selecao.edicao"]);
+					return;
+			}
+
 		})
 
 		jqForm.find(".checkTodos").click(function(){

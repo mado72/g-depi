@@ -1,17 +1,15 @@
 package br.com.bradseg.depi.depositoidentificado.form.cadastro;
 
-import br.com.bradseg.depi.depositoidentificado.form.AdmfinBPFiltroForm;
+import br.com.bradseg.depi.depositoidentificado.form.BaseForm;
 
 /**
  * Representa o modelo do formulário da consulta para Motivo de Depósito 
  * @author Marcelo Damasceno
  */
-public class MotivoDepositoEditarForm extends AdmfinBPFiltroForm {
+public class MotivoDepositoEditarForm extends BaseForm {
 
 	private static final long serialVersionUID = 957768938376772158L;
 
-	public static final String NOME_FORM = MotivoDepositoEditarForm.class.getSimpleName();
-	
 	private String codigo;
 	
 	private String descricaoBasica;
@@ -19,11 +17,6 @@ public class MotivoDepositoEditarForm extends AdmfinBPFiltroForm {
 	private String descricaoDetalhada;
 	
 	private boolean detalhar;
-	
-	@Override
-	public String getContextoFiltro() {
-		return NOME_FORM;
-	}
 	
 	public String getCodigo() {
 		return codigo;

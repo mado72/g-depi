@@ -2,7 +2,7 @@ package br.com.bradseg.depi.depositoidentificado.util.json;
 
 import org.springframework.stereotype.Component;
 
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -22,6 +22,6 @@ public class DepiObjectMapper extends ObjectMapper {
 		
 		SimpleModule module = new SimpleModule();
 		module.addSerializer(TipoOperacao.class, new TipoOperacaoSerializer());
-		module.addSerializer(MotivoDepositoCampo.class, new MotivoDepositoCampoSerializer());
+		module.addSerializer(IEntidadeCampo.class, new IEntidadeCampoSerializer());
 	}
 }

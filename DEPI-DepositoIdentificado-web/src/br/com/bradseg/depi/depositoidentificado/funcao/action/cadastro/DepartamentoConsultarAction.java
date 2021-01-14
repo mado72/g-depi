@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
 import br.com.bradseg.depi.depositoidentificado.form.cadastro.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepartamentoCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesView;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
-import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 import com.opensymphony.xwork2.Action;
 
@@ -28,24 +28,24 @@ import com.opensymphony.xwork2.Action;
  */
 @Controller
 @Scope("request")
-public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarForm<MotivoDepositoCampo>> {
+public class DepartamentoConsultarAction extends FiltroAction<FiltroConsultarForm<DepartamentoCampo>> {
 	
-    protected static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoConsultarAction.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoConsultarAction.class);
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	private static final String NOME_ACTION = MotivoDepositoConsultarAction.class.getSimpleName();
+	private static final String ACTION_NAME = DepartamentoConsultarAction.class.getSimpleName();
 	
-	private FiltroConsultarForm<MotivoDepositoCampo> _model;
+	private FiltroConsultarForm<DepartamentoCampo> _model;
 	
 	@Autowired
-	private MotivoDepositoFacade facade;
+	private DepartamentoFacade facade;
 	
-	@Override
 	@SuppressWarnings("unchecked")
-	public FiltroConsultarForm<MotivoDepositoCampo> getModel() {
-		if (sessionData.containsKey(NOME_ACTION)) {
-			_model = (FiltroConsultarForm<MotivoDepositoCampo>) sessionData.get(NOME_ACTION);
+	@Override
+	public FiltroConsultarForm<DepartamentoCampo> getModel() {
+		if (sessionData.containsKey(ACTION_NAME)) {
+			_model = (FiltroConsultarForm<DepartamentoCampo>) sessionData.get(ACTION_NAME);
 		}
 		else {
 			this.novaInstanciaModel();
@@ -55,14 +55,16 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 	
 	@Override
 	protected void novaInstanciaModel() {
-		FornecedorObjeto<Collection<MotivoDepositoCampo>> criterios = new FornecedorObjeto<Collection<MotivoDepositoCampo>>() {
+		FornecedorObjeto<Collection<DepartamentoCampo>> entidades = new FornecedorObjeto<Collection<DepartamentoCampo>>() {
+			
 			@Override
-			public Collection<MotivoDepositoCampo> get() {
-				return Arrays.asList(MotivoDepositoCampo.valuesForCriteria());
+			public Collection<DepartamentoCampo> get() {
+				return Arrays.asList(DepartamentoCampo.valuesForCriteria());
 			}
 		};
-		_model = new FiltroConsultarForm<MotivoDepositoCampo>(criterios);
-		sessionData.put(NOME_ACTION, _model);
+		
+		_model = new FiltroConsultarForm<>(entidades);
+		sessionData.put(ACTION_NAME, _model);
 	}
 	
 	/**
@@ -107,7 +109,7 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 
         for (int i = 0; i < model.getCampo().size(); i++) {
             CriterioFiltroUtil criterio = new CriterioFiltroUtil();
-            criterio.setCampo(MotivoDepositoCampo.obterPorNome(model.getCampo().get(i)));
+            criterio.setCampo(DepartamentoCampo.obterPorNome(model.getCampo().get(i)));
             criterio.setOperacao(TipoOperacao.obterPorCodigo(model.getOperacao().get(i)));
             criterio.setValor(model.getValor().get(i));
             listCriterios.add(criterio);
@@ -116,7 +118,7 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
         filtro.setCriterios(listCriterios);
 */
 		
-		List<MotivoDepositoVO> retorno = facade.obterTodosMotivoDepositvo();
+		List<DepartamentoVO> retorno = facade.obterTodos();
 		
 		getModel().setColecaoDados(retorno);
 

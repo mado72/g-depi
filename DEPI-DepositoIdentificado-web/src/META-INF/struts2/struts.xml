@@ -9,6 +9,10 @@
 	<include file="META-INF/bsad/struts2/struts-config.xml" />
 	
 	<package name="depi-default" abstract="true" extends="bsad-default">
+		
+		<interceptors>
+			<interceptor name="limparDados" class="br.com.bradseg.depi.depositoidentificado.util.LimparDadosFormularioStrutsInterceptor"/>
+		</interceptors>
 	
 		<default-action-ref name="index"></default-action-ref>
 
@@ -68,20 +72,23 @@
 	</package>
 	
 	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito/consultar" extends="depi-default">
+	
+		<default-class-ref class="motivoDepositoConsultarAction"/>
+		
 
-		<action name="index" class="motivoDepositoConsultarAction" method="iniciarFormulario">
+		<action name="index" method="iniciarFormulario">
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
 			</result>
         </action>
 
-		<action name="listar" class="motivoDepositoConsultarAction" method="execute">
+		<action name="listar" method="execute">
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
 			</result>
         </action>
         
-		<action name="*" class="motivoDepositoConsultarAction" method="{1}">
+		<action name="*" method="{1}">
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
 			</result>
@@ -101,8 +108,8 @@
 	</package>
 	
 	<package name="cadastroMotivoDepositoEditar" namespace="/cadastro/motivoDeposito/editar" extends="depi-default">
-        
-        <action name="*" class="motivoDepositoEditarAction" method="{1}">
+	
+		<global-results>
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoForm.jsp</param>
 			</result>
@@ -110,6 +117,72 @@
 			    <param name="actionName">listar</param>
 			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
 			</result>
+		</global-results>
+		
+		<action name="novo" class="motivoDepositoEditarAction" method="novo">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+        
+        <action name="*" class="motivoDepositoEditarAction" method="{1}">
+        </action>
+        
+	</package>
+	
+	<package name="cadastroDepartamentoConsultar" namespace="/cadastro/departamento/consultar" extends="depi-default">
+	
+		<default-class-ref class="departamentoConsultarAction"/>
+		
+
+		<action name="index" method="iniciarFormulario">
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
+			</result>
+        </action>
+
+		<action name="listar" method="execute">
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
+			</result>
+        </action>
+        
+		<action name="*" method="{1}">
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">listar</param>
+			</result>
+			<result name="incluirAcao" type="redirectAction">
+			    <param name="actionName">novo</param>
+			    <param name="namespace">/cadastro/departamento/editar</param>
+			</result>
+			<result name="alterarAcao" type="redirectAction">
+			    <param name="actionName">alterar</param>
+			    <param name="namespace">/cadastro/departamento/editar</param>
+			</result>
+        </action>
+
+	</package>
+	
+	<package name="cadastroDepartamentoEditar" namespace="/cadastro/departamento/editar" extends="depi-default">
+
+		<global-results>
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoForm.jsp</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/departamento/consultar</param>
+			</result>
+		</global-results>
+
+		<action name="novo" class="motivoDepositoEditarAction" method="novo">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+        
+        <action name="*" class="departamentoEditarAction" method="{1}">
         </action>
         
 	</package>

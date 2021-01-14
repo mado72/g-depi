@@ -3,14 +3,14 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoFiltro.jsp">
+<s:include value="/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoFiltro.jsp">
 	<s:param name="scriptOff" value="true"/>
 </s:include>
 
 <s:if test="colecaoDados">
 <s:form action="acao.do" id="AcaoForm">
 
-<table id="tabela_interna" class="MotivoDeposito">
+<table id="tabela_interna" class="Departamento">
 	<thead>
 		<tr>
 		<th class="selecao">
@@ -18,24 +18,32 @@
 			<br/>
 			<input type="checkbox" class="optionbutton checkTodos"/>
 		</th>
-		<th class="descricao">
-			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">
-				<s:param name="campo" value="descricao"/>
+		<th class="sigla">
+			<s:url action="ordenar" namespace="/consulta/departamento" var="linkSort">
+				<s:param name="campo" value="sigla"/>
 			</s:url>
 			<s:a href="%{linkSort}">
-				<s:text name="label.grid.motivodeposito.descricaoMotivoDeposito"/>
+				<s:text name="label.grid.departamento.siglaDepartamento"/>
+			</s:a>
+		</th>
+		<th class="nome">
+			<s:url action="ordenar" namespace="/consulta/departamento" var="linkSort">
+				<s:param name="campo" value="nome"/>
+			</s:url>
+			<s:a href="%{linkSort}">
+				<s:text name="label.grid.departamento.nomeDepartamento"/>
 			</s:a>
 		</th>
 		<th class="responsavel">
-			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">
+			<s:url action="ordenar" namespace="/consulta/departamento" var="linkSort">
 				<s:param name="campo" value="responsavel"/>
 			</s:url>
 			<s:a href="%{linkSort}">
-				<s:text name="label.grid.motivodeposito.responsavelAtualizacao"/>
+				<s:text name="label.grid.departamento.responsavelAtualizacao"/>
 			</s:a>
 		</th>
 		<th class="atualizacao">
-			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">
+			<s:url action="ordenar" namespace="/consulta/departamento" var="linkSort">
 				<s:param name="campo" value="atualizacao"/>
 			</s:url>
 			<s:a href="%{linkSort}">
@@ -48,18 +56,24 @@
  	<s:iterator value="colecaoDados" var="item" status="status">
 		<tr>
 		<td class="selecao">
-			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoMotivoDeposito}"/>"/>
+			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoDepartamento}"/>"/>
 		</td>
-		<td class="descricao">
-			<s:url action="detalhar" namespace="/cadastro/motivoDeposito/editar" var="linkExibir">
-				<s:param name="codigo">${item.codigoMotivoDeposito}</s:param>
+		<td class="sigla">
+			<s:url action="detalhar" namespace="/cadastro/departamento/editar" var="linkExibir">
+				<s:param name="codigo">${item.codigoDepartamento}</s:param>
 			</s:url>
 			<s:a href="%{linkExibir}">
-				${item.descricaoBasica}
+				${item.siglaDepartamento}
 			</s:a>
 		</td>
+		<td class="nome">${item.nomeDepartamento}</td>
 		<td class="responsavel">${item.codigoResponsavelUltimaAtualizacao}</td>
-		<td class="atualizacao"><fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/></td>
+		<td class="atualizacao">
+			<%--
+				FIXME Adicionar campo atualização em DepartamentoVO 
+				<fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/> 
+			--%>
+		</td>
 		</tr>
 	</s:iterator>
  	</tbody>

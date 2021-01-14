@@ -6,7 +6,7 @@
 		<a href="<s:url value="/index.do"/>" class="menu_horizontal">Cadastros</a>
 		<div class="dropdown" id="s1">
 			<a href="<s:url value="/cadastro/motivoDeposito/consultar/index.do?acao=firstOpening"/>">Motivos de Depósito</a>
-			<a href="<s:url value="/cadastro/departamento/index.do?acao=firstOpening"/>">Departamento</a>
+			<a href="<s:url value="/cadastro/departamento/consultar/index.do?acao=firstOpening"/>">Departamento</a>
 			<a href="<s:url value="/cadastro/ConsultarDepartamentoCompanhia.do?acao=firstOpening"/>">Associação Departamentos x Cia</a>
 			<a href="<s:url value="/cadastro/ConsultarGrupoAcesso.do?acao=firstOpening"/>">Grupo de Acesso</a>
 			<a href="<s:url value="/cadastro/ConsultarParametroDeposito.do?acao=firstOpening"/>">Parâmetros de Depósito</a>

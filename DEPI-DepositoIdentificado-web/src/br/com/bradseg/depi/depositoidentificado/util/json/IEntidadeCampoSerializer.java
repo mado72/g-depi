@@ -2,7 +2,7 @@ package br.com.bradseg.depi.depositoidentificado.util.json;
 
 import java.io.IOException;
 
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoCampo;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -10,11 +10,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-public class MotivoDepositoCampoSerializer extends
-		JsonSerializer<MotivoDepositoCampo> {
+public class IEntidadeCampoSerializer extends
+		JsonSerializer<IEntidadeCampo> {
 
 	@Override
-	public void serialize(MotivoDepositoCampo campo, JsonGenerator generator,
+	public void serialize(IEntidadeCampo campo, JsonGenerator generator,
 			SerializerProvider provider) throws IOException,
 			JsonProcessingException {
 		TipoCampo tipoCampo = campo.getTipoCampo();

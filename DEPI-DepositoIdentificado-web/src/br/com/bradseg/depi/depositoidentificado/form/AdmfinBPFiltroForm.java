@@ -33,13 +33,6 @@ public abstract class AdmfinBPFiltroForm extends BaseForm {
 		this.campo = campo;
 	}
 
-    /**
-     * Mostrar o contexto que está sendo utilizado pelo filtro. O contexto armazena e recupera filtros da sessão. Isso foi criado
-     * assim para que filtros pudessem manter seu estado. De acordo com o form (modulo utilizado).
-     * @return String - Contexto do filtro.
-     */
-    public abstract String getContextoFiltro();
-
     public List<String> getOperacao() {
 		return operacao;
 	}

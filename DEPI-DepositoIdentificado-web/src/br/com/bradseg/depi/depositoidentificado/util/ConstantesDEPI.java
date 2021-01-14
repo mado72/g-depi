@@ -56,17 +56,17 @@ public final class ConstantesDEPI {
     public static final String TABELA_GRUPO_ID = "CGRP_DEPTO_DEP";
 
     /**
-     * Alocação Usuário.
+     * Alocaï¿½ï¿½o Usuï¿½rio.
      */
     public static final String TABELA_ALOCACAO_USUARIO = "ALOC_USUAR_GRP_DEP";
     public static final String TABELA_ALOCACAO_USUARIO_ID_USUARIO = "CUSUAR_DEP_IDTFD";
 
     /**
-     * Conta Corrente Motivo Depósito.
+     * Conta Corrente Motivo Depï¿½sito.
      */
     public static final String TABELA_CONTA_CORRENTE_MOTIVO_DEPOSITO = "CTA_CORR_MOTVO_DEP";
     /**
-     * Usuário - Funcionário.
+     * Usuï¿½rio - Funcionï¿½rio.
      */
     public static final String TABELA_USUARIO = "USUAR_DEP_IDTFD";
 
@@ -133,10 +133,9 @@ public final class ConstantesDEPI {
     public static final String SIM = "S";
     public static final String NAO = "N";
     
-//  public static final String PATHCONFIG = "ApplicationResources_pt_BR.properties";
-  public static final String PATHCONFIG = "/br/com/bradseg/depi/dp06/properties/ApplicationResources_pt_BR";    
+  public static final String PATHCONFIG = "/br/com/bradseg/depi/depositoidentificado/properties/ApplicationResources_pt_BR";
 
-  // ConstantesDEPI gerais da aplicação.
+  // ConstantesDEPI gerais da aplicaï¿½ï¿½o.
   public static final String CODIGO_SIM = "S";
   public static final String CODIGO_NAO = "N";
   public static final String VAZIO = "";
@@ -163,7 +162,7 @@ public final class ConstantesDEPI {
   public static final String URL_WEBSERVICE_CBBS_PAGAMENTO = "http://ws-mb.bradseg.com.br:7804/CBBS-Pagamento";
   public static final String AMBIENTE_SAP = "EC3";
 
-  // Relatório
+  // Relatï¿½rio
   public static final String REPORT_LOCALE = "REPORT_LOCALE";
   public static final String LANG_PT = "pt";
   public static final String PAIS_BR = "BR";
@@ -192,7 +191,7 @@ public final class ConstantesDEPI {
   public static final String ERRO_PARAMETRODEPOSITO_REGISTROCOMDEPENDENCIA = "msg.erro.parametrodeposito.registrocomdependencia";
   public static final String ERRO_GRUPOACESSO_REGISTROCOMDEPENDENCIA = "msg.erro.grupoacesso.registrocomdependencia";
 
-  // Erros de Depósito
+  // Erros de Depï¿½sito
   public static final String ERRO_DEPOSITO_REGISTROCOMDEPENDENCIA = "msg.erro.deposito.registrocomdependencia";
   public static final String ERRO_DEPOSITO_TRASNFERENCIA = "msg.erro.deposito.transferencia";
 

@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
-import br.com.bradseg.depi.depositoidentificado.form.cadastro.MotivoDepositoEditarForm;
+import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
+import br.com.bradseg.depi.depositoidentificado.form.cadastro.DepartamentoEditarForm;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
-import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 import com.opensymphony.xwork2.Action;
 
@@ -21,23 +21,21 @@ import com.opensymphony.xwork2.Action;
  */
 @Controller
 @Scope("request")
-public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEditarForm> {
+public class DepartamentoEditarAction extends BaseModelAction<DepartamentoEditarForm> {
 	
-    protected static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoEditarAction.class);
-    
-    private static final String ACTION_NAME = MotivoDepositoEditarAction.class.getSimpleName() + "_FORM";
+    protected static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoEditarAction.class);
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	private MotivoDepositoEditarForm _model;
+	private DepartamentoEditarForm _model;
 	
 	@Autowired
-	private MotivoDepositoFacade facade;
+	private DepartamentoFacade facade;
 	
 	@Override
-	public MotivoDepositoEditarForm getModel() {
-		if (sessionData.containsKey(ACTION_NAME)) {
-			_model = (MotivoDepositoEditarForm) sessionData.get(ACTION_NAME);
+	public DepartamentoEditarForm getModel() {
+		if (sessionData.containsKey(DepartamentoEditarForm.NOME_FORM)) {
+			_model = (DepartamentoEditarForm) sessionData.get(DepartamentoEditarForm.NOME_FORM);
 		}
 		else {
 			this.novaInstanciaModel();
@@ -47,8 +45,8 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 	
 	@Override
 	protected void novaInstanciaModel() {
-		_model = new MotivoDepositoEditarForm();
-		sessionData.put(ACTION_NAME, _model);
+		_model = new DepartamentoEditarForm();
+		sessionData.put(DepartamentoEditarForm.NOME_FORM, _model);
 	}
 	
 	/**
@@ -58,8 +56,9 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 	 * @return {@link Action#INPUT}
 	 */
 	public String novo() {
-		clearData();
+		sessionData.remove(DepartamentoEditarForm.NOME_FORM);
 		
+		novaInstanciaModel();
 		getModel().setDetalhar(false);
 		
 		return INPUT;
@@ -86,7 +85,7 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 	 * @return {@link Action#SUCCESS} quando for processado corretamente.
 	 */
 	public String enviar() {
-		MotivoDepositoEditarForm model = getModel();
+		DepartamentoEditarForm model = getModel();
 		
 		if ("salvar".equals(model.getAcao())) {
 			persistirDados(model);
@@ -95,20 +94,20 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		return SUCCESS;
 	}
 
-	private void persistirDados(MotivoDepositoEditarForm model) {
+	private void persistirDados(DepartamentoEditarForm model) {
 		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
 
-		MotivoDepositoVO instancia;
+		DepartamentoVO instancia;
 		
 		if (novo) {
-			instancia = new MotivoDepositoVO();
+			instancia = new DepartamentoVO();
 		}
 		else {
 			instancia = obterPeloCodigo();
 		}
 
-		instancia.setDescricaoBasica(model.getDescricaoBasica());
-		instancia.setDescricaoDetalhada(model.getDescricaoDetalhada());
+		instancia.setSiglaDepartamento(model.getSiglaDepartamento());
+		instancia.setNomeDepartamento(model.getNomeDepartamento());
 
 		try {
 			if (novo) {
@@ -127,23 +126,23 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 	}
 	
 	private void preencherFormulario() {
-		MotivoDepositoVO instancia = obterPeloCodigo();
+		DepartamentoVO instancia = obterPeloCodigo();
 		
-		MotivoDepositoEditarForm model = getModel();
+		DepartamentoEditarForm model = getModel();
 		
 		model.setDetalhar(false);
-		model.setCodigo(String.valueOf(instancia.getCodigoMotivoDeposito()));
-		model.setDescricaoBasica(instancia.getDescricaoBasica());
-		model.setDescricaoDetalhada(instancia.getDescricaoDetalhada());
+		model.setCodigo(String.valueOf(instancia.getCodigoDepartamento()));
+		model.setSiglaDepartamento(instancia.getSiglaDepartamento());
+		model.setNomeDepartamento(instancia.getNomeDepartamento());
 	}
 
-	private MotivoDepositoVO obterPeloCodigo() {
+	private DepartamentoVO obterPeloCodigo() {
 		int codigo = Integer.parseInt(this.getModel().getCodigo());
 
-		MotivoDepositoVO vo = new MotivoDepositoVO();
-		vo.setCodigoMotivoDeposito(codigo);
+		DepartamentoVO vo = new DepartamentoVO();
+		vo.setCodigoDepartamento(codigo);
 		
-		MotivoDepositoVO instancia = facade.obterPorChave(vo);
+		DepartamentoVO instancia = facade.obterPorChave(vo);
 		return instancia;
 	}
 	

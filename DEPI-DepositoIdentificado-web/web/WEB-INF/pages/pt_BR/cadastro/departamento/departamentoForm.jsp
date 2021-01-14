@@ -21,7 +21,7 @@
 
 <s:form action="enviar">
 	<s:hidden property="acaoAnterior" />
-	<s:hidden property="codigoMotivoDeposito" />
+	<s:hidden property="codigoDepartamento" />
 	<s:hidden property="postBack" value="S" />
 
 
@@ -31,20 +31,20 @@
 	</caption>
 	<thead>
 		<tr>
-			<th colspan="4"><s:text name="label.cadastro.motivodeposito.tabela" /></th>
+			<th colspan="4"><s:text name="label.cadastro.departamento.tabela" /></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="td_label" ><s:text name="label.cadastro.motivodeposito.descricaoBasica" /><span class="obrigatorio">*</span></td>
+			<td class="td_label" ><s:text name="label.grid.departamento.siglaDepartamento" /><span class="obrigatorio">*</span></td>
 			<td colspan="3" >
-				<s:textfield tabindex="1" key="descricaoBasica" styleClass="input" style="text-transform: uppercase;"  maxlength="20" size="26" disabled="detalhar"/>
+				<s:textfield tabindex="1" key="siglaDepartamento" styleClass="input" style="text-transform: uppercase;"  maxlength="20" size="26" disabled="detalhar"/>
 			</td>
 		</tr>
 		<tr>
-			<td class="td_label"><s:text name="label.cadastro.motivodeposito.descricaoDetalhada" /><span class="obrigatorio">*</span></td>
+			<td class="td_label"><s:text name="label.grid.departamento.nomeDepartamento" /><span class="obrigatorio">*</span></td>
 			<td colspan="3">
-				<s:textarea key="model.descricaoDetalhada" rows="5" tabindex="2" cols="70" style="text-transform: uppercase;" readonly="detalhar"/>
+				<s:textarea key="model.nomeDepartamento" rows="5" tabindex="2" cols="70" style="text-transform: uppercase;" readonly="detalhar"/>
 			</td>
 		</tr>
 	</tbody>
@@ -55,7 +55,7 @@
 				<td align="center" valign="middle" colspan="3">
 					<c:choose>
 						<c:when test="${detalhar}">
-							<button class="btn-img" type="submit" id="BtnVoltar" name="acao" value="voltar">
+							<button class="btn-img" type="submit" id="BtnVoltar">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_voltar.gif"/>
 							</button>
 						</c:when>

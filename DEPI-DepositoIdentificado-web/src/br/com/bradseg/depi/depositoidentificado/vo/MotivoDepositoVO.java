@@ -192,7 +192,7 @@ public class MotivoDepositoVO implements Serializable {
      * Retorna o codigoMotivoDeposito.
      * @return O atributo codigoMotivoDeposito
      */
-    public int getCodigoMotivoDeposito() {
+    public Integer getCodigoMotivoDeposito() {
         return codigoMotivoDeposito;
     }
 
@@ -200,7 +200,7 @@ public class MotivoDepositoVO implements Serializable {
      * Especifica o valor do atributo codigoEventoContabil.
      * @param codigoEventoContabil - int do codigoEventoContabil a ser configurado.
      */
-    public void setCodigoEventoContabil(int codigoEventoContabil) {
+    public void setCodigoEventoContabil(Integer codigoEventoContabil) {
         this.codigoEventoContabil = codigoEventoContabil;
     }
 
