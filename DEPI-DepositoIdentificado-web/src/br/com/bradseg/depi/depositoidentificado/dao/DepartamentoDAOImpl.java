@@ -190,10 +190,9 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 			
         	MapSqlParameterSource params = new MapSqlParameterSource();
 			params.addValue("whr1", vo.getCodigoDepartamento());
-
 			
-			DepartamentoVO departamentoVO = (DepartamentoVO) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
-			return departamentoVO;
+			List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			return departamentoVO.get(0);
 			 
         } finally {
         	LOGGER.info("obterPorChave(DepartamentoVO vo) "); 
@@ -208,23 +207,19 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
     @Override
     public List<DepartamentoVO> obterPorFiltro(FiltroUtil filtro) {
 
-    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE);
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERTODOS);
 
         try {
 			
-        	MapSqlParameterSource params = new MapSqlParameterSource();
+        	MapSqlParameterSource params = null;
         	
-
 	        /**
 	         * Parametros.
 	         */
-			if (!filtro.getDescricaoBasica().isEmpty()) {
-				query.append("WHERE IDEPTO_DEP_IDTFD = :whr1");
-		    	params.addValue("whr1", filtro.getNome());			
-			} else if (!filtro.getDescricaoDetalhada().isEmpty()) {
-				query.append("WHERE CSGL_DEPTO_DEP = :whr1");
-		    	params.addValue("whr1", filtro.getSigla());			
-			}
+			if (!filtro.getCriterios().isEmpty()) {
+				query.append(filtro.getClausaWhereFiltro());
+				params = filtro.getMapParamFiltro();
+			} 
 			
 			List<DepartamentoVO>  departamentoVO = (List<DepartamentoVO> ) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
 			return departamentoVO;
