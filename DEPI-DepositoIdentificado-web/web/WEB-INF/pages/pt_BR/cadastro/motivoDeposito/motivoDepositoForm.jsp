@@ -53,7 +53,7 @@
 				<td align="center" valign="middle" colspan="3">
 					<c:choose>
 						<c:when test="${detalhar}">
-							<button class="btn-img" type="submit" id="BtnVoltar" name="acao" value="voltar">
+							<button class="btn-img" id="BtnVoltar" type="submit" name="acao" value="voltar">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_voltar.gif"/>
 							</button>
 						</c:when>
@@ -61,7 +61,7 @@
 							<button class="btn-img" id="BtnSalvar" type="submit" name="acao" value="salvar">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_salvar.gif"/>
 							</button>
-							<button class="btn-img" id="BtnCancelar" name="acao" value="cancelar">
+							<button class="btn-img" id="BtnCancelar" type="submit" name="acao" value="cancelar">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_cancelar.gif"/>
 							</button>
 						</c:otherwise>

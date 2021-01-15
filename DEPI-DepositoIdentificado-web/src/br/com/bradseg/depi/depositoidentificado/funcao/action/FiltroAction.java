@@ -43,7 +43,6 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	}
 
 	protected CriterioConsultaVO montarCriterioConsulta(
-			MotivoDepositoCampo campo, TipoOperacao operacao, String valor,
 			IEntidadeCampo campo, TipoOperacao operacao, String valor,
 			String param) {
 		String clausula = operacao.formatarClausula(campo.getNome(), param);
