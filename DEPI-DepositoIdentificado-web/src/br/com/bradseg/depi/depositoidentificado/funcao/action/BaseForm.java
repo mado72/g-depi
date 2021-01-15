@@ -1,13 +1,12 @@
-package br.com.bradseg.depi.depositoidentificado.form;
+package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
 import java.io.Serializable;
 
-import com.opensymphony.xwork2.ActionSupport;
-
 /**
  * Abstração dos forms da aplicação.
+ * @refactoredBy Marcelo Damasceno
  */
-public class BaseForm extends ActionSupport implements Serializable {
+public abstract class BaseForm implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

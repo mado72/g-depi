@@ -1,4 +1,4 @@
-package br.com.bradseg.depi.depositoidentificado.funcao.action.cadastro;
+package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.MotivoDepositoEditarForm;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
-import br.com.bradseg.depi.depositoidentificado.form.cadastro.MotivoDepositoEditarForm;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 

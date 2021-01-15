@@ -1,6 +1,6 @@
-package br.com.bradseg.depi.depositoidentificado.form.cadastro;
+package br.com.bradseg.depi.depositoidentificado.cadastro.form;
 
-import br.com.bradseg.depi.depositoidentificado.form.BaseForm;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseForm;
 
 /**
  * Representa o modelo do formulário da consulta para Departamentos 

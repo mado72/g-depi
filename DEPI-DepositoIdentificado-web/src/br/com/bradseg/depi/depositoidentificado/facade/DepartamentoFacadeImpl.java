@@ -166,6 +166,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
      * @return VO de Departamento
      * @throws IntegrationException Exceção de aplicação
      */
+    @Override    
     public List<DepartamentoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
         return departamentoDAO.obterPorFiltro(filtro);
     }

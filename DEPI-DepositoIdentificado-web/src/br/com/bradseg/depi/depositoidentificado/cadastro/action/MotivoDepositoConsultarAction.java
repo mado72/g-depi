@@ -1,4 +1,4 @@
-package br.com.bradseg.depi.depositoidentificado.funcao.action.cadastro;
+package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
-import br.com.bradseg.depi.depositoidentificado.form.cadastro.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
-import br.com.bradseg.depi.depositoidentificado.util.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
+import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 import com.opensymphony.xwork2.Action;

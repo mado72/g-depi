@@ -1,4 +1,4 @@
-package br.com.bradseg.depi.depositoidentificado.util;
+package br.com.bradseg.depi.depositoidentificado.vo;
 
 /**
  * Classe utilitária para armazenar cláusulas SQL para filtrar consultas.

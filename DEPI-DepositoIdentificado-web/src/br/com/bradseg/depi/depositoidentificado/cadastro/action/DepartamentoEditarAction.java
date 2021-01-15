@@ -1,4 +1,4 @@
-package br.com.bradseg.depi.depositoidentificado.funcao.action.cadastro;
+package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditarForm;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
-import br.com.bradseg.depi.depositoidentificado.form.cadastro.DepartamentoEditarForm;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 

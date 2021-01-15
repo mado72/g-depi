@@ -206,18 +206,21 @@ var fnReady = function ($) {
 			btnAlterar = jqForm.find("#BtnAlterar");
 		
 		btnExcluir.click(function(ev) {
-			var marcados = $.obterMarcados();
+			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length == 0) {
 				alert(MENSAGEM['msg.selecao.exclusao']);
 				return;
 			}
-			if (confirm(MESAGEM['msg.confirmacao.exclusao'])) {
+			if (confirm(MENSAGEM['msg.confirmacao.exclusao'])) {
+				var action = jqForm.attr("action");
+				action = action.replace(/\/(\w+).do/, "excluir");
+				jqForm.attr("action", action);
 				jqForm.submit();
 			}
 		})
 		
 		btnAlterar.click(function(ev) {
-			var marcados = $.obterMarcados();
+			var marcados = $.obterMarcados(jqForm);
 			switch (marcados.length) {
 				case 1:
 					var codigo = $(marcados[0]).val();
@@ -239,7 +242,7 @@ var fnReady = function ($) {
 		});
 	};
 
-	$.obterMarcados = function() {
+	$.obterMarcados = function(jqForm) {
 		var marcados = jqForm.find(".checkTodos")
 			.parents("table:first")
 			.find("input:checkbox:checked");

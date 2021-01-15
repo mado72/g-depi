@@ -8,7 +8,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Classe Anotada de Mapeamento com a tabela DEP_IDTFD - Identificação de Depósito.
+ * Classe Anotada de Mapeamento com a tabela DEP_IDTFD - IdentificaÃ§Ã£o de DepÃ³sito.
  * @author Globality
  */
 @XmlRootElement(name="DepositoVO")
@@ -17,27 +17,27 @@ public class DepositoVO implements Serializable {
     private static final long serialVersionUID = -5700923805279204904L;
 
     /**
-     * Código seqüencial da identificação do depósito.
+     * CÃ³digo seqÃ¼encial da identificaÃ§Ã£o do depÃ³sito.
      */
     private long codigoDepositoIdentificado;
 
     /**
-     * Dígito Verificador gerado a partir do Código seqüencial da identificação do depósito.
+     * DÃ­gito Verificador gerado a partir do CÃ³digo seqÃ¼encial da identificaÃ§Ã£o do depÃ³sito.
      */
     private int codigoDigitodeposito;
 
     /**
-     * Código (FK) da associação Conta_corrente_motivo_deposito - Companhia Seguradora.
+     * CÃ³digo (FK) da associaÃ§Ã£o Conta_corrente_motivo_deposito - Companhia Seguradora.
      */
     private CompanhiaSeguradoraVO cia = new CompanhiaSeguradoraVO();
 
     /**
-     * Código (FK) da associação Conta_corrente_motivo_deposito - Departamento.
+     * CÃ³digo (FK) da associaÃ§Ã£o Conta_corrente_motivo_deposito - Departamento.
      */
     private DepartamentoVO departamento = new DepartamentoVO();
 
     /**
-     * Código (FK) da associação Conta_corrente_motivo_deposito - Motivo Deposito.
+     * CÃ³digo (FK) da associaÃ§Ã£o Conta_corrente_motivo_deposito - Motivo Deposito.
      */
     private MotivoDepositoVO motivo = new MotivoDepositoVO();
 
@@ -80,12 +80,12 @@ public class DepositoVO implements Serializable {
     private int apolice;
 
     /**
-     * Código (FK) da tabela Pessoa-corporativo
+     * CÃ³digo (FK) da tabela Pessoa-corporativo
      */
     private long pessoaDepositante;
 
     /**
-     * Dossiê.
+     * DossiÃª.
      */
     private String dossie;
 
@@ -110,7 +110,7 @@ public class DepositoVO implements Serializable {
     private long parcela;
 
     /**
-     * Informações de Depósito (Histórico).
+     * InformaÃ§Ãµes de DepÃ³sito (HistÃ³rico).
      */
     private int tipoGrupoRecebimento = 2;
 
@@ -120,24 +120,24 @@ public class DepositoVO implements Serializable {
     private String observacaoDeposito;
 
     /**
-     * Indicativo de Depósito: ‘Prorrogado’.
+     * Indicativo de DepÃ³sito: Â‘ProrrogadoÂ’.
      */
     private String indicadorDepositoProrrogado;
 
     /**
-     * Vencimento Depósito.
+     * Vencimento DepÃ³sito.
      */
     private Date dtVencimentoDeposito;
 
     /**
-     * Indicativo de Deposito cancelado’.
+     * Indicativo de Deposito canceladoÂ’.
      */
     private String indicadorDepositoCancelado;
 
     private Date dataProrrogacao;
 
     /**
-     * Valor do Depósito Registrado.
+     * Valor do DepÃ³sito Registrado.
      */
     private BigDecimal vlrDepositoRegistrado;
 
@@ -171,7 +171,7 @@ public class DepositoVO implements Serializable {
     }
 
     /**
-     * Método que retornará o código autorizador formatado para ser exibido nas telas e relatórios.
+     * MÃ©todo que retornarÃ¡ o cÃ³digo autorizador formatado para ser exibido nas telas e relatÃ³rios.
      * @return String.
      */
     public String getCodigoDepositoFormatado() {
@@ -184,7 +184,7 @@ public class DepositoVO implements Serializable {
     }
 
     /**
-     * Método utilitário que fará o cálculo do digito verificador do código de autorização de um depósito.
+     * MÃ©todo utilitÃ¡rio que farÃ¡ o cÃ¡lculo do digito verificador do cÃ³digo de autorizaÃ§Ã£o de um depÃ³sito.
      * @return Integer.
      */
     public long getDv() {
@@ -408,7 +408,7 @@ public class DepositoVO implements Serializable {
      * @return o valor do atributo dtVencimentoDeposito
      */
     public Date getDtVencimentoDeposito() {
-        return (Date) dtCancelamentoDepositoIdentificado.clone();
+        return (Date) dtVencimentoDeposito.clone();
     }
 
     /**
@@ -708,23 +708,23 @@ public class DepositoVO implements Serializable {
     }
 
     /**
-     * Método que retorna o código da situação do depósito.
-     * @return Integer - o código da situação do depósito.
+     * MÃ©todo que retorna o cÃ³digo da situaÃ§Ã£o do depÃ³sito.
+     * @return Integer - o cÃ³digo da situaÃ§Ã£o do depÃ³sito.
      */
 	public Integer getCodigoSituacaoDeposito() {
 		return codigoSituacaoDeposito;
 	}
 	
 	/**
-	 * Método que define o código da situação do depósito.
-	 * @param codigoSituacaoDeposito - o código da situação do depósito.
+	 * MÃ©todo que define o cÃ³digo da situaÃ§Ã£o do depÃ³sito.
+	 * @param codigoSituacaoDeposito - o cÃ³digo da situaÃ§Ã£o do depÃ³sito.
 	 */
 	public void setCodigoSituacaoDeposito(Integer codigoSituacaoDeposito) {
 		this.codigoSituacaoDeposito = codigoSituacaoDeposito;
 	}
 	
 	/**
-	 * Método que retorna a lista de parcelas.
+	 * MÃ©todo que retorna a lista de parcelas.
 	 * @return List<ParcelaCobrancaVO> - a lista de parcelas.
 	 */
 	public List<ParcelaCobrancaVO> getListaParcelas() {
@@ -732,7 +732,7 @@ public class DepositoVO implements Serializable {
 	}
 	
 	/**
-	 * Método que define a lista de parcelas.
+	 * MÃ©todo que define a lista de parcelas.
 	 * @param listaParcelas - a lista de parcelas.
 	 */
 	public void setListaParcelas(List<ParcelaCobrancaVO> listaParcelas) {

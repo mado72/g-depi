@@ -22,7 +22,7 @@
 	<script type="text/javascript" src="<s:url value="/includes/js/calendar-br.js"/>"></script>
 	<script type="text/javascript" src="<s:url value="/includes/js/calendar-setup.js"/>"></script>
 	<script type="text/javascript" src="<s:url value="/includes/js/tabs.js"/>"></script>
-	<script type="text/javascript" src="<s:url value="/includes/dinamico/mensagens.jsp"/>"></script>
+	<script type="text/javascript" src="<s:url value="/includes/js/mensagens.jsp"/>"></script>
 	<script type="text/javascript" src="${www3}padroes_web/intranet/js/bradesco_menu.js"></script>
 
  <!--
@@ -86,7 +86,7 @@
 	</script>
 </s:if>
 <c:if test="${param.scriptOff != 'true'}">
-	<script type="text/javascript" src="${estatico}/script/depi-cadastro.js" charset="utf-8"></script>
+	<script type="text/javascript" src="${estatico}/js/depi-cadastro.js" charset="utf-8"></script>
 	<c:out value="${scriptPage}" default="" escapeXml="false" />
 </c:if>
 </body>

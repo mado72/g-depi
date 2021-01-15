@@ -16,7 +16,6 @@
 		<th class="selecao">
 			<s:text name="label.todos"/>
 			<br/>
-			<input type="checkbox" class="optionbutton checkTodos"/>
 			<s:checkbox name="codigo" class="optionbutton checkTodos" />
 		</th>
 		<th class="descricao">

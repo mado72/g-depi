@@ -3,15 +3,16 @@ package br.com.bradseg.depi.depositoidentificado.funcao.action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.depi.depositoidentificado.form.cadastro.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
-import br.com.bradseg.depi.depositoidentificado.util.CriterioConsultaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
 import com.opensymphony.xwork2.Action;
 
 @Component
+@Controller
 public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends BaseModelAction<T> {
 
 	private static final long serialVersionUID = 935947361413242271L;

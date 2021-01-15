@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
-import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
 /**
  * A(O)FiltroUtil.

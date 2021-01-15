@@ -1,4 +1,4 @@
-package br.com.bradseg.depi.depositoidentificado.form.cadastro;
+package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
 import java.io.IOException;
 import java.util.ArrayList;

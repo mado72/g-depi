@@ -22,7 +22,7 @@ import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.message.Message;
 
 /**
- * Classe Utilitária
+ * Classe Utilitéria
  * @author Fabrica de Salvador
   */
 public final class BaseUtil {
@@ -65,7 +65,7 @@ public final class BaseUtil {
     }
 
     /**
-     * É igual à S
+     * é igual é S
      * @param str - String
      * @return booelan
      */
@@ -80,7 +80,7 @@ public final class BaseUtil {
      */
     public static String getCpfFormatado(String pValue) {
         /*
-         * Tira qualquer formatação anterior.
+         * Tira qualquer formataééo anterior.
          */
         pValue = retiraMascaraCNPJ(pValue);
 
@@ -127,7 +127,7 @@ public final class BaseUtil {
     public static String getCnpjFormatado(String pValue) {
 
         /*
-         * Tira qualquer formatação anterior.
+         * Tira qualquer formataééo anterior.
          */
         pValue = retiraMascaraCNPJ(pValue);
 
@@ -179,17 +179,17 @@ public final class BaseUtil {
 
     /**
      * Método Singleton de BaseUtil
-     * @return Retorna instância Singleton de BaseUtil
+     * @return Retorna insténcia Singleton de BaseUtil
      */
     public static BaseUtil getInstance() {
         return new BaseUtil();
     }
 
     /**
-     * Método responsável por dar um trim nas variaveis strings .
-     * @return BaseVO - Uma cópia do objeto passado como parâmetro com os campos strings com trim.
-     * @param obj - Classe em que será realizado o trim.
-     * @throws ReflectionException - Exceção lançada no ReflectionUtil.
+     * Método responsével por dar um trim nas variaveis strings .
+     * @return BaseVO - Uma cépia do objeto passado como parémetro com os campos strings com trim.
+     * @param obj - Classe em que seré realizado o trim.
+     * @throws ReflectionException - Exceééo lanéada no ReflectionUtil.
 
     public static Object trim(Object obj) {
 
@@ -208,7 +208,7 @@ public final class BaseUtil {
     }
      */
     /**
-     * Envelope para o if de lançamento de Exception.
+     * Envelope para o if de lanéamento de Exception.
      * @param b - boolean.
      * @param chave - String.
      * @param msg - String.
@@ -221,7 +221,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Validar Parâmetro.
+     * Validar Parémetro.
      * @param param - String.
      * @param valor - Object.
      * @param nomeParametro - String.
@@ -233,7 +233,7 @@ public final class BaseUtil {
     }
      */
     /**
-     * Validar Parâmetro.
+     * Validar Parémetro.
      * @param valor - Object.
      * @param nomeParametro - String.
      * @throws IntegrationException - IntegrationException.
@@ -244,13 +244,14 @@ public final class BaseUtil {
     }
      */
     /**
-     * Permite a abstração das verificações de preechimento de propriedades e estado válido para acesso à objetos. Quando uma
-     * propriedade for refatorada não haverá necessidade de alterar em várias partes as verificações incluidas neste método.
-     * @author Fábio Henrique fabio.almeida@cpmbraxis.com NZB - Null; Zero; String Zero Sequencies; Blank; Método utilitário para
+     * Permite a abstraééo das verificaéées de preechimento de propriedades e estado vélido para acesso é objetos. Quando uma
+     * propriedade for refatorada néo haveré necessidade de alterar em vérias partes as verificaéées incluidas neste método.
+     * @author Fébio Henrique fabio.almeida@cpmbraxis.com NZB - Null; Zero; String Zero Sequencies; Blank; Método utilitério para
      * @param valor - objeto a ser verificado.
      * @return um boolean com true (se o objeto é nulo ou vazio) ou false (se o objeto é diferente de nulo ou vazio)
      */
-    public static boolean isNZB(Object valor) {
+    @SuppressWarnings("rawtypes")
+	public static boolean isNZB(Object valor) {
 
         if (valor == null) {
             return true;
@@ -281,7 +282,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Método utilitário para verificar se um objeto é nulo ou vazio.
+     * Método utilitério para verificar se um objeto é nulo ou vazio.
      * @param valor - String
      * @return um boolean com true (se o objeto é nulo ou vazio) ou false (se o objeto é diferente de nulo ou vazio)
      */
@@ -297,12 +298,13 @@ public final class BaseUtil {
     }
 
     /**
-     * Método utilitário para verificar se um objeto maior que o esperado Retorna true se forma maior que o parametro
+     * Método utilitério para verificar se um objeto maior que o esperado Retorna true se forma maior que o parametro
      * @param valor - Object
      * @param size - long
      * @return boolean
      */
-    public static boolean isGreater(Object valor, long size) {
+    @SuppressWarnings("rawtypes")
+	public static boolean isGreater(Object valor, long size) {
         if (isNZB(valor)) {
             return false;
         } else {
@@ -323,12 +325,13 @@ public final class BaseUtil {
     }
 
     /**
-     * Método utilitário para verificar se um objeto menor que o esperado
+     * Método utilitério para verificar se um objeto menor que o esperado
      * @param valor - Object
      * @param size - long
      * @return boolean
      */
-    public static boolean isLess(Object valor, long size) {
+    @SuppressWarnings("rawtypes")
+	public static boolean isLess(Object valor, long size) {
         if (isNZB(valor)) {
             return false;
         } else {
@@ -349,7 +352,7 @@ public final class BaseUtil {
     }
 
     /**
-     * NZB - Null; Zero; Blank Método utilitário para verificar se um objeto é nulo ou vazio.
+     * NZB - Null; Zero; Blank Método utilitério para verificar se um objeto é nulo ou vazio.
      * @param valor - objeto a ser verificado.
      * @return um boolean com true (se o objeto é nulo ou vazio) ou false (se o objeto é diferente de nulo ou vazio)
      */
@@ -358,7 +361,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Metodo utilitário pra converter uma objeto String para um objeto tipo Date.
+     * Metodo utilitério pra converter uma objeto String para um objeto tipo Date.
      * @param valor - Valor a ser convertido.
      * @param pattern - O pattern da data.
      * @return Date - A data gerada.
@@ -377,12 +380,12 @@ public final class BaseUtil {
             return objData;
         } catch (ParseException e) {
         	LOGGER.error(e);
-            return objData; // Objeto objData será nulo.
+            return objData; // Objeto objData seré nulo.
         }
     }
 
     /**
-     * Metodo utilitário pra converter uma objeto String para um objeto tipo Date. Pattern Padrão
+     * Metodo utilitério pra converter uma objeto String para um objeto tipo Date. Pattern Padréo
      * @param valor - Valor a ser convertido.
      * @return Date - A data gerada.
 
@@ -391,7 +394,7 @@ public final class BaseUtil {
     }
      */
     /**
-     * Metodo utilitário pra converter uma objeto String para um objeto tipo Date.
+     * Metodo utilitério pra converter uma objeto String para um objeto tipo Date.
      * @param valor - Valor a ser convertido.
      * @param pattern - O pattern da data.
      * @return Date - A data gerada.
@@ -401,7 +404,7 @@ public final class BaseUtil {
     }
     */
     /**
-     * Metodo utilitário pra converter uma objeto String para um objeto tipo SQL Date.
+     * Metodo utilitério pra converter uma objeto String para um objeto tipo SQL Date.
      * @param valor - Valor a ser convertido.
      * @return Date - A data gerada.
      */
@@ -410,7 +413,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Metodo utilitário pra converter um objeto SQL Date em uma String com o formato informado.
+     * Metodo utilitério pra converter um objeto SQL Date em uma String com o formato informado.
      * @param data - Date a ser convertido.
      * @param pattern - O pattern da data.
      * @return String - A data formatada.
@@ -432,7 +435,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Método responsável por verificar se um objeto é nulo, caso sim retorna uma strig vazia.
+     * Método responsével por verificar se um objeto é nulo, caso sim retorna uma strig vazia.
      * @param obj - objeto a ser verificado.
      * @return Object - o proprio objeto se for diferente de nulo ou vazio se igual a nulo.
      */
@@ -454,7 +457,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Método responsável por verificar se um objeto é nulo, caso sim retorna uma strig vazia.
+     * Método responsével por verificar se um objeto é nulo, caso sim retorna uma strig vazia.
      * @param str - objeto a ser verificado.
      * @return Object - o proprio objeto se for diferente de nulo ou vazio se igual a nulo.
      */
@@ -467,7 +470,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Método responsável por verificar se um objeto é nulo, caso sim retorna uma strig vazia.
+     * Método responsével por verificar se um objeto é nulo, caso sim retorna uma strig vazia.
      * @param str - objeto a ser verificado.
      * @return Object - o proprio objeto se for diferente de nulo ou vazio se igual a nulo.
      */
@@ -481,7 +484,7 @@ public final class BaseUtil {
 
     /**
      * Método auxiliar que retira a mascara do CNPJ.
-     * @param str Cnpj com máscara que será desformatado
+     * @param str Cnpj com méscara que seré desformatado
      * @return String
      */
     public static String retiraMascaraCNPJ(final String str) {
@@ -514,7 +517,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Recebe uma string no formato hh:mm:ss e verifica se é uma hora válida
+     * Recebe uma string no formato hh:mm:ss e verifica se é uma hora vélida
      * @return boolean
      * @param hhmmss valor a ser preenchido
      */
@@ -545,7 +548,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Recebe uma string no formato dd/mm/yyyy e verifica se é uma data válida
+     * Recebe uma string no formato dd/mm/yyyy e verifica se é uma data vélida
      * @return boolean
      * @param ddmmyyyy a ser preenchido
      */
@@ -601,9 +604,9 @@ public final class BaseUtil {
     }
 
     /**
-     * Substitui TODAS as occorencias de uma String alvo por uma String de substituicao dentro da string principal eg: StringBuffer
-     * sb = new StringBuffer("10 20 30 10 50 60 10"); String alvo = "10"; String substituicao = "07";
-     * StringUtils.replace(sb,alvo,substituicao); // sb = "07 20 30 07 50 60 07"
+     * Substitui TODAS as ocorrências de uma String alvo por uma String de substituição dentro da string principal eg: StringBuffer
+     * sb = new StringBuffer("10 20 30 10 50 60 10"); String alvo = "10"; String substituição = "07";
+     * StringUtils.replace(sb,alvo,substituição); // sb = "07 20 30 07 50 60 07"
      * @param buffer java.lang.StringBuffer
      * @param find java.lang.String
      * @param replace java.lang.String
@@ -629,7 +632,7 @@ public final class BaseUtil {
 
     /**
      * Formata o valor do tipo double para valor decimal.
-     * @param valor parâmetro a ser tratado.
+     * @param valor parémetro a ser tratado.
      * @return String
      * @throws IntegrationException - IntegrationException.
     public static String fmtValor(Object valor) throws IntegrationException {
@@ -646,7 +649,7 @@ public final class BaseUtil {
     */
     /**
      * Formata a data do tipo date para uma String no formato DD/MM/YYYY.
-     * @param data parâmetro a ser tratado.
+     * @param data parémetro a ser tratado.
      * @return String
      * @throws IntegrationException - IntegrationException.
     public static String fmtData(Date data) throws IntegrationException {
@@ -667,7 +670,7 @@ public final class BaseUtil {
     */
     /**
      * Formata a data do tipo date para uma String no formato DD/MM/YYYY.
-     * @param data parâmetro a ser tratado.
+     * @param data parémetro a ser tratado.
      * @return String
      * @throws IntegrationException - IntegrationException.
 
@@ -689,8 +692,8 @@ public final class BaseUtil {
      */
     /**
      * Método que compara as datas verificando se a Data Inicial é maior do que a Data Final.
-     * @param dIni - parâmetro da data inicial.
-     * @param dFim - parâmetro da data final.
+     * @param dIni - parémetro da data inicial.
+     * @param dFim - parémetro da data final.
      * @return boolean - retorna um booleano.
      * @throws IntegrationException IntegrationException.
      */
@@ -701,7 +704,7 @@ public final class BaseUtil {
 
     /**
      * Método que compara as datas verificando se a Data Inicial é maior do que a Data Final.
-     * @param data - parâmetro da data inicial.
+     * @param data - parémetro da data inicial.
      * @return boolean - retorna um booleano.
      * @throws IntegrationException IntegrationException.
      */
@@ -711,7 +714,7 @@ public final class BaseUtil {
 
     /**
      * Método que compara as datas verificando se a Data Inicial é maior do que a Data Final.
-     * @param data - parâmetro da data inicial.
+     * @param data - parémetro da data inicial.
      * @return boolean - retorna um booleano.
      * @throws IntegrationException IntegrationException.
     public static boolean verificarSeDataEIgualADataCorrente(Date data) throws IntegrationException {
@@ -720,8 +723,8 @@ public final class BaseUtil {
     */
     /**
      * Método que compara as datas verificando se a Data Inicial é maior do que a Data Final.
-     * @param dIni - parâmetro da data inicial.
-     * @param dFim - parâmetro da data final.
+     * @param dIni - parémetro da data inicial.
+     * @param dFim - parémetro da data final.
      * @return boolean - retorna um booleano.
      * @throws IntegrationException IntegrationException.
 
@@ -731,8 +734,8 @@ public final class BaseUtil {
      */
     /**
      * Método que compara as datas verificando se a Data Inicial é maior do que a Data Final.
-     * @param dIni - parâmetro da data inicial.
-     * @param dFim - parâmetro da data final.
+     * @param dIni - parémetro da data inicial.
+     * @param dFim - parémetro da data final.
      * @return boolean - retorna um booleano.
      */
     public static boolean compararSeDataInicialEMaiorQueFinal(String dIni, String dFim) {
@@ -753,10 +756,10 @@ public final class BaseUtil {
     }
 
     /**
-     * Método responsável por converter um data do Tipo Date para XMLGregorianCalendar.
+     * Método responsével por converter um data do Tipo Date para XMLGregorianCalendar.
      * @param date Data do java a ser passada para o método.
-     * @return xmlDate Data já convertida que será enviada para o WebService.
-     * @throws IntegrationException Qualquer erro de integração.
+     * @return xmlDate Data jé convertida que seré enviada para o WebService.
+     * @throws IntegrationException Qualquer erro de integraééo.
      */
     public static XMLGregorianCalendar dateToXMLDate(Date date) throws IntegrationException {
         XMLGregorianCalendar xmlDate;
@@ -780,9 +783,9 @@ public final class BaseUtil {
     }
 
     /**
-     * Retira a máscara de data.
+     * Retira a méscara de data.
      * @param date Data a ser passada para o método.
-     * @return newDate Data já formatada.
+     * @return newDate Data jé formatada.
      */
     public static String cleanDateMask(String date) {
 
@@ -792,9 +795,9 @@ public final class BaseUtil {
     }
 
     /**
-     * Método responsável por converter um data do Tipo Date para Calendar.
+     * Método responsével por converter um data do Tipo Date para Calendar.
      * @param date Data do java a ser passada para o método.
-     * @return calendar Data já convertida que será enviada para o WebService.
+     * @return calendar Data jé convertida que seré enviada para o WebService.
      */
     public static Calendar dateToCalendar(Date date) {
 
@@ -808,7 +811,7 @@ public final class BaseUtil {
      * Transforma uma data no formato String para um objeto Timestamp.
      * @param data - data no formato string.
      * @return timeStamp - data no formato Timestamp.
-     * @exception IntegrationException - Excessão de Integração.
+     * @exception IntegrationException - Excesséo de Integraééo.
     public static Timestamp stringToTimestamp(String data) throws IntegrationException {
         Timestamp timeStamp = null;
         try {
@@ -822,12 +825,12 @@ public final class BaseUtil {
     }
     */
     /**
-     * Método que trata localmente a excessão exigida pelo método AssemblerUtil.copyCollection do framework
-     * @param origem - Coleção de origem.
-     * @param destino - Coleção de destino.
+     * Método que trata localmente a excesséo exigida pelo método AssemblerUtil.copyCollection do framework
+     * @param origem - Coleééo de origem.
+     * @param destino - Coleééo de destino.
      * @param tipo - Tipo da Classe de origem.
-     * @throws IntegrationException - Qualquer erro de integração.
-     * @return Collection - Coleção de origem já copiada.
+     * @throws IntegrationException - Qualquer erro de integraééo.
+     * @return Collection - Coleééo de origem jé copiada.
 
     public static Collection copyCollection(Collection origem, Collection destino, Class tipo)
         throws IntegrationException {
@@ -841,9 +844,9 @@ public final class BaseUtil {
     }
      */
     /**
-     * Método que trata localmente a excessão exigida pelo método AssemblerUtil.copy do framework
-     * @param origem - Coleção de origem.
-     * @param destino - Coleção de destino.
+     * Método que trata localmente a excesséo exigida pelo método AssemblerUtil.copy do framework
+     * @param origem - Coleééo de origem.
+     * @param destino - Coleééo de destino.
      * @return Object - Objeto copiado.
      * @throws IntegrationException - Qualquer erro de integração.
     public static Object copy(Object origem, Object destino) throws IntegrationException {
