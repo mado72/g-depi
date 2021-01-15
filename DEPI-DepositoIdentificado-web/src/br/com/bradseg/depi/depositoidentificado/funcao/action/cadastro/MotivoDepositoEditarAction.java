@@ -1,5 +1,8 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action.cadastro;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,15 +112,20 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		MotivoDepositoEditarForm model = getModel();
 		
 		if ("salvar".equals(model.getAcao())) {
-			persistirDados(model);
+			persistirDados();
+		}
+		
+		if ("excluir".equals(model.getAcao())) {
+			excluirRegistros();
 		}
 
 		return SUCCESS;
 	}
 
-	private void persistirDados(MotivoDepositoEditarForm model) {
+	private void persistirDados() {
+		MotivoDepositoEditarForm model = getModel();
 		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
-
+	
 		MotivoDepositoVO instancia;
 		
 		if (novo) {
@@ -130,24 +138,41 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		else {
 			instancia = obterPeloCodigo();
 		}
-
+	
 		instancia.setDescricaoBasica(model.getDescricaoBasica());
 		instancia.setDescricaoDetalhada(model.getDescricaoDetalhada());
 		instancia.setCodigoEventoContabil(CODIGO_EVENTO_CONTABIL);
 		instancia.setCodigoItemContabil(CODIGO_ITEM_CONTABIL);
-
+	
 		try {
 			if (novo) {
 				facade.inserir(instancia);
+				addActionMessage("msg.inserir.sucesso");
 			}
 			else {
 				facade.alterar(instancia);
+				addActionMessage("msg.alterar.sucesso");
 			}
 		} catch (Exception e) {
 			throw new DEPIIntegrationException(e, "msg.erro.interno");
 		}
 	}
-	
+
+	private void excluirRegistros() {
+		String[] codigos = request.getParameterValues("codigo");
+		
+		List<MotivoDepositoVO> lista = new ArrayList<>();
+		
+		for (String codigo : codigos) {
+			MotivoDepositoVO vo = new MotivoDepositoVO();
+			vo.setCodigoMotivoDeposito(new Integer(codigo));
+			lista.add(vo);
+		}
+		
+		facade.excluirLista(lista);
+		addActionMessage("msg.excluir.sucesso");
+	}
+
 	public String voltar() {
 		return SUCCESS;
 	}

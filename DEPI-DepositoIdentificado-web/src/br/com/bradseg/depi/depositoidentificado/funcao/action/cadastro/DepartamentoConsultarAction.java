@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action.cadastro;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +16,11 @@ import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
 import br.com.bradseg.depi.depositoidentificado.form.cadastro.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepartamentoCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
+import br.com.bradseg.depi.depositoidentificado.util.CriterioConsultaVO;
+import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
@@ -100,27 +105,33 @@ public class DepartamentoConsultarAction extends FiltroAction<FiltroConsultarFor
 	}
 	
 	private void processarFiltro() {
-/*
-		FIXME Tirar este comentário e implementar método para preparar o filtro da consulta. Substituir
-		facade.obterTodosMotivoDepositvo() por outra consulta com filtro.
-
-        CriterioFiltroUtil filtro = new CriterioFiltroUtil();
-        List<CriterioFiltroUtil> listCriterios = new ArrayList<CriterioFiltroUtil>();
-
-        for (int i = 0; i < model.getCampo().size(); i++) {
-            CriterioFiltroUtil criterio = new CriterioFiltroUtil();
-            criterio.setCampo(DepartamentoCampo.obterPorNome(model.getCampo().get(i)));
-            criterio.setOperacao(TipoOperacao.obterPorCodigo(model.getOperacao().get(i)));
-            criterio.setValor(model.getValor().get(i));
-            listCriterios.add(criterio);
-        }
-        listCriterios.add(CriterioFiltroUtil.getDefaultCriterioAtivo());
-        filtro.setCriterios(listCriterios);
-*/
+		FiltroConsultarForm<DepartamentoCampo> model = getModel();
 		
-		List<DepartamentoVO> retorno = facade.obterTodos();
+		List<CriterioConsultaVO> criterios = new ArrayList<>();
 		
-		getModel().setColecaoDados(retorno);
+		if (model.getCriterios() != null) {
+			int paramIdx = 0;
+			
+			for (String item: model.getCriterios()) {
+				String[] criterioFiltro = item.split(";");
+				DepositoCampo campo = DepositoCampo.obterPorDescricao(criterioFiltro[0]);
+				TipoOperacao operacao = TipoOperacao.valueOf(criterioFiltro[1]);
+				String valor = criterioFiltro[2];
+				
+				String param = "param" + ++paramIdx;
+				
+				CriterioConsultaVO criterioConsultaVO = montarCriterioConsulta(
+						campo, operacao, valor, param);
+				criterios.add(criterioConsultaVO);
+			}
+		}
+		
+		FiltroUtil filtro = new FiltroUtil();
+		filtro.setCriterios(criterios);
+		
+		List<DepartamentoVO> retorno = facade.obterPorFiltro(filtro);
+		
+		model.setColecaoDados(retorno);
 
 		if (retorno == null || retorno.isEmpty()) {
 			String message = super.getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);

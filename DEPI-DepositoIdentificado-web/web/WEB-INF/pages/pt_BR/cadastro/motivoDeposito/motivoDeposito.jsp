@@ -10,13 +10,14 @@
 <s:if test="colecaoDados">
 <s:form action="acao.do" id="AcaoForm">
 
-<table id="tabela_interna" class="MotivoDeposito">
+<table id="tabela_interna" class="MotivoDeposito Consulta">
 	<thead>
 		<tr>
 		<th class="selecao">
 			<s:text name="label.todos"/>
 			<br/>
 			<input type="checkbox" class="optionbutton checkTodos"/>
+			<s:checkbox name="codigo" class="optionbutton checkTodos" />
 		</th>
 		<th class="descricao">
 			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">

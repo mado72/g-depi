@@ -53,7 +53,7 @@
 				<td align="center" valign="middle" colspan="3">
 					<c:choose>
 						<c:when test="${detalhar}">
-							<button class="btn-img" type="submit" id="BtnVoltar">
+							<button class="btn-img" type="submit" id="BtnVoltar" name="acao" value="voltar">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_voltar.gif"/>
 							</button>
 						</c:when>

@@ -71,7 +71,7 @@ button.btn-img {
 	width: 95%;
 }
 
-.MotivoDeposito .selecao {
+.Consulta .selecao {
 	width: 10%;
 	text-align: center;
 }
@@ -88,6 +88,15 @@ button.btn-img {
 
 .MotivoDeposito .atualizacao {
 	width: 18%;
+}
+
+.Departamento .sigla {
+	width: 15%;
+}
+.Departamento .nome {
+}
+.Departamento .responsavel, .Departamento .atualizacao {
+	width: 20%;
 }
 
 .lista .atualizacao {

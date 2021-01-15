@@ -161,6 +161,20 @@ public enum DepositoCampo implements IEntidadeCampo {
         }
         return null;
     }
+    
+    /**
+     * retorna o elemento
+     * @param descricao - descrição de motivo depósito
+     * @return - retorna o elemento do campo
+     */
+    public static DepositoCampo obterPorDescricao(String descricao) {
+    	for (DepositoCampo campo : DepositoCampo.values()) {
+    		if (campo.getDescricao().equals(descricao)) {
+    			return campo;
+    		}
+    	}
+    	return null;
+    }
 
     /**
      * Retorna valores da combo de consulta.

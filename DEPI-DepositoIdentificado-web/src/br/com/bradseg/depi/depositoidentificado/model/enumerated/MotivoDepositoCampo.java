@@ -89,9 +89,9 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
     }
     
     /**
-     * retorna o nome
-     * @param nome - nome do campo de motivo depósito
-     * @return - retorna o nome do campo
+     * retorna o elemento
+     * @param descricao - descrição de motivo depósito
+     * @return - retorna o elemento do campo
      */
     public static MotivoDepositoCampo obterPorDescricao(String descricao) {
     	for (MotivoDepositoCampo campo : MotivoDepositoCampo.values()) {

@@ -140,10 +140,6 @@ var fnReady = function ($) {
 					elements = elements.add($('<input>', { type:"hidden", name: "criterios[" + idx + "]" , value: $(opt).val()}));
 				});
 			
-			if (elements.length == 0) {
-
-			}
-
 			jqForm.append(elements);
 
 			jqForm.submit();
@@ -203,24 +199,27 @@ var fnReady = function ($) {
 	// definition
 	$.namespace( '$.consulta' );
 
-	$.consulta.prepararFormulario = function(formSeletor, formEditorSelector) {
+	$.consulta.prepararFormulario = function(formSeletor) {
 		var jqForm = $(formSeletor)
 
 		var btnExcluir = jqForm.find("#BtnExcluir"),
 			btnAlterar = jqForm.find("#BtnAlterar");
 		
 		btnExcluir.click(function(ev) {
-			alert('Excluir');
+			var marcados = $.obterMarcados();
+			if (marcados.length == 0) {
+				alert(MENSAGEM['msg.selecao.exclusao']);
+				return;
+			}
+			if (confirm(MESAGEM['msg.confirmacao.exclusao'])) {
+				jqForm.submit();
+			}
 		})
 		
 		btnAlterar.click(function(ev) {
-			var marcados = jqForm.find(".checkTodos")
-				.parents("table:first")
-				.find("input:checkbox:checked");
-			
+			var marcados = $.obterMarcados();
 			switch (marcados.length) {
 				case 1:
-					var jqFormEditor = $(formEditorSelector);
 					var codigo = $(marcados[0]).val();
 					var url = window.location.href;
 					url = url.replace(/\/\w+\/\w+.do/, "/editar/alterar.do?codigo=" + codigo);
@@ -230,7 +229,6 @@ var fnReady = function ($) {
 					alert(MENSAGEM["msg.selecao.edicao"]);
 					return;
 			}
-
 		})
 
 		jqForm.find(".checkTodos").click(function(){
@@ -240,6 +238,13 @@ var fnReady = function ($) {
 				.prop("checked", $(".checkTodos").prop("checked"));
 		});
 	};
+
+	$.obterMarcados = function() {
+		var marcados = jqForm.find(".checkTodos")
+			.parents("table:first")
+			.find("input:checkbox:checked");
+		return marcados;
+	}
 
 	// motivoDeposito
 	// ---------------------------------------------------------------------
@@ -465,5 +470,4 @@ var fnReady = function ($) {
 jQuery(document).ready(fnReady(jQuery));
 
 console.log("FIM");
-
 

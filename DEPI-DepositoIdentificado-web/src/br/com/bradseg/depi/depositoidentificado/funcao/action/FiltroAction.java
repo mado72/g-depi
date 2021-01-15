@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import br.com.bradseg.depi.depositoidentificado.form.cadastro.FiltroConsultarForm;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.util.CriterioConsultaVO;
 
@@ -44,6 +44,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 
 	protected CriterioConsultaVO montarCriterioConsulta(
 			MotivoDepositoCampo campo, TipoOperacao operacao, String valor,
+			IEntidadeCampo campo, TipoOperacao operacao, String valor,
 			String param) {
 		String clausula = operacao.formatarClausula(campo.getNome(), param);
 		String valorFormatado = operacao.formatarValor(valor);

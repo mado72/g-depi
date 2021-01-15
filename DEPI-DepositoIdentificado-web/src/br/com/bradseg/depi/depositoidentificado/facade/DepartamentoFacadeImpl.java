@@ -23,9 +23,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
  */
 @Service
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-public class DepartamentoFacadeImpl implements DepartamentoFacade{
+public class DepartamentoFacadeImpl implements DepartamentoFacade {
 
-    private static final String CODIGO_RESPONSAVEL = "CÛdigo do Respons·vel";
+    private static final String CODIGO_RESPONSAVEL = "C√≥digo do Respons√°vel";
     
     protected static final Logger LOGGER = Logger.getLogger(DepartamentoFacadeImpl.class);
     
@@ -35,7 +35,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
     /**
      * Alterar Departamento
      * @param vo VO de Departamento
-     * @throws IntegrationException ExceÁ„o de aplicaÁ„o
+     * @throws IntegrationException Exce√ß√£o de aplica√ß√£o
      */
 	@Override
     public void alterar(DepartamentoVO vo) throws IntegrationException {
@@ -47,9 +47,9 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
     }
 
     /**
-     * Validar o VO de alteraÁ„o
+     * Validar o VO de altera√ß√£o
      * @param vo VO de Departamento
-     * @throws IntegrationException ExceÁ„o de aplicaÁ„o
+     * @throws IntegrationException Exce√ß√£o de aplica√ß√£o
      */
     private void validarAlterar(DepartamentoVO vo) throws IntegrationException {
         
@@ -60,7 +60,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
     /**
      * Exclui Departamento
      * @param vo VO de Departamento
-     * @throws IntegrationException ExceÁ„o de aplicaÁ„o
+     * @throws IntegrationException Exce√ß√£o de aplica√ß√£o
      */
     @Override
     public void excluir(DepartamentoVO vo) throws IntegrationException {
@@ -72,7 +72,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
     /**
      * Excluir Departamentos
      * @param vos VO's de Departamento
-     * @throws IntegrationException ExceÁ„o de aplicaÁ„o
+     * @throws IntegrationException Exce√ß√£o de aplica√ß√£o
      */
     @Override
     public void excluir(List<DepartamentoVO> vos) throws IntegrationException {
@@ -91,14 +91,14 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
             }
         }
         if (sb.length() > 0) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA + " - " +  sb.toString() + " - " +  "AssociaÁ„o Departamentos x Companhia");
+            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA + " - " +  sb.toString() + " - " +  "Associa√ß√£o Departamentos x Companhia");
         }
     }
 
     /**
-     * Validar o VO de exclus„o
+     * Validar o VO de exclus√£o
      * @param vo VO de Departamento
-     * @throws IntegrationException ExceÁ„o de aplicaÁ„o
+     * @throws IntegrationException Exce√ß√£o de aplica√ß√£o
      */
     private void validarExcluir(DepartamentoVO vo) throws IntegrationException {
         if (BaseUtil.isNZB(vo.getCodigoResponsavelUltimaAtualizacao())) {
@@ -112,7 +112,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
     /**
      * Inserir Departamento
      * @param vo VO de Departamento
-     * @throws IntegrationException ExceÁ„o de aplicaÁ„o
+     * @throws IntegrationException Exce√ß√£o de aplica√ß√£o
      */
     @Override
     public void inserir(DepartamentoVO vo) throws IntegrationException {
@@ -123,9 +123,9 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
     }
 
     /**
-     * Validar o VO de inserÁ„o
+     * Validar o VO de inser√ß√£o
      * @param vo VO de Departamento
-     * @throws IntegrationException ExceÁ„o de aplicaÁ„o
+     * @throws IntegrationException Exce√ß√£o de aplica√ß√£o
      */
     private void validarInserir(DepartamentoVO vo) throws IntegrationException {
     	
@@ -153,7 +153,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
      * Obter Departamento
      * @param vo VO de Departamento
      * @return VO de Departamento
-     * @throws IntegrationException ExceÁ„o de aplicaÁ„o
+     * @throws IntegrationException Exce√ß√£o de aplica√ß√£o
      */
     @Override
     public DepartamentoVO obterPorChave(DepartamentoVO vo) throws IntegrationException {
@@ -164,7 +164,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
      * Obter Departamentos
      * @param filtro VO de filtro de Departamento
      * @return VO de Departamento
-     * @throws IntegrationException ExceÁ„o de aplicaÁ„o
+     * @throws IntegrationException Exce√ß√£o de aplica√ß√£o
      */
     public List<DepartamentoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
         return departamentoDAO.obterPorFiltro(filtro);
@@ -173,7 +173,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
     /**
      * Obter Departamentos
      * @return Lista de VO's de Departamento
-     * @throws IntegrationException ExceÁ„o de aplicaÁ„o
+     * @throws IntegrationException Exce√ß√£o de aplica√ß√£o
      */
     @Override
     public List<DepartamentoVO> obterTodos() throws IntegrationException {
@@ -181,7 +181,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
     }
 
     /**
-     * Obter Departamentos por Cia e Usu·rio.
+     * Obter Departamentos por Cia e Usu√°rio.
      * @param codigoCia - int.
      * @param codigoUsuario - BigDecimal.
      * @param e Tabelas.
@@ -196,15 +196,15 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade{
     }
 
     /**
-     * mÈtodo que obtem lista de departamentos por companhia
+     * m√©todo que obtem lista de departamentos por companhia
      * @param vo - CompanhiaSeguradoraVO
      * @return List de VO's de departamentos
-     * @throws IntegrationException trata exceÁ„o
+     * @throws IntegrationException trata exce√ß√£o
      */
     @Override
     public List<DepartamentoVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) throws IntegrationException {
         return departamentoDAO.obterPorCompanhiaSeguradora(vo);
-
     }
 
+    
 }

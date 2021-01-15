@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
@@ -12,7 +13,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
  */
 public interface DepartamentoFacade {
 
-	public List obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) throws IntegrationException;
+	public List<DepartamentoVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) throws IntegrationException;
+
+	public List<DepartamentoVO> obterPorFiltro(FiltroUtil filtro);
 
 	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e) throws IntegrationException;
 

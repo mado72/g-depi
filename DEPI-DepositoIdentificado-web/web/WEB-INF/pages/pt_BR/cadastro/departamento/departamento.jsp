@@ -10,7 +10,7 @@
 <s:if test="colecaoDados">
 <s:form action="acao.do" id="AcaoForm">
 
-<table id="tabela_interna" class="Departamento">
+<table id="tabela_interna" class="Departamento Consulta">
 	<thead>
 		<tr>
 		<th class="selecao">
