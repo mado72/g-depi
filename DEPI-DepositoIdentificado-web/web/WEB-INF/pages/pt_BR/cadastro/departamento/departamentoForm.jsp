@@ -2,8 +2,6 @@
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:import url="/WEB-INF/pages/pt_BR/includes/logo-sistema.jsp"></c:import>
-
 <!--mensagem de erro de negocio-->
 <s:if test="hasActionMessages()">
 <span id="box_msg_erro">

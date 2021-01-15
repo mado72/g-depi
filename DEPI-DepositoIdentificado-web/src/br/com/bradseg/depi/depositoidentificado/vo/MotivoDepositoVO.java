@@ -18,54 +18,54 @@ public class MotivoDepositoVO implements Serializable {
 
     
     /**
-     * CÛdigo do Arquivo.
+     * C√≥digo do Arquivo.
      */
     private Integer codigoMotivoDeposito;
 
     /**
-     * descriÁao b·sica.
+     * descri√ßao b√°sica.
      */
 //    @TableField(name = "RMOTVO_DEP_IDTFD")
     private String descricaoBasica;
 
     /**
-     * descriÁ„o detalhada.
+     * descri√ß√£o detalhada.
      */
 //    @TableField(name = "RDETLH_MOTVO_DEP")
     private String descricaoDetalhada;
 
     /**
-     * Evento Cont·bil
+     * Evento Cont√°bil
      */
 //    @TableField(name = "CTPO_EVNTO_NEGOC")
     private Integer codigoEventoContabil;
 
     /**
-     * Item Cont·bil
+     * Item Cont√°bil
      */
 //    @TableField(name = "CTPO_ITEM_NEGOC")
     private Integer codigoItemContabil;
 
     /**
-     * Item Cont·bil
+     * Item Cont√°bil
      */
 //    @TableField(name = "CIND_REG_ATIVO")
     private String indicadorAtivo;
     
     /**
-     * Atributo que receber· um depÛsito vinculado ao motivo
+     * Atributo que receber√° um dep√≥sito vinculado ao motivo
      */
     private DepositoVO deposito;
    
     
     /**
-     * Atributo que receber· um depÛsito vinculado ao motivo
+     * Atributo que receber√° um dep√≥sito vinculado ao motivo
      */   
     private Integer codigoResponsavelUltimaAtualizacao;
     
     
     /**
-     * Atributo que receber· um depÛsito vinculado ao motivo
+     * Atributo que receber√° um dep√≥sito vinculado ao motivo
      */   
     private Date ultimaAtualizacao;
        
@@ -108,7 +108,7 @@ public class MotivoDepositoVO implements Serializable {
      * Retorna o valor do atributo codigoItemContabil.
      * @return o valor do atributo codigoItemContabil
      */
-    public int getCodigoItemContabil() {
+    public Integer getCodigoItemContabil() {
         return codigoItemContabil;
     }
     
@@ -116,7 +116,7 @@ public class MotivoDepositoVO implements Serializable {
      * Especifica o valor do atributo codigoItemContabil.
      * @param codigoItemContabil - int do codigoItemContabil a ser configurado.
      */
-    public void setCodigoItemContabil(int codigoItemContabil) {
+    public void setCodigoItemContabil(Integer codigoItemContabil) {
         this.codigoItemContabil = codigoItemContabil;
     }
 
@@ -124,7 +124,7 @@ public class MotivoDepositoVO implements Serializable {
      * Retorna o valor do atributo codigoEventoContabil.
      * @return o valor do atributo codigoEventoContabil
      */
-    public int getCodigoEventoContabil() {
+    public Integer getCodigoEventoContabil() {
         return codigoEventoContabil;
     }
 
@@ -146,9 +146,9 @@ public class MotivoDepositoVO implements Serializable {
 
 	/**
      * Especifica o campo codigoMotivoDeposito
-     * @param pCodigoMotivoDeposito - cÛdigo do motivo de depÛsito
+     * @param pCodigoMotivoDeposito - c√≥digo do motivo de dep√≥sito
      */
-    public void setCodigoMotivoDeposito(int pCodigoMotivoDeposito) {
+    public void setCodigoMotivoDeposito(Integer pCodigoMotivoDeposito) {
         this.codigoMotivoDeposito = pCodigoMotivoDeposito;
     }
 
@@ -162,7 +162,7 @@ public class MotivoDepositoVO implements Serializable {
 
     /**
      * Especifica o campo descricaoBasica
-     * @param pDescricaoBasica - descriÁ„o b·sica
+     * @param pDescricaoBasica - descri√ß√£o b√°sica
      */
     public void setDescricaoBasica(String pDescricaoBasica) {
         if (pDescricaoBasica != null) {
@@ -180,7 +180,7 @@ public class MotivoDepositoVO implements Serializable {
 
     /**
      * Especifica o campo descricaoDetalhada
-     * @param pDescricaoDetalhada - descriÁ„o detalhada
+     * @param pDescricaoDetalhada - descri√ß√£o detalhada
      */
     public void setDescricaoDetalhada(String pDescricaoDetalhada) {
         if (pDescricaoDetalhada != null) {

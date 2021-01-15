@@ -2,8 +2,6 @@ package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.struts2.interceptor.SessionAware;
 import org.springframework.stereotype.Component;
 
@@ -17,13 +15,6 @@ public abstract class BaseModelAction<T> extends BaseAction implements ModelDriv
 
 	protected Map<String, Object> sessionData;
 
-	@Resource
-	private transient String www3;
-	
-	public String getWww3() {
-		return www3;
-	}
-
 	@Override
 	public void setSession(Map<String, Object> sessionData) {
 		this.sessionData = sessionData;
@@ -33,13 +24,6 @@ public abstract class BaseModelAction<T> extends BaseAction implements ModelDriv
 		String name = getClass().getSimpleName();
 		this.sessionData.remove(name);
 		this.request.getSession().removeAttribute(name);
-	}
-	
-	public String getEstatico() {
-		// @FIXME Deve estar dentro da aplicação, não na intranet: return request.getContextPath() + "/includes";
-		
-		return getWww3() + "includes";
-//		return request.getContextPath() + "/includes";
 	}
 	
 	abstract protected void novaInstanciaModel(); 

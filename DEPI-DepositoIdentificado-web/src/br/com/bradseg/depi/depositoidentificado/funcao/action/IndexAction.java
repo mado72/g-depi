@@ -14,11 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import com.opensymphony.xwork2.ActionSupport;
-
 @Controller
 @Scope("request")
-public class IndexAction extends ActionSupport implements SessionAware, ServletRequestAware {
+public class IndexAction extends BaseAction implements SessionAware, ServletRequestAware {
 
 	private static final long serialVersionUID = 8105460905681770564L;
 

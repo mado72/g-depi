@@ -58,6 +58,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	 * @return {@link Action#SUCCESS}
 	 */
 	public String iniciarFormulario() {
+		
 		this.prepararFiltro();
 		
 		this.persistirContextoFiltro();

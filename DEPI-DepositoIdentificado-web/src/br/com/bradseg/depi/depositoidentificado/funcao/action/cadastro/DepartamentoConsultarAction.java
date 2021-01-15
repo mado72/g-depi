@@ -15,7 +15,7 @@ import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
 import br.com.bradseg.depi.depositoidentificado.form.cadastro.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepartamentoCampo;
-import br.com.bradseg.depi.depositoidentificado.util.ConstantesView;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
@@ -123,7 +123,7 @@ public class DepartamentoConsultarAction extends FiltroAction<FiltroConsultarFor
 		getModel().setColecaoDados(retorno);
 
 		if (retorno == null || retorno.isEmpty()) {
-			String message = super.getText(ConstantesView.MSG_CONSULTA_RETORNO_VAZIO);
+			String message = super.getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
 			addActionMessage(message);
 		}
 	}

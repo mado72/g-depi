@@ -8,6 +8,9 @@
 	 -->
 	<include file="META-INF/bsad/struts2/struts-config.xml" />
 	
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.custom.i18n.resources" value="br.com.bradseg.depi.depositoidentificado.properties.ApplicationResources" />
+	
 	<package name="depi-default" abstract="true" extends="bsad-default">
 		
 		<interceptors>
@@ -21,7 +24,7 @@
 			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
 			</result>
 		</global-results>
-
+		
 	</package>
 	
 	<package name="root" namespace="/" extends="depi-default">
@@ -74,24 +77,23 @@
 	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito/consultar" extends="depi-default">
 	
 		<default-class-ref class="motivoDepositoConsultarAction"/>
-		
-
-		<action name="index" method="iniciarFormulario">
+		<global-results>
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
 			</result>
-        </action>
-
-		<action name="listar" method="execute">
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
-			</result>
-        </action>
-        
-		<action name="*" method="{1}">
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
 			</result>
+		</global-results>
+
+		<action name="index" method="iniciarFormulario">
+			<param name="subtituloChave">title.deposito.consultar</param>
+        </action>
+        
+		<action name="listar" method="execute">
+        </action>
+        
+		<action name="*" method="{1}">
 			<result name="success" type="redirectAction">
 			    <param name="actionName">listar</param>
 			</result>
@@ -133,13 +135,16 @@
 	
 		<default-class-ref class="departamentoConsultarAction"/>
 		
-
-		<action name="index" method="iniciarFormulario">
+		<global-results>
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
 			</result>
+		</global-results>
+		
+		<action name="index" method="iniciarFormulario">
+			<param name="subtituloChave">title.departamento.consultar</param>
         </action>
-
+        
 		<action name="listar" method="execute">
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>

@@ -18,7 +18,6 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
-import br.com.bradseg.depi.depositoidentificado.util.ConstantesView;
 import br.com.bradseg.depi.depositoidentificado.util.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
@@ -34,10 +33,14 @@ import com.opensymphony.xwork2.Action;
 @Controller
 @Scope("request")
 public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarForm<MotivoDepositoCampo>> {
-	
-    protected static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoConsultarAction.class);
+
+	protected static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoConsultarAction.class);
 
 	private static final long serialVersionUID = -7675543657126275320L;
+	
+	private static final String TITLE_DEPOSITO_CONSULTAR = "title.deposito.consultar";
+	
+	private static final String TITLE_DEPOSITO_LISTAR = "title.deposito.listar";
 	
 	private static final String NOME_ACTION = MotivoDepositoConsultarAction.class.getSimpleName();
 	
@@ -70,6 +73,12 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 		sessionData.put(NOME_ACTION, _model);
 	}
 	
+	@Override
+	public String iniciarFormulario() {
+		setSubtituloChave(TITLE_DEPOSITO_CONSULTAR);
+		return super.iniciarFormulario();
+	}
+	
 	/**
 	 * Apenas redireciona a saída para SUCCESS. Usado para apresentar o
 	 * formulário armazenado na sessão.
@@ -77,6 +86,7 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 	 * @return {@link Action#SUCCESS}
 	 */
 	public String execute() {
+		setSubtituloChave(TITLE_DEPOSITO_CONSULTAR);
 		return SUCCESS;
 	}
 	
@@ -88,6 +98,7 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 	public String consultar() {
 		try {
 			processarFiltro();
+			setSubtituloChave(TITLE_DEPOSITO_LISTAR);
 			
 			return SUCCESS;
 		} catch (DEPIIntegrationException e) {
@@ -106,7 +117,6 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 		FiltroConsultarForm<MotivoDepositoCampo> model = getModel();
 		
 		List<CriterioConsultaVO> criterios = new ArrayList<>();
-		criterios.add(new CriterioConsultaVO("INDICADOR_ATIVO = :param0", "param0", ConstantesDEPI.INDICADOR_ATIVO));
 		
 		if (model.getCriterios() != null) {
 			int paramIdx = 0;
@@ -128,15 +138,12 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(criterios);
 
-//		FIXME Descomentar este código para passar a usar o filtro
-//		List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
-		
-		List<MotivoDepositoVO> retorno = facade.obterTodosMotivoDepositvo();
+		List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
 		
 		model.setColecaoDados(retorno);
 
 		if (retorno == null || retorno.isEmpty()) {
-			String message = super.getText(ConstantesView.MSG_CONSULTA_RETORNO_VAZIO);
+			String message = super.getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
 			addActionMessage(message);
 		}
 	}

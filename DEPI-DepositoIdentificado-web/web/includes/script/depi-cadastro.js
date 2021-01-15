@@ -136,19 +136,8 @@ var fnReady = function ($) {
 				}
 			}
 
-			criterios.each(function(idx) {
-					var item = dados.recipiente[idx];
-					$([
-						$('<input>', { type:"hidden", name: "campo[" + idx + "]" , value: item.principal}),
-						$('<input>', { type:"hidden", name: "operacao[" + idx + "]" , value: item.secundario}),
-						$('<input>', { type:"hidden", name: "valor[" + idx + "]" , value: item.valor}),
-						$('<input>', { type:"hidden", name: "criterios[" + idx + "]" , value: item.prop}),
-					])
-					.each(function(i, item){
-						elements = elements.add(item);
-					});
-					
-					data.push(item);
+			criterios.each(function(idx, opt) {
+					elements = elements.add($('<input>', { type:"hidden", name: "criterios[" + idx + "]" , value: $(opt).val()}));
 				});
 			
 			if (elements.length == 0) {
@@ -317,7 +306,6 @@ var fnReady = function ($) {
 
 	$.motivoDeposito.arrumarFiltro = function(jqPrincipal, jqSecundario, jqValor, jqRecipiente) {
 		var opt = jqPrincipal.find("option:selected");
-		var sel = dados.principal[opt.index()];
 
 		if (opt.val() === "NUM") {
 			jqValor.val(jqValor.val().replace(/D+//g));

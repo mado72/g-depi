@@ -47,8 +47,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 	}
 
     /**
-     * MÈtodo respons·vel por inserir um Motivo DepÛsito.
-     * @param vo - Motivo DepÛsito a ser inserido.
+     * M√©todo respons√°vel por inserir um Motivo Dep√≥sito.
+     * @param vo - Motivo Dep√≥sito a ser inserido.
      */
     @Override
     public void inserir(MotivoDepositoVO vo) {
@@ -66,7 +66,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 			if (motivoDepto.size() >= 1 ) {
                 if (motivoDepto.get(1).getIndicadorAtivo().equals("S")) {
                     throw new BusinessException(ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO + " : "  + new StringBuilder(
-                        " DescriÁ„o B·sica: ").append(vo.getDescricaoBasica()).append(".").toString());
+                        " Descri√ß√£o B√°sica: ").append(vo.getDescricaoBasica()).append(".").toString());
                 } else {
 
                     params.addValue("prm1", vo.getDescricaoDetalhada().trim());
@@ -96,8 +96,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
 
     /**
-     * MÈtodo respons·vel por alterar um Motivo DepÛsito.
-     * @param vo - Motivo DepÛsito a ser alterado.
+     * M√©todo respons√°vel por alterar um Motivo Dep√≥sito.
+     * @param vo - Motivo Dep√≥sito a ser alterado.
      */
     @Override
     public void alterar(MotivoDepositoVO vo){
@@ -108,20 +108,20 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
        	try {
         		
 			MapSqlParameterSource paramsBasica = new MapSqlParameterSource();
-			//params.addValue("descBasica", vo.getDescricaoBasica().trim());
 
 			List<MotivoDepositoVO> motivoDepto = (List<MotivoDepositoVO>) getJdbcTemplate().query(query.toString(), paramsBasica, new MotivoDepositoDataMapper());
 			
 			MotivoDepositoVO motivoExistente = findPorDescricaoBasica (motivoDepto , vo );
 
-            if (motivoExistente != null) {
-                StringBuilder sb = new StringBuilder("Motivo DepÛsito com DescriÁ„o B·sica: ").append(vo.getDescricaoBasica())
-                    .append(" j· est· cadastrado");
-                if (motivoExistente.getIndicadorAtivo().equals("N")) {
-                    sb.append(" com status inativo");
-                }
-                sb.append(".");
+            if (motivoExistente == null) {
+                StringBuilder sb = new StringBuilder("Motivo Dep√≥sito com Descri√ß√£o B√°sica: ").append(vo.getDescricaoBasica())
+                    .append(" n√£o est√° cadastrado.");
                 throw new BusinessException(ConstantesDEPI.ERRO_CUSTOMIZADA + " : " + sb.toString());
+            }
+            else if (motivoExistente.getIndicadorAtivo().equals("N")) {
+            	StringBuilder sb = new StringBuilder("Motivo Dep√≥sito com Descri√ß√£o B√°sica: ").append(vo.getDescricaoBasica())
+            		.append(" com status inativo.");
+            	throw new BusinessException(ConstantesDEPI.ERRO_CUSTOMIZADA + " : " + sb.toString());
             }
             
 			MapSqlParameterSource paramsUpd = new MapSqlParameterSource();
@@ -145,8 +145,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
 
     /**
-     * MÈtodo respons·vel por excluir um Motivo DepÛsito.
-     * @param vo - Motivo DepÛsito a ser excluÌdo.
+     * M√©todo respons√°vel por excluir um Motivo Dep√≥sito.
+     * @param vo - Motivo Dep√≥sito a ser exclu√≠do.
      */
     @Override
     public void excluir(MotivoDepositoVO vo) {
@@ -170,8 +170,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
     
     /**
-     * MÈtodo respons·vel por excluir lista um Motivo DepÛsito.
-     * @param vo - Motivo DepÛsito a ser excluÌdo.
+     * M√©todo respons√°vel por excluir lista um Motivo Dep√≥sito.
+     * @param vo - Motivo Dep√≥sito a ser exclu√≠do.
      */
     @Override
     public void excluirLista(List<MotivoDepositoVO> listvo) {
@@ -183,20 +183,20 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
                     codsMotivos.append("; ");
                 }
                 MotivoDepositoVO m = obterPorChave(vo);
-                codsMotivos.append("Motivo DepÛsito: ").append(m.getDescricaoBasica());
+                codsMotivos.append("Motivo Dep√≥sito: ").append(m.getDescricaoBasica());
             } else {
             	excluir(vo);
             }
         }
         if (codsMotivos.length() > 0) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA + " - " + codsMotivos.toString() + "Par‚metros de DepÛsito");
+            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA + " - " + codsMotivos.toString() + "Par√¢metros de Dep√≥sito");
         }
         
     }
     
     
     /**
-     * isReferenciado retorna se o registro È utilizado nas tabelas como FK. {@inheritDoc}
+     * isReferenciado retorna se o registro √© utilizado nas tabelas como FK. {@inheritDoc}
      */
     @Override
     public synchronized Boolean isReferenciado(MotivoDepositoVO vo){
@@ -225,7 +225,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
 
     /**
-     * ObtÈm apenas os Motivos que est„o associados a Parametros de DepÛsito.
+     * Obt√©m apenas os Motivos que est√£o associados a Parametros de Dep√≥sito.
      * @param codigoCia - int.
      * @param codigoDep - int.
      * @param codigoUsuario - BigDecimal.
@@ -243,15 +243,15 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 
             if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
             	query.append(QuerysDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO);
-                msg = " um Par‚metro de DepÛsito ou Grupo de Acesso vinculado ao usu·rio.";
+                msg = " um Par√¢metro de Dep√≥sito ou Grupo de Acesso vinculado ao usu√°rio.";
             } else if (e.equals(Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO)) {
             	query.append(QuerysDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODECONTACORRENTEMOTIVODEPOSITO);
-                msg = " uma AssociaÁ„o de Motivo ou Grupo de Acesso vinculado ao usu·rio";
+                msg = " uma Associa√ß√£o de Motivo ou Grupo de Acesso vinculado ao usu√°rio";
             } else if (e.equals(Tabelas.DEPOSITO)) {
             	query.append(QuerysDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODEDEPOSITO);
-                msg = " um DepÛsito ou Grupo de Acesso vinculado ao usu·rio";
+                msg = " um Dep√≥sito ou Grupo de Acesso vinculado ao usu√°rio";
             } else {
-                throw new IntegrationException("Enum inv·lido.");
+                throw new IntegrationException("Enum inv√°lido.");
             }
 
             /**
@@ -275,7 +275,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
     
     /**
-     * ObtÈm apenas os Motivos por Chave.
+     * Obt√©m apenas os Motivos por Chave.
      * @param MotivoDepositoVO - MotivoDepositoVO
      * @return List<MotivoDepositoVO>.
      */
@@ -309,7 +309,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     }
 
     /**
-     * ObtÈm apenas os Motivos por Filtro.
+     * Obt√©m apenas os Motivos por Filtro.
      * @param MotivoDepositoVO - MotivoDepositoVO
      * @return List<MotivoDepositoVO>.
      */
@@ -320,18 +320,15 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     	
 		try {
 
-			MapSqlParameterSource params = new MapSqlParameterSource();   		
+			MapSqlParameterSource params = null;    		
 
 	        /**
 	         * Parametros.
 	         */
-			if (!filtro.getDescricaoBasica().isEmpty()) {
-				query.append("WHERE RMOTVO_DEP_IDTFD = :whr1");
-		    	params.addValue("whr1", filtro.getDescricaoBasica());			
-			} else if (!filtro.getDescricaoDetalhada().isEmpty()) {
-				query.append("WHERE RDETLH_MOTVO_DEP = :whr1");
-		    	params.addValue("whr1", filtro.getDescricaoDetalhada());			
-			}
+			if (!filtro.getCriterios().isEmpty()) {
+				query.append(filtro.getClausaWhereFiltro());
+				params = filtro.getMapParamFiltro();
+			} 
 			
         	List<MotivoDepositoVO> motivoDepto = (List<MotivoDepositoVO>) getJdbcTemplate().query(query.toString(), params, new MotivoDepositoDataMapper());
 			
@@ -348,7 +345,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 
 	
     /**
-     * ObtÈm todos os Motivos.
+     * Obt√©m todos os Motivos.
      * @return List<MotivoDepositoVO>.
      */
 	@Override

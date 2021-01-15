@@ -22,6 +22,15 @@ button.btn-img {
 	margin-right: 2px;
 }
 
+#depi-breadcrumb {
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+#depi-breadcrumb img, #depi-breadcrumb span {
+	display: block;
+}
+
 #depi-app #menu_horizontal .dropdown {
 	border-bottom: 1px solid #bc0000;
 	top: 90px;
@@ -83,6 +92,10 @@ button.btn-img {
 
 .lista .atualizacao {
 	text-align: center;
+}
+
+.subtitulo {
+	color: #666666;
 }
 
 .paginacao {

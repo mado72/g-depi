@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.form.cadastro.MotivoDepositoEditarForm;
@@ -22,12 +23,27 @@ import com.opensymphony.xwork2.Action;
 @Controller
 @Scope("request")
 public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEditarForm> {
+
+	protected static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoEditarAction.class);
 	
-    protected static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoEditarAction.class);
+	private static final String TITLE_DEPOSITO_EDITAR = "title.deposito.editar";
+	
+	private static final String TITLE_DEPOSITO_NOVO = "title.deposito.novo";
     
     private static final String ACTION_NAME = MotivoDepositoEditarAction.class.getSimpleName() + "_FORM";
 
 	private static final long serialVersionUID = -7675543657126275320L;
+	
+	/**
+     * código do evento contábil.
+     */
+	private final int CODIGO_EVENTO_CONTABIL = 361;
+
+	/**
+     * código do evento contábil.
+     */
+	private final int CODIGO_ITEM_CONTABIL = 472;
+
 	
 	private MotivoDepositoEditarForm _model;
 	
@@ -62,11 +78,15 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		
 		getModel().setDetalhar(false);
 		
+		setSubtituloChave(TITLE_DEPOSITO_NOVO);
+		
 		return INPUT;
 	}
 	
 	public String alterar() {
 		preencherFormulario();
+		
+		setSubtituloChave(TITLE_DEPOSITO_EDITAR);
 		
 		return INPUT;
 	}
@@ -101,7 +121,11 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		MotivoDepositoVO instancia;
 		
 		if (novo) {
+			LoginVo usuarioLogado = getUsuarioLogado();
 			instancia = new MotivoDepositoVO();
+			
+			int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
+			instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 		}
 		else {
 			instancia = obterPeloCodigo();
@@ -109,6 +133,8 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 
 		instancia.setDescricaoBasica(model.getDescricaoBasica());
 		instancia.setDescricaoDetalhada(model.getDescricaoDetalhada());
+		instancia.setCodigoEventoContabil(CODIGO_EVENTO_CONTABIL);
+		instancia.setCodigoItemContabil(CODIGO_ITEM_CONTABIL);
 
 		try {
 			if (novo) {

@@ -3,6 +3,10 @@ package br.com.bradseg.depi.depositoidentificado.util;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+
 /**
  * A(O)FiltroUtil.
  * @return the FiltroUtil
@@ -320,5 +324,30 @@ public class FiltroUtil {
 		this.criterios = criterios;
 	}
 	
+	public String getClausaWhereFiltro () {
+		
+		StringBuilder where = new StringBuilder(" WHERE ");
+		
+	    for(int i = 0 ; i < this.criterios.size() ; i++  ) {
+	    	where.append(criterios.get(i).getCriterio());
+	    	
+	    	if (i < (this.criterios.size()-1) ) {
+	    	   where.append(" AND ");
+	    	}
+	    }
+	    
+	    return where.toString();
+	}
+	
+	public MapSqlParameterSource getMapParamFiltro () {
+		
+		MapSqlParameterSource params = new MapSqlParameterSource();
+
+	    for(CriterioConsultaVO criterio : criterios) {
+	    	params.addValue(criterio.getParam(), criterio.getValor());
+	    }
+	    
+	    return params;
+	}
 
 }
