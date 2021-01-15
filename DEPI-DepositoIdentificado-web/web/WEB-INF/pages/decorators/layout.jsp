@@ -8,8 +8,8 @@
 %><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title><decorator:title default="DEPI-DepositoIdentificado"/></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title><decorator:title default="DEPI-DepositoIdentificado"/></title>
 	<link href="${www3}padroes_web/intranet/css/tabs.css" rel="stylesheet" type="text/css"/>
 	<link href="${www3}padroes_web/intranet/css/css.css" rel="stylesheet" type="text/css"/>
 	<link href="${www3}padroes_web/intranet/css/Menu_horizontal.css" rel="stylesheet" type="text/css" />
@@ -34,6 +34,7 @@
 	<decorator:head />
 </head>
 <body id="depi-app">
+
 <table id="tabela_principal">
 	<tr>
 		<td>
@@ -73,6 +74,7 @@
 			</s:if>
 			<br />
 			<s:include value="/WEB-INF/pages/layout/menu.jsp"/>
+			<s:include value="/WEB-INF/pages/pt_BR/includes/logo-sistema.jsp"/>
 			<br />
 			<decorator:body />
 		</td>
