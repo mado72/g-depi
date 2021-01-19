@@ -1,7 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.enums;
 
 /**
- * Classe responsável por representar dos tipos de relatórios gerados no Jasper
+ * Classe responsï¿½vel por representar dos tipos de relatÃ³rios gerados no Jasper
  * 
  * @author CPM Braxis Capgemini em 15/07/2017
  */
@@ -10,7 +10,7 @@ public enum RetornoGTABEnum {
 	OK					(0,"Sucesso"), 
 	ERRO_DB2			(1,"Erro no DB2"),
 	INEXISTENTE			(2,"Registro Inexistente"),
-	ERRO_PREENCHIMENTO	(3,"Erro de preenchimento do Código do Ramo")
+	ERRO_PREENCHIMENTO	(3,"Erro de preenchimento do CÃ³digo do Ramo")
 	
 	;
 	private Integer codigo;

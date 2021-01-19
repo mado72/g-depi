@@ -5,7 +5,7 @@ import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 /**
  * Classe de exceção de aplicação com mensagem de negocio amigável.
- * @refactoredBy Marcelo Damasceno
+ * @author Marcelo Damasceno
  */
 public class DEPIIntegrationException
     extends IntegrationException {

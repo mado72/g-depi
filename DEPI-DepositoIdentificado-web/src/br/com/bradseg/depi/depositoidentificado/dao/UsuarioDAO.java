@@ -13,7 +13,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 public interface UsuarioDAO {
 	
     /**
-     * Método de obter por filtro um Usuário
+     * MÃ©todo de obter por filtro um Usuï¿½rio
      * @param vo - GrupoAcessoVO.
      * @return List<UsuarioVO>
      */

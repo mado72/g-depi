@@ -25,8 +25,8 @@ public interface IEntidadeCampo {
     TipoCampo getTipoCampo();
 
     /**
-     * O tipo campo é cics.
-     * @return boolean - se é cics.
+     * O tipo campo ï¿½ cics.
+     * @return boolean - se ï¿½ cics.
      */
     boolean isCics();
     
@@ -35,6 +35,5 @@ public interface IEntidadeCampo {
      * @return int
      */
     int getSize();
-
 
 }

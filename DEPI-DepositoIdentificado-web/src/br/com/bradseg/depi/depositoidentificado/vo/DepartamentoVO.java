@@ -35,7 +35,7 @@ public class DepartamentoVO implements Serializable {
     }
 
     /**
-     * Código seqüencial de departamento.
+     * CÃ³digo seqï¿½encial de departamento.
      */
     private int codigoDepartamento;
 
@@ -52,7 +52,7 @@ public class DepartamentoVO implements Serializable {
     /**
      * Codigo Responsavel Ultima Atualizacao.
      */
-    private int codigoResponsavelUltimaAtualizacao;
+    private Integer codigoResponsavelUltimaAtualizacao;
 
     /**
      * Indicado Registro Ativo.
@@ -133,7 +133,7 @@ public class DepartamentoVO implements Serializable {
      * Retorna o CodigoResponsavelUltimaAtualizacao.
      * @return O atributo CodigoResponsavelUltimaAtualizacao
      */
-	public int getCodigoResponsavelUltimaAtualizacao() {
+	public Integer getCodigoResponsavelUltimaAtualizacao() {
 		return codigoResponsavelUltimaAtualizacao;
 	}
 
@@ -141,7 +141,7 @@ public class DepartamentoVO implements Serializable {
      * Especifica o CodigoResponsavelUltimaAtualizacao.
      * @param codigoResponsavelUltimaAtualizacao Integer do codigoDepartamento a ser setado
      */
-	public void setCodigoResponsavelUltimaAtualizacao(int codigoResponsavelUltimaAtualizacao) {
+	public void setCodigoResponsavelUltimaAtualizacao(Integer codigoResponsavelUltimaAtualizacao) {
 		this.codigoResponsavelUltimaAtualizacao = codigoResponsavelUltimaAtualizacao;
 	}
 

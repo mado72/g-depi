@@ -1,12 +1,12 @@
-/**
- * 
- */
 package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 
 /**
- * @refactoredBy Marcelo Damasceno
+ * Fornece campos genéricos
+ * 
+ * @author Fábio Henrique fabio.almeida@cpmbraxis.com
+ * @author Marcelo Damasceno (refatorado)
  */
 public enum CamposGenericos implements IEntidadeCampo {
 
@@ -122,7 +122,7 @@ public enum CamposGenericos implements IEntidadeCampo {
      * Obter por nome.
      * @param nome Campo no banco.
      * @return DepartamentoCampo.
-     * @throws DEPIIntegrationException - Integra��o.
+     * @throws DEPIIntegrationException - Integração.
      */
 	public static DepartamentoCampo obterPorNome(String nome)
 	    throws DEPIIntegrationException {
@@ -132,6 +132,6 @@ public enum CamposGenericos implements IEntidadeCampo {
 				return campo;
 			}
 		}
-		throw new DEPIIntegrationException("N�o foi possivel localizar o enum: ".concat(nome));
+		throw new DEPIIntegrationException("Não foi possivel localizar o enum: ".concat(nome));
 	}
 }

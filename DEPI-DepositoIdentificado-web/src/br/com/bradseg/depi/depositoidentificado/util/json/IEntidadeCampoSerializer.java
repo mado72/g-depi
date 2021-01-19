@@ -10,6 +10,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
+/**
+ * Conversor JSON para {@link IEntidadeCampo}
+ *  
+ * @author Marcelo Damasceno
+ */
 public class IEntidadeCampoSerializer extends
 		JsonSerializer<IEntidadeCampo> {
 

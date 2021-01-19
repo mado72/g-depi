@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
+import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.concatenarComHifen;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,53 +93,58 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
 	}
 
 	@Override
-	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(int codigoCia,  int codigoDep, Double codigoUsuario, Tabelas e) {
+	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(int codigoCia,
+			int codigoDep, Double codigoUsuario, Tabelas e) {
 
 		return motivoDepositoDAO.obterComRestricaoDeGrupoAcesso(codigoCia, codigoDep, codigoUsuario, e);
 		
 	}
 	
     /**
-     * mÈtodo que valida as informaÁıes do vo
-     * @param vo - motivo depÛsito que ser· validado
+     * m√©todo que valida as informa√ß√µes do vo
+     * @param vo - motivo dep√≥sito que ser√° validado
      * @throws IntegrationException - trata erros
      */
     private void validaOperacao(MotivoDepositoVO vo) throws IntegrationException {
         if (vo.getDescricaoBasica() == null || vo.getDescricaoBasica().equals(ConstantesDEPI.VAZIO)) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO + " - " +  "DescriÁ„o B·sica");
+            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Descri√ß√£o B√°sica"));
         } else if (vo.getDescricaoBasica().length() > 20) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_CAMPO_EXCESSO  + " - " +  "DescriÁ„o B·sica" + " - " +  "20");
+            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_EXCESSO, "Descri√ß√£o B√°sica", "20"));
         }
         if (vo.getDescricaoDetalhada() == null || vo.getDescricaoDetalhada().equals(ConstantesDEPI.VAZIO)) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO  + " - " +  "DescriÁ„o Detalhada");
+            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO,  "Descri√ß√£o Detalhada"));
         } else if (vo.getDescricaoDetalhada().length() > 200) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_CAMPO_EXCESSO  + " - " +  "DescriÁ„o Detalhada" + " - " +  "200");
+            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_EXCESSO, "Descri√ß√£o Detalhada", "200"));
         }
         validaResponsavel(vo);
     }
 
     /**
-     * mÈtodo que valida o respons·vel do vo
-     * @param vo - motivo depÛsito que ser· validado
+     * m√©todo que valida o respons√°vel do vo
+     * @param vo - motivo dep√≥sito que ser√° validado
      * @throws IntegrationException - trata erros
      */
     private void validaResponsavel(MotivoDepositoVO vo) throws IntegrationException {
         if (BaseUtil.isNZB(vo.getCodigoResponsavelUltimaAtualizacao())) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO  + " - " + "CÛdigo do Respons·vel");
+            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "C√≥digo do Respons√°vel"));
         }
         if (vo.getCodigoResponsavelUltimaAtualizacao().doubleValue() > ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_CAMPO_EXCESSO + " - " + "CÛdigo do Respons·vel" + " - " + String.valueOf(ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO));
+			throw new IntegrationException(concatenarComHifen(
+					ConstantesDEPI.ERRO_CAMPO_EXCESSO, "C√≥digo do Respons√°vel",
+					String.valueOf(ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO)));
         }
     }
 
     /**
-     * mÈtodo que v·lida a chave prim·ria
-     * @param vo - objeto que ser· validado
+     * m√©todo que v√°lida a chave prim√°ria
+     * @param vo - objeto que ser√° validado
      * @throws IntegrationException - trata erros
      */
     private void validaChave(MotivoDepositoVO vo) throws IntegrationException {
         if (vo.getCodigoMotivoDeposito() == 0) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO  + " - " + "CÛdigo de Motivo de DepÛsito");
+			throw new IntegrationException(concatenarComHifen(
+					ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO,
+					"C√≥digo de Motivo de Dep√≥sito"));
         }
     }
 

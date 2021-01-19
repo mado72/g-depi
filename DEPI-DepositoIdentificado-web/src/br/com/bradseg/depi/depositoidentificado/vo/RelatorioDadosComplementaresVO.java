@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * Classe ManutencoesAnaliticoVO
  * @author Globality
  */
-public class RelatorioDadosComplementaresVO implements Comparable<RelatorioDadosComplementaresVO>, Serializable{
+public class RelatorioDadosComplementaresVO implements Serializable{
     
     
     /**
@@ -73,23 +73,6 @@ public class RelatorioDadosComplementaresVO implements Comparable<RelatorioDados
     private String descricaoCia;
     private String descricaoConta;
     private String codigoAutorizadorComDv;
-
-
-    /**
-     * 
-     * Método para comparação da classe utilizando o codigo da agencia 
-     * @param o ManutencoesAnaliticoVO 
-     * @return int
-     */
-	public int compareTo(RelatorioDadosComplementaresVO o){		
-        if (this.codigoAgencia < o.getCodigoAgencia()) {
-            return -1;
-        }
-        if (this.codigoAgencia > o.getCodigoAgencia()) {
-            return 1;
-        }
-        return 0;
-	}
 
 	/**
 	 * Retorna o valor do atributo codigoAutorizador.

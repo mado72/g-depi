@@ -36,8 +36,8 @@ public class BUCBBusinessDelegate   {
 	     * @throws br.com.bradseg.bsad.exception.IntegrationException 
 	     * @throws br.com.bradseg.bsad.exception.BusinessException 
 	     */
-	    @SuppressWarnings("unchecked")
-		public List listarPessoaPorFiltro(String ipCliente, String userID, ListarPessoaPorFiltroEntradaVO pessoa) {
+		@SuppressWarnings("deprecation")
+		public List<?> listarPessoaPorFiltro(String ipCliente, String userID, ListarPessoaPorFiltroEntradaVO pessoa) {
 	    	try {
 				return pessoaSessionFacade.listarPessoaPorFiltro(ipCliente, userID, pessoa);
 			} catch (br.com.bradseg.bsad.exception.IntegrationException e) {
@@ -62,7 +62,7 @@ public class BUCBBusinessDelegate   {
 	     * @throws br.com.bradseg.bsad.exception.IntegrationException
          * @throws BucValidacaoCamposException - BucValidacaoCamposException.
 	     */
-	    @SuppressWarnings("unchecked")
+		@SuppressWarnings("deprecation")
 		public InserirPessoaSaidaVO inserirPessoa(String ipCliente, String userID, InserirPessoaEntradaVO pessoa)  {
 	        try {
 	            return pessoaSessionFacade.inserirPessoa(ipCliente, userID, pessoa);
@@ -86,7 +86,7 @@ public class BUCBBusinessDelegate   {
 	     * @throws br.com.bradseg.bsad.exception.IntegrationException 
 	     * @throws br.com.bradseg.bsad.exception.BusinessException 
 	     */
-	    @SuppressWarnings("unchecked")
+		@SuppressWarnings("deprecation")
 		public ListarPessoaIDVO listarDadosPessoa(String ipCliente, String userID, long codigoPessoa)  {
 	        ListarPessoaIDVO p = new ListarPessoaIDVO();
 	        p.setCodigoPessoa(codigoPessoa);

@@ -51,12 +51,12 @@ public class BancoVO implements Serializable {
     private String tabelaErro;
 
     /**
-     * Indica se o elemento foi excluído ou não
+     * Indica se o elemento foi excluï¿½do ou nï¿½o
      */
 //    @CicsField(order = 10, size = 1)
     private String cdExcluido;
     /**
-     * Indica se o elemento foi encontrado ou não
+     * Indica se o elemento foi encontrado ou nï¿½o
      */
 //    @CicsField(order = 11, size = 1)
     private String cdExiste;
@@ -90,7 +90,7 @@ public class BancoVO implements Serializable {
     private String fillerFinal = "";
 
     /**
-     * Campos que faltam, mas o sistema não precisa deles.
+     * Campos que faltam, mas o sistema nï¿½o precisa deles.
      */
     // 05 WS-DATA-CADASTRO-BANCO PIC X(10).
     // 05 WS-CD-RESP-BANCO PIC X(8).
@@ -409,7 +409,7 @@ public class BancoVO implements Serializable {
     }
 
     /**
-     * Construtor por Código usando Código Externo de banco.
+     * Construtor por CÃ³digo usando CÃ³digo Externo de banco.
      * @param cdBancoExterno - String.
      * @return BancoVO.
      */

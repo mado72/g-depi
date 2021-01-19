@@ -16,8 +16,6 @@ import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
  * 
@@ -40,45 +38,47 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 	/**
      * código do evento contábil.
      */
-	private final int CODIGO_EVENTO_CONTABIL = 361;
+	private static final int CODIGO_EVENTO_CONTABIL = 361;
 
 	/**
      * código do evento contábil.
      */
-	private final int CODIGO_ITEM_CONTABIL = 472;
+	private static final int CODIGO_ITEM_CONTABIL = 472;
 
 	
-	private MotivoDepositoEditarForm _model;
+	private MotivoDepositoEditarForm model;
 	
 	@Autowired
-	private MotivoDepositoFacade facade;
+	private transient MotivoDepositoFacade facade;
 	
 	@Override
 	public MotivoDepositoEditarForm getModel() {
 		if (sessionData.containsKey(ACTION_NAME)) {
-			_model = (MotivoDepositoEditarForm) sessionData.get(ACTION_NAME);
+			model = (MotivoDepositoEditarForm) sessionData.get(ACTION_NAME);
 		}
 		else {
 			this.novaInstanciaModel();
 		}
-		return _model;
+		return model;
 	}
 	
 	@Override
 	protected void novaInstanciaModel() {
-		_model = new MotivoDepositoEditarForm();
-		sessionData.put(ACTION_NAME, _model);
+		model = new MotivoDepositoEditarForm();
+		sessionData.put(ACTION_NAME, model);
+	}
+	
+	public String exibir() {
+		return INPUT;
 	}
 	
 	/**
 	 * Apenas redireciona a saída para INPUT. Usado para apresentar o
 	 * formulário armazenado na sessão.
 	 * 
-	 * @return {@link Action#INPUT}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String novo() {
-		clearData();
-		
 		getModel().setDetalhar(false);
 		
 		setSubtituloChave(TITLE_DEPOSITO_NOVO);
@@ -106,7 +106,7 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 	 * para identificar se é para salvar (inclusão ou alteração), cancelar ou
 	 * voltar.
 	 * 
-	 * @return {@link Action#SUCCESS} quando for processado corretamente.
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS} quando for processado corretamente.
 	 */
 	public String enviar() {
 		MotivoDepositoEditarForm model = getModel();
@@ -115,15 +115,18 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 			persistirDados();
 		}
 		
-		if ("excluir".equals(model.getAcao())) {
-			excluirRegistros();
-		}
-
+		return SUCCESS;
+	}
+	
+	public String excluir() {
+		excluirRegistros();
+		
 		return SUCCESS;
 	}
 
 	private void persistirDados() {
 		MotivoDepositoEditarForm model = getModel();
+		
 		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
 	
 		MotivoDepositoVO instancia;
@@ -166,6 +169,8 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		for (String codigo : codigos) {
 			MotivoDepositoVO vo = new MotivoDepositoVO();
 			vo.setCodigoMotivoDeposito(new Integer(codigo));
+			
+			vo = facade.obterPorChave(vo);
 			lista.add(vo);
 		}
 		

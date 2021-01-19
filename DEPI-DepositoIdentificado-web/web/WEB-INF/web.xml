@@ -160,7 +160,7 @@
 	<resource-ref id="ResourceRef_1391530093040">
 		<description>
 		</description>
-		<res-ref-name>eis/CICSConnectionFactoryRef</res-ref-name>
+		<res-ref-name>eis/DEPI-DepositoIdentificado</res-ref-name>
 		<res-type>javax.resource.cci.ConnectionFactory</res-type>
 		<res-auth>Container</res-auth>
 		<res-sharing-scope>Shareable</res-sharing-scope>
@@ -172,7 +172,7 @@
 	</resource-env-ref>
 	
 	<resource-ref id="ResourceRef_1244470445292">
-		<res-ref-name>url/www3Ref</res-ref-name>
+		<res-ref-name>url/www3</res-ref-name>
 		<res-type>java.net.URL</res-type>
 		<res-auth>Container</res-auth>
 		<res-sharing-scope>Shareable</res-sharing-scope>
@@ -180,7 +180,7 @@
 	
 	<resource-ref id="ResourceRef_1547660949546">
 		<description></description>
-		<res-ref-name>url/IBusc2ref</res-ref-name>
+		<res-ref-name>url/IBusc2</res-ref-name>
 		<res-type>java.net.URL</res-type>
 		<res-auth>Container</res-auth>
 		<res-sharing-scope>Shareable</res-sharing-scope>

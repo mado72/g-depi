@@ -9,7 +9,6 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
@@ -60,7 +59,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 			params.addValue("whr1", vo.getDepto().getCodigoDepartamento());
 			params.addValue("whr2", vo.getCia().getCodigoCompanhia());
 
-			List<GrupoAcessoVO> grupoAcessoVO = (List<GrupoAcessoVO>) getJdbcTemplate() .query(query.toString(), params, new GrupoAcessoDataMapper());
+			List<GrupoAcessoVO> grupoAcessoVO = getJdbcTemplate() .query(query.toString(), params, new GrupoAcessoDataMapper());
 
             if (!grupoAcessoVO.isEmpty()) {
 
@@ -71,7 +70,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
                 				.append(" Grupo de Acesso: ")
                 				.append(grupoCadastrado.getCodigoGrupoAcesso())
                 				.append(" - ").append(grupoCadastrado.getNomeGrupoAcesso())
-                				.append(" já cadastrado para a Cia: ")
+                				.append(" jï¿½ cadastrado para a Cia: ")
                 				.append(grupoCadastrado.getCia().getCodigoCompanhia())
                 				.append(" e Departamento: ")
                 				.append(grupoCadastrado.getDepto().getSiglaDepartamento()).toString());
@@ -91,7 +90,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             if (count > 0) {
                 vo.setCodigoGrupoAcesso(grupoAcessoVO.get(0).getCodigoGrupoAcesso());
             } else {
-                throw new IntegrationException(ConstantesDEPI.ERRO_CUSTOMIZADA + " - " + "Não foi possível incluir o Grupo de Acesso.");
+                throw new IntegrationException(ConstantesDEPI.ERRO_CUSTOMIZADA + " - " + "Nï¿½o foi possï¿½vel incluir o Grupo de Acesso.");
             }
 
             StringBuilder queryAlocar = new StringBuilder(QuerysDepi.GRUPOACESSO_ALOCARFUNCIONARIO);
@@ -112,8 +111,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     }
 
     /**
-     * Atualizar grupo de acesso. Obtém os usuários. Para cada usuário obtido, verificar se o mesmo existe na nova lista. Para cada
-     * usuário obtivo, inclui ou exclui de acordo com a existência na nova lista de usuários. | *
+     * Atualizar grupo de acesso. Obtï¿½m os usuï¿½rios. Para cada usuï¿½rio obtido, verificar se o mesmo existe na nova lista. Para cada
+     * usuï¿½rio obtivo, inclui ou exclui de acordo com a existï¿½ncia na nova lista de usuï¿½rios. | *
      * @param vo - GrupoAcessoVO.
      */
     @Override
@@ -128,30 +127,30 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             List<UsuarioVO> usuariosAtuais = BaseDAOFactoryDB2.getBaseDAOFactory().createUsuarioDAO().obterPorGrupoAcesso(vo);
 
             //**
-            // * Proteção da rotina.
+            // * Proteï¿½ï¿½o da rotina.
             // *
             if (vo.getCodigoGrupoAcesso() <= 0) {
-                throw new IntegrationException("Código Grupo de Acesso inválido na atualização.");
+                throw new IntegrationException("CÃ³digo Grupo de Acesso invï¿½lido na atualizaï¿½ï¿½o.");
             }
 
             if (vo.getUsuarios() == null) {
-                throw new IntegrationException("Lista de usuários inválida na atualização.");
+                throw new IntegrationException("Lista de usuï¿½rios invï¿½lida na atualizaï¿½ï¿½o.");
             }
 
             if (vo.getCodigoResponsavelUltimaAtualizacao().doubleValue() <= 0) {
-                throw new IntegrationException("Código do responsável pela última atualização inválido na atualização.");
+                throw new IntegrationException("CÃ³digo do responsï¿½vel pela ï¿½ltima atualizaï¿½ï¿½o invï¿½lido na atualizaï¿½ï¿½o.");
             }
 
             ds = getDAO().getDataSource();
             conn = ds.getConnection();
 
             //**
-            //* desaloca usuários.
+            //* desaloca usuï¿½rios.
             //*
             boolean encontrado = false;
             for (UsuarioVO usuarioAtual : usuariosAtuais) {
                 //**
-                // * Entre os novos usuários, existem os que já estavam no grupo ?
+                // * Entre os novos usuï¿½rios, existem os que jï¿½ estavam no grupo ?
                 //*
                 for (UsuarioVO novoUsuario : vo.getUsuarios()) {
                     if (usuarioAtual.equals(novoUsuario)) {
@@ -171,7 +170,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             }
 
             //**
-            //* Alocação dos usuários novos.
+            //* Alocaï¿½ï¿½o dos usuï¿½rios novos.
             //*
             for (UsuarioVO usr : vo.getUsuarios()) {
 
@@ -217,7 +216,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     }
 
     /**
-     * Método de obter por filtro um Grupo de Usuário
+     * MÃ©todo de obter por filtro um Grupo de Usuï¿½rio
      * @param filtro - filtro CriterioFiltroUtil
      * @return List - Lista de GrupoAcessoVO
      */
@@ -281,7 +280,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     	beginMethod(LOGGER, "desalocarUsuarios(GrupoAcessoVO grupo)"); 
         try {
 	        **
-	         * Alterar Desaloca usuários na alteração, pois a lista de usuários não é enviada.
+	         * Alterar Desaloca usuï¿½rios na alteraï¿½ï¿½o, pois a lista de usuï¿½rios nï¿½o ï¿½ enviada.
 	         *
 	        alterar(grupo); 
         } finally {
@@ -303,7 +302,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             conn = ds.getConnection();
 
             **
-             * Desalocar Usuários.
+             * Desalocar Usuï¿½rios.
              *
             desalocarUsuarios(grupo);
 

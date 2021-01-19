@@ -49,7 +49,7 @@
 	<import resource="classpath*:META-INF/bsad/spring/AppContext-WebServices.xml" />
 
 	<bean id="cors-filter" class="org.apache.cxf.rs.security.cors.CrossOriginResourceSharingFilter"/>
- 
+	
     <jaxrs:server id="servicosServer" address="/servicos" >  
        <jaxrs:serviceBeans>
           <ref bean="servicos" /> 
@@ -81,10 +81,10 @@
 	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/DEPI-DepositoIdentificado" resource-ref="true" lookup-on-startup="true" /> 
 	
 	<!-- Pegando um objeto URL para o caminho das imagens e do CSS do servidor através de um JNDI -->
-	<jee:jndi-lookup id="www3" jndi-name="url/www3Ref" resource-ref="true" lookup-on-startup="true" /> 
+	<jee:jndi-lookup id="www3" jndi-name="url/www3" resource-ref="true" lookup-on-startup="true" /> 
 	
 	<!-- Pegando um objeto URL para CBBS-Pagamento através de um JNDI -->
-	<jee:jndi-lookup id="IBusc2" jndi-name="url/IBusc2ref" resource-ref="true" lookup-on-startup="true" />
+	<jee:jndi-lookup id="IBusc2" jndi-name="url/IBusc2" resource-ref="true" lookup-on-startup="true" />
 
 	<!--
 		Habilitar BSAD Mobile

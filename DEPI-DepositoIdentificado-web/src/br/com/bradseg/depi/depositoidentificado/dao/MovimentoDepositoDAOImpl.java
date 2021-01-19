@@ -1,6 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
 import java.sql.SQLException;
+
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -9,13 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import br.com.bradseg.bsad.framework.core.exception.BusinessException;
+import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.MovimentoDepositoVO;
-
-
-import br.com.bradseg.bsad.framework.core.exception.BusinessException;
-import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 
 /**
  * A(O) Class ParametroDepositoDAOImpl.
@@ -30,8 +29,8 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
 	@Autowired
 	private DataSource dataSource;
 	
-	/** A(O) map sql parameter source. */
-	private MapSqlParameterSource mapSqlParameterSource;
+//	/** A(O) map sql parameter source. */
+//	private MapSqlParameterSource mapSqlParameterSource;
 	
 
 	/* (non-Javadoc)
@@ -53,7 +52,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
 			MapSqlParameterSource params = new MapSqlParameterSource();
 
 			/**
-             * Atentar que são regras para incluir na tabela e não regras de negocio.
+             * Atentar que sï¿½o regras para incluir na tabela e nï¿½o regras de negocio.
              */
 			
             params.addValue("prm1", vo.getCodigoMovimento());
@@ -77,7 +76,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
             Integer num = getJdbcTemplate().update(QuerysDepi.DEPOSITO_MOVIMENTO_INSERT, params);
             
             if (num == 0) {
-                throw new BusinessException("A atualização não afetou nenhum registro.");
+                throw new BusinessException("A atualizaï¿½ï¿½o nï¿½o afetou nenhum registro.");
             }
 
         } catch (SQLException e) {
@@ -88,7 +87,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
     }
 
     /**
-     * Inserir Movimento Existe regras de inclusão. {@inheritDoc}
+     * Inserir Movimento Existe regras de inclusï¿½o. {@inheritDoc}
      */
     @Override
     public void alterar(MovimentoDepositoVO vo)  {
@@ -99,7 +98,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			
             /**
-             * Atentar que são regras para incluir na tabela e não regras de negocio.
+             * Atentar que sï¿½o regras para incluir na tabela e nï¿½o regras de negocio.
              */
             params.addValue("prm1", vo.getIndicacaoAcao());
 
@@ -120,7 +119,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
             Integer num = getJdbcTemplate().update(QuerysDepi.DEPOSITO_MOVIMENTO_UPDATE, params);
             
             if (num == 0) {
-                throw new BusinessException("A atualização não afetou nenhum registro.");
+                throw new BusinessException("A atualizaï¿½ï¿½o nï¿½o afetou nenhum registro.");
             }
 
         } catch (SQLException e) {

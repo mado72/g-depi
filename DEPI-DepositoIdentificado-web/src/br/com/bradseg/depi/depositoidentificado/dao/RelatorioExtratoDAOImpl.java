@@ -43,8 +43,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 		}
 
     /**
-     * Método obterDadosAnalitico
-     * @param filtro do relatório
+     * MÃ©todo obterDadosAnalitico
+     * @param filtro do relatÃ³rio
      * @return List<RelatorioEnvioRetornoAnaliticoVO>
      */
     public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro){
@@ -113,13 +113,13 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
                 f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
                 f.setCodigoTipoPesquisa(1);
                 f.setDataNascimento(0);
-                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // é cnpj
+                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // ï¿½ cnpj
                     f.setCodigoTipoPessoa(4);
                 } else {
                     f.setCodigoTipoPessoa(3);
                 }
 
-               List lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
+               List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
                 if (lista.isEmpty()) {
                     StringBuilder in = new StringBuilder("(");
                     String token = "";
@@ -138,7 +138,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
             } 
 
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
-            relatorio = (List<RelatorioEnvioRetornoAnaliticoVO>) getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoAnaliticoDataMapper());
+            relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoAnaliticoDataMapper());
 
 
         }  finally {
@@ -149,13 +149,13 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
     }
 
     /**
-     * Método obterDadosSintetico
-     * @param filtro do relatório
+     * MÃ©todo obterDadosSintetico
+     * @param filtro do relatÃ³rio
      * @return List<RelatorioExtratoAnaliticoVO>
      */
     public List<RelatorioExtratoSinteticoVO> obterDadosSintetico(FiltroUtil filtro){
 
-    	List lista  = null; 
+    	List<?> lista  = null; 
     	
     	BUCBBusinessDelegate bucb = new BUCBBusinessDelegate() ;
     	
@@ -223,7 +223,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
                 f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
                 f.setCodigoTipoPesquisa(1);
                 f.setDataNascimento(0);
-                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // é cnpj
+                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // ï¿½ cnpj
                     f.setCodigoTipoPessoa(4);
                 } else {
                     f.setCodigoTipoPessoa(3);
@@ -249,7 +249,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
             } 
 
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
-            relatorio = (List<RelatorioExtratoSinteticoVO>) getJdbcTemplate().query(query.toString(), params, new RelatorioExtratoSinteticoDataMapper());
+            relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioExtratoSinteticoDataMapper());
 
         }  finally {
         	LOGGER.info("RelatorioExtratoSinteticoVO(FiltroUtil filtro) - termino com sucesso"); 

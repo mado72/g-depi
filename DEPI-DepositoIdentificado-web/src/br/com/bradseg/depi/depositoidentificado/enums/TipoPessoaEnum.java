@@ -7,15 +7,15 @@ package br.com.bradseg.depi.depositoidentificado.enums;
  */
 public enum TipoPessoaEnum {
 
-	FISICA(1,"F","Física"),
-	JURIDICA(2,"J","Jurídica");
+	FISICA(1,"F","Fï¿½sica"),
+	JURIDICA(2,"J","Jurï¿½dica");
 
 	private String descricaoTipoPessoa;
 	private String siglaTipoPessoa;
 	private Integer codigoTipoPessoa;
 
 	/**
-	 * Método construtor
+	 * MÃ©todo construtor
 	 * 
 	 * @param descricaoTipoPessoa
 	 * @param codigoTipoPessoa
@@ -89,9 +89,9 @@ public enum TipoPessoaEnum {
 	}
 
 	/**
-	 * Método responsável por retornar o enum do tipo de pessoa
+	 * MÃ©todo responsï¿½vel por retornar o enum do tipo de pessoa
 	 * 
-	 * @param codigoTipoPessoa - código do Tipo de Pessoa
+	 * @param codigoTipoPessoa - cï¿½digo do Tipo de Pessoa
 	 * @return TipoPessoa - objeto Enum para TipoPessoa
 	 */
 	public static TipoPessoaEnum getTipoPessoaEnum(Integer codigoTipoPessoa) {
@@ -109,15 +109,15 @@ public enum TipoPessoaEnum {
 	}
 	
 	/**
-	 * Método utilizado para confirmar se o tipo do enum é PF
-	 * @return boolean - booleano informando se a pessoa é física
+	 * MÃ©todo utilizado para confirmar se o tipo do enum ï¿½ PF
+	 * @return boolean - booleano informando se a pessoa ï¿½ fï¿½sica
 	 */
 	public boolean isFisica(){		
 		return FISICA.getCodigo().equals(this.codigoTipoPessoa); 
 	}
 	/**
-	 * Método utilizado para confirmar se o tipo do enum é PJ
-	 * @return boolean - booleano informando se a pessoa é física
+	 * MÃ©todo utilizado para confirmar se o tipo do enum ï¿½ PJ
+	 * @return boolean - booleano informando se a pessoa ï¿½ fï¿½sica
 	 */
 	public boolean isJuridica(){		
 		return JURIDICA.getCodigo().equals(this.codigoTipoPessoa); 

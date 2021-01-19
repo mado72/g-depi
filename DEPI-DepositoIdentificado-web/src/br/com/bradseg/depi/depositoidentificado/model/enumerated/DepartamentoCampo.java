@@ -1,6 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
@@ -9,14 +10,14 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 /**
  * Enumerator dos campos de filtro de Departamento
  * @author fabio.pinto
- * @refactor Fábio Henrique - fabio.almeida@cpmbraxis.com.
+ * @author Fï¿½bio Henrique - fabio.almeida@cpmbraxis.com.
  */
 public enum DepartamentoCampo implements IEntidadeCampo {
 
     /**
-     * Código
+     * CÃ³digo
      */
-    Codigo(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, "Código Departamento", TipoCampo.NUM, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    Codigo(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, "CÃ³digo Departamento", TipoCampo.NUM, ConstantesDEPI.SIZE_NAO_DEFINIDO),
     /**
      * Sigla
      */
@@ -84,7 +85,7 @@ public enum DepartamentoCampo implements IEntidadeCampo {
      * Obter por nome.
      * @param nome Campo no banco.
      * @return DepartamentoCampo.
-     * @throws DEPIIntegrationException - Integração.
+     * @throws DEPIIntegrationException - Integraï¿½ï¿½o.
      */
     public static DepartamentoCampo obterPorNome(String nome) throws DEPIIntegrationException {
         for (DepartamentoCampo campo : DepartamentoCampo.values()) {
@@ -92,7 +93,7 @@ public enum DepartamentoCampo implements IEntidadeCampo {
                 return campo;
             }
         }
-        throw new DEPIIntegrationException("Não foi possivel localizar o enum: ".concat(nome));
+        throw new DEPIIntegrationException("Nï¿½o foi possivel localizar o enum: ".concat(nome));
     }
 
     /**
@@ -123,18 +124,14 @@ public enum DepartamentoCampo implements IEntidadeCampo {
      * Retorna valores da combo de consulta.
      * @return DepartamentoCampo[].
      */
-    public static DepartamentoCampo[] valuesForCriteria() {
+    public static List<DepartamentoCampo> valuesForCriteria() {
         List<DepartamentoCampo> list = new ArrayList<DepartamentoCampo>();
         for (DepartamentoCampo campo : DepartamentoCampo.values()) {
             if (!campo.equals(Codigo)) {
                 list.add(campo);
             }
         }
-        DepartamentoCampo[] deps = new DepartamentoCampo[list.size()];
-        for (int i = 0; i < deps.length; i++) {
-            deps[i] = list.get(i);
-        }
-        return deps;
+        return Collections.unmodifiableList(list);
     }
 
     /**

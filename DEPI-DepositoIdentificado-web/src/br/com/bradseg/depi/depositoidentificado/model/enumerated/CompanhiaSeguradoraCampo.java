@@ -7,19 +7,19 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
  * Enumerator dos campos de filtro de CompanhiaSeguradoraCampo
- * @refactor Fábio Henrique - fabio.almeida@cpmbraxis.com
+ * @author Fï¿½bio Henrique - fabio.almeida@cpmbraxis.com
  */
 public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
 
     /**
-     * Código Companhia
+     * CÃ³digo Companhia
      */
-    CodigoCompanhia(ConstantesDEPI.TABELA_CIA_ID, "Código Companhia", TipoCampo.NUM, false, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    CodigoCompanhia(ConstantesDEPI.TABELA_CIA_ID, "CÃ³digo Companhia", TipoCampo.NUM, false, ConstantesDEPI.SIZE_NAO_DEFINIDO),
 
     /**
-     * Descrição Companhia.
+     * Descriï¿½ï¿½o Companhia.
      */
-    DescricaoCompanhia(ConstantesDEPI.TABELA_CIA_NOME, "Descrição Companhia", TipoCampo.ALFA_OBRIG, true,
+    DescricaoCompanhia(ConstantesDEPI.TABELA_CIA_NOME, "Descriï¿½ï¿½o Companhia", TipoCampo.ALFA_OBRIG, true,
         ConstantesDEPI.SIZE_NAO_DEFINIDO);
 
     private String nome;
@@ -37,7 +37,7 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
      * @param nome Campo no banco
      * @param descricao Descricao do campo
      * @param tipoCampo Tipo do campo
-     * @param cics - se é consultado a partir do cics.
+     * @param cics - se ï¿½ consultado a partir do cics.
      * @param size - int.
      */
     CompanhiaSeguradoraCampo(String nome, String descricao, TipoCampo tipoCampo, boolean cics, int size) {

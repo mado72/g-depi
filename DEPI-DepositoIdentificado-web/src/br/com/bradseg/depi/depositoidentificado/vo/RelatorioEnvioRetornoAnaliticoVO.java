@@ -7,7 +7,7 @@ import java.util.Date;
  * Classe RelatorioEnvioRetornoAnaliticoVO.
  * @author fabio.almeida@cpmbraxis.com.
  */
-public class RelatorioEnvioRetornoAnaliticoVO implements Comparable<RelatorioEnvioRetornoAnaliticoVO>, Serializable{
+public class RelatorioEnvioRetornoAnaliticoVO implements Serializable{
 
     
     /**
@@ -472,22 +472,6 @@ public class RelatorioEnvioRetornoAnaliticoVO implements Comparable<RelatorioEnv
     public void setCodigoPessoa(Long codigoPessoa) {
         this.codigoPessoa = codigoPessoa;
     }
-
-    /**
-     * 
-     * Método para comparação da classe utilizando o codigo da agencia 
-     * @param o - RelatorioEnvioRetornoAnaliticoVO
-     * @return int
-     */
-	public int compareTo(RelatorioEnvioRetornoAnaliticoVO o) {		
-        if (this.codigoAgencia < o.getCodigoAgencia()) {
-            return -1;
-        }
-        if (this.codigoAgencia > o.getCodigoAgencia()) {
-            return 1;
-        }
-        return 0;
-	}
 
     /**
      * Retorna o codigoDigitoIdentificador.

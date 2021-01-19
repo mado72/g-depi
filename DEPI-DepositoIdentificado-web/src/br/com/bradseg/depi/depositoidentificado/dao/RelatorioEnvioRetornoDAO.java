@@ -13,17 +13,17 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoSintetic
 
 public interface RelatorioEnvioRetornoDAO {
     /**
-     * Método obterDadosAnalitico
-     * @param filtro do relatório
-     * @throws IntegrationException - trata erro de negócio
+     * MÃ©todo obterDadosAnalitico
+     * @param filtro do relatÃ³rio
+     * @throws IntegrationException - trata erro de negï¿½cio
      * @return List<DadosEnvioRetornoAnaliticoVO>
      */
     List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro);
 
     /**
-     * Método obterDadosSintetico
-     * @param filtro do relatório
-     * @throws IntegrationException - trata erro de negócio
+     * MÃ©todo obterDadosSintetico
+     * @param filtro do relatÃ³rio
+     * @throws IntegrationException - trata erro de negï¿½cio
      * @return List<DadosEnvioRetornoSinteticoVO>
      */
     List<RelatorioEnvioRetornoSinteticoVO> obterDadosSintetico(FiltroUtil filtro);

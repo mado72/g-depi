@@ -7,14 +7,14 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
  * Enumerator dos campos de filtro de Deposito
- * @refactor Fábio Henrique
+ * @author Fï¿½bio Henrique
  */
 public enum DepositoCampo implements IEntidadeCampo {
 
     /**
      * Cia.
      */
-    CodigoAutorizador(ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO_ID, "Código Autorizador", TipoCampo.NUM, false,
+    CodigoAutorizador(ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO_ID, "CÃ³digo Autorizador", TipoCampo.NUM, false,
         ConstantesDEPI.SIZE_NAO_DEFINIDO),
 
     /**
@@ -23,11 +23,11 @@ public enum DepositoCampo implements IEntidadeCampo {
     CodigoCia(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, CompanhiaSeguradoraCampo.CodigoCompanhia),
 
     /**
-     * Descrição Cia. DescricaoCia(CompanhiaSeguradoraCampo.DescricaoCompanhia),
+     * Descriï¿½ï¿½o Cia. DescricaoCia(CompanhiaSeguradoraCampo.DescricaoCompanhia),
      */
 
     /**
-     * Código Departamento.
+     * CÃ³digo Departamento.
      */
     CodigoDepartamento(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, DepartamentoCampo.Codigo),
 
@@ -42,12 +42,12 @@ public enum DepositoCampo implements IEntidadeCampo {
     NomeDepartamento(DepartamentoCampo.Nome),
 
     /**
-     * Código Motivo.
+     * CÃ³digo Motivo.
      */
     CodigoMotivo(ConstantesDEPI.TABELA_MOTIVO_ID, MotivoDepositoCampo.Codigo),
 
     /**
-     * Motivo Depósito.
+     * Motivo Depï¿½sito.
      */
     MotivoDepositoDescricaoBasica(MotivoDepositoCampo.DescricaoBasica),
 
@@ -133,7 +133,7 @@ public enum DepositoCampo implements IEntidadeCampo {
 
     /**
      * @param nome - String - nome do campo
-     * @param descricao - String - descrição exibida.
+     * @param descricao - String - descriï¿½ï¿½o exibida.
      * @param tipoCampo - String - tipo do campo.
      * @param cics - boolean.
      * @param size - int
@@ -164,7 +164,7 @@ public enum DepositoCampo implements IEntidadeCampo {
     
     /**
      * retorna o elemento
-     * @param descricao - descrição de motivo depósito
+     * @param descricao - descriï¿½ï¿½o de motivo depï¿½sito
      * @return - retorna o elemento do campo
      */
     public static DepositoCampo obterPorDescricao(String descricao) {

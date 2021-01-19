@@ -16,13 +16,8 @@
 </table>
 </span>
 </s:if>
-
 <s:form action="enviar">
-	<s:hidden property="acaoAnterior" />
-	<s:hidden property="codigoMotivoDeposito" />
-	<s:hidden property="postBack" value="S" />
-
-
+<s:hidden name="codigo"/>
 	<table id="tabela_interna">
 	<caption>
 		<span class="obrigatorio"><s:text name="label.campos.obrigatorios" /></span>
@@ -36,13 +31,13 @@
 		<tr>
 			<td class="td_label" ><s:text name="label.cadastro.motivodeposito.descricaoBasica" /><span class="obrigatorio">*</span></td>
 			<td colspan="3" >
-				<s:textfield tabindex="1" key="descricaoBasica" styleClass="input" style="text-transform: uppercase;"  maxlength="20" size="26" disabled="detalhar"/>
+				<s:textfield tabindex="1" name="descricaoBasica" styleClass="input" style="text-transform: uppercase;"  maxlength="20" size="26" disabled="detalhar"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.cadastro.motivodeposito.descricaoDetalhada" /><span class="obrigatorio">*</span></td>
 			<td colspan="3">
-				<s:textarea key="model.descricaoDetalhada" rows="5" tabindex="2" cols="70" style="text-transform: uppercase;" readonly="detalhar"/>
+				<s:textarea name="model.descricaoDetalhada" rows="5" tabindex="2" cols="70" style="text-transform: uppercase;" readonly="detalhar"/>
 			</td>
 		</tr>
 	</tbody>

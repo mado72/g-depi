@@ -8,17 +8,17 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 /**
  * Classe Enum ParametroDepositoCampo
  * @author igor.almeida
- * @refactor Fábio Henrique
+ * @author Fï¿½bio Henrique
  */
 
 public enum ParametroDepositoCampo implements IEntidadeCampo {
     /**
-     * Código Departamento.
+     * CÃ³digo Departamento.
      */
     DepartamentoCodigo(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, DepartamentoCampo.Codigo),
 
     /**
-     * Código Cia
+     * CÃ³digo Cia
      */
     CodigoCia(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, CompanhiaSeguradoraCampo.CodigoCompanhia),
 
@@ -31,11 +31,11 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
      */
     DepartamentoNome(DepartamentoCampo.Nome),
     /**
-     * Descrição Básica do Motivo
+     * Descriï¿½ï¿½o Bï¿½sica do Motivo
      */
     MotivoDescricaoBasica(MotivoDepositoCampo.DescricaoBasica),
     /**
-     * Descrição Detalhada do Motivo
+     * Descriï¿½ï¿½o Detalhada do Motivo
      */
     MotivoDescricaoDetalhada(MotivoDepositoCampo.DescricaoDetalhada);
 
@@ -93,7 +93,7 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
     }
 
     /**
-     * Altera descrição
+     * Altera descriï¿½ï¿½o
      * @param descricao descricao
      */
     public void setDescricao(String descricao) {
@@ -118,7 +118,7 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
 
     /**
      * retorna o nome
-     * @param nome - nome do campo de parametro depósito
+     * @param nome - nome do campo de parametro depï¿½sito
      * @return retorna o nome campo
      */
     public static ParametroDepositoCampo obterPorNome(String nome) {
@@ -133,7 +133,7 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
     }
 
     /**
-     * Retorna descrição
+     * Retorna descriï¿½ï¿½o
      * @return descricao
      */
     public String getDescricao() {

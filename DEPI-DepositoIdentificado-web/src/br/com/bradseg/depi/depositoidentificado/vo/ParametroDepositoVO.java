@@ -12,19 +12,19 @@ public class ParametroDepositoVO implements Serializable {
     private static final long serialVersionUID = 5987719912367700030L;
 
     /**
-     * Código da Companhia - obtido atraves da classe
+     * CÃ³digo da Companhia - obtido atraves da classe
      */
 //    @TableField(name = ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, converter = CompanhiaSeguradoraVOPersistenceConverter.class)
     private CompanhiaSeguradoraVO companhia = new CompanhiaSeguradoraVO();
 
     /**
-     * Código do departamento - DepartamentoVO obtido atraves da classe DepartamentoConverter
+     * CÃ³digo do departamento - DepartamentoVO obtido atraves da classe DepartamentoConverter
      */
 //    @TableField(name = ConstantesDEPI.TABELA_DEPARTAMENTO_ID, converter = DepartamentoConverter.class)
     private DepartamentoVO departamento = new DepartamentoVO();
 
     /**
-     * Código do motivo - MotivoVO obtido através da classe MotivoDepositoConverter.
+     * CÃ³digo do motivo - MotivoVO obtido atravï¿½s da classe MotivoDepositoConverter.
      */
 //    @TableField(name = ConstantesDEPI.TABELA_MOTIVO_ID, converter = MotivoDepositoConverter.class)
     private MotivoDepositoVO motivoDeposito = new MotivoDepositoVO();
@@ -60,13 +60,13 @@ public class ParametroDepositoVO implements Serializable {
     }
 
     /**
-     * Código Retirada BancoVO Após Vencimento.
+     * CÃ³digo Retirada BancoVO Apï¿½s Vencimento.
      */
 //    @TableField(name = "CIND_DEP_APOS_VCTO")
     private String codigoBancoVencimento = "S";
 
     /**
-     * Descricao Retirada BancoVO Após Vencimento.
+     * Descricao Retirada BancoVO Apï¿½s Vencimento.
      */
     private String descricaoBancoVencimento;
 
@@ -77,37 +77,37 @@ public class ParametroDepositoVO implements Serializable {
     private int numeroDiasAposVencimento;
 
     /**
-     * Código ItemContabil
+     * CÃ³digo ItemContabil
      */
 //    @TableField(name = "CIND_ITEM_APOLC")
     private String codigoItem = "S";
 
     /**
-     * Código Ramo
+     * CÃ³digo Ramo
      */
 //    @TableField(name = "CIND_RAMO_OBRIG")
     private String codigoRamo = "S";
 
     /**
-     * Código Tipo
+     * CÃ³digo Tipo
      */
 //    @TableField(name = "CIND_TPO_DOCTO")
     private String codigoTipo = "S";
 
     /**
-     * Código Sucursal
+     * CÃ³digo Sucursal
      */
 //    @TableField(name = "CIND_SUCUR_OBRIG")
     private String codigoSucursal = "S";
 
     /**
-     * Código Protocolo
+     * CÃ³digo Protocolo
      */
 //    @TableField(name = "CIND_PROT")
     private String codigoProtocolo = "S";
 
     /**
-     * Código Apólice
+     * CÃ³digo Apï¿½lice
      */
 //    @TableField(name = "CIND_APOLC_OBRIG")
     private String codigoApolice = "S";
@@ -119,37 +119,37 @@ public class ParametroDepositoVO implements Serializable {
     private String codigoCpfCnpj = "S";
 
     /**
-     * Código Dossie
+     * CÃ³digo Dossie
      */
 //    @TableField(name = "CIND_PROCS_OBRIG")
     private String codigoDossie = "S";
 
     /**
-     * Código Bloqueto
+     * CÃ³digo Bloqueto
      */
 //    @TableField(name = "CIND_BLETO_OBRIG")
     private String codigoBloqueto = "S";
 
     /**
-     * Código Endosso
+     * CÃ³digo Endosso
      */
 //    @TableField(name = "CIND_ENDSS_OBRIG")
     private String codigoEndosso = "S";
 
     /**
-     * Código Parcela
+     * CÃ³digo Parcela
      */
 //    @TableField(name = "CIND_PCELA_PRMIO")
     private String codigoParcela = "S";
 
     /**
-     * Outros Documentos Necessários maxlength = 200
+     * Outros Documentos Necessï¿½rios maxlength = 200
      */
 //    @TableField(name = "ROBS_PARMZ_DEP")
     private String outrosDocumentosNecessarios;
     
     /**
-     * Outros Documentos Necessários maxlength = 200
+     * Outros Documentos Necessï¿½rios maxlength = 200
      */
     private boolean referenciadoDeposito;
 
@@ -159,12 +159,12 @@ public class ParametroDepositoVO implements Serializable {
     private String descricaoDeposito;
 
     /**
-     * Descrição básica do motivo.
+     * Descriï¿½ï¿½o bï¿½sica do motivo.
      */
     private String descricaoBasicaMotivo;
 
     /**
-     * Descrição detalhada do motivo.
+     * Descriï¿½ï¿½o detalhada do motivo.
      */
     private String descricaoDetalhadaMotivo;
   
@@ -175,7 +175,7 @@ public class ParametroDepositoVO implements Serializable {
     
     /**
      * Retorna o campo codigo da Apolice
-     * @return codigoApolice - Código da apólice
+     * @return codigoApolice - CÃ³digo da apï¿½lice
      */
     public String getCodigoApolice() {
         return codigoApolice;
@@ -183,7 +183,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * Especifica o campo codigoApolice
-     * @param codigoApolice Código da apólice
+     * @param codigoApolice CÃ³digo da apï¿½lice
      */
     public void setCodigoApolice(String codigoApolice) {
         this.codigoApolice = codigoApolice;
@@ -191,7 +191,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * Retorna o campo codigoBancoVencimento
-     * @return codigoBancoVencimento - Deposito após vencimento
+     * @return codigoBancoVencimento - Deposito apï¿½s vencimento
      */
     public String getCodigoBancoVencimento() {
         return codigoBancoVencimento;
@@ -223,7 +223,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * retorna o campo codigoDossie
-     * @return codigoDossie - codigo do processo jurídico obrigatório
+     * @return codigoDossie - codigo do processo jurï¿½dico obrigatï¿½rio
      */
     public String getCodigoDossie() {
         return codigoDossie;
@@ -231,7 +231,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * especifica o CodigoDossie
-     * @param codigoDossie - codigo do processo jurídico obrigatório
+     * @param codigoDossie - codigo do processo jurï¿½dico obrigatï¿½rio
      */
     public void setCodigoDossie(String codigoDossie) {
         this.codigoDossie = codigoDossie;
@@ -495,7 +495,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * Retorna o valor do atributo outrosDocumentosNecessarios
-     * @return outrosDocumentosNecessarios - Referencia ao campo observações
+     * @return outrosDocumentosNecessarios - Referencia ao campo observaï¿½ï¿½es
      */
     public String getOutrosDocumentosNecessarios() {
         return outrosDocumentosNecessarios;
@@ -503,7 +503,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * Especifica o valor do atributo outrosDocumentosNecessarios
-     * @param outrosDocumentosNecessarios - Referencia ao campo obsevações (tamanho max 200)
+     * @param outrosDocumentosNecessarios - Referencia ao campo obsevaï¿½ï¿½es (tamanho max 200)
      */
     public void setOutrosDocumentosNecessarios(String outrosDocumentosNecessarios) {
         this.outrosDocumentosNecessarios = outrosDocumentosNecessarios;

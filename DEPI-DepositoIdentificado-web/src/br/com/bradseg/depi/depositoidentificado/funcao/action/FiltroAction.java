@@ -2,16 +2,12 @@ package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
-import com.opensymphony.xwork2.Action;
-
-@Component
 @Controller
 public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends BaseModelAction<T> {
 
@@ -48,15 +44,14 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 			String param) {
 		String clausula = operacao.formatarClausula(campo.getNome(), param);
 		String valorFormatado = operacao.formatarValor(valor);
-		CriterioConsultaVO criterioConsultaVO = new CriterioConsultaVO(clausula, param, valorFormatado);
-		return criterioConsultaVO;
+		return new CriterioConsultaVO(clausula, param, valorFormatado);
 	}
 	
 	/**
 	 * Primeiro método chamado da Action. Cria uma nova instância de formulário
 	 * na sessão e armazena-a na sessão do usuário.
 	 * 
-	 * @return {@link Action#SUCCESS}
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
 	public String iniciarFormulario() {
 		

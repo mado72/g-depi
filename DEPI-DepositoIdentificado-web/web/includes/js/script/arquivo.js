@@ -1,5 +1,5 @@
 //Desabilita context menu do mouse
-//Desabilita o menu com clic do botão direito do mouse em todas as paginas do sistema
+//Desabilita o menu com clic do botï¿½o direito do mouse em todas as paginas do sistema
 //document.oncontextmenu=function(event) {return false;}
 
 //Desabilita CTRL + V
@@ -32,7 +32,7 @@ function checkDate(obj) {
   return aRet; 
 }
 
-//Método responsável por formatar um CNPJ ou CPF.
+//MÃ©todo responsï¿½vel por formatar um CNPJ ou CPF.
 function formatarCPFCNPJ(pCampo, pEvento){
 	if(pCampo.value.length < 14){
 		return mascararCPF(pCampo, pEvento);
@@ -86,7 +86,7 @@ function mascararValor(pCampo, pEvento, pTam){
 	return false;
 }
 /**************************************************************************
-Função para simular um Tab quando for pressionado a tecla Enter
+Funï¿½ï¿½o para simular um Tab quando for pressionado a tecla Enter
 Exemplo: onKeyDown="tabEnter();"
 Funciona em TEXT BOX,RADIO BUTTON, CHECK BOX e menu DROP-DOWN
 **************************************************************************/
@@ -139,7 +139,7 @@ function disableActions(acao) {
 	return true;
 }
 //Esta sendo utilizada na Display Tag internamente.
-//altera parâmetro 'acao' da url do link da display tag.
+//altera parï¿½metro 'acao' da url do link da display tag.
 function replaceDisplayTagByName(elements) {
 	var el;
 	var url;
@@ -162,7 +162,7 @@ function removeExcesso(obj, tamanho) {
 	return (strOriginal.lenght > strLimitada.lenght); //cancela evento; 
 }
 function setFocusOnLoad(elementsId) {
-	if (elementsId == undefined) {alert('parametro elementsId não fornecido.');}
+	if (elementsId == undefined) {alert('parametro elementsId nï¿½o fornecido.');}
 	for (var i = 0; i < elementsId.length; i++) {
 		var el = document.getElementById(elementsId[i])
 		if (el != undefined) {
@@ -186,7 +186,7 @@ function setFocusAll(els) {
 					break;
 					return true;
 				}  catch (e) {
-					//O elemento não pode receber foco. Ignorado.
+					//O elemento nï¿½o pode receber foco. Ignorado.
 				}
 			}
 		}
@@ -194,7 +194,7 @@ function setFocusAll(els) {
 	return false;
 }
 function setFocusOnLoad2(elementId) {
-	if (elementId == undefined) {alert('parametro elementId não fornecido.');}
+	if (elementId == undefined) {alert('parametro elementId nï¿½o fornecido.');}
 	var el = document.getElementById(elementId)
 	if (el != undefined) {
 		el.focus();
@@ -283,7 +283,7 @@ function isCTRLV(e) {
 
 
 /**************************************************************************
-Função para simular um Tab quando for pressionado a tecla Enter
+Funï¿½ï¿½o para simular um Tab quando for pressionado a tecla Enter
 Exemplo: onKeyDown="tabEnter();"
 Funciona em TEXT BOX,RADIO BUTTON, CHECK BOX e menu DROP-DOWN
 **************************************************************************/
@@ -297,7 +297,7 @@ function tabEnter(e){
     return true;
 }
 
-//Procura todos as urls da display tag que serão alteradas.
+//Procura todos as urls da display tag que serï¿½o alteradas.
 function replaceAllDisplayTag() {
 	var allEls = new Array('full','first','last','number');
 	for (var i = 0; i < allEls.length; i++) {
@@ -306,7 +306,7 @@ function replaceAllDisplayTag() {
 	replaceDisplayTagByName(document.getElementsByTagName('a')); 
 }
 
-//Método responsável por mudar o parametro acao, action, target do form e submeter. 
+//MÃ©todo responsï¿½vel por mudar o parametro acao, action, target do form e submeter. 
 function submitForm(acao, action, target) {
 	exibirImagemNaAcao();
 	disableActions(acao);
@@ -333,7 +333,7 @@ function submitForm2(acao, action, target) {
 	return true;
 }
 
-//Método responsável por mudar o parametro acao do form e submeter. 
+//MÃ©todo responsï¿½vel por mudar o parametro acao do form e submeter. 
 function setAcao(acao){
 	document.forms[0].elements['acao'].value = acao;
 	document.forms[0].submit();	
@@ -362,10 +362,10 @@ function verificarBoxEdicao(checkname, msgselect) {
 	return true;
 }
 
-//remove espaços
+//remove espaï¿½os
 function trim(str){return str.replace(/^\s+|\s+$/g,"");}
 
-//validação de cnpj
+//validaï¿½ï¿½o de cnpj
 function validar_cnpj(obj)
       {
       var cnpj = obj.value.replace(/\D+/g, '');
@@ -415,7 +415,7 @@ function validar_cnpj(obj)
       } 
 
 
-//validação de cpf
+//validaï¿½ï¿½o de cpf
 function validar_cpf(obj)
       {
       var numeros, digitos, soma, i, resultado, digitos_iguais;
@@ -458,8 +458,8 @@ function configuraObjetos()  {
 		for (i=0; i< document.forms[0].elements.length; i++) {
 			var el = document.forms[0].elements[i];
 			//Configura Eventos
-			//Se o evento estiver 'livre' ele será usado para sempre limpar os zeros, 
-		   //caso contrário a função deve ser aplicada manualmente.
+			//Se o evento estiver 'livre' ele serï¿½ usado para sempre limpar os zeros, 
+		   //caso contrï¿½rio a funï¿½ï¿½o deve ser aplicada manualmente.
 			if (el.type=="text" || el.type=="textarea" || el.type=="select" || el.type=="select-one" || el.type=="checkbox" || el.type=="radio") {
 				var size = 200;
 		   		if (el.type=="text") {
@@ -473,12 +473,12 @@ function configuraObjetos()  {
 				}
 				var re1 = new RegExp('');
 		   		//onkeypress 
-		   		//Substituir (value.replace) e return (cancelamento) depois do onkeypress e antes do onkeyup não funciona.
+		   		//Substituir (value.replace) e return (cancelamento) depois do onkeypress e antes do onkeyup nï¿½o funciona.
 				if (el.type=="text") {		   		
 					if (el.onkeypress == undefined) {
 						el.onkeypress = function() {return limitarCharReservados(event);};
 					} else {
-						//Entende o aspecto do controle e define ações padrão para os eventos.
+						//Entende o aspecto do controle e define aï¿½ï¿½es padrï¿½o para os eventos.
 						re1 = new RegExp(/formatarCPFCNPJ/);
 						if (re1.test(new String(el.onkeypress))) {
 							if (el.onkeyup == undefined) {
@@ -501,7 +501,7 @@ function configuraObjetos()  {
 						re1 = new RegExp(/formatarData/);
 						if (re1.test(new String(el.onkeypress))) {
 							if (el.onblur == undefined) {
-								el.onblur = function () {if(!checkDate(this) && this.value != '') {alert('Data inválida: ' + this.value); this.value = '';}};
+								el.onblur = function () {if(!checkDate(this) && this.value != '') {alert('Data invï¿½lida: ' + this.value); this.value = '';}};
 						 	}
 							if (el.onkeyup == undefined) {
 								el.onkeyup = function () {replaceCharReservados_Data(this); formatarData(this, event);};
@@ -535,11 +535,11 @@ function configuraObjetos()  {
 					el.onkeydown = function () {return tabEnter(event);};
 				} 
 				
-				//Chama rotinas de verificação.
+				//Chama rotinas de verificaï¿½ï¿½o.
 				el.tabindex = i + 1;
 				
 			} else {
-				//Se não é objeto editável, remova a configuração de tabindex.
+				//Se nï¿½o ï¿½ objeto editï¿½vel, remova a configuraï¿½ï¿½o de tabindex.
 				el.tabindex = -1;
 			}
 		}
@@ -566,7 +566,7 @@ function zeroToEmptySingle(el) {
 	return true;
 }
 
-//checkbox obrigatório para exclusão
+//checkbox obrigatï¿½rio para exclusï¿½o
 function verificarBoxExclusao(checkname, msgconfirm, msgselect) {
 	//validacao de checkbox sem saber quantos sao
 	var checkboxes = document.forms[0].elements[checkname];
@@ -581,7 +581,7 @@ function verificarBoxExclusao(checkname, msgconfirm, msgselect) {
 }
 
 
-//Método responsável desabilitar a tecla enter. 
+//MÃ©todo responsï¿½vel desabilitar a tecla enter. 
 function desabilitaEnter(event) {
 	var ETR = 13;
 
@@ -597,7 +597,7 @@ function desabilitaEnter(event) {
     return true;
 }
 
-//Método responsável por redirecionar para uma determinada tela. 
+//MÃ©todo responsï¿½vel por redirecionar para uma determinada tela. 
 function redirecionar(tela){
 	document.location.href = tela;
 }
@@ -639,7 +639,7 @@ function retiraMascara(pObjeto,arrSimbolos){
 	pObjeto.value =  retMask;
 }
 
-//Permite digitação somente de números.
+//Permite digitaï¿½ï¿½o somente de nï¿½meros.
 function permitirApenasInteiros(e) {
 	var e = (window.event)? event : e;
 	var isIE = (window.event)? true : false;
@@ -681,7 +681,7 @@ function somenteNumeros(e){
 	return false;
 }
 /*
-* Só deixa digitar números.
+* Sï¿½ deixa digitar nï¿½meros.
 */
 function isNumberKey(evt) {
    var charCode = (evt.which) ? evt.which : event.keyCode
@@ -692,7 +692,7 @@ function isNumberKey(evt) {
    return true;
 }
 
-//Permite digitação somente de letras.
+//Permite digitaï¿½ï¿½o somente de letras.
 function permitirApenasLetras(e) {
 	var e = (window.event)? event : e;
 	var isIE = (window.event)? true : false;
@@ -704,8 +704,8 @@ function permitirApenasLetras(e) {
 	return true;
 }
 
-//Permite todos os caracteres com excessão de caracteres que podem prejudicar cláusulas de DB e Query String Web.
-//Fábio Henrique - 25/03/2010
+//Permite todos os caracteres com excessï¿½o de caracteres que podem prejudicar clï¿½usulas de DB e Query String Web.
+//Fï¿½bio Henrique - 25/03/2010
 function limitarCharReservados(e) {
 	var e = (window.event)? event : e;
 	var isIE = (window.event)? true : false;
@@ -732,7 +732,7 @@ function replaceCharReservados_Texto(el) {
 	return true;
 }
 
-//Substitui valores inválidos em campos de valor de CNPJ/CPF
+//Substitui valores invï¿½lidos em campos de valor de CNPJ/CPF
 //Criada com a finalizada de limpar o campo apos CTRL V 
 function replaceCharReservados_CNPJ(el) {
 	if ((el != undefined) && (el.value != undefined)){
@@ -752,7 +752,7 @@ function replaceCharReservados_CNPJ(el) {
 	return true;
 }
 
-//Substitui valores inválidos em campos que aceitam apenas inteiros.
+//Substitui valores invï¿½lidos em campos que aceitam apenas inteiros.
 //Criada com a finalizada de limpar o campo apos CTRL V 
 function replaceCharReservados_Inteiros(el) {
 	if ((el != undefined) && (el.value != undefined)){
@@ -770,7 +770,7 @@ function replaceCharReservados_Inteiros(el) {
 	return true;
 }
 
-//Substitui valores inválidos em campos de valor monetário
+//Substitui valores invï¿½lidos em campos de valor monetï¿½rio
 //Criada com a finalizada de limpar o campo apos CTRL V 
 function replaceCharReservados_Monetario(el) {
 	if ((el != undefined) && (el.value != undefined)){
@@ -790,7 +790,7 @@ function replaceCharReservados_Monetario(el) {
 	return true;
 }
 
-//Substitui valores inválidos em campos de Data
+//Substitui valores invï¿½lidos em campos de Data
 //Criada com a finalizada de limpar o campo apos CTRL V 
 function replaceCharReservados_Data(el) {
 	if ((el != undefined) && (el.value != undefined)){
@@ -813,7 +813,7 @@ function replaceCharReservados_Data(el) {
 
 
 
-//Permite digitação da expressão
+//Permite digitaï¿½ï¿½o da expressï¿½o
 function permitirExpressao(e, expr) {
 	var e = (window.event)? event : e;
 	var isIE = (window.event)? true : false;
@@ -838,8 +838,8 @@ function formatarData(input, event){
 	if (input.value.length == 10) {return false;}
 }
 
-//Permite a digitação até o tamanho máximo definido
-//Não precisa usar o return por causa da rotina excluiExcesso usada aqui.
+//Permite a digitaï¿½ï¿½o atï¿½ o tamanho mï¿½ximo definido
+//Nï¿½o precisa usar o return por causa da rotina excluiExcesso usada aqui.
 //Cancela evento
 function limitar (e, length) {
 	var oEvent = (window.event)? event : e;
@@ -853,8 +853,8 @@ function limitar (e, length) {
 	return true;
 }
 
-//Exclui o que foi digitado além do tamanho máximo definido
-//Não cancela evento
+//Exclui o que foi digitado alï¿½m do tamanho mï¿½ximo definido
+//Nï¿½o cancela evento
 function excluiExcesso (campo, length) {
 	if (campo.value.length>length) {
 		campo.value = campo.value.substring(0,length);
@@ -865,7 +865,7 @@ function excluiExcesso (campo, length) {
 function checkGridTodos(checkAll, checkName) {
 	if (checkName != undefined &&  checkAll != undefined) {
 		var checks = checkAll.form.elements[checkName];
-		//if (checks == undefined) {alert(checkName + ' não foi encontrado pelo getById!');}
+		//if (checks == undefined) {alert(checkName + ' nï¿½o foi encontrado pelo getById!');}
 		if (checks.length != undefined) {
 			for (i = 0; i < checks.length; i++) {
 				checks[i].checked = checkAll.checked;

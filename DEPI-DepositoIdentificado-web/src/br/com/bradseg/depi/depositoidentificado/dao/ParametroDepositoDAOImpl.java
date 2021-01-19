@@ -29,6 +29,50 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 	@Repository
 	public class ParametroDepositoDAOImpl extends JdbcDao implements ParametroDepositoDAO {
 
+		private static final String PARAM_WHR1 = "whr1";
+
+		private static final String PARAM_WHR2 = "whr2";
+
+		private static final String PARAM_WHR3 = "whr3";
+
+		private static final String PARAM_PRM1 = "prm1";
+
+		private static final String PARAM_PRM2 = "prm2";
+
+		private static final String PARAM_PRM3 = "prm3";
+
+		private static final String PARAM_PRM4 = "prm4";
+
+		private static final String PARAM_PRM5 = "prm5";
+
+		private static final String PARAM_PRM6 = "prm6";
+
+		private static final String PARAM_PRM7 = "prm7";
+
+		private static final String PARAM_PRM8 = "prm8";
+
+		private static final String PARAM_PRM9 = "prm9";
+
+		private static final String PARAM_PRM10 = "prm10";
+
+		private static final String PARAM_PRM11 = "prm11";
+
+		private static final String PARAM_PRM12 = "prm12";
+
+		private static final String PARAM_PRM13 = "prm13";
+
+		private static final String PARAM_PRM14 = "prm14";
+
+		private static final String PARAM_PRM15 = "prm15";
+
+		private static final String PARAM_PRM16 = "prm16";
+
+		private static final String PARAM_PRM17 = "prm17";
+
+		private static final String PARAM_PRM18 = "prm18";
+
+		private static final String PARAM_PRM19 = "prm19";
+
 		/** A Constante LOGGER. */
 		private static final Logger LOGGER = LoggerFactory.getLogger(ParametroDepositoDAOImpl.class);
 		
@@ -36,10 +80,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 		@Autowired
 		private DataSource dataSource;
 		
-		/** A(O) map sql parameter source. */
-		private MapSqlParameterSource mapSqlParameterSource;
-		
-
 		/* (non-Javadoc)
 		 * @see br.com.bradseg.bsad.framework.core.jdbc.JdbcDao#getDataSource()
 		 */
@@ -49,8 +89,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 		}
 
 	/**
-     * MÈtodo de obter por filtro
-     * @param filtro par‚metro depÛsito com o cÛdigo do objeto requisitado
+     * M√©todo de obter por filtro
+     * @param filtro par√¢metro dep√≥sito com o c√≥digo do objeto requisitado
      * @param codigoUsuario - Double.
      * @return List<ParametroDepositoVO>
      */
@@ -70,7 +110,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
             params.addValue("codusuario", codigoUsuario);
 
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
-            parametros = (List<ParametroDepositoVO>) getJdbcTemplate().query(query.toString(), params, new ParametroDepositosDataMapper());
+            parametros = getJdbcTemplate().query(query.toString(), params, new ParametroDepositosDataMapper());
             return parametros;
             
         } finally {
@@ -79,8 +119,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
     }
 
     /**
-     * MÈtodo de obter por filtro
-     * @param filtro par‚metro depÛsito com o cÛdigo do objeto requisitado
+     * M√©todo de obter por filtro
+     * @param filtro par√¢metro dep√≥sito com o c√≥digo do objeto requisitado
      * @return List<ParametroDepositoVO>
      */
     public List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro) {
@@ -107,7 +147,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 	            query.replace(query.indexOf("#"), query.indexOf("#")+1 , "" );			
 			}
 
-            parametros = (List<ParametroDepositoVO>) getJdbcTemplate().query(query.toString(), params, new ParametroDepositosDataMapper());
+            parametros = getJdbcTemplate().query(query.toString(), params, new ParametroDepositosDataMapper());
             return parametros;
             
         } finally {
@@ -116,7 +156,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
     }
 
     /**
-     * Atualiza um Parametro DepÛsito.
+     * Atualiza um Parametro Dep√≥sito.
      * @param parametro - ParametroDepositoVO.
      * @param referenciado - boolean
      * {@inheritDoc}
@@ -128,32 +168,32 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 			MapSqlParameterSource params = new MapSqlParameterSource();
         	
             /**
-             * VerificaÁ„o de preenchimento de Campo obrigatÛrio.
+             * Verifica√ß√£o de preenchimento de Campo obrigat√≥rio.
              */
             if (parametro.getCompanhia().getCodigoCompanhia() <= 0) {
-                throw new BusinessException("CÛdigo Cia n„o informado para o DAO");
+                throw new BusinessException("C√≥digo Cia n√£o informado para o DAO");
             }
 
             /**
-             * VerificaÁ„o de preenchimento de Campo obrigatÛrio.
+             * Verifica√ß√£o de preenchimento de Campo obrigat√≥rio.
              */
             if (parametro.getMotivoDeposito().getCodigoMotivoDeposito() <= 0) {
-                throw new BusinessException("CÛdigo do Motivo n„o informado para o DAO");
+                throw new BusinessException("C√≥digo do Motivo n√£o informado para o DAO");
             }
 
             /**
-             * VerificaÁ„o de preenchimento de Campo obrigatÛrio.
+             * Verifica√ß√£o de preenchimento de Campo obrigat√≥rio.
              */
             if (parametro.getDepartamento().getCodigoDepartamento() <= 0) {
-                throw new BusinessException("CÛdigo Departamento n„o informado para o DAO");
+                throw new BusinessException("C√≥digo Departamento n√£o informado para o DAO");
             }
 
             if (referenciado) {
-                params.addValue("prm1", parametro.getOutrosDocumentosNecessarios());
-                params.addValue("prm2", parametro.getMotivoDeposito().getCodigoMotivoDeposito());                
-                params.addValue("whr1", parametro.getCompanhia().getCodigoCompanhia());        	
-                params.addValue("whr2", parametro.getDepartamento().getCodigoDepartamento());  
-                params.addValue("whr3", parametro.getMotivoDeposito().getCodigoMotivoDeposito());  
+                params.addValue(PARAM_PRM1, parametro.getOutrosDocumentosNecessarios());
+                params.addValue(PARAM_PRM2, parametro.getMotivoDeposito().getCodigoMotivoDeposito());                
+                params.addValue(PARAM_WHR1, parametro.getCompanhia().getCodigoCompanhia());        	
+                params.addValue(PARAM_WHR2, parametro.getDepartamento().getCodigoDepartamento());  
+                params.addValue(PARAM_WHR3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());  
                 
             } else {
                /**
@@ -161,32 +201,32 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
                  * indicativo). FHV
                  */
                 if (parametro.getNumeroDiasAposVencimento() <= 0) {
-                    params.addValue("prm1", ConstantesDEPI.NAO);
-                    params.addValue("prm2", null);
+                    params.addValue(PARAM_PRM1, ConstantesDEPI.NAO);
+                    params.addValue(PARAM_PRM2, null);
                 } else {
-                    params.addValue("prm1", ConstantesDEPI.SIM);
-                    params.addValue("prm2", parametro.getNumeroDiasAposVencimento());
+                    params.addValue(PARAM_PRM1, ConstantesDEPI.SIM);
+                    params.addValue(PARAM_PRM2, parametro.getNumeroDiasAposVencimento());
                 }
-                params.addValue("prm3", parametro.getCodigoSucursal());
-                params.addValue("prm4", parametro.getCodigoApolice());
-                params.addValue("prm5", parametro.getCodigoEndosso());
-                params.addValue("prm6", parametro.getCodigoItem());
-                params.addValue("prm7", parametro.getCodigoBloqueto());
-                params.addValue("prm8", ConstantesDEPI.SIM);
-                params.addValue("prm9", parametro.getCodigoDossie());
-                params.addValue("prm10", parametro.getCodigoProtocolo());
-                params.addValue("prm11", parametro.getCodigoTipo());
-                params.addValue("prm12", parametro.getCodigoRamo());
-                params.addValue("prm13", parametro.getCodigoParcela());
-                params.addValue("prm14", parametro.getOutrosDocumentosNecessarios());
-                params.addValue("prm15", parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+                params.addValue(PARAM_PRM3, parametro.getCodigoSucursal());
+                params.addValue(PARAM_PRM4, parametro.getCodigoApolice());
+                params.addValue(PARAM_PRM5, parametro.getCodigoEndosso());
+                params.addValue(PARAM_PRM6, parametro.getCodigoItem());
+                params.addValue(PARAM_PRM7, parametro.getCodigoBloqueto());
+                params.addValue(PARAM_PRM8, ConstantesDEPI.SIM);
+                params.addValue(PARAM_PRM9, parametro.getCodigoDossie());
+                params.addValue(PARAM_PRM10, parametro.getCodigoProtocolo());
+                params.addValue(PARAM_PRM11, parametro.getCodigoTipo());
+                params.addValue(PARAM_PRM12, parametro.getCodigoRamo());
+                params.addValue(PARAM_PRM13, parametro.getCodigoParcela());
+                params.addValue(PARAM_PRM14, parametro.getOutrosDocumentosNecessarios());
+                params.addValue(PARAM_PRM15, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
 
                 /**
                  * Where
                  */
-                params.addValue("whr1", parametro.getCompanhia().getCodigoCompanhia());
-                params.addValue("whr2", parametro.getDepartamento().getCodigoDepartamento());
-                params.addValue("whr3", parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+                params.addValue(PARAM_WHR1, parametro.getCompanhia().getCodigoCompanhia());
+                params.addValue(PARAM_WHR2, parametro.getDepartamento().getCodigoDepartamento());
+                params.addValue(PARAM_WHR3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
 
             }
             
@@ -214,26 +254,26 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 			MapSqlParameterSource params = new MapSqlParameterSource();
 
-            params.addValue("prm1", usuarioAtualizacao);
+            params.addValue(PARAM_PRM1, usuarioAtualizacao);
             
             /**
              * Where
              */
-            params.addValue("whr1", vo.getCompanhia().getCodigoCompanhia());
-            params.addValue("whr2", vo.getDepartamento().getCodigoDepartamento());
-            params.addValue("whr3", vo.getMotivoDeposito().getCodigoMotivoDeposito());
+            params.addValue(PARAM_WHR1, vo.getCompanhia().getCodigoCompanhia());
+            params.addValue(PARAM_WHR2, vo.getDepartamento().getCodigoDepartamento());
+            params.addValue(PARAM_WHR3, vo.getMotivoDeposito().getCodigoMotivoDeposito());
 
             getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_INATIVAR, params);	
             
         } catch(DataAccessException e){
-			throw new BusinessException("\nA exclus„o falhou!\n");
+			throw new BusinessException("\nA exclusÔøΩo falhou!\n");
 		} finally {
         	LOGGER.info("excluir(ParametroDepositoVO vo)"); 
         }
     }
 
     /**
-     * isReferenciado. Se a tabela possui dependÍncia.
+     * isReferenciado. Se a tabela possui depend√™ncia.
      * @return Boolean.
      * @param vo - ParametroDepositoVO.
      */
@@ -245,9 +285,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
         	MapSqlParameterSource params = new MapSqlParameterSource();
             
-            params.addValue("prm1", vo.getCompanhia().getCodigoCompanhia());
-            params.addValue("prm2", vo.getDepartamento().getCodigoDepartamento());
-            params.addValue("prm3", vo.getMotivoDeposito().getCodigoMotivoDeposito());
+            params.addValue(PARAM_PRM1, vo.getCompanhia().getCodigoCompanhia());
+            params.addValue(PARAM_PRM2, vo.getDepartamento().getCodigoDepartamento());
+            params.addValue(PARAM_PRM3, vo.getMotivoDeposito().getCodigoMotivoDeposito());
             
             int retorno =  getJdbcTemplate().queryForInt(query.toString(), params);
             
@@ -261,7 +301,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
     }
 
     /**
-     * isReferenciado. Se a tabela possui dependÍncia.
+     * isReferenciado. Se a tabela possui depend√™ncia.
      * @return Boolean.
      * @param vo - ParametroDepositoVO.
      */
@@ -276,9 +316,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
         	MapSqlParameterSource params = new MapSqlParameterSource();
             
-            params.addValue("prm1", vo.getCompanhia().getCodigoCompanhia());
-            params.addValue("prm2", vo.getDepartamento().getCodigoDepartamento());
-            params.addValue("prm3", vo.getMotivoDeposito().getCodigoMotivoDeposito());
+            params.addValue(PARAM_PRM1, vo.getCompanhia().getCodigoCompanhia());
+            params.addValue(PARAM_PRM2, vo.getDepartamento().getCodigoDepartamento());
+            params.addValue(PARAM_PRM3, vo.getMotivoDeposito().getCodigoMotivoDeposito());
             
             int retorno =  getJdbcTemplate().queryForInt(query.toString(), params);
             
@@ -304,32 +344,32 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
         	MapSqlParameterSource params = new MapSqlParameterSource();
 
             /**
-             * VerificaÁ„o de preenchimento de Campo obrigatÛrio.
+             * Verifica√ß√£o de preenchimento de Campo obrigat√≥rio.
              */
             if (parametro.getCompanhia().getCodigoCompanhia() <= 0) {
-                throw new BusinessException("CÛdigo Cia n„o informado para o DAO");
+                throw new BusinessException("C√≥digo Cia n√£o informado para o DAO");
             }
 
             /**
-             * VerificaÁ„o de preenchimento de Campo obrigatÛrio.
+             * Verifica√ß√£o de preenchimento de Campo obrigat√≥rio.
              */
             if (parametro.getMotivoDeposito().getCodigoMotivoDeposito() <= 0) {
-                throw new BusinessException("CÛdigo do Motivo n„o informado para o DAO");
+                throw new BusinessException("C√≥digo do Motivo n√£o informado para o DAO");
             }
 
             /**
-             * VerificaÁ„o de preenchimento de Campo obrigatÛrio.
+             * Verifica√ß√£o de preenchimento de Campo obrigat√≥rio.
              */
             if (parametro.getDepartamento().getCodigoDepartamento() <= 0) {
-                throw new BusinessException("CÛdigo Departamento n„o informado para o DAO");
+                throw new BusinessException("C√≥digo Departamento n√£o informado para o DAO");
             }
 
-            //* Verifica se j· existe um parametro cadastrado e ativo com os dados informados
+            //* Verifica se jÔøΩ existe um parametro cadastrado e ativo com os dados informados
             StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_EXISTS);
             
-            params.addValue("prm1", parametro.getCompanhia().getCodigoCompanhia());
-            params.addValue("prm2", parametro.getDepartamento().getCodigoDepartamento());
-            params.addValue("prm3", parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+            params.addValue(PARAM_PRM1, parametro.getCompanhia().getCodigoCompanhia());
+            params.addValue(PARAM_PRM2, parametro.getDepartamento().getCodigoDepartamento());
+            params.addValue(PARAM_PRM3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
 
             List<String> retorno =  getJdbcTemplate().queryForList(query.toString(), params, String.class);
 
@@ -338,17 +378,17 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
                 	
                     StringBuilder queryDepto = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE);
                 	MapSqlParameterSource paramsDepto = new MapSqlParameterSource();
-                	paramsDepto.addValue("prm1", parametro.getDepartamento().getCodigoDepartamento());
+                	paramsDepto.addValue(PARAM_PRM1, parametro.getDepartamento().getCodigoDepartamento());
                 	
                 	DepartamentoVO dep = (DepartamentoVO) getJdbcTemplate().query(queryDepto.toString(), params, new DepartamentoDataMapper());
                 	
                     StringBuilder queryMotDepto = new StringBuilder(QuerysDepi.MOTIVODEPOSITO_OBTERPORCHAVE);
                 	MapSqlParameterSource paramsMotDepto = new MapSqlParameterSource();
-                	paramsMotDepto.addValue("whr1", parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+                	paramsMotDepto.addValue(PARAM_WHR1, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
                 	
                 	MotivoDepositoVO mot = (MotivoDepositoVO) getJdbcTemplate().query(queryMotDepto.toString(), params, new MotivoDepositoDataMapper());
 
-                	String msg = new StringBuilder("Par‚metros de DepÛsito: ").append(" j· cadastrado para a Cia: ").append(
+                	String msg = new StringBuilder("Par√¢metros de Dep√≥sito: ").append(" j√° cadastrado para a Cia: ").append(
                                     parametro.getCompanhia().getCodigoCompanhia()).append(", para o Departamento: ").append(
                                     dep.getSiglaDepartamento()).append(" e para o Motivo: ").append(mot.getDescricaoBasica()).toString();
                 	
@@ -360,36 +400,36 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
                     /**
                      * Novos valores.
                      */
-                    paramsReativar.addValue("prm1", parametro.getCodigoBancoVencimento());
+                    paramsReativar.addValue(PARAM_PRM1, parametro.getCodigoBancoVencimento());
                     
                     if (parametro.getNumeroDiasAposVencimento() <= 0) {
-                    	paramsReativar.addValue("prm2", null);
+                    	paramsReativar.addValue(PARAM_PRM2, null);
                     } else {
-                    	paramsReativar.addValue("prm2", parametro.getNumeroDiasAposVencimento());
+                    	paramsReativar.addValue(PARAM_PRM2, parametro.getNumeroDiasAposVencimento());
                     }
-                    paramsReativar.addValue("prm3", parametro.getCodigoSucursal());
-                    paramsReativar.addValue("prm4", parametro.getCodigoApolice());
-                    paramsReativar.addValue("prm5", parametro.getCodigoEndosso());
-                    paramsReativar.addValue("prm6", parametro.getCodigoItem());
-                    paramsReativar.addValue("prm7", parametro.getCodigoBloqueto());
-                    paramsReativar.addValue("prm8", "S");
-                    paramsReativar.addValue("prm9", parametro.getCodigoDossie());
-                    paramsReativar.addValue("prm10", parametro.getCodigoProtocolo());
-                    paramsReativar.addValue("prm11", parametro.getCodigoTipo());
-                    paramsReativar.addValue("prm12", parametro.getCodigoRamo());
-                    paramsReativar.addValue("prm13", parametro.getCodigoParcela());
-                    paramsReativar.addValue("prm14", parametro.getOutrosDocumentosNecessarios());
-                    paramsReativar.addValue("prm15", parametro.getCodigoResponsavelUltimaAtualizacao());
+                    paramsReativar.addValue(PARAM_PRM3, parametro.getCodigoSucursal());
+                    paramsReativar.addValue(PARAM_PRM4, parametro.getCodigoApolice());
+                    paramsReativar.addValue(PARAM_PRM5, parametro.getCodigoEndosso());
+                    paramsReativar.addValue(PARAM_PRM6, parametro.getCodigoItem());
+                    paramsReativar.addValue(PARAM_PRM7, parametro.getCodigoBloqueto());
+                    paramsReativar.addValue(PARAM_PRM8, "S");
+                    paramsReativar.addValue(PARAM_PRM9, parametro.getCodigoDossie());
+                    paramsReativar.addValue(PARAM_PRM10, parametro.getCodigoProtocolo());
+                    paramsReativar.addValue(PARAM_PRM11, parametro.getCodigoTipo());
+                    paramsReativar.addValue(PARAM_PRM12, parametro.getCodigoRamo());
+                    paramsReativar.addValue(PARAM_PRM13, parametro.getCodigoParcela());
+                    paramsReativar.addValue(PARAM_PRM14, parametro.getOutrosDocumentosNecessarios());
+                    paramsReativar.addValue(PARAM_PRM15, parametro.getCodigoResponsavelUltimaAtualizacao());
                     
                     /**
                      * Where
                      */
-                    paramsReativar.addValue("whr1", parametro.getCompanhia().getCodigoCompanhia());
-                    paramsReativar.addValue("whr2", parametro.getDepartamento().getCodigoDepartamento());
-                    paramsReativar.addValue("whr3", parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+                    paramsReativar.addValue(PARAM_WHR1, parametro.getCompanhia().getCodigoCompanhia());
+                    paramsReativar.addValue(PARAM_WHR2, parametro.getDepartamento().getCodigoDepartamento());
+                    paramsReativar.addValue(PARAM_WHR3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
                     
                     if (getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_REATIVAR, paramsReativar) == 0) {
-                        throw new BusinessException("A reativaÁ„o falhou!");
+                        throw new BusinessException("A reativa√ß√£o falhou!");
                     }
                 }
             } else {
@@ -399,30 +439,33 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
                 /**
                  * Novos valores.
                  */
-                paramsInsert.addValue("prm1", parametro.getCompanhia().getCodigoCompanhia());                	paramsInsert.addValue("prm2", parametro.getNumeroDiasAposVencimento());
-                paramsInsert.addValue("prm2", parametro.getDepartamento().getCodigoDepartamento());
-                paramsInsert.addValue("prm3", parametro.getMotivoDeposito().getCodigoMotivoDeposito());
-                paramsInsert.addValue("prm4", parametro.getCodigoBancoVencimento());
+				paramsInsert.addValue(PARAM_PRM1, parametro.getCompanhia()
+						.getCodigoCompanhia());
+				paramsInsert.addValue(PARAM_PRM2,
+						parametro.getNumeroDiasAposVencimento());
+                paramsInsert.addValue(PARAM_PRM3, parametro.getDepartamento().getCodigoDepartamento());
+                paramsInsert.addValue(PARAM_PRM4, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+                paramsInsert.addValue(PARAM_PRM5, parametro.getCodigoBancoVencimento());
                 
                 if (parametro.getNumeroDiasAposVencimento() <= 0) {
-                	paramsInsert.addValue("prm5", null);
+                	paramsInsert.addValue(PARAM_PRM6, null);
                 } else {
-                	paramsInsert.addValue("prm5", parametro.getNumeroDiasAposVencimento());
+                	paramsInsert.addValue(PARAM_PRM6, parametro.getNumeroDiasAposVencimento());
                 }
                 
-                paramsInsert.addValue("prm6", parametro.getCodigoSucursal());
-                paramsInsert.addValue("prm7", parametro.getCodigoApolice());
-                paramsInsert.addValue("prm8", parametro.getCodigoEndosso());
-                paramsInsert.addValue("prm9", parametro.getCodigoItem());
-                paramsInsert.addValue("prm10", parametro.getCodigoBloqueto());
-                paramsInsert.addValue("prm11", parametro.getCodigoCpfCnpj());
-                paramsInsert.addValue("prm12", parametro.getCodigoDossie());
-                paramsInsert.addValue("prm13", parametro.getCodigoProtocolo());
-                paramsInsert.addValue("prm14", parametro.getCodigoTipo());
-                paramsInsert.addValue("prm15", parametro.getCodigoRamo());
-                paramsInsert.addValue("prm16", parametro.getCodigoParcela());
-                paramsInsert.addValue("prm17", parametro.getOutrosDocumentosNecessarios());
-                paramsInsert.addValue("prm18", parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+                paramsInsert.addValue(PARAM_PRM7, parametro.getCodigoSucursal());
+                paramsInsert.addValue(PARAM_PRM8, parametro.getCodigoApolice());
+                paramsInsert.addValue(PARAM_PRM9, parametro.getCodigoEndosso());
+                paramsInsert.addValue(PARAM_PRM10, parametro.getCodigoItem());
+                paramsInsert.addValue(PARAM_PRM11, parametro.getCodigoBloqueto());
+                paramsInsert.addValue(PARAM_PRM12, parametro.getCodigoCpfCnpj());
+                paramsInsert.addValue(PARAM_PRM13, parametro.getCodigoDossie());
+                paramsInsert.addValue(PARAM_PRM14, parametro.getCodigoProtocolo());
+                paramsInsert.addValue(PARAM_PRM15, parametro.getCodigoTipo());
+                paramsInsert.addValue(PARAM_PRM16, parametro.getCodigoRamo());
+                paramsInsert.addValue(PARAM_PRM17, parametro.getCodigoParcela());
+                paramsInsert.addValue(PARAM_PRM18, parametro.getOutrosDocumentosNecessarios());
+                paramsInsert.addValue(PARAM_PRM19, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
 
                 getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_INSERT, paramsInsert) ;
                 }

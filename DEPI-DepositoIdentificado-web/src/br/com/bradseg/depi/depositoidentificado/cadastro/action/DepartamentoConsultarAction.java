@@ -1,7 +1,5 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,15 +14,13 @@ import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepartamentoCampo;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepositoCampo;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
+import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -39,57 +35,78 @@ public class DepartamentoConsultarAction extends FiltroAction<FiltroConsultarFor
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	private static final String ACTION_NAME = DepartamentoConsultarAction.class.getSimpleName();
+	private static final String TITLE_DEPARTAMENTO_CONSULTAR = "title.departamento.consultar";
 	
-	private FiltroConsultarForm<DepartamentoCampo> _model;
+	private static final String TITLE_DEPARTAMENTO_LISTAR = "title.departamento.listar";
+	
+	private static final String NOME_ACTION = MotivoDepositoConsultarAction.class.getSimpleName();
+	
+	private FiltroConsultarForm<DepartamentoCampo> model;
 	
 	@Autowired
-	private DepartamentoFacade facade;
+	private transient DepartamentoFacade facade;
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public FiltroConsultarForm<DepartamentoCampo> getModel() {
-		if (sessionData.containsKey(ACTION_NAME)) {
-			_model = (FiltroConsultarForm<DepartamentoCampo>) sessionData.get(ACTION_NAME);
+		if (sessionData.containsKey(NOME_ACTION)) {
+			model = (FiltroConsultarForm<DepartamentoCampo>) sessionData.get(NOME_ACTION);
 		}
 		else {
 			this.novaInstanciaModel();
 		}
-		return _model;
+		return model;
 	}
 	
 	@Override
 	protected void novaInstanciaModel() {
-		FornecedorObjeto<Collection<DepartamentoCampo>> entidades = new FornecedorObjeto<Collection<DepartamentoCampo>>() {
+		FornecedorObjeto<Collection<DepartamentoCampo>> fornecedor = new FornecedorObjeto<Collection<DepartamentoCampo>>() {
 			
 			@Override
 			public Collection<DepartamentoCampo> get() {
-				return Arrays.asList(DepartamentoCampo.valuesForCriteria());
+				return DepartamentoCampo.valuesForCriteria();
+			}
+			
+		};
+		
+		Funcao<String, IEntidadeCampo> obterEntidade = new Funcao<String, IEntidadeCampo>() {
+			
+			@Override
+			public IEntidadeCampo apply(String source) {
+				return DepartamentoCampo.obterPorNome(source);
 			}
 		};
 		
-		_model = new FiltroConsultarForm<>(entidades);
-		sessionData.put(ACTION_NAME, _model);
+		model = new FiltroConsultarForm<>(fornecedor, obterEntidade);
+		sessionData.put(NOME_ACTION, model);
+	}
+	
+	@Override
+	public String iniciarFormulario() {
+		setSubtituloChave(TITLE_DEPARTAMENTO_CONSULTAR);
+		return super.iniciarFormulario();
 	}
 	
 	/**
 	 * Apenas redireciona a saída para SUCCESS. Usado para apresentar o
 	 * formulário armazenado na sessão.
 	 * 
-	 * @return {@link Action#SUCCESS}
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
 	public String execute() {
+		setSubtituloChave(TITLE_DEPARTAMENTO_CONSULTAR);
 		return SUCCESS;
 	}
 	
 	/**
 	 * Processa os dados do filtro.
 	 * 
-	 * @return {@link Action#SUCCESS}, quando consegue realizar a consulta. Senão {@link Action#ERROR}
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}, quando consegue realizar a consulta. Senão {@link com.opensymphony.xwork2.Action#ERROR}
 	 */
 	public String consultar() {
 		try {
 			processarFiltro();
+			setSubtituloChave(TITLE_DEPARTAMENTO_LISTAR);
 			
 			return SUCCESS;
 		} catch (DEPIIntegrationException e) {
@@ -107,24 +124,8 @@ public class DepartamentoConsultarAction extends FiltroAction<FiltroConsultarFor
 	private void processarFiltro() {
 		FiltroConsultarForm<DepartamentoCampo> model = getModel();
 		
-		List<CriterioConsultaVO> criterios = new ArrayList<>();
-		
-		if (model.getCriterios() != null) {
-			int paramIdx = 0;
-			
-			for (String item: model.getCriterios()) {
-				String[] criterioFiltro = item.split(";");
-				DepositoCampo campo = DepositoCampo.obterPorDescricao(criterioFiltro[0]);
-				TipoOperacao operacao = TipoOperacao.valueOf(criterioFiltro[1]);
-				String valor = criterioFiltro[2];
-				
-				String param = "param" + ++paramIdx;
-				
-				CriterioConsultaVO criterioConsultaVO = montarCriterioConsulta(
-						campo, operacao, valor, param);
-				criterios.add(criterioConsultaVO);
-			}
-		}
+		String[] criterioArray = request.getParameterValues("criterio");
+		List<CriterioConsultaVO> criterios = model.preencherCriterios(criterioArray);
 		
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(criterios);

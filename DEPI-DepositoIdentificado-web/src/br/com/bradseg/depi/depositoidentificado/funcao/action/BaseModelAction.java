@@ -3,11 +3,11 @@ package br.com.bradseg.depi.depositoidentificado.funcao.action;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ModelDriven;
 
-@Component
+@Controller
 public abstract class BaseModelAction<T> extends BaseAction implements ModelDriven<T>,
 		SessionAware {
 

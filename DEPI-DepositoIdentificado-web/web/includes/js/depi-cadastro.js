@@ -137,8 +137,8 @@ var fnReady = function ($) {
 			}
 
 			criterios.each(function(idx, opt) {
-					elements = elements.add($('<input>', { type:"hidden", name: "criterios[" + idx + "]" , value: $(opt).val()}));
-				});
+				elements = elements.add($('<input>', { type:"hidden", name: "criterio" , value: $(opt).val()}));
+			});
 			
 			jqForm.append(elements);
 
@@ -209,11 +209,9 @@ var fnReady = function ($) {
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length == 0) {
 				alert(MENSAGEM['msg.selecao.exclusao']);
-				return;
-			}
-			if (confirm(MENSAGEM['msg.confirmacao.exclusao'])) {
+			} else if (confirm(MENSAGEM['msg.confirmacao.exclusao'])) {
 				var action = jqForm.attr("action");
-				action = action.replace(/\/(\w+).do/, "excluir");
+				action = action.replace(/\/\w+.do/, "/excluir.do");
 				jqForm.attr("action", action);
 				jqForm.submit();
 			}
@@ -221,16 +219,14 @@ var fnReady = function ($) {
 		
 		btnAlterar.click(function(ev) {
 			var marcados = $.obterMarcados(jqForm);
-			switch (marcados.length) {
-				case 1:
-					var codigo = $(marcados[0]).val();
-					var url = window.location.href;
-					url = url.replace(/\/\w+\/\w+.do/, "/editar/alterar.do?codigo=" + codigo);
-					window.location = url;
-					return;
-				default:
-					alert(MENSAGEM["msg.selecao.edicao"]);
-					return;
+			if (marcados.length != 1) {
+				alert(MENSAGEM["msg.selecao.edicao"]);
+			}
+			else {
+				var action = jqForm.attr("action");
+				action = action.replace(/\/\w+.do/, "/alterar.do");
+				jqForm.attr("action", action);
+				jqForm.submit();
 			}
 		})
 
@@ -245,7 +241,7 @@ var fnReady = function ($) {
 	$.obterMarcados = function(jqForm) {
 		var marcados = jqForm.find(".checkTodos")
 			.parents("table:first")
-			.find("input:checkbox:checked");
+			.find('input:checkbox:checked[name="codigo"]');
 		return marcados;
 	}
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Enumerator TipoOperacao
- * @refactoredBy Marcelo Damasceno
+ * @author Marcelo Damasceno
  */
 public enum TipoOperacao {
     /**
@@ -126,13 +126,25 @@ public enum TipoOperacao {
 		return formatoValor;
 	}
     
+    /**
+     * Utiliza o pattern da cl�usula para inserir campo e par�metro
+     * @param campo Campo a ser inclu�do na cl�usula
+     * @param nomeParametro Par�metro a ser utilizado na cl�usula
+     * @return Cl�usula formatada.
+     */
     public String formatarClausula(String campo, String nomeParametro) {
     	return MessageFormat.format(clausula, campo, nomeParametro);
     }
     
+    /**
+     * Inclui % para os operadores LIKE, quando necess�rio.
+     * @param valor Valor a ser formatado
+     * @return Valor formatado
+     */
     public String formatarValor(String valor) {
-    	if (this.formatoValor == null)
+    	if (this.formatoValor == null) {
     		return valor;
+    	}
     	
     	return MessageFormat.format(formatoValor, valor);
     }

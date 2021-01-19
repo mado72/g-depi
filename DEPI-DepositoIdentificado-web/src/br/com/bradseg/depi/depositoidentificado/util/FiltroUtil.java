@@ -311,7 +311,8 @@ public class FiltroUtil {
 		this.nome = nome;
 	}
 	/**
-	 * @return Lista com critérios para filtrar consulta
+	 * Lista com critérios para filtrar consulta
+	 * @return list
 	 */
 	public List<CriterioConsultaVO> getCriterios() {
 		return criterios;
@@ -338,6 +339,22 @@ public class FiltroUtil {
 	    
 	    return where.toString();
 	}
+	
+	public String getClausaAndFiltro () {
+		
+		StringBuilder where = new StringBuilder(" AND ");
+		
+	    for(int i = 0 ; i < this.criterios.size() ; i++  ) {
+	    	where.append(criterios.get(i).getCriterio());
+	    	
+	    	if (i < (this.criterios.size()-1) ) {
+	    	   where.append(" AND ");
+	    	}
+	    }
+	    
+	    return where.toString();
+	}
+
 	
 	public MapSqlParameterSource getMapParamFiltro () {
 		

@@ -29,8 +29,8 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 	@Autowired
 	private DataSource dataSource;
 	
-	/** A(O) map sql parameter source. */
-	private MapSqlParameterSource mapSqlParameterSource;
+//	/** A(O) map sql parameter source. */
+//	private MapSqlParameterSource mapSqlParameterSource;
 	
 
 	/* (non-Javadoc)
@@ -42,7 +42,7 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 	}
 
 	/**
-	 * Método que insere um registro relativo à um deposito.
+	 * MÃ©todo que insere um registro relativo ï¿½ um deposito.
 	 * @param listaParcelas - objeto com os dados populados.
 	 */	
 	public void inserirDepositoCobranca(List<ParcelaCobrancaVO> listaParcelas) {
@@ -72,8 +72,8 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 	}
 
 	/**
-	 * Método que lista os códigos das parcelas associadas.
-	 * @param parcelaCobranca - objeto com os parâmetros.
+	 * MÃ©todo que lista os cï¿½digos das parcelas associadas.
+	 * @param parcelaCobranca - objeto com os parï¿½metros.
 	 * @return List<ParcelaCobrancaVO> - lista com os dados de retorno.
 	 */	
 	public List<ParcelaCobrancaVO> listarParcelasAssociadas(ParcelaCobrancaVO parcelaCobranca){
@@ -89,7 +89,7 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 			MapSqlParameterSource params = new MapSqlParameterSource();
                 
 			params.addValue("whr1", parcelaCobranca.getDeposito().getCodigoDepositoIdentificado());
-			listaParcelas = (List<ParcelaCobrancaVO>) getJdbcTemplate().query(query.toString(), params, new ParcelaCobrancaDataMapper());
+			listaParcelas = getJdbcTemplate().query(query.toString(), params, new ParcelaCobrancaDataMapper());
         
             
 		} finally {
@@ -100,8 +100,8 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 	}
 
 	/**
-	 * Método que lista os detalhes das parcelas associadas.
-	 * @param parcelaCobranca - objeto com os parâmetros de consulta.
+	 * MÃ©todo que lista os detalhes das parcelas associadas.
+	 * @param parcelaCobranca - objeto com os parï¿½metros de consulta.
 	 * @return List<ParcelaCobrancaVO> - lista com as parcelas populadas.
 	 */	
 	public List<ParcelaCobrancaVO> detalharParcelasAssociadas(ParcelaCobrancaVO parcelaCobranca) {
@@ -116,7 +116,7 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			params.addValue("whr1", parcelaCobranca.getDeposito().getCodigoDepositoIdentificado());
 			
-			listaParcelas = (List<ParcelaCobrancaVO>) getJdbcTemplate().query(query.toString(), params, new ParcelaCobrancaDataMapper());
+			listaParcelas = getJdbcTemplate().query(query.toString(), params, new ParcelaCobrancaDataMapper());
                 
 		} finally {
 			LOGGER.info("detalharParcelasAssociadas(ParcelaCobrancaVO parcelaCobranca)");
@@ -126,8 +126,8 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 	}
 
 	/**
-	 * Método que exclui os registros da tabela.
-	 * @param parcela - a ser excluída.
+	 * MÃ©todo que exclui os registros da tabela.
+	 * @param parcela - a ser excluï¿½da.
 	 */
 	public void excluirRegistro(Long parcela){
 

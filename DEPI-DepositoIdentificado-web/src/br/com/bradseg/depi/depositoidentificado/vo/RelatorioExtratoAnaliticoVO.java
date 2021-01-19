@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Método RelatorioExtratoAnaliticoVO
+ * MÃ©todo RelatorioExtratoAnaliticoVO
  * @author Globality
  */
 public class RelatorioExtratoAnaliticoVO implements Serializable{

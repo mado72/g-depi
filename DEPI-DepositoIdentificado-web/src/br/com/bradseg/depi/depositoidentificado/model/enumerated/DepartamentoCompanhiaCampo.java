@@ -10,7 +10,7 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
  * Enumerator dos campos de filtro de DepartamentoCompanhia
- * @refactor  Marcelo Damasceno
+ * @author  Marcelo Damasceno
  */
 public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
 
@@ -109,6 +109,7 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
     }
 
     /**
+     * define descrição a ser configurada
      * @param descricao a descrição a ser configurada
      */
     public void setDescricao(String descricao) {
@@ -116,7 +117,8 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
     }
 
     /**
-     * @param nome o nome a ser configurado
+     * define o nome a ser configurado
+     * @param nome o nome
      */
     public void setNome(String nome) {
         this.nome = nome;

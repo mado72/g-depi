@@ -43,8 +43,8 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
 	}
 
     /**
-     * M�todo obterDadosAnalitico
-     * @param filtro do relat�rio
+     * Método obterDadosAnalitico
+     * @param filtro do relatï¿½rio
      * @return List<ManutencoesAnaliticoVO>
      */
     public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro){
@@ -119,13 +119,13 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
                 f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
                 f.setCodigoTipoPesquisa(1);
                 f.setDataNascimento(0);
-                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // � cnpj
+                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // ï¿½ cnpj
                     f.setCodigoTipoPessoa(4);
                 } else {
                     f.setCodigoTipoPessoa(3);
                 }
 
-               List lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
+               List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
                 if (lista.isEmpty()) {
                     StringBuilder in = new StringBuilder("(");
                     String token = "";
@@ -144,7 +144,7 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
             } 
 
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
-            relatorio = (List<RelatorioEnvioRetornoAnaliticoVO>) getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoAnaliticoDataMapper());
+            relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoAnaliticoDataMapper());
 
             
 
@@ -157,8 +157,8 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
     }
 
     /**
-     * M�todo obterDadosSintetico
-     * @param filtro do relat�rio
+     * Método obterDadosSintetico
+     * @param filtro do relatï¿½rio
      * @return List<ManutencoesAnaliticoVO>
      */
     public List<RelatorioEnvioRetornoSinteticoVO> obterDadosSintetico(FiltroUtil filtro) {
@@ -232,13 +232,13 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
                 f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
                 f.setCodigoTipoPesquisa(1);
                 f.setDataNascimento(0);
-                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // � cnpj
+                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // ï¿½ cnpj
                     f.setCodigoTipoPessoa(4);
                 } else {
                     f.setCodigoTipoPessoa(3);
                 }
 
-                List lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
+                List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
                 if (lista.isEmpty()) {
                     StringBuilder in = new StringBuilder("(");
                     String token = "";
@@ -257,7 +257,7 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
             } 
 
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
-            relatorio = (List<RelatorioEnvioRetornoSinteticoVO>) getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoSinteticoDataMapper());
+            relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoSinteticoDataMapper());
 
 
         }  finally {

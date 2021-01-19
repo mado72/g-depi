@@ -34,8 +34,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
 		@Autowired
 		private DataSource dataSource;
 		
-		/** A(O) map sql parameter source. */
-		private MapSqlParameterSource mapSqlParameterSource;
+//		/** A(O) map sql parameter source. */
+//		private MapSqlParameterSource mapSqlParameterSource;
 		
 
 		/* (non-Javadoc)
@@ -47,8 +47,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
 		}
 	
 	
-    /* Método obterDadosAnalitico
-     * @param filtro do relatório
+    /* MÃ©todo obterDadosAnalitico
+     * @param filtro do relatÃ³rio
      * @return List<ManutencoesAnaliticoVO>
      */
     public List<ManutencoesAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro) {
@@ -120,13 +120,13 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
                 f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
                 f.setCodigoTipoPesquisa(1);
                 f.setDataNascimento(0);
-                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // é cnpj
+                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // ï¿½ cnpj
                     f.setCodigoTipoPessoa(4);
                 } else {
                     f.setCodigoTipoPessoa(3);
                 }
 
-               List lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
+               List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
                 if (lista.isEmpty()) {
                     StringBuilder in = new StringBuilder("(");
                     String token = "";
@@ -145,7 +145,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
             } 
 
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
-            manutencoes = (List<ManutencoesAnaliticoVO>) getJdbcTemplate().query(query.toString(), params, new ManutencoesAnaliticoDataMapper());
+            manutencoes = getJdbcTemplate().query(query.toString(), params, new ManutencoesAnaliticoDataMapper());
 			
 		} catch(DataAccessException e) {
 			LOGGER.error("RelatorioManutencoesDAOImpl - obterDadosAnalitico", e);

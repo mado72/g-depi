@@ -87,29 +87,22 @@
 		</global-results>
 
 		<action name="index" method="iniciarFormulario">
-			<param name="subtituloChave">title.deposito.consultar</param>
+			<param name="subtituloChave">title.deposito.consultarStruts</param>
         </action>
         
-		<action name="listar" method="execute">
-        </action>
+		<action name="listar" method="execute"/>
         
 		<action name="*" method="{1}">
-			<result name="success" type="redirectAction">
-			    <param name="actionName">listar</param>
-			</result>
-			<result name="incluirAcao" type="redirectAction">
-			    <param name="actionName">novo</param>
-			    <param name="namespace">/cadastro/motivoDeposito/editar</param>
-			</result>
-			<result name="alterarAcao" type="redirectAction">
-			    <param name="actionName">alterar</param>
-			    <param name="namespace">/cadastro/motivoDeposito/editar</param>
-			</result>
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+			<result name="success" type="redirectAction">listar</result>
         </action>
 
 	</package>
 	
 	<package name="cadastroMotivoDepositoEditar" namespace="/cadastro/motivoDeposito/editar" extends="depi-default">
+	
+		<default-class-ref class="motivoDepositoEditarAction"></default-class-ref>
 	
 		<global-results>
 			<result name="input">
@@ -121,12 +114,17 @@
 			</result>
 		</global-results>
 		
-		<action name="novo" class="motivoDepositoEditarAction" method="novo">
+		<action name="novo" method="novo">
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
+			<result name="input" type="redirectAction">exibir</result>
+		</action>
+		
+		<action name="alterar" method="novo">
+			<result name="input" type="redirectAction">exibir</result>
 		</action>
         
-        <action name="*" class="motivoDepositoEditarAction" method="{1}">
+        <action name="*" method="{1}">
         </action>
         
 	</package>
@@ -135,43 +133,34 @@
 	
 		<default-class-ref class="departamentoConsultarAction"/>
 		
+	
 		<global-results>
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
 			</result>
-		</global-results>
-		
-		<action name="index" method="iniciarFormulario">
-			<param name="subtituloChave">title.departamento.consultar</param>
-        </action>
-        
-		<action name="listar" method="execute">
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
-			</result>
-        </action>
-        
-		<action name="*" method="{1}">
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
 			</result>
-			<result name="success" type="redirectAction">
-			    <param name="actionName">listar</param>
-			</result>
-			<result name="incluirAcao" type="redirectAction">
-			    <param name="actionName">novo</param>
-			    <param name="namespace">/cadastro/departamento/editar</param>
-			</result>
-			<result name="alterarAcao" type="redirectAction">
-			    <param name="actionName">alterar</param>
-			    <param name="namespace">/cadastro/departamento/editar</param>
-			</result>
+		</global-results>
+
+		<action name="index" method="iniciarFormulario">
+			<param name="subtituloChave">title.deposito.consultarStruts</param>
+        </action>
+        
+		<action name="listar" method="execute"/>
+        
+		<action name="*" method="{1}">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+			<result name="success" type="redirectAction">listar</result>
         </action>
 
 	</package>
 	
 	<package name="cadastroDepartamentoEditar" namespace="/cadastro/departamento/editar" extends="depi-default">
 
+		<default-class-ref class="motivoDepositoEditarAction"></default-class-ref>
+		
 		<global-results>
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoForm.jsp</param>
@@ -181,13 +170,18 @@
 			    <param name="namespace">/cadastro/departamento/consultar</param>
 			</result>
 		</global-results>
-
-		<action name="novo" class="motivoDepositoEditarAction" method="novo">
+		
+		<action name="novo" method="novo">
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
+			<result name="input" type="redirectAction">exibir</result>
+		</action>
+		
+		<action name="alterar" method="novo">
+			<result name="input" type="redirectAction">exibir</result>
 		</action>
         
-        <action name="*" class="departamentoEditarAction" method="{1}">
+        <action name="*" method="{1}">
         </action>
         
 	</package>

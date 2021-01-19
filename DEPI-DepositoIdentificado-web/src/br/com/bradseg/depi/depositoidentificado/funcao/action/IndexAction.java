@@ -14,6 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+/**
+ * Action de entrada no sistema.
+ * 
+ * @author Marcelo Damasceno
+ *
+ */
 @Controller
 @Scope("request")
 public class IndexAction extends BaseAction implements SessionAware, ServletRequestAware {
@@ -24,8 +30,8 @@ public class IndexAction extends BaseAction implements SessionAware, ServletRequ
 
 	@Resource
 	private transient String www3;
-	private Map<String, Object> session;
-	private HttpServletRequest request;
+	private transient Map<String, Object> session;
+	private transient HttpServletRequest request;
 
 	public String index() {
 		

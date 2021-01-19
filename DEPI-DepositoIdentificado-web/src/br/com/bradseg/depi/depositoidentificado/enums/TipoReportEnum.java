@@ -1,7 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.enums;
 
 /**
- * Classe responsável por representar dos tipos de relatórios gerados no Jasper Boleto/Recibo
+ * Classe responsï¿½vel por representar dos tipos de relatÃ³rios gerados no Jasper Boleto/Recibo
  * 
  * @author CPM Braxis Capgemini em 15/07/2017
  */

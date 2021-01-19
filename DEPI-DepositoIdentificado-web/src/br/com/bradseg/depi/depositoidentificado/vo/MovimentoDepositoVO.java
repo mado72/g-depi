@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Classe Anotada de Mapeamento com a tabela MOVTO_FINCR_DEP - Movimentos dos Depósitos Identificados.
+ * Classe Anotada de Mapeamento com a tabela MOVTO_FINCR_DEP - Movimentos dos Depï¿½sitos Identificados.
  * @author Globality
  */
 //@Table(schema = ConstantesDEPI.SCHEMA_BANCO, table = "MOVTO_FINCR_DEP")
@@ -32,10 +32,10 @@ public class MovimentoDepositoVO implements Serializable {
      * Objeto de Deposito atrelado.
      */
 //    @TableField(name = "CDEP_IDTFD")
-    private long codigoMovimento; // Trata o código do Depósito como proprio.
+    private long codigoMovimento; // Trata o cï¿½digo do Depï¿½sito como proprio.
 
     /**
-     * Ações. Esse campo deverá ser gravado ‘A’ para Aceite, ‘R’ para Receita, ‘T’ para Transferência e ‘D’ para Devolução.
+     * Aï¿½ï¿½es. Esse campo deverï¿½ ser gravado ï¿½Aï¿½ para Aceite, ï¿½Rï¿½ para Receita, ï¿½Tï¿½ para Transferï¿½ncia e ï¿½Dï¿½ para Devoluï¿½ï¿½o.
      */
 //   @TableField(name = "CTPO_ACAO_MOVTO")
     private String indicacaoAcao;
@@ -47,43 +47,43 @@ public class MovimentoDepositoVO implements Serializable {
     private long bancoMovimento;
 
     /**
-     * Código da Agência.
+     * CÃ³digo da Agï¿½ncia.
      */
 //    @TableField(name = "CAG_MOVTO", converter = BigDecimalToLongPersistenceConverter.class)
     private long agenciaMovimento;
 
     /**
-     * Código da Conta do movimento.
+     * CÃ³digo da Conta do movimento.
      */
 //    @TableField(name = "CCTA_MOVTO")
     private long contaMovimento;
 
     /**
-     * Número do Cheque.
+     * Nï¿½mero do Cheque.
      */
 //    @TableField(name = "CCHEQ_DEVLC")
     private long nroCheque;
 
     /**
-     * Histórico
+     * Histï¿½rico
      */
 //    @TableField(name = "ROBS_MOVTO_FINCR")
     private String observacao;
 
     /**
-     * data da última atualização.
+     * data da ï¿½ltima atualizaï¿½ï¿½o.
      */
 //    @TableField(name = "DHORA_ULT_ATULZ")
     private Date dataHoraAtualizacao;
 
     /**
-     * código do responsável pela última alteração.
+     * cï¿½digo do responsï¿½vel pela ï¿½ltima alteraï¿½ï¿½o.
      */
 //    @TableField(name = "CUSUAR_RESP_ATULZ")
     private BigDecimal codigoResponsavelUltimaAtualizacao;
 
     /**
-     * indicador que sinaliza se foi excluido logicamente. 'S' = excluída; 'N' = não excluída; 'D' = desativado
+     * indicador que sinaliza se foi excluido logicamente. 'S' = excluï¿½da; 'N' = nï¿½o excluï¿½da; 'D' = desativado
      */
  //   @TableField(name = "CIND_REG_ATIVO")
     private String codigoIndicativoAtivo = "S";

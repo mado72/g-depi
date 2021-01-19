@@ -20,17 +20,17 @@ public class CompanhiaSeguradoraVO implements Serializable {
     private static final long serialVersionUID = 3985002053131501638L;
 
     /**
-     * Código da Companhia. maxLenght = 4
+     * CÃ³digo da Companhia. maxLenght = 4
      */
     private int codigoCompanhia;
 
     /**
-     * Descrição da Cia
+     * Descriï¿½ï¿½o da Cia
      */
     private String descricaoCompanhia;
 
     /**
-     * Construtor padrão
+     * Construtor padrï¿½o
      */
     public CompanhiaSeguradoraVO() {
         super();
@@ -62,7 +62,7 @@ public class CompanhiaSeguradoraVO implements Serializable {
     }
 
     /**
-     * retorna descição
+     * retorna desciï¿½ï¿½o
      * @return o descricaoCompanhia
      */
     public String getDescricaoCompanhia() {
@@ -70,7 +70,7 @@ public class CompanhiaSeguradoraVO implements Serializable {
     }
 
     /**
-     * configura descrição
+     * configura descriï¿½ï¿½o
      * @param descricaoCompanhia o descricaoCompanhia a ser configurado
      */
     public void setDescricaoCompanhia(String descricaoCompanhia) {

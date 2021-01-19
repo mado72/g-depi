@@ -1,5 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
+import java.io.Serializable;
+
 /**
  * Classe utilitária para armazenar cláusulas SQL para filtrar consultas.
  * 
@@ -19,25 +21,32 @@ package br.com.bradseg.depi.depositoidentificado.vo;
  * 
  * @author Marcelo Damasceno
  */
-public class CriterioConsultaVO {
-	
+public class CriterioConsultaVO implements Serializable {
+
+	private static final long serialVersionUID = 5938378242394951493L;
+
 	private String criterio;
-	
+
 	private String param;
-	
+
 	private String valor;
-	
+
 	/**
 	 * Construtor para CriterioConsultaVO
 	 */
 	public CriterioConsultaVO() {
+		super();
 	}
 
 	/**
 	 * Construtor para CriterioConsultaVO
-	 * @param criterio Critério da consulta
-	 * @param param Nome do parâmetro usado no critério
-	 * @param valor Valor a ser preenchido no parâmetro
+	 * 
+	 * @param criterio
+	 *            Critério da consulta
+	 * @param param
+	 *            Nome do parâmetro usado no critério
+	 * @param valor
+	 *            Valor a ser preenchido no parâmetro
 	 */
 	public CriterioConsultaVO(String criterio, String param, String valor) {
 		super();
@@ -47,6 +56,8 @@ public class CriterioConsultaVO {
 	}
 
 	/**
+	 * Critério da consulta
+	 * 
 	 * @return Critério da consulta
 	 */
 	public String getCriterio() {
@@ -54,43 +65,57 @@ public class CriterioConsultaVO {
 	}
 
 	/**
+	 * Critério a ser utilizado. O critério deve já estar com todas as funções,
+	 * conversões etc. que serão utilizadas na consulta.
+	 * 
 	 * @param criterio
-	 *            Critério a ser utilizado. O critério deve já estar com todas
-	 *            as funções, conversões etc. que serão utilizadas na consulta.
+	 *            o critério
 	 */
 	public void setCriterio(String criterio) {
 		this.criterio = criterio;
 	}
-	
+
 	/**
+	 * Retorna o parâmetro
+	 * 
 	 * @return Nome do parâmetro usado na consulta
 	 */
 	public String getParam() {
 		return param;
 	}
-	
+
 	/**
-	 * @param param Define o nome do parâmetro
+	 * Define o nome do parâmetro
+	 * 
+	 * @param param
+	 *            Define o nome do parâmetro
 	 */
 	public void setParam(String param) {
 		this.param = param;
 	}
 
 	/**
-	 * @return Valor para o preenchimento do parâmetro 
+	 * Retorna Valor para o preenchimento do parâmetro
+	 * 
+	 * @return Valor para o preenchimento do parâmetro
 	 */
 	public String getValor() {
 		return valor;
 	}
 
 	/**
-	 * @param valor Valor para o preenchimento do parâmetro
+	 * Define valor para o preenchimento do parâmetro
+	 * 
+	 * @param valor
+	 *            Valor para o preenchimento do parâmetro
 	 */
 	public void setValor(String valor) {
 		this.valor = valor;
 	}
-	
-	/* (não-Javadoc)
+
+	/*
+	 * (não-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

@@ -1,7 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.enums;
 
 /**
- * Enum de status Compensação
+ * Enum de status Compensaï¿½ï¿½o
  *
  */
 public enum StatusCompensacaoEnum {
@@ -27,10 +27,10 @@ public enum StatusCompensacaoEnum {
 	
 	
 	/**
-	 * Método responsável por retornar o enum do Status Compensacao
+	 * MÃ©todo responsï¿½vel por retornar o enum do Status Compensacao
 	 * 
 	 * @param codigoStatus informa o codigo do Status da compensacao
-	 * @return StatuscompensacaoEnum enum de status compensação
+	 * @return StatuscompensacaoEnum enum de status compensaï¿½ï¿½o
 	 */
 	public static StatusCompensacaoEnum getStatusCompensacaoEnum(Integer codigoStatus) {
 		

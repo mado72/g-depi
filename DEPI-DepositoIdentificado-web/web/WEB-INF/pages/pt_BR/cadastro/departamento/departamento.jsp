@@ -16,7 +16,7 @@
 		<th class="selecao">
 			<s:text name="label.todos"/>
 			<br/>
-			<input type="checkbox" class="optionbutton checkTodos"/>
+			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
 		<th class="sigla">
 			<s:url action="ordenar" namespace="/consulta/departamento" var="linkSort">

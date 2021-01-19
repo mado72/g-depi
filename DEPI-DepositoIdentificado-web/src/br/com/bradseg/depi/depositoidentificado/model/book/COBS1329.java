@@ -20,7 +20,7 @@ import br.com.bradseg.bsad.framework.ctg.programapi.program.ResultSet;
 import br.com.bradseg.depi.depositoidentificado.vo.ParcelaCobrancaVO;
 
 /**
- * Classe que representa a book do serviço COBS0329.
+ * Classe que representa a book do serviÃ§o COBS0329.
  * @author Globality
  */
 @CicsGateway
@@ -41,7 +41,7 @@ public class COBS1329 extends CTGProgramImpl {
 		new StringFieldType("B1329-IPSSOA-COBR-S14", 80)
 	});	
 
-	protected static final FieldType[] COMMAREAIN_FIELDS = new FieldType[] {
+	private static final FieldType[] COMMAREAIN_FIELDS = {
 	    new IntegerFieldType("B1329-CRETOR-PROG-SCC", 3),
 		new StringFieldType("B1329-RMSGEM-RETOR-SCC", 70),
 		new StringFieldType("B1329-CERRO-OCOR-SCC", 10),
@@ -64,7 +64,7 @@ public class COBS1329 extends CTGProgramImpl {
 		new StringFieldType("B1329-FILLER-ENTRADA", 184)
 	};
 
-	protected static final FieldType[] COMMAREAOUT_FIELDS = new FieldType[] {
+	private static final FieldType[] COMMAREAOUT_FIELDS = {
 		new IntegerFieldType("B1329-QDE-PCELA-LIST-SCC" ,3),
 		new IntegerFieldType("B1329-QDE-PCELA-TOTAL-SCC" ,3),
 		new StringFieldType("B1329-CIND-MAIS-PCELA-LIST-SCC" ,1),
@@ -72,23 +72,25 @@ public class COBS1329 extends CTGProgramImpl {
 		new StringFieldType("B1329-FILLER-SAIDA", 12619)
 	};
 	
-	private static final CommonAreaMetaData COMMAREAIN = new CommonAreaMetaData(COMMAREAIN_FIELDS);
-	private static final CommonAreaMetaData COMMAREAOUT = new CommonAreaMetaData(COMMAREAIN_FIELDS, COMMAREAOUT_FIELDS);
+	private static final CommonAreaMetaData COMMAREAIN = new CommonAreaMetaData(
+			COMMAREAIN_FIELDS);
+	private static final CommonAreaMetaData COMMAREAOUT = new CommonAreaMetaData(
+			COMMAREAIN_FIELDS, COMMAREAOUT_FIELDS);
 		
 	/**
-	 * Construtor padrão
+	 * Construtor padrÃ£o
 	 */
 	public COBS1329() {
 		super(PGMNAME, TRANNAME, COMMLENGTH, COMMAREAIN, COMMAREAOUT);
 	}
 	
 	/**
-	 * Método que popula a área de entrada da book.
+	 * MÃ©todo que popula a Ã¡rea de entrada da book.
 	 * @param is - o inputset do cics.
-	 * @param parcelaCobranca - objeto com os dados de parâmetro.
-	 * @param matricula - a matrícula do usuário.
-	 * @param acao - A ação executada pelo serviço.
-	 * @throws IntegrationException - exceção.
+	 * @param parcelaCobranca - objeto com os dados de parÃ¢metro.
+	 * @param matricula - a matrÃ­cula do usuÃ¡rio.
+	 * @param acao - A aÃ§Ã£o executada pelo serviï¿½o.
+	 * @throws IntegrationException - exceÃ§Ã£o.
 	 */
 	public void populateProgram(InputSet is, ParcelaCobrancaVO parcelaCobranca, String matricula, String acao) throws IntegrationException {
 		is.setString("B1329-CMATR-USUAR-ECC", matricula);
@@ -104,9 +106,9 @@ public class COBS1329 extends CTGProgramImpl {
 	}
 	
 	/**
-	 * Método que retorna a lista de parcelas pendentes.
+	 * MÃ©todo que retorna a lista de parcelas pendentes.
 	 * @param resultSet - objeto result set.
-	 * @throws IntegrationException - exceção.
+	 * @throws IntegrationException - exceÃ§Ã£o.
 	 * @throws ParseException  - exception.
 	 * @return List<ParcelaCobrancaVO> - lista de retorno.
 	 */
@@ -122,7 +124,9 @@ public class COBS1329 extends CTGProgramImpl {
 			parcelaCobranca.setValorParcelaCobrado(rs.getDouble("B1329-VPCELA-COBR-S01"));
 			parcelaCobranca.setValorIofCobrado(rs.getDouble("B1329-VIOF-PCELA-COBR-S01"));
 			if(!"".equals(rs.getString("B1329-DVCTO-PCELA-COBR-S01"))) {
-				parcelaCobranca.setDataVencimento(SDF.parse(rs.getString("B1329-DVCTO-PCELA-COBR-S01")));	
+				synchronized (this) {
+					parcelaCobranca.setDataVencimento(SDF.parse(rs.getString("B1329-DVCTO-PCELA-COBR-S01")));
+				}
 			}
 			parcelaCobranca.setNomePessoa(rs.getString("B1329-IPSSOA-COBR-S14"));
 			
@@ -138,8 +142,8 @@ public class COBS1329 extends CTGProgramImpl {
 	
 	public void verificaErrosCics(ResultSet rs) throws IntegrationException {
 		if(rs.getInteger("B1329-CRETOR-PROG-SCC") != 0) {
-			throw new IntegrationException("Código Retorno:" + rs.getInteger("B1329-CRETOR-PROG-SCC") + "-" + rs.getString("B1329-RMSGEM-RETOR-SCC")
-										 + "Código Erro:" + rs.getString("B1329-CERRO-OCOR-SCC") + "-" + rs.getString("B1329-RERRO-OCOR-SCC"));
+			throw new IntegrationException("CÃ³digo Retorno:" + rs.getInteger("B1329-CRETOR-PROG-SCC") + "-" + rs.getString("B1329-RMSGEM-RETOR-SCC")
+										 + "CÃ³digo Erro:" + rs.getString("B1329-CERRO-OCOR-SCC") + "-" + rs.getString("B1329-RERRO-OCOR-SCC"));
 		}
 	}
 }

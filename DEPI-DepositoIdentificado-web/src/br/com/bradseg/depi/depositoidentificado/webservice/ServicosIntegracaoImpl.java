@@ -69,6 +69,7 @@ public class ServicosIntegracaoImpl {
 	@Path("/motivodeposito/excluir")
 	@Consumes({ MediaType.APPLICATION_JSON} )	
     public void excluirMotivoDeposito(MotivoDepositoVO vo) throws IntegrationException {
+		// TODO Não implementado
     }
 
     /**

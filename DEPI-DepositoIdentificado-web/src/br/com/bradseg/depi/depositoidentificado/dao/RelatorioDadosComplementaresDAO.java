@@ -11,9 +11,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioDadosComplementaresV
  */
 public interface RelatorioDadosComplementaresDAO {
 	/**
-     * Método obterDadosComplementaresAnalitico
-     * @param filtro do relatório
-     * @throws IntegrationException - trata erro de negócio
+     * MÃ©todo obterDadosComplementaresAnalitico
+     * @param filtro do relatÃ³rio
+     * @throws IntegrationException - trata erro de negï¿½cio
      * @return List<DadosEnvioRetornoAnaliticoVO>
      */
     List<RelatorioDadosComplementaresVO> obterDadosComplementaresAnalitico(FiltroUtil filtro);

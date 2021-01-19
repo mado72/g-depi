@@ -5,15 +5,12 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
@@ -29,17 +26,17 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 @Repository
 public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
-	/** A Constante LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(DepositoDAOImpl.class);
-
-    private static final String MSG_NENHUM_REGISTRO_AFETADO = "A atualização não afetou nenhum registro.";
+//	/** A Constante LOGGER. */
+//	private static final Logger LOGGER = LoggerFactory.getLogger(DepositoDAOImpl.class);
+//
+//    private static final String MSG_NENHUM_REGISTRO_AFETADO = "A atualizaï¿½ï¿½o nï¿½o afetou nenhum registro.";
 	
 	/** A(O) data source. */
 	@Autowired
 	private DataSource dataSource;
 	
-	/** A(O) map sql parameter source. */
-	private MapSqlParameterSource mapSqlParameterSource;
+//	/** A(O) map sql parameter source. */
+//	private MapSqlParameterSource mapSqlParameterSource;
 	
 
 	/* (non-Javadoc)
@@ -51,9 +48,9 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 	}
 
     /**
-     * Método de obter por filtro
-     * @param filtro parâmetro depósito com o código do objeto requisitado
-     * @param codigoUsuario - código.
+     * MÃ©todo de obter por filtro
+     * @param filtro parï¿½metro depï¿½sito com o cï¿½digo do objeto requisitado
+     * @param codigoUsuario - cï¿½digo.
      * @return List<DepositoVO>
      */
     public List<DepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, BigDecimal codigoUsuario) {
@@ -136,11 +133,11 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      */
     @Override
     public void inserir(DepositoVO vo) {
-        throw new IntegrationException("O método inserir não foi implementado.");
+        throw new IntegrationException("O mï¿½todo inserir nï¿½o foi implementado.");
     }
 
     /**
-     * Método reponsável pela inclusão de um registro de Depósito
+     * MÃ©todo reponsï¿½vel pela inclusï¿½o de um registro de Depï¿½sito
      * @param vo - DepositoVO.
      * @param param - ParametroDepositoVO.
      */
@@ -208,7 +205,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     }
 
     /**
-     * Método reponsável pela inserção de um DV para um depósito inserido
+     * MÃ©todo reponsï¿½vel pela inserï¿½ï¿½o de um DV para um depï¿½sito inserido
      * @param vo - DepositoVO.
      */
     public void inserirDV(DepositoVO vo)  {
@@ -248,11 +245,11 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      */
     @Override
     public void alterar(DepositoVO vo)  {
-        throw new IntegrationException("O método inserir não foi implementado.");
+        throw new IntegrationException("O mï¿½todo inserir nï¿½o foi implementado.");
     }
 
     /**
-     * Método reponsável pela atualização normal de um registro de Depósito
+     * MÃ©todo reponsï¿½vel pela atualizaï¿½ï¿½o normal de um registro de Depï¿½sito
      * @param vo - DepositoVO.
      * @param param - ParametroDepositoVO.
      */
@@ -308,7 +305,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     }
 
     /**
-     * Prorrogar Depósito
+     * Prorrogar Depï¿½sito
      * @param vo - DepositoVO.
      */
     public void prorrogar(DepositoVO vo) {
@@ -343,7 +340,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     }
 
     /**
-     * Prorrogar Depósito
+     * Prorrogar Depï¿½sito
      * @param deposito - DepositoVO.
      */
     public void cancelar(DepositoVO deposito)  {
@@ -378,7 +375,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     }
 
     /**
-     * Exclui de forma lógica um Depósito em situação de trâmite 1, 4, 5 (1- À enviar, 4- Reenvio e 5-Rejeitado).
+     * Exclui de forma lï¿½gica um Depï¿½sito em situaï¿½ï¿½o de trï¿½mite 1, 4, 5 (1- ï¿½ enviar, 4- Reenvio e 5-Rejeitado).
      * @param vo - DepositoVO.
      */
 
@@ -395,7 +392,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
                 vo.getCodigoDepositoIdentificado());
 
             if (stmt.executeUpdate() == 0) {
-            	throw  new DEPIIntegrationException(ConstantesModel.MSG_CUSTOMIZADA, "A exclusão não afetou nenhum registro.");                
+            	throw  new DEPIIntegrationException(ConstantesModel.MSG_CUSTOMIZADA, "A exclusï¿½o nï¿½o afetou nenhum registro.");                
             }
 
         } catch (DAOException e) {
@@ -522,7 +519,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
     
     /**
-	 * @author Fábio Henrique Registrar Log
+	 * @author Fï¿½bio Henrique Registrar Log
 	 * @param oldObj -
 	 *            DepositoVO
 	 * @param newObj -
@@ -558,9 +555,9 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     }
 
     /**
-     * Método de obter depósito por motivo
+     * MÃ©todo de obter depï¿½sito por motivo
      * @param vo - MotivoDepositoVO vo
-     * @throws DEPIIntegrationException - trata erro de negócio
+     * @throws DEPIIntegrationException - trata erro de negï¿½cio
      * @return DepositoVO
      */
     public DepositoVO obterPorMotivo(MotivoDepositoVO vo)  {
@@ -607,7 +604,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     }
 
     /**
-     * Método de obter depósito por departamento
+     * MÃ©todo de obter depï¿½sito por departamento
      * @param vo - DepartamentoVO vo
      * @return DepositoVO
      */
@@ -655,9 +652,9 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     }
 
     /**
-     * Método de obter depósito por conta corrente
+     * MÃ©todo de obter depï¿½sito por conta corrente
      * @param vo - DepartamentoVO vo
-     * @throws DEPIIntegrationException - trata erro de negócio
+     * @throws DEPIIntegrationException - trata erro de negï¿½cio
      * @return DepositoVO
      */
     public DepositoVO obterPorContaCorrente(ContaCorrenteAutorizadaVO vo)  {

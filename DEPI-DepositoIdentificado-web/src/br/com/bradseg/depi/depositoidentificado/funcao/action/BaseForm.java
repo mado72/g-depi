@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Abstração dos forms da aplicação.
- * @refactoredBy Marcelo Damasceno
+ * @author Marcelo Damasceno
  */
 public abstract class BaseForm implements Serializable {
 

@@ -11,6 +11,13 @@ import br.com.bradseg.depi.depositoidentificado.util.json.TipoOperacaoSerializer
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+/**
+ * Classe utilitária para associar uma entidade com as operações disponíveis.
+ * 
+ * @author Marcelo Damasceno
+ * 
+ * @param <T> A entidade
+ */
 public class EntidadeCampoOperacoesFiltro<T extends IEntidadeCampo> implements Serializable {
 
 	private static final long serialVersionUID = 2953514533982138657L;

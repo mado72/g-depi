@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * Método RelatorioExtratoSinteticoVO
- * @author Fábio Henrique
+ * MÃ©todo RelatorioExtratoSinteticoVO
+ * @author Fï¿½bio Henrique
  */
 public class RelatorioExtratoSinteticoVO implements Serializable {
 
@@ -56,7 +56,7 @@ public class RelatorioExtratoSinteticoVO implements Serializable {
     private BigDecimal valorCancelado = BigDecimal.ZERO;
 
     /**
-     * Totais Manutenção por Grupo
+     * Totais Manutenï¿½ï¿½o por Grupo
      */
     private long qtdAceite;
     private BigDecimal valorAceite = BigDecimal.ZERO;

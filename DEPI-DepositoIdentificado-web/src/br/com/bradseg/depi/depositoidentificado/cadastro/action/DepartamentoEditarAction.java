@@ -12,8 +12,6 @@ import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
  * 
@@ -27,33 +25,33 @@ public class DepartamentoEditarAction extends BaseModelAction<DepartamentoEditar
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	private DepartamentoEditarForm _model;
+	private DepartamentoEditarForm model;
 	
 	@Autowired
-	private DepartamentoFacade facade;
+	private transient DepartamentoFacade facade;
 	
 	@Override
 	public DepartamentoEditarForm getModel() {
 		if (sessionData.containsKey(DepartamentoEditarForm.NOME_FORM)) {
-			_model = (DepartamentoEditarForm) sessionData.get(DepartamentoEditarForm.NOME_FORM);
+			model = (DepartamentoEditarForm) sessionData.get(DepartamentoEditarForm.NOME_FORM);
 		}
 		else {
 			this.novaInstanciaModel();
 		}
-		return _model;
+		return model;
 	}
 	
 	@Override
 	protected void novaInstanciaModel() {
-		_model = new DepartamentoEditarForm();
-		sessionData.put(DepartamentoEditarForm.NOME_FORM, _model);
+		model = new DepartamentoEditarForm();
+		sessionData.put(DepartamentoEditarForm.NOME_FORM, model);
 	}
 	
 	/**
 	 * Apenas redireciona a saída para INPUT. Usado para apresentar o
 	 * formulário armazenado na sessão.
 	 * 
-	 * @return {@link Action#INPUT}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String novo() {
 		sessionData.remove(DepartamentoEditarForm.NOME_FORM);
@@ -82,7 +80,7 @@ public class DepartamentoEditarAction extends BaseModelAction<DepartamentoEditar
 	 * para identificar se é para salvar (inclusão ou alteração), cancelar ou
 	 * voltar.
 	 * 
-	 * @return {@link Action#SUCCESS} quando for processado corretamente.
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS} quando for processado corretamente.
 	 */
 	public String enviar() {
 		DepartamentoEditarForm model = getModel();
@@ -142,8 +140,7 @@ public class DepartamentoEditarAction extends BaseModelAction<DepartamentoEditar
 		DepartamentoVO vo = new DepartamentoVO();
 		vo.setCodigoDepartamento(codigo);
 		
-		DepartamentoVO instancia = facade.obterPorChave(vo);
-		return instancia;
+		return facade.obterPorChave(vo);
 	}
 	
 }

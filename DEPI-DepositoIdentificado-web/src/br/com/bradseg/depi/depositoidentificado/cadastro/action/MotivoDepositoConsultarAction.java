@@ -1,7 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,15 +14,14 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
+import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -44,33 +42,45 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 	
 	private static final String NOME_ACTION = MotivoDepositoConsultarAction.class.getSimpleName();
 	
-	private FiltroConsultarForm<MotivoDepositoCampo> _model;
+	private transient FiltroConsultarForm<MotivoDepositoCampo> model;
 	
 	@Autowired
-	private MotivoDepositoFacade facade;
+	private transient MotivoDepositoFacade facade;
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public FiltroConsultarForm<MotivoDepositoCampo> getModel() {
 		if (sessionData.containsKey(NOME_ACTION)) {
-			_model = (FiltroConsultarForm<MotivoDepositoCampo>) sessionData.get(NOME_ACTION);
+			model = (FiltroConsultarForm<MotivoDepositoCampo>) sessionData.get(NOME_ACTION);
 		}
 		else {
 			this.novaInstanciaModel();
 		}
-		return _model;
+		return model;
 	}
 	
 	@Override
 	protected void novaInstanciaModel() {
+
 		FornecedorObjeto<Collection<MotivoDepositoCampo>> criterios = new FornecedorObjeto<Collection<MotivoDepositoCampo>>() {
+			
 			@Override
 			public Collection<MotivoDepositoCampo> get() {
-				return Arrays.asList(MotivoDepositoCampo.valuesForCriteria());
+				return MotivoDepositoCampo.valuesForCriteria();
+			}
+			
+		};
+		
+		Funcao<String, IEntidadeCampo> obterEntidadeCampo = new Funcao<String, IEntidadeCampo>() {
+
+			@Override
+			public IEntidadeCampo apply(String source) {
+				return MotivoDepositoCampo.obterPorDescricao(source);
 			}
 		};
-		_model = new FiltroConsultarForm<MotivoDepositoCampo>(criterios);
-		sessionData.put(NOME_ACTION, _model);
+		
+		model = new FiltroConsultarForm<MotivoDepositoCampo>(criterios, obterEntidadeCampo);
+		sessionData.put(NOME_ACTION, model);
 	}
 	
 	@Override
@@ -83,7 +93,7 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 	 * Apenas redireciona a saída para SUCCESS. Usado para apresentar o
 	 * formulário armazenado na sessão.
 	 * 
-	 * @return {@link Action#SUCCESS}
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
 	public String execute() {
 		setSubtituloChave(TITLE_DEPOSITO_CONSULTAR);
@@ -93,7 +103,7 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 	/**
 	 * Processa os dados do filtro.
 	 * 
-	 * @return {@link Action#SUCCESS}, quando consegue realizar a consulta. Senão {@link Action#ERROR}
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}, quando consegue realizar a consulta. Senão {@link com.opensymphony.xwork2.Action#ERROR}
 	 */
 	public String consultar() {
 		try {
@@ -116,24 +126,10 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 	private void processarFiltro() {
 		FiltroConsultarForm<MotivoDepositoCampo> model = getModel();
 		
-		List<CriterioConsultaVO> criterios = new ArrayList<>();
+		String[] criterioArray = request.getParameterValues("criterio");
 		
-		if (model.getCriterios() != null) {
-			int paramIdx = 0;
-			
-			for (String item: model.getCriterios()) {
-				String[] criterioFiltro = item.split(";");
-				MotivoDepositoCampo campo = MotivoDepositoCampo.obterPorDescricao(criterioFiltro[0]);
-				TipoOperacao operacao = TipoOperacao.valueOf(criterioFiltro[1]);
-				String valor = criterioFiltro[2];
-				
-				String param = "param" + ++paramIdx;
-				
-				CriterioConsultaVO criterioConsultaVO = montarCriterioConsulta(
-						campo, operacao, valor, param);
-				criterios.add(criterioConsultaVO);
-			}
-		}
+		List<CriterioConsultaVO> criterios = new ArrayList<>(model.preencherCriterios(criterioArray));
+		criterios.add(new CriterioConsultaVO("CIND_REG_ATIVO = :OPT1", "OPT1", "S"));
 		
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(criterios);

@@ -4,7 +4,7 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
  * Classe enum ContaCorrenteAutorizadaCampo
- * @refactor Fábio Henrique
+ * @author Fï¿½bio Henrique
  */
 public enum ContaCorrenteAutorizadaCampo implements IEntidadeCampo {
 
@@ -14,19 +14,19 @@ public enum ContaCorrenteAutorizadaCampo implements IEntidadeCampo {
     CodigoCia(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, CompanhiaSeguradoraCampo.CodigoCompanhia),
 
     /**
-     * Código Banco
+     * CÃ³digo Banco
      */
     CodigoBanco(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_BANCO, "Banco", TipoCampo.NUM, false,
         ConstantesDEPI.SIZE_NAO_DEFINIDO),
 
     /**
-     * Código Agência
+     * CÃ³digo Agï¿½ncia
      */
-    CodigoAgencia(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_AGENCIA, "Agência", TipoCampo.NUM, false,
+    CodigoAgencia(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_AGENCIA, "Agï¿½ncia", TipoCampo.NUM, false,
         ConstantesDEPI.SIZE_NAO_DEFINIDO),
     
     /**
-     * Código Conta Corrente
+     * CÃ³digo Conta Corrente
      */
     CodigoContaCorrente(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_CONTA_CORRENTE, "Conta Corrente", TipoCampo.NUM,
         false, ConstantesDEPI.SIZE_NAO_DEFINIDO),
@@ -80,7 +80,7 @@ public enum ContaCorrenteAutorizadaCampo implements IEntidadeCampo {
      * @param nome String
      * @param descricao String
      * @param tipoCampo TipoCampo
-     * @param cics - boolean - sé é consultado com serviço cics.
+     * @param cics - boolean - sï¿½ ï¿½ consultado com serviï¿½o cics.
      * @param size int
      */
     ContaCorrenteAutorizadaCampo(String nome, String descricao, TipoCampo tipoCampo, boolean cics, int size) {

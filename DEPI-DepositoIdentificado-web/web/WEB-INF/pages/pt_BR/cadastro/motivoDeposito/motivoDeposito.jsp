@@ -8,7 +8,7 @@
 </s:include>
 
 <s:if test="colecaoDados">
-<s:form action="acao.do" id="AcaoForm">
+<s:form action="acao.do" namespace="/cadastro/motivoDeposito/editar" id="AcaoForm">
 
 <table id="tabela_interna" class="MotivoDeposito Consulta">
 	<thead>
@@ -16,7 +16,7 @@
 		<th class="selecao">
 			<s:text name="label.todos"/>
 			<br/>
-			<s:checkbox name="codigo" class="optionbutton checkTodos" />
+			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
 		<th class="descricao">
 			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">

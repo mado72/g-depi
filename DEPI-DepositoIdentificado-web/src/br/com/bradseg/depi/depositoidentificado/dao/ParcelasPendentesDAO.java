@@ -7,32 +7,32 @@ package br.com.bradseg.depi.depositoidentificado.dao;
 public interface ParcelasPendentesDAO {
 	
 	/**
-	 * Método que insere um registro relativo à um deposito.
+	 * MÃ©todo que insere um registro relativo ï¿½ um deposito.
 	 * @param listaParcelas - objeto com os dados populados.
 	 * @exception IntegrationException - exception.
 	 */
 	/*public void inserirDepositoCobranca(List<ParcelaCobrancaVO> listaParcelas);
 	*/
 	/**
-	 * Método que lista os códigos das parcelas associadas.
-	 * @param parcelaCobranca - objeto com os parâmetros.
+	 * MÃ©todo que lista os cï¿½digos das parcelas associadas.
+	 * @param parcelaCobranca - objeto com os parï¿½metros.
 	 * @return List<ParcelaCobrancaVO> - lista com os dados de retorno.
 	 * @throws IntegrationException - exception.
 	 */
 	/*public List<ParcelaCobrancaVO> listarParcelasAssociadas(ParcelaCobrancaVO parcelaCobranca);
 	*/
 	/**
-	 * Método que lista os detalhes das parcelas associadas.
-	 * @param parcelaCobranca - objeto com os parâmetros de consulta.
+	 * MÃ©todo que lista os detalhes das parcelas associadas.
+	 * @param parcelaCobranca - objeto com os parï¿½metros de consulta.
 	 * @return List<ParcelaCobrancaVO> - lista com as parcelas populadas.
 	 * @throws IntegrationException - exception.
 	 */
 	/*public List<ParcelaCobrancaVO> detalharParcelasAssociadas(ParcelaCobrancaVO parcelaCobranca);
 	*/
 	/**
-	 * Método que exclui os registros da tabela.
-	 * @param parcela - a ser excluída.
-	 * @throws IntegrationException - exceção.
+	 * MÃ©todo que exclui os registros da tabela.
+	 * @param parcela - a ser excluï¿½da.
+	 * @throws IntegrationException - exceï¿½ï¿½o.
 	 */
 	/*public void excluirRegistro(Long parcela) ;*/
 }

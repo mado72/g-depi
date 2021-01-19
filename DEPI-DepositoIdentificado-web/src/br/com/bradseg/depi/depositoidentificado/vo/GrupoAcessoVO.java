@@ -30,7 +30,7 @@ public class GrupoAcessoVO implements Serializable{
 	}
 
 	/**
-     * Código seqüencial do Grupo Acesso.
+     * CÃ³digo seqï¿½encial do Grupo Acesso.
      */
 //	@TableField(name = "CGRP_DEPTO_DEP")
 	private int codigoGrupoAcesso;
@@ -108,7 +108,7 @@ public class GrupoAcessoVO implements Serializable{
 	}
 
 	/**
-     * Método que retornará o codigo do grupo usuário formatado.
+     * MÃ©todo que retornarï¿½ o codigo do grupo usuï¿½rio formatado.
      * @return String.
      */
 	public String getCodigoFormatado() {

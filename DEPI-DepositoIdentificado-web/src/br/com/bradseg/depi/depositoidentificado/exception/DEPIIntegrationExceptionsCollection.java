@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Classe de exceção de aplicação com mensagem de negocio amigável.
+ * Classe de exceï¿½ï¿½o de aplicaï¿½ï¿½o com mensagem de negocio amigï¿½vel.
  */
 public class DEPIIntegrationExceptionsCollection extends Exception {
 
@@ -20,7 +20,7 @@ public class DEPIIntegrationExceptionsCollection extends Exception {
     }
 
     /**
-     * Contrutor utilizado para setar a coleção de erros.
+     * Contrutor utilizado para setar a coleï¿½ï¿½o de erros.
      * @param pErros pErros
      */
     public DEPIIntegrationExceptionsCollection(Collection<DEPIIntegrationException> pErros) {
@@ -28,14 +28,14 @@ public class DEPIIntegrationExceptionsCollection extends Exception {
     }
 
     /**
-     * Método que retornará a Coleção de erros.
+     * MÃ©todo que retornarï¿½ a Coleï¿½ï¿½o de erros.
      * @return Collection<DEPIIntegrationException>
      */
     public Collection<DEPIIntegrationException> getErros() {
         return erros;
     }
     /**
-     * Adiciona um erro a coleção de erros
+     * Adiciona um erro a coleï¿½ï¿½o de erros
      * @param chave - ConstantesDAO - Recurso de um .properties.
      * @param parametros - Parametros do Recurso.
      */
@@ -44,8 +44,8 @@ public class DEPIIntegrationExceptionsCollection extends Exception {
     }
 
     /**
-     * configura coleção de erros
-     * @param erros - coleçãod e erros
+     * configura coleï¿½ï¿½o de erros
+     * @param erros - coleï¿½ï¿½od e erros
      */
     public void setErros(Collection<DEPIIntegrationException> erros) {
         this.erros = erros;

@@ -25,7 +25,7 @@ public class UsuarioVO implements Serializable {
 	}
 
 	/**
-     * Código de usuario.
+     * CÃ³digo de usuario.
      */
 	private int codigoUsuario;
 

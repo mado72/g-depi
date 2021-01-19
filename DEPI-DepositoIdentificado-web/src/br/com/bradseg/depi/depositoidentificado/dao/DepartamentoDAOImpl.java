@@ -1,7 +1,6 @@
-/**
- * 
- */
 package br.com.bradseg.depi.depositoidentificado.dao;
+
+import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.concatenarComHifen;
 
 import java.util.List;
 
@@ -9,7 +8,6 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
@@ -32,6 +30,16 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 @Repository
 public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 
+	private static final String PARAM_PRM1 = "prm1";
+	
+	private static final String PARAM_PRM2 = "prm2";
+	
+	private static final String PARAM_PRM3 = "prm3";
+
+	private static final String PARAM_WHR1 = "whr1";
+	
+	private static final String PARAM_WHR2 = "whr2";
+
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoDAOImpl.class);
 	
@@ -53,32 +61,31 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
     public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e)    {
  
     	StringBuilder query = null;
-        String msg = "";
+        final String msg;
        
         try {
 
- 
             if (e.equals(Tabelas.GRUPO_ACESSO)) {
             	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEGRUPOACESSO);
-                msg = " um Grupo de Acesso vinculado ao usu�rio.";
+                msg = " um Grupo de Acesso vinculado ao usuário.";
             } else if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
             	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO);
-                msg = " um Parametro de Dep�sito ou Grupo de Acesso vinculado ao usu�rio.";
+                msg = " um Parametro de Depósito ou Grupo de Acesso vinculado ao usuário.";
             } else if (e.equals(Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO)) {
             	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODECONTACORRENTEMOTIVODEPOSITO);
-                msg = " uma Associa��o de Motivo ou Grupo de Acesso vinculado ao usu�rio.";
+                msg = " uma Associação de Motivo ou Grupo de Acesso vinculado ao usuário.";
             } else if (e.equals(Tabelas.DEPOSITO)) {
             	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEDEPOSITO);
-                msg = " um Dep�sito ou Grupo de Acesso vinculado ao usu�rio.";
+                msg = " um Depósito ou Grupo de Acesso vinculado ao usuário.";
             } else {
-                throw new IntegrationException("Enum inv�lido.");
+                throw new IntegrationException("Enum inválido.");
             }
 
             MapSqlParameterSource params = new MapSqlParameterSource();
-            params.addValue(":whr1",codigoCia);
-            params.addValue(":whr2",codigoUsuario);
+            params.addValue(PARAM_WHR1,codigoCia);
+            params.addValue(PARAM_WHR2,codigoUsuario);
             
-            List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+            List<DepartamentoVO> departamentoVO = getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
             
             
             if (departamentoVO == null || departamentoVO.isEmpty() ) {
@@ -102,9 +109,9 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
        	try {
         		
 			MapSqlParameterSource params = new MapSqlParameterSource();
-			params.addValue("whr1", vo.getSiglaDepartamento().trim());
+			params.addValue(PARAM_WHR1, vo.getSiglaDepartamento().trim());
 
-			List<DepartamentoVO> departamentos = (List<DepartamentoVO>) getJdbcTemplate().query(query.toString(), params, new DepartamentoDataMapper());
+			List<DepartamentoVO> departamentos = getJdbcTemplate().query(query.toString(), params, new DepartamentoDataMapper());
 			  
             if (!departamentos.isEmpty()) {
             	int i = 0;
@@ -120,10 +127,10 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 
 			MapSqlParameterSource paramsUpd = new MapSqlParameterSource();
 
-			paramsUpd.addValue("prm1", vo.getSiglaDepartamento());
-			paramsUpd.addValue("prm2", vo.getNomeDepartamento());
-			paramsUpd.addValue("prm3", vo.getCodigoResponsavelUltimaAtualizacao());
-			paramsUpd.addValue("whr1", vo.getCodigoDepartamento());
+			paramsUpd.addValue(PARAM_PRM1, vo.getSiglaDepartamento());
+			paramsUpd.addValue(PARAM_PRM2, vo.getNomeDepartamento());
+			paramsUpd.addValue(PARAM_PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
+			paramsUpd.addValue(PARAM_WHR2, vo.getCodigoDepartamento());
     		
 			Integer count = getJdbcTemplate().update(queryUpd.toString(), params);
 
@@ -161,10 +168,10 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
         try {
 			
         	MapSqlParameterSource params = new MapSqlParameterSource();
-			params.addValue("whr1", vo.getCodigoDepartamento());
+			params.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
 
 			
-			 List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			 List<DepartamentoVO> departamentoVO = getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
 			 
 			 if (!departamentoVO.isEmpty()) {
 				 return true;
@@ -189,9 +196,9 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
         try {
 			
         	MapSqlParameterSource params = new MapSqlParameterSource();
-			params.addValue("whr1", vo.getCodigoDepartamento());
+			params.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
 			
-			List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			List<DepartamentoVO> departamentoVO = getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
 			return departamentoVO.get(0);
 			 
         } finally {
@@ -221,17 +228,13 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 				params = filtro.getMapParamFiltro();
 			} 
 			
-			List<DepartamentoVO>  departamentoVO = (List<DepartamentoVO> ) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
-			return departamentoVO;
+			return getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
 			 
         } finally {
         	LOGGER.info("obterPorChave(DepartamentoVO vo) "); 
         }
      
     }
-    
-    
-    
     
     /**
      * {@inheritDoc}
@@ -245,8 +248,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 			
         	MapSqlParameterSource params = new MapSqlParameterSource();
 			
-        	List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
-			return departamentoVO;
+        	return getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
 			 
         } finally {
         	LOGGER.info("obterPorTodos() "); 
@@ -267,7 +269,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
         	MapSqlParameterSource params = new MapSqlParameterSource();
         	
         	params.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
-        	params.addValue("whr1", vo.getCodigoDepartamento());
+        	params.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
   
 			getJdbcTemplate().update(query.toString(), params);
 
@@ -288,16 +290,19 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
     		
     		MapSqlParameterSource params = new MapSqlParameterSource();
     
-    		params.addValue("whr1", vo.getSiglaDepartamento());
+    		params.addValue(PARAM_WHR1, vo.getSiglaDepartamento());
 
-			 List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			 List<DepartamentoVO> departamentoVO = getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
 			 
         	if (!departamentoVO.isEmpty()) {
            
             	int i = 0;
                 while (i <= departamentoVO.size()) {
                     if (departamentoVO.get(i).getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_ATIVO)) {
-                        throw new IntegrationException(ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO +  " - " + new StringBuilder(" Sigla: ").append(vo.getSiglaDepartamento()).toString());                   
+						throw new IntegrationException(concatenarComHifen(
+								ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO,
+								new StringBuilder(" Sigla: ").append(
+										vo.getSiglaDepartamento()).toString()));
                     }
                     ++i;
                }
@@ -320,10 +325,10 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
     }
 
     /**
-     * Obtem registros de Departamento por filtro
+     * Obtém registros de Departamento por filtro
      * @param vo CompanhiaSeguradoraVO
      * @return List Retorna um lista de VO de Departamentos filtrados.
-     * @Exce��o de aplica��o
+     * @Exceção de aplicação
      */
     @Override
     public List<DepartamentoVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) {
@@ -333,9 +338,9 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
         try {
         	
         	MapSqlParameterSource params = new MapSqlParameterSource();
-        	params.addValue("whr1", vo.getCodigoCompanhia());
+        	params.addValue(PARAM_WHR1, vo.getCodigoCompanhia());
         	
-        	List<DepartamentoVO> departamentoVO = (List<DepartamentoVO>) getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());       
+        	List<DepartamentoVO> departamentoVO = getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());       
         	
         	return departamentoVO;
 

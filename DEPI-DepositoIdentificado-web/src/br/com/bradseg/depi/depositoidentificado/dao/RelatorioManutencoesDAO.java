@@ -12,8 +12,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
  */
 public interface RelatorioManutencoesDAO {
 
-    /* Método obterDadosAnalitico
-     * @param filtro do relatório
+    /* MÃ©todo obterDadosAnalitico
+     * @param filtro do relatÃ³rio
      * @return List<ManutencoesAnaliticoVO>
      */
     public List<ManutencoesAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro);

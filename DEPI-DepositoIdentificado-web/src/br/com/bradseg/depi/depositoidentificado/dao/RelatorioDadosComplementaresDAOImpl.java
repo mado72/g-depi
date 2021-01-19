@@ -29,8 +29,8 @@ public class RelatorioDadosComplementaresDAOImpl extends JdbcDao implements Rela
 	@Autowired
 	private DataSource dataSource;
 	
-	/** A(O) map sql parameter source. */
-	private MapSqlParameterSource mapSqlParameterSource;
+//	/** A(O) map sql parameter source. */
+//	private MapSqlParameterSource mapSqlParameterSource;
 	
 
 	/* (non-Javadoc)
@@ -42,8 +42,8 @@ public class RelatorioDadosComplementaresDAOImpl extends JdbcDao implements Rela
 	}
     
 	/**
-	 * Método obterDadosComplementaresAnalitico
-	 * @param filtro do relatório
+	 * MÃ©todo obterDadosComplementaresAnalitico
+	 * @param filtro do relatÃ³rio
 	 * @return List<RelatorioDadosComplementaresVO>
 	 */
 	public List<RelatorioDadosComplementaresVO> obterDadosComplementaresAnalitico(FiltroUtil filtro) {
@@ -95,7 +95,7 @@ public class RelatorioDadosComplementaresDAOImpl extends JdbcDao implements Rela
             }			
 			
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
-            relatorio = (List<RelatorioDadosComplementaresVO>) getJdbcTemplate().query(query.toString(), params, new RelatorioDadosComplementaresDataMapper());
+            relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioDadosComplementaresDataMapper());
 
 
         }  finally {

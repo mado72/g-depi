@@ -1,10 +1,15 @@
 package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
+import java.util.Arrays;
+import java.util.List;
+
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
+ * Fornece os critérios para consultas em Motivo Depósito.
+ * 
  * @author fernando.menezes
- * @refactoredBy Marcelo Damasceno
+ * @author Marcelo Damasceno
  */
 public enum MotivoDepositoCampo implements IEntidadeCampo {
     /**
@@ -20,9 +25,7 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
      */
     DescricaoDetalhada("RDETLH_MOTVO_DEP", "Descrição Detalhada Motivo", TipoCampo.ALFA_OBRIG_BIG, ConstantesDEPI.SIZE_DUZENTOS);
     
-    private final static MotivoDepositoCampo[] CRITERIAS = {
-    	DescricaoBasica, DescricaoDetalhada
-    };
+    private final static List<MotivoDepositoCampo> CRITERIAS = Arrays.asList(DescricaoBasica, DescricaoDetalhada);
     
     private String nome;
 
@@ -106,7 +109,7 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
      * Retorna valores da combo de consulta.
      * @return DepartamentoCampo[].
      */
-    public static MotivoDepositoCampo[] valuesForCriteria() {
+    public static List<MotivoDepositoCampo> valuesForCriteria() {
         return CRITERIAS;
     }
 }

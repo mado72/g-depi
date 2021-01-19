@@ -18,7 +18,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 public interface DepositoDAO{
 
     /**
-     * Método reponsável pela atualizar um registro de Depósito sempre que uma insercao/atualizacao for efetuada em manter movimento
+     * MÃ©todo reponsï¿½vel pela atualizar um registro de Depï¿½sito sempre que uma insercao/atualizacao for efetuada em manter movimento
      * ou controle deposito
      * @param deposito - DepositoVO.
      * @param param - ParametroDepositoVO.
@@ -26,48 +26,48 @@ public interface DepositoDAO{
     void atualizar(DepositoVO deposito, ParametroDepositoVO param);
 
     /**
-     * Método reponsável pela inclusão de um registro de Depósito
+     * MÃ©todo reponsï¿½vel pela inclusï¿½o de um registro de Depï¿½sito
      * @param deposito - DepositoVO.
      * @param param - ParametroDepositoVO.
      */
     void inserir(DepositoVO deposito, ParametroDepositoVO param);
 
     /**
-     * Método de obter por filtro
-     * @param filtro parâmetro depósito com o código do objeto requisitado
+     * MÃ©todo de obter por filtro
+     * @param filtro parï¿½metro depï¿½sito com o cï¿½digo do objeto requisitado
      * @param codigoUsuario - BigDecimal.
      * @return List<DepositoVO>
      */
     List<DepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, BigDecimal codigoUsuario);
 
     /**
-     * Método reponsável pela atualização normal de um registro de Depósito
+     * MÃ©todo reponsï¿½vel pela atualizaï¿½ï¿½o normal de um registro de Depï¿½sito
      * @param deposito - DepositoVO.
      */
     void prorrogar(DepositoVO deposito);
 
     /**
-     * Cancelar Depósito
+     * Cancelar Depï¿½sito
      * @param deposito - DepositoVO.
      */
     void cancelar(DepositoVO deposito);
 
     /**
-     * Método de obter depósito por motivo
+     * MÃ©todo de obter depï¿½sito por motivo
      * @param vo - MotivoDepositoVO vo
      * @return List<DepositoVO>
      */
     DepositoVO obterPorMotivo(MotivoDepositoVO vo);
     
     /**
-     * Método de obter depósito por departamento
+     * MÃ©todo de obter depï¿½sito por departamento
      * @param vo - DepartamentoVO vo 
      * @return DepositoVO
      */
     DepositoVO obterPorContaCorrente(ContaCorrenteAutorizadaVO vo);
     
     /**
-     * Método de obter depósito por departamento
+     * MÃ©todo de obter depï¿½sito por departamento
      * @param vo - DepartamentoVO vo 
      * @return DepositoVO
      */
@@ -86,50 +86,48 @@ public interface DepositoDAO{
      * Update Logs
      * @param deposito - DepositoVO 
      * @return Generated Key
-     * @throws DEPIIntegrationException - DEPIIntegrationException.
      */
     long updateLog(DepositoVO deposito);
 
     /**
-     * Método de verificar lançamento do depósito
+     * MÃ©todo de verificar lanï¿½amento do depï¿½sito
      * @param deposito - DepositoVO vo 
-     * @throws DEPIIntegrationException - trata erro de negócio
      * @return Boolean
      */
     long obterSituacaoDeposito(DepositoVO deposito);
     /**
-     * Método de verificar lançamento do depósito
+     * MÃ©todo de verificar lanï¿½amento do depï¿½sito
      * @param deposito - DepositoVO vo 
      * @return Boolean
      */
     boolean verificarLancamentoDeposito(DepositoVO deposito);
  
     /**
-     * Método de verificar lançamento do depósito
+     * MÃ©todo de verificar lanï¿½amento do depï¿½sito
      * @param deposito - DepositoVO vo 
      * @return boolean
      */
     boolean verificarEnvioArquivoTransferencia(DepositoVO deposito);
     
     /**
-     * Método de obter deposito por chave
+     * MÃ©todo de obter deposito por chave
      * @param deposito - DepositoVO deposito 
      * @return boolean
      */
     DepositoVO obterDepositoPorChave (DepositoVO deposito);
 
     /**
-     * Método inserir deposito 
+     * MÃ©todo inserir deposito 
      * {@inheritDoc}
      */
 	void inserir(DepositoVO vo);
     /**
-     * Método Alterar deposito 
+     * MÃ©todo Alterar deposito 
      * {@inheritDoc} 
      */
 	void alterar(DepositoVO vo) ;
     /**
-     * Método Excluir deposito 
+     * MÃ©todo Excluir deposito 
      * {@inheritDoc}
      */
 	void excluir(DepositoVO vo);

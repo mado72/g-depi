@@ -34,8 +34,8 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 	@Autowired
 	private DataSource dataSource;
 	
-	/** A(O) map sql parameter source. */
-	private MapSqlParameterSource mapSqlParameterSource;
+//	/** A(O) map sql parameter source. */
+//	private MapSqlParameterSource mapSqlParameterSource;
 	
 
 	/* (non-Javadoc)
@@ -47,7 +47,7 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 	}
     
     /**
-     * Método de obter por filtro um Usuário
+     * MÃ©todo de obter por filtro um Usuï¿½rio
      * @param vo - GrupoAcessoVO.
      * @return List<UsuarioVO>
      */
@@ -59,7 +59,7 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 			
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			params.addValue("usrgrp", vo.getCodigoGrupoAcesso());
-			usuarios = (List<UsuarioVO>) getJdbcTemplate().query(QuerysDepi.USUARIOS_OBTERPORGRUPOACESSO, params, new UsuarioDataMapper());
+			usuarios = getJdbcTemplate().query(QuerysDepi.USUARIOS_OBTERPORGRUPOACESSO, params, new UsuarioDataMapper());
 			
 	
 		} catch(DataAccessException e){
