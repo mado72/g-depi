@@ -1,7 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.enums;
 
 /**
- * Classe respons�vel por representar dos tipos de Consulta
+ * Classe responsável por representar dos tipos de Consulta
  *
  */
 public enum TipoConsultaEnum {
@@ -25,7 +25,7 @@ public enum TipoConsultaEnum {
 	
 	
 	/**
-	 * Método respons�vel por retornar o enum do Status Compensacao
+	 * Método responsável por retornar o enum do Status Compensacao
 	 * 
 	 * @param codigoTipoConsulta informa o codigo do Status da compensacao
 	 * @return StatuscompensacaoEnum enum de status compensa��o

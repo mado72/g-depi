@@ -186,7 +186,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Método respons�vel por dar um trim nas variaveis strings .
+     * Método responsável por dar um trim nas variaveis strings .
      * @return BaseVO - Uma c�pia do objeto passado como par�metro com os campos strings com trim.
      * @param obj - Classe em que ser� realizado o trim.
      * @throws ReflectionException - Exce��o lan�ada no ReflectionUtil.
@@ -245,7 +245,7 @@ public final class BaseUtil {
      */
     /**
      * Permite a abstra��o das verifica��es de preechimento de propriedades e estado v�lido para acesso � objetos. Quando uma
-     * propriedade for refatorada n�o haver� necessidade de alterar em v�rias partes as verifica��es incluidas neste m�todo.
+     * propriedade for refatorada n�o haver� necessidade de alterar em v�rias partes as verifica��es incluidas neste método.
      * @author F�bio Henrique fabio.almeida@cpmbraxis.com NZB - Null; Zero; String Zero Sequencies; Blank; Método utilitário para
      * @param valor - objeto a ser verificado.
      * @return um boolean com true (se o objeto � nulo ou vazio) ou false (se o objeto � diferente de nulo ou vazio)
@@ -436,7 +436,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Método respons�vel por verificar se um objeto � nulo, caso sim retorna uma strig vazia.
+     * Método responsável por verificar se um objeto � nulo, caso sim retorna uma strig vazia.
      * @param obj - objeto a ser verificado.
      * @return Object - o proprio objeto se for diferente de nulo ou vazio se igual a nulo.
      */
@@ -458,7 +458,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Método respons�vel por verificar se um objeto � nulo, caso sim retorna uma strig vazia.
+     * Método responsável por verificar se um objeto � nulo, caso sim retorna uma strig vazia.
      * @param str - objeto a ser verificado.
      * @return Object - o proprio objeto se for diferente de nulo ou vazio se igual a nulo.
      */
@@ -471,7 +471,7 @@ public final class BaseUtil {
     }
 
     /**
-     * Método respons�vel por verificar se um objeto � nulo, caso sim retorna uma strig vazia.
+     * Método responsável por verificar se um objeto � nulo, caso sim retorna uma strig vazia.
      * @param str - objeto a ser verificado.
      * @return Object - o proprio objeto se for diferente de nulo ou vazio se igual a nulo.
      */
@@ -757,8 +757,8 @@ public final class BaseUtil {
     }
 
     /**
-     * Método respons�vel por converter um data do Tipo Date para XMLGregorianCalendar.
-     * @param date Data do java a ser passada para o m�todo.
+     * Método responsável por converter um data do Tipo Date para XMLGregorianCalendar.
+     * @param date Data do java a ser passada para o método.
      * @return xmlDate Data j� convertida que ser� enviada para o WebService.
      * @throws IntegrationException Qualquer erro de integra��o.
      */
@@ -785,7 +785,7 @@ public final class BaseUtil {
 
     /**
      * Retira a m�scara de data.
-     * @param date Data a ser passada para o m�todo.
+     * @param date Data a ser passada para o método.
      * @return newDate Data j� formatada.
      */
     public static String cleanDateMask(String date) {
@@ -796,8 +796,8 @@ public final class BaseUtil {
     }
 
     /**
-     * Método respons�vel por converter um data do Tipo Date para Calendar.
-     * @param date Data do java a ser passada para o m�todo.
+     * Método responsável por converter um data do Tipo Date para Calendar.
+     * @param date Data do java a ser passada para o método.
      * @return calendar Data j� convertida que ser� enviada para o WebService.
      */
     public static Calendar dateToCalendar(Date date) {
@@ -826,7 +826,7 @@ public final class BaseUtil {
     }
     */
     /**
-     * Método que trata localmente a excess�o exigida pelo m�todo AssemblerUtil.copyCollection do framework
+     * Método que trata localmente a excess�o exigida pelo método AssemblerUtil.copyCollection do framework
      * @param origem - Cole��o de origem.
      * @param destino - Cole��o de destino.
      * @param tipo - Tipo da Classe de origem.
@@ -845,7 +845,7 @@ public final class BaseUtil {
     }
      */
     /**
-     * Método que trata localmente a excess�o exigida pelo m�todo AssemblerUtil.copy do framework
+     * Método que trata localmente a excess�o exigida pelo método AssemblerUtil.copy do framework
      * @param origem - Cole��o de origem.
      * @param destino - Cole��o de destino.
      * @return Object - Objeto copiado.

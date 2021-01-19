@@ -1,21 +1,21 @@
 package br.com.bradseg.depi.depositoidentificado.enums;
 
 /**
- * Classe responsável por representar o Layout do DG_REF
+ * Classe responsÃ¡vel por representar o Layout do DG_REF
  * 
  * @author CPM Braxis Capgemini em 19/07/2017
  */
 public enum DgRefEnum {
 
 	EMPRESA				(0,"Empresa"				,4),
-	SUCURSAL_EMISSAO	(4,"Sucursal Emissão"		,4),
+	SUCURSAL_EMISSAO	(4,"Sucursal Emissï¿½o"		,4),
 	RAMO				(8,"Ramo Principal"			,4),
-	APOLICE				(12,"Apólice"				,8),
+	APOLICE				(12,"Apï¿½lice"				,8),
 	
 	OBJETO_SEGURO		(0,"Objeto Seguro"			,20),
 	
 	ENDOSSO				(20,"Endosso"				,7),
-	ID_UNICO			(27,"Identificador Único"	,15),
+	ID_UNICO			(27,"Identificador ï¿½nico"	,15),
 	PARCELA				(42,"Parcela"				,4),
 	PROPOSTA			(46,"Proposta"				,10),
 	SINISTRO			(56,"Sinistro"				,9);

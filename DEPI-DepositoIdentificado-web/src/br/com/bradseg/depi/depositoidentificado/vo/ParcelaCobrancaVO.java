@@ -47,15 +47,15 @@ public class ParcelaCobrancaVO implements Serializable {
 		this.deposito = deposito;
 	}
 	/**
-	 * Método que retorna o c�digo da parcela.
-	 * @return Long - o c�digo da parcela.
+	 * Método que retorna o código da parcela.
+	 * @return Long - o código da parcela.
 	 */
 	public Long getCodigoParcela() {
 		return codigoParcela;
 	}
 	/**
-	 * Método que define o c�digo da parcela.
-	 * @param codigoParcela - o c�digo da parcela.
+	 * Método que define o código da parcela.
+	 * @param codigoParcela - o código da parcela.
 	 */
 	public void setCodigoParcela(Long codigoParcela) {
 		this.codigoParcela = codigoParcela;
@@ -159,15 +159,15 @@ public class ParcelaCobrancaVO implements Serializable {
 		this.dataHoraInclusao = (Date) dataHoraInclusao.clone();
 	}
 	/**
-	 * Método que retorna o c�digo do usu�rio atualizador.
-	 * @return Long - o c�digo do usu�rio atualizador.
+	 * Método que retorna o código do usu�rio atualizador.
+	 * @return Long - o código do usu�rio atualizador.
 	 */
 	public Long getCodigoUsuarioAtualizador() {
 		return codigoUsuarioAtualizador;
 	}
 	/**
-	 * Método que define o c�digo do usu�rio atualizador.
-	 * @param codigoUsuarioAtualizador - o c�digo do usu�rio atualizador.
+	 * Método que define o código do usu�rio atualizador.
+	 * @param codigoUsuarioAtualizador - o código do usu�rio atualizador.
 	 */
 	public void setCodigoUsuarioAtualizador(Long codigoUsuarioAtualizador) {
 		this.codigoUsuarioAtualizador = codigoUsuarioAtualizador;
@@ -201,15 +201,15 @@ public class ParcelaCobrancaVO implements Serializable {
 		this.nomePessoa = nomePessoa;
 	}
 	/**
-	 * Método que retorna o c�digo identificador de origem da parcela.
-	 * @return String - o c�digo identificador de origem da parcela.
+	 * Método que retorna o código identificador de origem da parcela.
+	 * @return String - o código identificador de origem da parcela.
 	 */
 	public String getCodigoIdentificadorOrigem() {
 		return codigoIdentificadorOrigem;
 	}
 	/**
-	 * Método que define o c�digo identificador de origem da parcela.
-	 * @param codigoIdentificadorOrigem - o c�digo identificador de origem da parcela.
+	 * Método que define o código identificador de origem da parcela.
+	 * @param codigoIdentificadorOrigem - o código identificador de origem da parcela.
 	 */
 	public void setCodigoIdentificadorOrigem(String codigoIdentificadorOrigem) {
 		this.codigoIdentificadorOrigem = codigoIdentificadorOrigem;

@@ -34,7 +34,7 @@ public interface DepositoDAO{
 
     /**
      * Método de obter por filtro
-     * @param filtro par�metro dep�sito com o c�digo do objeto requisitado
+     * @param filtro par�metro dep�sito com o código do objeto requisitado
      * @param codigoUsuario - BigDecimal.
      * @return List<DepositoVO>
      */

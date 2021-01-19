@@ -14,7 +14,7 @@ public interface ParcelasPendentesDAO {
 	/*public void inserirDepositoCobranca(List<ParcelaCobrancaVO> listaParcelas);
 	*/
 	/**
-	 * Método que lista os c�digos das parcelas associadas.
+	 * Método que lista os códigos das parcelas associadas.
 	 * @param parcelaCobranca - objeto com os par�metros.
 	 * @return List<ParcelaCobrancaVO> - lista com os dados de retorno.
 	 * @throws IntegrationException - exception.

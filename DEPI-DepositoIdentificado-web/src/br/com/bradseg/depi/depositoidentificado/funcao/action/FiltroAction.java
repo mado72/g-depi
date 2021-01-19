@@ -8,6 +8,38 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
+/**
+ * Superclasse para Actions que processam filtros de consulta.
+ * 
+ * <p>
+ * {@link FiltroAction#iniciarFormulario()} prepara os dados para gerar os
+ * dropbox de consulta, preparando lista de campos de uma entidade e as
+ * operações relacionadas. Além disso, limpa os critérios de consulta, que
+ * possam estar na sessão.
+ * </p>
+ * 
+ * <p>
+ * {@link FiltroAction#prepararFiltro()} cria uma nova instância do Model para a
+ * sessão e limpa a coleção de dados.
+ * </p>
+ * 
+ * <p>
+ * {@link FiltroAction#persistirContextoFiltro()} adiciona os dados do model na
+ * sessão corrente.
+ * </p>
+ * 
+ * <p>
+ * {@link FiltroAction#montarCriterioConsulta(IEntidadeCampo, TipoOperacao, String, String)}
+ * processa os dados do filtro para gerar os critérios de filtro para pesquisar
+ * a fonte de dados.
+ * </p>
+ * 
+ * 
+ * @author Marcelo Damasceno
+ * 
+ * @param <T>
+ *            Tipo do Model deste formulário
+ */
 @Controller
 public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends BaseModelAction<T> {
 

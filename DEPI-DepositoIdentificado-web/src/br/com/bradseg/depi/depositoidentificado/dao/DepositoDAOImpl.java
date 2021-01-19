@@ -49,8 +49,8 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
     /**
      * Método de obter por filtro
-     * @param filtro par�metro dep�sito com o c�digo do objeto requisitado
-     * @param codigoUsuario - c�digo.
+     * @param filtro par�metro dep�sito com o código do objeto requisitado
+     * @param codigoUsuario - código.
      * @return List<DepositoVO>
      */
     public List<DepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, BigDecimal codigoUsuario) {
@@ -133,7 +133,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      */
     @Override
     public void inserir(DepositoVO vo) {
-        throw new IntegrationException("O m�todo inserir n�o foi implementado.");
+        throw new IntegrationException("O método inserir n�o foi implementado.");
     }
 
     /**
@@ -245,7 +245,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      */
     @Override
     public void alterar(DepositoVO vo)  {
-        throw new IntegrationException("O m�todo inserir n�o foi implementado.");
+        throw new IntegrationException("O método inserir n�o foi implementado.");
     }
 
     /**

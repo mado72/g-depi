@@ -4,9 +4,6 @@ import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.concatenarC
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -14,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
-import br.com.bradseg.depi.depositoidentificado.dao.ParcelasPendentesDAOImpl;
 import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -32,9 +28,11 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
 
     private static final String CODIGO_RESPONSAVEL = "Código do Responsável";
     
-	/** A Constante LOGGER. */
+/*	 
+	FIXME - Usar ou remover o LOGGER
+	/** A Constante LOGGER.
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoFacadeImpl.class);
-    
+*/    
 	@Autowired
 	private DepartamentoDAO departamentoDAO;
 

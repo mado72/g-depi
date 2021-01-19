@@ -18,14 +18,14 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 public interface DepartamentoDAO {
 
 	/**
-     * método para obter companhias
+     * mÃ©todo para obter companhias
      * @param vo - objeto companhia seguradora
      * @return - objetos compatives com o parametro
      */
 	List<DepartamentoVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo);
 
 	/**
-     * Obter Departamentos por Usuário.
+     * Obter Departamentos por Usuï¿½rio.
      * @param codigoCia - int.
      * @param codigoUsuario - BigDecimal.
      * @param e - EQueryJoinForward. 

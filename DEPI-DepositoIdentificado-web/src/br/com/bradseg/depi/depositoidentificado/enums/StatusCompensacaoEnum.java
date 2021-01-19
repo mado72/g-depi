@@ -27,7 +27,7 @@ public enum StatusCompensacaoEnum {
 	
 	
 	/**
-	 * Método respons�vel por retornar o enum do Status Compensacao
+	 * Método responsável por retornar o enum do Status Compensacao
 	 * 
 	 * @param codigoStatus informa o codigo do Status da compensacao
 	 * @return StatuscompensacaoEnum enum de status compensa��o

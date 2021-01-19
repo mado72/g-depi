@@ -32,7 +32,7 @@ public class MovimentoDepositoVO implements Serializable {
      * Objeto de Deposito atrelado.
      */
 //    @TableField(name = "CDEP_IDTFD")
-    private long codigoMovimento; // Trata o c�digo do Dep�sito como proprio.
+    private long codigoMovimento; // Trata o código do Dep�sito como proprio.
 
     /**
      * A��es. Esse campo dever� ser gravado �A� para Aceite, �R� para Receita, �T� para Transfer�ncia e �D� para Devolu��o.
@@ -47,7 +47,7 @@ public class MovimentoDepositoVO implements Serializable {
     private long bancoMovimento;
 
     /**
-     * Código da Ag�ncia.
+     * Código da Agência.
      */
 //    @TableField(name = "CAG_MOVTO", converter = BigDecimalToLongPersistenceConverter.class)
     private long agenciaMovimento;
@@ -77,7 +77,7 @@ public class MovimentoDepositoVO implements Serializable {
     private Date dataHoraAtualizacao;
 
     /**
-     * c�digo do respons�vel pela �ltima altera��o.
+     * código do responsável pela �ltima altera��o.
      */
 //    @TableField(name = "CUSUAR_RESP_ATULZ")
     private BigDecimal codigoResponsavelUltimaAtualizacao;

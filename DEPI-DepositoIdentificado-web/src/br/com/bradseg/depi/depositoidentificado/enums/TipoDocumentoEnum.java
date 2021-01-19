@@ -1,7 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.enums;
 
 /**
- * Classe respons·vel por representar dos tipos de documentos
+ * Classe respons√°vel por representar dos tipos de documentos
  * 
  * @author CPM Braxis Capgemini em 15/07/2017
  */

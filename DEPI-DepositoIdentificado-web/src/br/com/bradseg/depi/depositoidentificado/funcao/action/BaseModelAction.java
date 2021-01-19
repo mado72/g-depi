@@ -7,6 +7,15 @@ import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ModelDriven;
 
+/**
+ * Superclasse para Action que utiliza um Model, implementando {@link ModelDriven}.
+ * <p>
+ * Fornece suporte a dados em sessão e método para retirar da sessão os dados do formulário.
+ * </p>
+ * @author Marcelo Damasceno
+ *
+ * @param <T> Tipo do Modl
+ */
 @Controller
 public abstract class BaseModelAction<T> extends BaseAction implements ModelDriven<T>,
 		SessionAware {
@@ -20,12 +29,18 @@ public abstract class BaseModelAction<T> extends BaseAction implements ModelDriv
 		this.sessionData = sessionData;
 	}
 	
+	/**
+	 * Remove a instância da sessão correte.
+	 */
 	protected void clearData() {
 		String name = getClass().getSimpleName();
 		this.sessionData.remove(name);
 		this.request.getSession().removeAttribute(name);
 	}
 	
+	/**
+	 * Método para criar uma nova instância do Model.
+	 */
 	abstract protected void novaInstanciaModel(); 
 
 }

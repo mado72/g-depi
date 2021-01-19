@@ -32,7 +32,7 @@ function checkDate(obj) {
   return aRet; 
 }
 
-//Método respons�vel por formatar um CNPJ ou CPF.
+//Método responsável por formatar um CNPJ ou CPF.
 function formatarCPFCNPJ(pCampo, pEvento){
 	if(pCampo.value.length < 14){
 		return mascararCPF(pCampo, pEvento);
@@ -306,7 +306,7 @@ function replaceAllDisplayTag() {
 	replaceDisplayTagByName(document.getElementsByTagName('a')); 
 }
 
-//Método respons�vel por mudar o parametro acao, action, target do form e submeter. 
+//Método responsável por mudar o parametro acao, action, target do form e submeter. 
 function submitForm(acao, action, target) {
 	exibirImagemNaAcao();
 	disableActions(acao);
@@ -333,7 +333,7 @@ function submitForm2(acao, action, target) {
 	return true;
 }
 
-//Método respons�vel por mudar o parametro acao do form e submeter. 
+//Método responsável por mudar o parametro acao do form e submeter. 
 function setAcao(acao){
 	document.forms[0].elements['acao'].value = acao;
 	document.forms[0].submit();	
@@ -501,7 +501,7 @@ function configuraObjetos()  {
 						re1 = new RegExp(/formatarData/);
 						if (re1.test(new String(el.onkeypress))) {
 							if (el.onblur == undefined) {
-								el.onblur = function () {if(!checkDate(this) && this.value != '') {alert('Data inv�lida: ' + this.value); this.value = '';}};
+								el.onblur = function () {if(!checkDate(this) && this.value != '') {alert('Data inválida: ' + this.value); this.value = '';}};
 						 	}
 							if (el.onkeyup == undefined) {
 								el.onkeyup = function () {replaceCharReservados_Data(this); formatarData(this, event);};
@@ -581,7 +581,7 @@ function verificarBoxExclusao(checkname, msgconfirm, msgselect) {
 }
 
 
-//Método respons�vel desabilitar a tecla enter. 
+//Método responsável desabilitar a tecla enter. 
 function desabilitaEnter(event) {
 	var ETR = 13;
 
@@ -597,7 +597,7 @@ function desabilitaEnter(event) {
     return true;
 }
 
-//Método respons�vel por redirecionar para uma determinada tela. 
+//Método responsável por redirecionar para uma determinada tela. 
 function redirecionar(tela){
 	document.location.href = tela;
 }

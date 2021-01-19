@@ -129,7 +129,7 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 		String[] criterioArray = request.getParameterValues("criterio");
 		
 		List<CriterioConsultaVO> criterios = new ArrayList<>(model.preencherCriterios(criterioArray));
-		criterios.add(new CriterioConsultaVO("CIND_REG_ATIVO = :OPT1", "OPT1", "S"));
+		criterios.add(new CriterioConsultaVO("CIND_REG_ATIVO = :OPT1", "OPT1", ConstantesDEPI.SIM));
 		
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(criterios);

@@ -2,7 +2,7 @@ package br.com.bradseg.depi.depositoidentificado.enums;
 
 
 /**
- * Classe Enum do RSAP Boleto com os códigos e descrições dos sites.
+ * Classe Enum do RSAP Boleto com os cÃ³digos e descriï¿½ï¿½es dos sites.
  */
 public enum ProgramaChamadorEnum {
 	

@@ -1,7 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.enums;
 
 /**
- * Classe responsável por representar dos tipos de Cias 
+ * Classe responsÃ¡vel por representar dos tipos de Cias 
  * 
  * @author CPM Braxis Capgemini em 15/07/2017
  */
@@ -21,7 +21,7 @@ public enum CiaEnum {
 	private String   numeroEndereco;
 	private String   imagemRelatorio;
 	/**
-	 * Construtor padrão
+	 * Construtor padrï¿½o
 	 * @param codigoInt - codigoInt 
 	 * @param codigoExt - codigoExt
 	 */

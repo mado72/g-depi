@@ -9,7 +9,7 @@ import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 
 /**
- * Documentação da classe que representa um WebService da funcionalidade
+ * Documentaï¿½ï¿½o da classe que representa um WebService da funcionalidade
  * 
  * @author Bradesco Seguros
  */
@@ -21,14 +21,14 @@ public class InicioWebService {
 	//private InicioServiceFacade inicioService;
 
 	/**
-	 * Documentação do método
+	 * Documentaï¿½ï¿½o do mÃ©todo
 	 * 
 	 * @param nome do argumento
 	 * @return String
 	 */
 	@WebMethod
 	public String consultarSaudacao(String nome) throws IntegrationException, BusinessException {
-		// Sempre declarar no método as possíveis exceptions para que o CXF possa serializa-las no WSDL gerado.
+		// Sempre declarar no mÃ©todo as possï¿½veis exceptions para que o CXF possa serializa-las no WSDL gerado.
 
 		//return inicioService.consultarSaudacao(nome);
 		return null;

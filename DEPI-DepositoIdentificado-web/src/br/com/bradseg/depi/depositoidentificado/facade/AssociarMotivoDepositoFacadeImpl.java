@@ -25,7 +25,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoFacade {
 
-	private static final String STR1 = "Identificação Depósitos";
+	private static final String STR1 = "IdentificaÃ§Ã£o DepÃ³sitos";
     protected static final Logger LOGGER = Logger.getLogger(AssociarMotivoDepositoFacadeImpl.class);
     
 	@Autowired
@@ -34,12 +34,12 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
     /**
      * Excluir AssociarMotivoDepositos
      * @param vos VO's de AssociarMotivoDeposito
-     * @throws IntegrationException Exceção de aplicação
+     * @throws IntegrationException ExceÃ§Ã£o de aplicaÃ§Ã£o
      */
     public void excluir(List<AssociarMotivoDepositoVO> vos) throws IntegrationException {
     	
         if (vos == null || vos.isEmpty()) {
-            throw new IntegrationException("Lista inválida!");
+            throw new IntegrationException("Lista invÃ¡lida!");
         }
 
         StringBuilder codsAssocMotivos = new StringBuilder();
@@ -49,11 +49,11 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
                 if (codsAssocMotivos.length() > 0) {
                     codsAssocMotivos.append("; ");
                 }
-                codsAssocMotivos.append(" Associação de Motivo: [Cia: ").append(vo.getCia().getCodigoCompanhia());
+                codsAssocMotivos.append(" AssociaÃ§Ã£o de Motivo: [Cia: ").append(vo.getCia().getCodigoCompanhia());
                 codsAssocMotivos.append("; Departamento: ").append(vo.getDepartamento().getCodigoDepartamento());
                 codsAssocMotivos.append("; Motivo: ").append(vo.getMotivoDeposito().getCodigoMotivoDeposito());
                 codsAssocMotivos.append(" Banco: ").append(vo.getBanco().getCdBancoExterno());
-                codsAssocMotivos.append(", Agência: ").append(vo.getCodigoAgencia());
+                codsAssocMotivos.append(", AgÃªncia: ").append(vo.getCodigoAgencia());
                 codsAssocMotivos.append(", Conta Corrente: ").append(vo.getContaCorrente()).append("]");
             } else {
             	associarMotivoDeposito.excluir(vo);
@@ -68,7 +68,7 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
     /**
      * Inserir AssociarMotivoDeposito
      * @param vo - AssociarMotivoDepositoVO.
-     * @throws IntegrationException - Integração.
+     * @throws IntegrationException - IntegraÃ§Ã£o.
      */
     public void inserir(AssociarMotivoDepositoVO vo) throws IntegrationException {
 
@@ -77,23 +77,23 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
     }
 
     /**
-     * Método de obter por filtro
-     * @param filtro parâmetro depósito com o código do objeto requisitado
+     * MÃ©todo de obter por filtro
+     * @param filtro parÃ¢metro depÃ³sito com o cÃ³digo do objeto requisitado
      * @param codigoUsuario - BigDecimal.
-     * @throws IntegrationException - trata erro de negócio
+     * @throws IntegrationException - trata erro de negÃ³cio
      * @return List<AssociarMotivoDepositoVO>
      */
-    public List<AssociarMotivoDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Integer codigoUsuario) throws IntegrationException {
+    public List<AssociarMotivoDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, int codigoUsuario) throws IntegrationException {
 
     	return associarMotivoDeposito.obterPorFiltroComRestricaoDeGrupoAcesso(filtro, codigoUsuario);
     	
     }
 
     /**
-     * método que retorna o motivo depósito pelo código
-     * @param vo - conta conrrente com o código
-     * @return - retona o conta conrrente referente ao código passado
-     * @throws IntegrationException - trata erros de nogócio
+     * mÃ©todo que retorna o motivo depÃ³sito pelo cÃ³digo
+     * @param vo - conta conrrente com o cÃ³digo
+     * @return - retona o conta conrrente referente ao cÃ³digo passado
+     * @throws IntegrationException - trata erros de negÃ³cio
      */
     public AssociarMotivoDepositoVO obterPorChave(AssociarMotivoDepositoVO vo) throws IntegrationException {
     	
@@ -105,7 +105,7 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
      * Obter AssociarMotivoDepositos
      * @param filtro VO de filtro de AssociarMotivoDeposito
      * @return VO de AssociarMotivoDeposito
-     * @throws IntegrationException Exceção de aplicação
+     * @throws IntegrationException ExceÃ§Ã£o de aplicaÃ§Ã£o
      */
     public List<AssociarMotivoDepositoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
 

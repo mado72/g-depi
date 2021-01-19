@@ -20,9 +20,9 @@ public enum ContaCorrenteAutorizadaCampo implements IEntidadeCampo {
         ConstantesDEPI.SIZE_NAO_DEFINIDO),
 
     /**
-     * Código Ag�ncia
+     * Código Agência
      */
-    CodigoAgencia(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_AGENCIA, "Ag�ncia", TipoCampo.NUM, false,
+    CodigoAgencia(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_AGENCIA, "Agência", TipoCampo.NUM, false,
         ConstantesDEPI.SIZE_NAO_DEFINIDO),
     
     /**

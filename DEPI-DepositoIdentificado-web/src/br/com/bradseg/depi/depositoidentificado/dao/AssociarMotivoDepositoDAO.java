@@ -10,7 +10,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
  */
 public interface AssociarMotivoDepositoDAO {
 	/**
-     * Obter as AssociaÁıes de Motivos
+     * Obter as Associa√ß√µes de Motivos
      * @param filtro - CriterioFiltroUtil.
      * @return List<AssociarMotivoDepositoVO>.
      */
@@ -18,34 +18,34 @@ public interface AssociarMotivoDepositoDAO {
 
 	
 	/**
-     * MÈtodo de obter por filtro
-     * @param filtro par‚metro depÛsito com o cÛdigo do objeto requisitado
-     * @param codigoUsuario - BigDecimal.
+     * M√©todo de obter por filtro
+     * @param filtro par√¢metro dep√≥sito com o c√≥digo do objeto requisitado
+     * @param codigoUsuario - C√≥digo do usu√°rio.
      * @return List<AssociarMotivoDepositoVO>
      */
-	List<AssociarMotivoDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Integer codigoUsuario);
+	List<AssociarMotivoDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, int codigoUsuario);
 
 	/**
-     * MÈtodo inserir
+     * M√©todo inserir
      * @param AssociarMotivoDepositoVO
      */
 	void inserir(AssociarMotivoDepositoVO vo);
 
 	/**
-     * MÈtodo excluir
+     * M√©todo excluir
      * @param AssociarMotivoDepositoVO
      */
 	void excluir(AssociarMotivoDepositoVO vo);
 
 	/**
-     * MÈtodo isReferenciado
+     * M√©todo isReferenciado
      * @param AssociarMotivoDepositoVO
      * @return Boolean
      */
 	Boolean isReferenciado(AssociarMotivoDepositoVO vo);
 
 	/**
-     * MÈtodo obterPorChave
+     * M√©todo obterPorChave
      * @param AssociarMotivoDepositoVO
      * @return AssociarMotivoDepositoVO
      */

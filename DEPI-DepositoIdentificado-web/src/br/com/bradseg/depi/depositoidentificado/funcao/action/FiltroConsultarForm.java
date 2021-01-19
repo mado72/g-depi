@@ -52,7 +52,7 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 	 */
 	private List<?> colecaoDados;
 	
-	private final Funcao<String, IEntidadeCampo> obterEntidade;
+	private transient final Funcao<String, IEntidadeCampo> obterEntidade;
 
 	/**
 	 * Ação que trata as consultas pelo filtro.

@@ -72,7 +72,7 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 	}
 
 	/**
-	 * Método que lista os c�digos das parcelas associadas.
+	 * Método que lista os códigos das parcelas associadas.
 	 * @param parcelaCobranca - objeto com os par�metros.
 	 * @return List<ParcelaCobrancaVO> - lista com os dados de retorno.
 	 */	

@@ -14,14 +14,14 @@ public interface ParametroDepositoDAO  {
 
     /**
      * Método de obter por filtro
-     * @param filtro par�metro dep�sito com o c�digo do objeto requisitado
+     * @param filtro par�metro dep�sito com o código do objeto requisitado
      * @return List<ParametroDepositoVO>
      */
     List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro);
 
     /**
      * Método de obter por filtro
-     * @param filtro par�metro dep�sito com o c�digo do objeto requisitado
+     * @param filtro par�metro dep�sito com o código do objeto requisitado
      * @param codigoUsuario - BigDecimal.
      * @return List<ParametroDepositoVO>
      */

@@ -89,9 +89,9 @@ public enum TipoPessoaEnum {
 	}
 
 	/**
-	 * Método respons�vel por retornar o enum do tipo de pessoa
+	 * Método responsável por retornar o enum do tipo de pessoa
 	 * 
-	 * @param codigoTipoPessoa - c�digo do Tipo de Pessoa
+	 * @param codigoTipoPessoa - código do Tipo de Pessoa
 	 * @return TipoPessoa - objeto Enum para TipoPessoa
 	 */
 	public static TipoPessoaEnum getTipoPessoaEnum(Integer codigoTipoPessoa) {

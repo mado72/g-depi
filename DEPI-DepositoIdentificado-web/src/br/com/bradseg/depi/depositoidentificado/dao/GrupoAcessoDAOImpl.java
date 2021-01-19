@@ -127,18 +127,18 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             List<UsuarioVO> usuariosAtuais = BaseDAOFactoryDB2.getBaseDAOFactory().createUsuarioDAO().obterPorGrupoAcesso(vo);
 
             //**
-            // * Prote��o da rotina.
+            // * Proteção da rotina.
             // *
             if (vo.getCodigoGrupoAcesso() <= 0) {
                 throw new IntegrationException("Código Grupo de Acesso inv�lido na atualiza��o.");
             }
 
             if (vo.getUsuarios() == null) {
-                throw new IntegrationException("Lista de usu�rios inv�lida na atualiza��o.");
+                throw new IntegrationException("Lista de usu�rios inválida na atualiza��o.");
             }
 
             if (vo.getCodigoResponsavelUltimaAtualizacao().doubleValue() <= 0) {
-                throw new IntegrationException("Código do respons�vel pela �ltima atualiza��o inv�lido na atualiza��o.");
+                throw new IntegrationException("Código do responsável pela �ltima atualiza��o inv�lido na atualiza��o.");
             }
 
             ds = getDAO().getDataSource();
