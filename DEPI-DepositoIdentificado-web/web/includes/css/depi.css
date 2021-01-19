@@ -112,3 +112,7 @@ button.btn-img {
 	margin-right: auto;
 	text-align: center;
 }
+
+.paginacao a {
+	cursor: pointer;
+}
