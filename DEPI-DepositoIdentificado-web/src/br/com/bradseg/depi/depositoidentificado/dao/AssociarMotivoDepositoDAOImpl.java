@@ -253,15 +253,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 
         try {
 
-        	MapSqlParameterSource params = null;
-        	
-	        /**
-	         * Parametros.
-	         */
-			if (!filtro.getCriterios().isEmpty()) {
-				query.replace(query.indexOf("{0}"), query.indexOf("{0}") + 3, filtro.getClausaAndFiltro());
-				params = filtro.getMapParamFiltro();
-			} 
+        	MapSqlParameterSource params = ajustarParametrosQuery(filtro, query); 
 
     		params.addValue(PARAM_WHR1,codigoUsuario);
 			
@@ -272,6 +264,20 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
         }
         return associarMotivoDeposito;
     }
+
+
+	private MapSqlParameterSource ajustarParametrosQuery(FiltroUtil filtro,
+			StringBuilder query) {
+		/**
+		 * Parametros.
+		 */
+		if (!filtro.getCriterios().isEmpty()) {
+			// Solicitação do IC - Bradesco
+			final String string = "{0}";
+			query.replace(query.indexOf(string), query.indexOf(string) + 3, filtro.getClausaAndFiltro());
+		}
+		return filtro.getMapParamFiltro();
+	}
 
     /**
      * Obter as Associa��es de Motivos
@@ -285,14 +291,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 
         try {
 
-        	MapSqlParameterSource params = null;
-	        /**
-	         * Parametros.
-	         */
-			if (!filtro.getCriterios().isEmpty()) {
-				query.replace(query.indexOf("{0}"), query.indexOf("{0}") + 3, filtro.getClausaAndFiltro());
-				params = filtro.getMapParamFiltro();
-			} 
+        	MapSqlParameterSource params = ajustarParametrosQuery(filtro, query); 
 
 			List<AssociarMotivoDepositoVO> associarMotivoDeposito = getJdbcTemplate() .query(query.toString(), params, new AssociarMotivoDepositoDataMapper());
 			
