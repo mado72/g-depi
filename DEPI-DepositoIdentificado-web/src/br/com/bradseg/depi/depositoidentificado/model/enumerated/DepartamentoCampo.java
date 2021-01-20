@@ -93,7 +93,22 @@ public enum DepartamentoCampo implements IEntidadeCampo {
                 return campo;
             }
         }
-        throw new DEPIIntegrationException("N�o foi possivel localizar o enum: ".concat(nome));
+        throw new DEPIIntegrationException(ConstantesDEPI.ERRO_DEPARTAMENTO_NOME_NAOENCONTRADO, nome);
+    }
+    
+    /**
+     * Obter por descrição.
+     * @param descricao Descrição do campo.
+     * @return DepartamentoCampo Item encontrado.
+     * @throws DEPIIntegrationException - Quando não é localizado.
+     */
+    public static DepartamentoCampo obterPorDescricao(String descricao) throws DEPIIntegrationException {
+    	for (DepartamentoCampo campo : DepartamentoCampo.values()) {
+    		if (campo.getDescricao().equals(descricao)) {
+    			return campo;
+    		}
+    	}
+    	throw new DEPIIntegrationException(ConstantesDEPI.ERRO_DEPARTAMENTO_DESCRICAO_NAOENCONTRADA, descricao);
     }
 
     /**

@@ -81,7 +81,7 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 		}
 	}
 	
-	public List<CriterioConsultaVO> preencherCriterios(String[] criterioArray) {
+	public List<CriterioConsultaVO> preencherCriterios(Collection<String> criterioArray) {
 		clearCriterios();
 		
 		if (criterioArray == null) {

@@ -17,6 +17,7 @@ import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.DepartamentoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
@@ -104,24 +105,9 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
     @Override
     public void alterar(DepartamentoVO vo){
     	 
-    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_EXISTS);
         	
        	try {
-        		
-			MapSqlParameterSource params = new MapSqlParameterSource();
-			params.addValue(PARAM_WHR1, vo.getSiglaDepartamento().trim());
-
-			List<DepartamentoVO> departamentos = getJdbcTemplate().query(query.toString(), params, new DepartamentoDataMapper());
-			  
-            if (!departamentos.isEmpty()) {
-            	int i = 0;
-            	while (i <= departamentos.size()) {
-                    if (!(vo.getCodigoDepartamento() == departamentos.get(++i).getCodigoDepartamento()) && departamentos.get(++i).getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_ATIVO)) {
-                        throw new IntegrationException(ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO +  " - " +  new StringBuilder(" Sigla: ").append(vo.getSiglaDepartamento()).toString());
-                    }
-                    ++i;
-               }
-            }
+       		verificarRegistroExistente(vo);
             
             StringBuilder queryUpd = new StringBuilder(QuerysDepi.DEPARTAMENTO_UPDATE);
 
@@ -130,9 +116,9 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 			paramsUpd.addValue(PARAM_PRM1, vo.getSiglaDepartamento());
 			paramsUpd.addValue(PARAM_PRM2, vo.getNomeDepartamento());
 			paramsUpd.addValue(PARAM_PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
-			paramsUpd.addValue(PARAM_WHR2, vo.getCodigoDepartamento());
+			paramsUpd.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
     		
-			Integer count = getJdbcTemplate().update(queryUpd.toString(), params);
+			Integer count = getJdbcTemplate().update(queryUpd.toString(), paramsUpd);
 
             if (count == 0) {
                 throw new BusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
@@ -142,6 +128,28 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
         	LOGGER.info("alterar(DepartamentoVO vo)"); 
         }
     }
+	private void verificarRegistroExistente(DepartamentoVO vo) {
+		StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_EXISTS);
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue(PARAM_WHR1, vo.getSiglaDepartamento().trim());
+
+		List<DepartamentoVO> departamentos = getJdbcTemplate().query(query.toString(), params, new DepartamentoDataMapper());
+		  
+		if (!departamentos.isEmpty()) {
+			for (DepartamentoVO depto: departamentos) {
+				
+				if (!(vo.getCodigoDepartamento() == depto.getCodigoDepartamento())
+						&& depto.getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_ATIVO)) {
+					
+					throw new IntegrationException(
+							BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE2,
+									new StringBuilder(" Sigla: ").append(
+											vo.getSiglaDepartamento())
+											.toString()));
+				}
+			}
+		}
+	}
     
     /**
      * {@inheritDoc}

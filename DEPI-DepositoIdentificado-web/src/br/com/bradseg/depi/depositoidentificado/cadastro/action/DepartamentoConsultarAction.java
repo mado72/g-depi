@@ -1,5 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -73,7 +75,7 @@ public class DepartamentoConsultarAction extends FiltroAction<FiltroConsultarFor
 			
 			@Override
 			public IEntidadeCampo apply(String source) {
-				return DepartamentoCampo.obterPorNome(source);
+				return DepartamentoCampo.obterPorDescricao(source);
 			}
 		};
 		
@@ -122,16 +124,21 @@ public class DepartamentoConsultarAction extends FiltroAction<FiltroConsultarFor
 	}
 	
 	private void processarFiltro() {
-		FiltroConsultarForm<DepartamentoCampo> model = getModel();
-		
 		String[] criterioArray = request.getParameterValues("criterio");
-		List<CriterioConsultaVO> criterios = model.preencherCriterios(criterioArray);
+		processarCriterios(Arrays.asList(criterioArray));
+	}
+	
+	@Override
+	protected void processarCriterios(Collection<String> criterioColecao) {
+		List<CriterioConsultaVO> criterios = new ArrayList<>(model.preencherCriterios(criterioColecao));
+		criterios.add(new CriterioConsultaVO("CIND_REG_ATIVO = :OPT1", "OPT1", ConstantesDEPI.SIM));
 		
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(criterios);
 		
 		List<DepartamentoVO> retorno = facade.obterPorFiltro(filtro);
 		
+		FiltroConsultarForm<DepartamentoCampo> model = getModel();
 		model.setColecaoDados(retorno);
 
 		if (retorno == null || retorno.isEmpty()) {

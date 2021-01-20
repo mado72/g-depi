@@ -252,7 +252,7 @@ public class MotivoDepositoVO implements Serializable {
 	/**
 	 * Especifica o data ultima atualizacao.
 	 * 
-	 * @param ultima
+	 * @param ultimaAtualizacao
 	 *            atualizacao a ser setado
 	 */
 	public void setUltimaAtualizacao(Date ultimaAtualizacao) {

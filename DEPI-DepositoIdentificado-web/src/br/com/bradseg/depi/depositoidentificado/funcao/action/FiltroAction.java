@@ -1,5 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -90,6 +92,20 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 		this.prepararFiltro();
 		
 		this.persistirContextoFiltro();
+		
+		return SUCCESS;
+	}
+	
+	protected abstract void processarCriterios(Collection<String> criterioColecao);
+	
+	/**
+	 * Limpa os resultados da consulta anterior e envia para a lista.
+	 * 
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
+	 */
+	public String refrescar() {
+		getModel().setColecaoDados(null);
+		processarCriterios(getModel().getCriterios());
 		
 		return SUCCESS;
 	}

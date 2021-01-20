@@ -13,7 +13,8 @@ import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.MotivoDepositoEditarForm;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
-import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseEditorModelAction;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
@@ -23,12 +24,14 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
  */
 @Controller
 @Scope("request")
-public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEditarForm> {
+public class MotivoDepositoEditarAction extends BaseEditorModelAction<MotivoDepositoEditarForm> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoEditarAction.class);
 	
 	private static final String TITLE_DEPOSITO_EDITAR = "title.deposito.editar";
 	
+	private static final String TITLE_DEPOSITO_DETALHAR = "title.deposito.detalhar";
+
 	private static final String TITLE_DEPOSITO_NOVO = "title.deposito.novo";
     
     private static final String ACTION_NAME = MotivoDepositoEditarAction.class.getSimpleName() + "_FORM";
@@ -68,16 +71,13 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		sessionData.put(ACTION_NAME, model);
 	}
 	
-	public String exibir() {
-		return INPUT;
-	}
-	
 	/**
 	 * Apenas redireciona a saída para INPUT. Usado para apresentar o
 	 * formulário armazenado na sessão.
 	 * 
 	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
+	@Override
 	public String novo() {
 		getModel().setDetalhar(false);
 		
@@ -86,16 +86,16 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		return INPUT;
 	}
 	
+	@Override
 	public String alterar() {
-		preencherFormulario();
-		
-		setSubtituloChave(TITLE_DEPOSITO_EDITAR);
+		preencherFormulario(TITLE_DEPOSITO_EDITAR);
 		
 		return INPUT;
 	}
 	
+	@Override
 	public String detalhar() {
-		preencherFormulario();
+		preencherFormulario(TITLE_DEPOSITO_DETALHAR);
 		
 		getModel().setDetalhar(true);
 		return INPUT;
@@ -124,7 +124,7 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		return SUCCESS;
 	}
 
-	private void persistirDados() {
+	protected void persistirDados() {
 		MotivoDepositoEditarForm model = getModel();
 		
 		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
@@ -150,14 +150,14 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		try {
 			if (novo) {
 				facade.inserir(instancia);
-				addActionMessage("msg.inserir.sucesso");
+				addActionMessage(ConstantesDEPI.MSG_INSERIR_EXITO);
 			}
 			else {
 				facade.alterar(instancia);
-				addActionMessage("msg.alterar.sucesso");
+				addActionMessage(ConstantesDEPI.MSG_ALTERAR_EXITO);
 			}
 		} catch (Exception e) {
-			throw new DEPIIntegrationException(e, "msg.erro.interno");
+			throw new DEPIIntegrationException(e, ConstantesDEPI.ERRO_INTERNO);
 		}
 	}
 
@@ -175,14 +175,17 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		}
 		
 		facade.excluirLista(lista);
-		addActionMessage("msg.excluir.sucesso");
+		addActionMessage(ConstantesDEPI.MSG_EXCLUIR_EXITO);
 	}
 
 	public String voltar() {
 		return SUCCESS;
 	}
 	
-	private void preencherFormulario() {
+	@Override
+	protected void preencherFormulario(String subtitulo) {
+		super.preencherFormulario(subtitulo);
+
 		MotivoDepositoVO instancia = obterPeloCodigo();
 		
 		MotivoDepositoEditarForm model = getModel();
