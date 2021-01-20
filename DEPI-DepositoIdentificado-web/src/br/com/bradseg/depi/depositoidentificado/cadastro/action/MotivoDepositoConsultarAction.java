@@ -29,7 +29,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
  * @author Marcelo Damasceno
  */
 @Controller
-@Scope("request")
+@Scope("session")
 public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarForm<MotivoDepositoCampo>> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoConsultarAction.class);

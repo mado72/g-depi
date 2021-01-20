@@ -22,7 +22,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
  * @author Marcelo Damasceno
  */
 @Controller
-@Scope("request")
+@Scope("session")
 public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEditarForm> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoEditarAction.class);
@@ -191,6 +191,8 @@ public class MotivoDepositoEditarAction extends BaseModelAction<MotivoDepositoEd
 		model.setCodigo(String.valueOf(instancia.getCodigoMotivoDeposito()));
 		model.setDescricaoBasica(instancia.getDescricaoBasica());
 		model.setDescricaoDetalhada(instancia.getDescricaoDetalhada());
+		
+		clearActionErrors();
 	}
 
 	private MotivoDepositoVO obterPeloCodigo() {

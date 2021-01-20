@@ -80,7 +80,7 @@
 <c:set var="scriptPage" scope="request">
 <script>
 jQuery(document).ready(function($){
-	var parametros = <c:out value="${model.parametrosFiltroJson}" escapeXml="false"/>;
+	var parametros = <c:out value="${parametrosFiltroJson}" escapeXml="false"/>;
 	
 	$.filtro.prepararFormulario(
 		"#FiltroForm", 
@@ -97,7 +97,7 @@ jQuery(document).ready(function($){
 					})
 				};
 			}),
-			recipiente: <c:out value="${model.recipienteListJson}" default="[]" escapeXml="false"/>
+			recipiente: <c:out value="${recipienteListJson}" default="[]" escapeXml="false"/>
 		}
 	);
 }(jQuery));
