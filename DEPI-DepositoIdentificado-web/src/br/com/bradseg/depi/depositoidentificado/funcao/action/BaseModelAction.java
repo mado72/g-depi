@@ -28,19 +28,5 @@ public abstract class BaseModelAction<T> extends BaseAction implements ModelDriv
 	public void setSession(Map<String, Object> sessionData) {
 		this.sessionData = sessionData;
 	}
-	
-	/**
-	 * Remove a instância da sessão correte.
-	 */
-	protected void clearData() {
-		String name = getClass().getSimpleName();
-		this.sessionData.remove(name);
-		this.request.getSession().removeAttribute(name);
-	}
-	
-	/**
-	 * Método para criar uma nova instância do Model.
-	 */
-	abstract protected void novaInstanciaModel(); 
 
 }

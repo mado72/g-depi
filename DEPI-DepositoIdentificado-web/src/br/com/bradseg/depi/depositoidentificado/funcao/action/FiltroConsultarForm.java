@@ -45,7 +45,7 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 	/**
 	 * Armazena os critérios enviados (selecionados) pelo usuário
 	 */
-	private List<String> criterios = new ArrayList<>();
+	private List<String> criteriosInformados = new ArrayList<>();
 
 	/**
 	 * Armazena os dados, resultado da consulta.
@@ -87,7 +87,7 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 		if (criterioArray == null) {
 			return Collections.emptyList();
 		}
-
+		
 		List<CriterioConsultaVO> criterios = new ArrayList<>();
 		
 		int paramIdx = 0;
@@ -152,20 +152,20 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 	}
 
 	public List<String> getCriterios() {
-		return criterios;
+		return Collections.unmodifiableList(criteriosInformados);
 	}
 	
 	public void clearCriterios() {
-		this.criterios.clear();
+		this.criteriosInformados.clear();
 	}
 
 	public void addCriterio(String criterio) {
-		this.criterios.add(criterio);
+		this.criteriosInformados.add(criterio);
 	}
 	
 	public void addCriterios(String[] criterios) {
 		for (String criterio : criterios) {
-			this.criterios.add(criterio);
+			this.criteriosInformados.add(criterio);
 		}
 	}
 

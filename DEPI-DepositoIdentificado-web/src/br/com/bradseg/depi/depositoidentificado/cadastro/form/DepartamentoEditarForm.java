@@ -1,12 +1,12 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.form;
 
-import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseForm;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
 
 /**
  * Representa o modelo do formulário da consulta para Departamentos 
  * @author Marcelo Damasceno
  */
-public class DepartamentoEditarForm extends BaseForm {
+public class DepartamentoEditarForm extends CrudForm {
 
 	private static final long serialVersionUID = 957768938376772158L;
 

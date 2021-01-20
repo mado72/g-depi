@@ -103,3 +103,6 @@ jQuery(document).ready(function($){
 }(jQuery));
 </script>
 </c:set>
+<pre class="debug">
+MODEL: <c:out value="${model}"/>
+</pre>
