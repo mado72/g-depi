@@ -29,10 +29,6 @@
 	
 	<package name="root" namespace="/" extends="depi-default">
 	
-		<action name="login" class="loginAction">
-			<result name="success" type="redirectAction">index</result>
-		</action>
-	
 		<action name="index" class="indexAction">
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/layout/vazio.jsp</param>
@@ -68,6 +64,26 @@
 		
 	</package>
 	
+	<package name="cadastroConsultar" namespace="/cadastro/{entidade}/consultar" extends="depi-default">
+	
+		<default-class-ref class="{1}ConsultarAction"/>
+		
+		<global-results>
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/{1}/{1}.jsp</param>
+			</result>
+			<result name="input" type="redirectAction">listar</result>
+		</global-results>
+
+		<action name="index">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+        
+		<action name="*" method="{1}"/>
+
+	</package>
+
 	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito/consultar" extends="depi-default">
 	
 		<default-class-ref class="motivoDepositoConsultarAction"/>
@@ -97,7 +113,7 @@
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoForm.jsp</param>
 			</result>
 			<result name="success" type="redirectAction">
-			    <param name="actionName">listar</param>
+			    <param name="actionName">refrescar</param>
 			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
 			</result>
 		</global-results>

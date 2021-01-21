@@ -63,9 +63,9 @@
 			<td align="center">
 				<div class="tabela_botoes">
 				<s:if test="!colecaoDados">
-					<s:a action="incluir" class="button" id="BtnIncluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
+					<s:a id="BtnIncluir1" class="btnIncluir" action="incluir" namespace="/cadastro/motivoDeposito/editar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
 				</s:if>
-					<a role="button" class="button" id="BtnConsultar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_consultar.jpg"/>"></a>
+					<a class="button" id="BtnConsultar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_consultar.jpg"/>"></a>
 				</div>
 			</td>
 		</tr>

@@ -41,7 +41,7 @@ var fnReady = function ($) {
 
 		console.log("Dados: ", dados);
 
-		var jqForm = $(formSeletor)
+		var jqForm = $(formSeletor);
 		jqForm.data("dados", dados);
 
 		var jqPrincipal = jqForm.find("#DropboxPrincipal"),
@@ -65,7 +65,7 @@ var fnReady = function ($) {
 					var sublista = dados.principal[opt.index()].sublista;
 
 					$(sublista).each(function(idx, op){
-						jqSecundario.append($('<option>', {text: op.texto, value: op.valor}))
+						jqSecundario.append($('<option>', {text: op.texto, value: op.valor}));
 					});
 				}
 			});
@@ -101,7 +101,7 @@ var fnReady = function ($) {
 				principal: optPrincipal.text(),
 				secundario: optSecundario.val(),
 				valor: jqValor.val().toLocaleUpperCase(),
-			}
+			};
 
 			item.texto = [optPrincipal.text(), optSecundario.text(), item.valor].join(' ');
 		    item.prop = [optPrincipal.text(), optSecundario.val(), item.valor].join(';');
@@ -114,7 +114,7 @@ var fnReady = function ($) {
 			jqPrincipal.prop("selectedIndex", 0);
 			jqPrincipal.change();
 			jqSecundario.prop("selectedIndex", 0);
-		})
+		});
 
 		btnMinus.click(function(ev) {
 			var opt = jqRecipiente
@@ -122,11 +122,10 @@ var fnReady = function ($) {
 
 			dados.recipiente.splice(opt.index());
 			opt.remove();
-		})
+		});
 
 		btnConsultar.click(function(ev) {
 			var elements = $();
-			var data = [];
 
 			var criterios = jqRecipiente.find("option");
 			if (criterios.length == 0) {
@@ -145,7 +144,7 @@ var fnReady = function ($) {
 			jqForm.submit();
 
 			jqForm.find("input:hidden").remove().end();
-		})
+		});
 
 		// Definir valores iniciais
 		$(dados.principal).each(function(idx, item) {
@@ -158,15 +157,15 @@ var fnReady = function ($) {
 				var valores = criterio.split(';');
 				var pri = dados.principal.find(function(v){
 					return v.texto === valores[0];
-				})
+				});
 				var sec = pri.sublista.find(function(v){
 					return v.valor === valores[1];
-				})
+				});
 				
 				var item = {
 					prop: criterio,
 					texto: [valores[0], sec.texto, valores[2]].join(' ')
-				}
+				};
 
 				$.filtro.adicionarCriterio(jqRecipiente, item);
 			});
@@ -192,7 +191,7 @@ var fnReady = function ($) {
 		else {
 			jqValor.val(jqValor.val().toLocaleUpperCase());
 		}
-	}
+	};
 
 	// consulta
 	// ---------------------------------------------------------------------
@@ -203,8 +202,8 @@ var fnReady = function ($) {
 		var jqForm = $(formSeletor)
 
 		var btnExcluir = jqForm.find("#BtnExcluir"),
-			btnAlterar = jqForm.find("#BtnAlterar");
 		
+			btnAlterar = jqForm.find("#BtnAlterar");
 		btnExcluir.click(function(ev) {
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length == 0) {
@@ -215,7 +214,7 @@ var fnReady = function ($) {
 				jqForm.attr("action", action);
 				jqForm.submit();
 			}
-		})
+		});
 		
 		btnAlterar.click(function(ev) {
 			var marcados = $.obterMarcados(jqForm);
@@ -228,7 +227,7 @@ var fnReady = function ($) {
 				jqForm.attr("action", action);
 				jqForm.submit();
 			}
-		})
+		});
 
 		jqForm.find(".checkTodos").click(function(){
 			jqForm.find(".checkTodos")

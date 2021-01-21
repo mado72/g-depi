@@ -108,8 +108,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 		T model = getModel();
 		model.setColecaoDados(null);
 		
-		List<CriterioConsultaVO> criterios = model.preencherCriterios(model
-				.getCriterios());
+		List<CriterioConsultaVO> criterios = model.obterCriteriosConsulta();
 		List<?> lista = getFiltroHelper().processarCriterios(criterios);
 		model.setColecaoDados(lista);
 		
