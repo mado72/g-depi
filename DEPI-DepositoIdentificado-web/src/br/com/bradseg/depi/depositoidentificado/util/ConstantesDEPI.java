@@ -89,6 +89,7 @@ public final class ConstantesDEPI {
 	/**
 	 * Erros.
 	 */
+	public static final String ERRO_INTERNO = "msg.erro.interno";
 	public static final String ERRO_REGISTRO_DUPLICADO = "msg.erro.registroduplicado";
 	public static final String ERRO_REGISTRO_INEXISTENTE = "msg.erro.registroinexistente";
 	public static final String ERRO_RELACIONAMENTOS_NAO_CADASTRADOS = "msg.erro.relecionamentosDependestesNaoCadastrados";
@@ -186,6 +187,8 @@ public final class ConstantesDEPI {
 	public static final String ERRO_CAMPO_OBRIGATORIO = "msg.erro.campo.obrigatorio";
 	public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
 	public static final String ERRO_CAMPO_NUMERICO = "msg.erro.campo.numerico";
+	public static final String ERRO_DEPARTAMENTO_NOME_NAOENCONTRADO = "msg.erro.departamento.nome.naoencontrado";
+	public static final String ERRO_DEPARTAMENTO_DESCRICAO_NAOENCONTRADA = "msg.erro.departamento.descricao.naoencontrada";
 	public static final String ERRO_DEPARTAMENTO_REGISTROCOMDEPENDENCIA = "msg.erro.departamento.registrocomdependencia";
 	public static final String ERRO_MOTIVODEPOSITO_REGISTROCOMDEPENDENCIA = "msg.erro.motivodeposito.registrocomdependencia";
 	public static final String ERRO_DEPENDENCIA = "msg.erro.registrocomdependencia";
@@ -234,6 +237,10 @@ public final class ConstantesDEPI {
 	public static final String CANCELAR_DEPOSITO = "cancelarDeposito";
 	public static final String PRORROGAR_DEPOSITO = "prorrogarDeposito";
 
+	/* Mensagens Globais */
 	public static final String MSG_CONSULTA_RETORNO_VAZIO = "msg.consulta.retorno.vazio";
+	public static final String MSG_INSERIR_EXITO = "msg.inserir.sucesso";
+	public static final String MSG_ALTERAR_EXITO = "msg.alterar.sucesso";
+	public static final String MSG_EXCLUIR_EXITO = "msg.excluir.sucesso";
 
 }

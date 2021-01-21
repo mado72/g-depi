@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" 
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-			xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+<web-app id="WebApp_ID" version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
 	<display-name>DEPI-DepositoIdentificado-web</display-name>
 
@@ -157,30 +157,14 @@
 		<param-value>/WEB-INF/conf/sitemesh/sitemesh.xml</param-value>
 	</context-param>
  	
- 	
- 	<!--
-		Recursos da aplicacao
-	 -->
- 	
-	<resource-ref id="ResourceRef_1369062285248">
-		<description>
-		</description>
-		<res-ref-name>eis/CICSConnectionFactoryRef</res-ref-name>
+	<resource-ref id="ResourceRef_1391530093040">
+		<res-ref-name>eis/DEPI-DepositoIdentificado</res-ref-name>
 		<res-type>javax.resource.cci.ConnectionFactory</res-type>
-		<res-auth>Application</res-auth>
-		<res-sharing-scope>Shareable</res-sharing-scope>
-	</resource-ref>
-
-<!--  
-	<resource-ref id="ResourceRef_1366035580586">
-		<description/>
-		<res-ref-name>jdbc/DEPI-DepositoIdentificado</res-ref-name>
-		<res-type>javax.sql.DataSource</res-type>
 		<res-auth>Container</res-auth>
 		<res-sharing-scope>Shareable</res-sharing-scope>
 	</resource-ref>
- -->	
-	<resource-env-ref id="ResourceRef_1366035580586">
+
+	<resource-env-ref id="ResourceEnvRef_202010210832184">
 		<resource-env-ref-name>jdbc/DEPI-DepositoIdentificado</resource-env-ref-name>
 		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
 	</resource-env-ref>
@@ -193,7 +177,6 @@
 	</resource-ref>
 	
 	<resource-ref id="ResourceRef_1547660949546">
-		<description></description>
 		<res-ref-name>url/IBusc2</res-ref-name>
 		<res-type>java.net.URL</res-type>
 		<res-auth>Container</res-auth>
