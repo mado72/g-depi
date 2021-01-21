@@ -19,7 +19,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 public class DepartamentoCrudHelper implements
-		CrudHelper<DepartamentoCampo, DepartamentoVO, DepartamentoEditarForm> {
+		CrudHelper<DepartamentoVO, DepartamentoEditarForm> {
 	
 	private final transient DepartamentoFacade facade;
 	

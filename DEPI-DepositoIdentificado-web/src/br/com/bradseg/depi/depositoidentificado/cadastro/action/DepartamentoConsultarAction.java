@@ -32,7 +32,7 @@ public class DepartamentoConsultarAction extends FiltroAction<FiltroConsultarFor
 	private transient DepartamentoCrudHelper filtroHelper;
 	
 	@Override
-	protected CrudHelper<?, ?, ?> getFiltroHelper() {
+	protected CrudHelper<?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
 			filtroHelper = new DepartamentoCrudHelper(facade);
 		}

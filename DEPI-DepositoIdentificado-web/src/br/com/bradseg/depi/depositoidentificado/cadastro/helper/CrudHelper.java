@@ -9,7 +9,6 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.cadastro.EntidadeCampoOperacoesFiltro;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
 /**
@@ -22,10 +21,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  *            Classe da {@link EntidadeCampoOperacoesFiltro} que é consultada.
  * @param <VO>
  *            Classe de dados que são listadas na consulta.
- * @param <Form>
+ * @param <EF>
  *            Classe do formulário que possuem os dados editados pelo crud.
  */
-public interface CrudHelper<T extends IEntidadeCampo, VO, Form extends CrudForm> {
+public interface CrudHelper<VO, EF extends CrudForm> {
 	
 	/**
 	 * Estados de um registro em edição 
@@ -75,14 +74,14 @@ public interface CrudHelper<T extends IEntidadeCampo, VO, Form extends CrudForm>
 	 * 
 	 * @return Nova instância
 	 */
-	FiltroConsultarForm<T> criarFiltroModel();
+	FiltroConsultarForm<?> criarFiltroModel();
 	
 	/**
 	 * Instancia um novo model para o formulário de edição
 	 * 
 	 * @return Nova instância de {@link BaseForm}
 	 */
-	Form criarCrudModel();
+	EF criarCrudModel();
 	
 	/**
 	 * Processa os critérios de pesquisa e preenche o
@@ -100,7 +99,7 @@ public interface CrudHelper<T extends IEntidadeCampo, VO, Form extends CrudForm>
 	 * 
 	 * @throws DEPIIntegrationException Quando não é possível preencher o formulário.
 	 */
-	void preencherFormularioEdicao(Form model) throws DEPIIntegrationException;
+	void preencherFormularioEdicao(EF model) throws DEPIIntegrationException;
 	
 	/**
 	 * Persiste os dados informados no formulário
@@ -115,7 +114,7 @@ public interface CrudHelper<T extends IEntidadeCampo, VO, Form extends CrudForm>
 	 *             Quando há uma falha durante o processo de persistir os dados
 	 *             do formulário.
 	 */
-	EstadoRegistro persistirDados(Form model, LoginVo usuarioLogado) throws DEPIIntegrationException;
+	EstadoRegistro persistirDados(EF model, LoginVo usuarioLogado) throws DEPIIntegrationException;
 	
 	/**
 	 * Exclui os registros que informados na coleção de VO

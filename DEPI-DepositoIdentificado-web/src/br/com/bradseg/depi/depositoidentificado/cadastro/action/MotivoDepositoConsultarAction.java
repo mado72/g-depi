@@ -38,7 +38,7 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 	}
 
 	@Override
-	protected CrudHelper<?, ?, ?> getFiltroHelper() {
+	protected CrudHelper<?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
 			filtroHelper = new MotivoDepositoCrudHelper();
 		}

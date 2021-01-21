@@ -39,7 +39,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	
 	private T model;
 	
-	protected abstract CrudHelper<?, ?, ?> getFiltroHelper();
+	protected abstract CrudHelper<?, ?> getFiltroHelper();
 	
 	@SuppressWarnings("unchecked")
 	public FiltroAction() {

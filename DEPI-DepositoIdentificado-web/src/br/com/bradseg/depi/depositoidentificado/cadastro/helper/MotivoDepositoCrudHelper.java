@@ -19,7 +19,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 public class MotivoDepositoCrudHelper implements
-		CrudHelper<MotivoDepositoCampo, MotivoDepositoVO, MotivoDepositoEditarForm> {
+		CrudHelper<MotivoDepositoVO, MotivoDepositoEditarForm> {
 
 	private static final String TITLE_DEPOSITO_CONSULTAR = "title.deposito.consultar";
 

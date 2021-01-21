@@ -28,7 +28,7 @@ public class MotivoDepositoEditarAction extends CrudAction<MotivoDepositoVO, Mot
 	private transient MotivoDepositoCrudHelper crudHelper;
 	
 	@Override
-	protected CrudHelper<?, MotivoDepositoVO, MotivoDepositoEditarForm> getCrudHelper() {
+	protected CrudHelper<MotivoDepositoVO, MotivoDepositoEditarForm> getCrudHelper() {
 		if (crudHelper == null) {
 			crudHelper = new MotivoDepositoCrudHelper();
 		}

@@ -42,7 +42,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	 * Obtém o helper para processar as ações do formulário
 	 * @return instância de {@link CrudHelper}
 	 */
-	protected abstract CrudHelper<?, VO, F> getCrudHelper();
+	protected abstract CrudHelper<VO, F> getCrudHelper();
 	
 	public boolean detalhar() {
 		return getModel().getEstado() == EstadoCrud.EXIBIR;
@@ -56,7 +56,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 		LOGGER.debug("Preparando formulário para exibir um registro");
 		getModel().setEstado(EstadoCrud.EXIBIR);
 		
-		CrudHelper<?, VO, F> crudHelper = getCrudHelper();
+		CrudHelper<VO, F> crudHelper = getCrudHelper();
 		setSubtituloChave(crudHelper.getChaveTituloDetalhar());
 		crudHelper.preencherFormularioEdicao(model);
 		
@@ -84,7 +84,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 		LOGGER.debug("Preparando formulário para alterar um registro");
 
 		getModel().setEstado(EstadoCrud.ALTERAR);
-		CrudHelper<?, VO, F> crudHelper = getCrudHelper();
+		CrudHelper<VO, F> crudHelper = getCrudHelper();
 		
 		setSubtituloChave(crudHelper.getChaveTituloAlterar());
 		crudHelper.preencherFormularioEdicao(model);
@@ -121,7 +121,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 		LOGGER.info("Persistindo dados do formulário");
 		
 		F model = getModel();
-		CrudHelper<?, VO, F> helper = getCrudHelper();
+		CrudHelper<VO, F> helper = getCrudHelper();
 		
 		LoginVo usuarioLogado = getUsuarioLogado();
 		

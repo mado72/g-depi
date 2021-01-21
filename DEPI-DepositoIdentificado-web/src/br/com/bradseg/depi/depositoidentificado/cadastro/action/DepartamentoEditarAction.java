@@ -35,7 +35,7 @@ public class DepartamentoEditarAction extends CrudAction<DepartamentoVO, Departa
 	private transient DepartamentoCrudHelper crudHelper;
 
 	@Override
-	protected CrudHelper<?, DepartamentoVO, DepartamentoEditarForm> getCrudHelper() {
+	protected CrudHelper<DepartamentoVO, DepartamentoEditarForm> getCrudHelper() {
 		if (crudHelper == null) {
 			crudHelper = new DepartamentoCrudHelper(facade);
 		}
