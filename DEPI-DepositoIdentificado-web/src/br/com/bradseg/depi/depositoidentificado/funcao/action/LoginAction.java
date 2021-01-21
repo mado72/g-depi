@@ -1,9 +1,14 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Enumeration;
+import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.SessionAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -22,17 +27,32 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 @Controller
 @Scope("request")
-public class LoginAction extends ActionSupport implements ServletRequestAware {
+public class LoginAction extends ActionSupport implements ServletRequestAware, SessionAware {
 
 	private static final long serialVersionUID = -4322830132167895863L;
 	
 	private HttpServletRequest request;
 	
 	private static final String MSG_LOGIN_USUARIO = "msg.erro.usuario.logado";
+
+	@Resource
+	private transient String www3;
+	
+	private transient Map<String, Object> sessionData;
 	
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
+	}
+	
+	@Override
+	public void setSession(Map<String, Object> sessionData) {
+		this.sessionData = sessionData;
+		try {
+			URL url = new URL(www3);
+			this.sessionData.put("www3", url);
+		} catch (MalformedURLException e) {
+		}
 	}
 
 	/**

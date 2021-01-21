@@ -29,6 +29,10 @@
 	
 	<package name="root" namespace="/" extends="depi-default">
 	
+		<action name="login" class="loginAction">
+			<result name="success" type="redirectAction">index</result>
+		</action>
+	
 		<action name="index" class="indexAction">
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/layout/vazio.jsp</param>
@@ -53,17 +57,7 @@
 			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
 			</result>
         </action>
-<!-- 
-		<action name="/cadastro/Consultar*" class="consultar{1}Action" 
-			method="menu">
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/includes/cadastro/Consultar{1}.jsp</param>
-			</result>
-			<result name="error">
-			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
-			</result>
-        </action>
- -->
+
         <action name="navegador">
             <result>/WEB-INF/pages/navegador.jsp</result>
         </action>        
@@ -77,24 +71,20 @@
 	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito/consultar" extends="depi-default">
 	
 		<default-class-ref class="motivoDepositoConsultarAction"/>
+		
 		<global-results>
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
 			</result>
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
-			</result>
+			<result name="input" type="redirectAction">listar</result>
 		</global-results>
 
-		<action name="index" method="iniciarFormulario"/>
-        
-		<action name="listar" method="execute"/>
-        
-		<action name="*" method="{1}">
+		<action name="index">
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
-			<result name="success" type="redirectAction">listar</result>
-        </action>
+		</action>
+        
+		<action name="*" method="{1}"/>
 
 	</package>
 	
@@ -115,11 +105,11 @@
 		<action name="novo" method="novo">
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
-			<result name="input" type="redirectAction">exibir</result>
+			<result name="input" type="redirectAction">input</result>
 		</action>
 		
 		<action name="alterar" method="alterar">
-			<result name="input" type="redirectAction">exibir</result>
+			<result name="input" type="redirectAction">input</result>
 		</action>
         
         <action name="*" method="{1}">
