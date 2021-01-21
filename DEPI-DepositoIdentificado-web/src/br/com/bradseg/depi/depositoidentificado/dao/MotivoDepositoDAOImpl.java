@@ -117,16 +117,9 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     @Override
     public void alterar(MotivoDepositoVO vo){
  
-    	StringBuilder query = null;  
-    	query = new StringBuilder(QuerysDepi.MOTIVODEPOSITO_ALL);
-        	
        	try {
         		
-			MapSqlParameterSource paramsBasica = new MapSqlParameterSource();
-
-			List<MotivoDepositoVO> motivoDepto = getJdbcTemplate().query(query.toString(), paramsBasica, new MotivoDepositoDataMapper());
-			
-			MotivoDepositoVO motivoExistente = findPorDescricaoBasica (motivoDepto , vo );
+			MotivoDepositoVO motivoExistente = obterPorChave(vo); 
 
             if (motivoExistente == null) {
                 StringBuilder sb = new StringBuilder("Motivo Depósito com Descrição Básica: ").append(vo.getDescricaoBasica())
@@ -385,17 +378,6 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
         } finally {
         	LOGGER.info("obterPorFiltro(FiltroUtil filtro)"); 
         }
-	}
-	
-
-	private MotivoDepositoVO findPorDescricaoBasica (List<MotivoDepositoVO> motivoDepto , MotivoDepositoVO vo ) {
-	
-	    for(MotivoDepositoVO motivo : motivoDepto) {
-	        if(motivo.getDescricaoBasica().equals(vo.getDescricaoBasica().trim())) {
-	            return motivo;
-	        }
-	    }
-	    return null;
 	}
 	
 }
