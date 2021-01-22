@@ -1,0 +1,114 @@
+@CHARSET "UTF-8";
+
+input:disabled {
+	color: #999999;
+}
+pre.debug {
+	width: 100%;
+	overflow: auto;
+	overflow-wrap: anywhere;
+}
+
+a.button {
+	border: 0;
+	text-decoration: none;
+	margin: 2px;
+}
+
+button.btn-img {
+	background-color: transparent;
+	border: 0;
+	padding: 0;
+	margin-right: 2px;
+}
+
+#depi-breadcrumb {
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+#depi-breadcrumb img, #depi-breadcrumb span {
+	display: block;
+}
+
+#depi-app #menu_horizontal .dropdown {
+	border-bottom: 1px solid #bc0000;
+	top: 90px;
+	width: 200px;
+}
+#depi-app #menu_horizontal #s1 {
+	left: 30px;
+}
+
+#depi-app #menu_horizontal #s2 {
+	left: 239px;
+}
+
+#carregandoImg {
+	display: none;
+}
+
+#Lista {
+	WIDTH: 400px; 
+	Z-INDEX: 1;
+}
+
+#tabela_interna caption {
+	text-align: left;
+}
+
+#tabela_interna, .tabela_botoes {
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#tabela_interna {
+	width: 90%;
+}
+
+.tabela_botoes {
+	width: 95%;
+}
+
+.Consulta .selecao {
+	width: 10%;
+	text-align: center;
+}
+
+.MotivoDeposito .descricao {
+	width: 29%;
+	overflow-wrap: anywhere;
+}
+
+.MotivoDeposito .responsavel {
+	width: 18%;
+	text-align: center;
+}
+
+.MotivoDeposito .atualizacao {
+	width: 18%;
+}
+
+.Departamento .sigla {
+	width: 15%;
+}
+.Departamento .nome {
+}
+.Departamento .responsavel, .Departamento .atualizacao {
+	width: 20%;
+}
+
+.lista .atualizacao {
+	text-align: center;
+}
+
+.subtitulo {
+	color: #666666;
+}
+
+.paginacao {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}

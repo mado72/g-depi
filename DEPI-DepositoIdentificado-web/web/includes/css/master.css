@@ -1,0 +1,386 @@
+/* Documento de css para as telas de sistema Intranet */
+	/* Redefinição de Classes */
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #333333;
+	margin: 0px;
+	padding: 0px;
+}
+
+h5 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	text-align: center;
+}
+
+h5 a:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #999999;
+	text-decoration: underline;
+}
+
+h5 a:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #999999;
+	text-decoration: underline;
+}
+
+h5 a:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-decoration: none;
+	color: #999999;
+}
+
+h5 a:active {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-decoration: none;
+	color: #999999;
+}
+
+a:link {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #666666;
+	text-decoration: underline;
+}
+
+a:visited {
+	color: #666666;
+}
+
+a:hover {
+	color: #CC0000;
+}
+
+a:active {
+	color: #666666;
+}
+
+input {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #000000;
+	border: thin none;
+	background-color: #FFFFFF;
+}
+
+textarea {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #000000;
+	background-color: #FFFFFF;
+	border: thin solid #CCCCCC;
+}
+
+select {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #000000;
+	border: thin solid #CCCCCC;
+	background-color: #FFFFFF;
+}
+
+li {
+	list-style-position: outside;
+	list-style-type: square;
+}
+
+/* ID */
+#tabela_principal {
+	margin: 10px;
+	margin-top: 35px;
+	width: 97%;
+}
+
+.tabela_principal {
+	margin: 10px;
+	margin-top: 35px;
+	width: 97%;
+}
+
+#tabela_interna {
+	border: 1px solid #666666;
+}
+
+.tabela_interna {
+	border: 1px solid #666666;
+}
+
+#tabela_interna th {
+	/*definição  da cor mais escura do topo da tabela interna*/
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	font-weight: bold;
+	color: #000000;
+	background-color: #CCCCCC;
+	padding: 3px;
+	text-align: center;
+}
+
+.tabela_interna th {
+	/*definição  da cor mais escura do topo da tabela interna*/
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	font-weight: bold;
+	color: #000000;
+	background-color: #CCCCCC;
+	padding: 3px;
+	text-align: center;
+}
+
+#tabela_interna tr {
+	padding: 3px;
+	background-color: #EFEFEF;
+}
+
+.tabela_interna tr {
+	padding: 3px;
+	background-color: #EFEFEF;
+}
+
+.tabela_interna td {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+#tabela_interna td {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+#tabela_interna tr.off { /*cores alternadas das linhas da tabela*/
+	padding: 3px;
+	background-color: #dcdedd;
+	/*cinza médio - para alternar as linhas da tabela*/
+}
+
+.tabela_interna tr.off { /*cores alternadas das linhas da tabela*/
+	padding: 3px;
+	background-color: #dcdedd;
+	/*cinza médio - para alternar as linhas da tabela*/
+}
+
+#tabela_interna TR.grupo1
+	/*cores alternadas em um grupo de linhas da tabela*/ {
+	PADDING-RIGHT: 3px;
+	PADDING-LEFT: 3px;
+	PADDING-BOTTOM: 3px;
+	PADDING-TOP: 3px;
+	BACKGROUND-COLOR: #eeeeee;
+}
+
+#tabela_interna TR.grupo2
+	/*cores alternadas em um grupo de linhas da tabela*/ {
+	PADDING-RIGHT: 3px;
+	PADDING-LEFT: 3px;
+	PADDING-BOTTOM: 3px;
+	PADDING-TOP: 3px;
+	BACKGROUND-COLOR: #dcdedd;
+}
+
+.td_label /*cor diferenciada para destacar o campo com o label*/ {
+	BACKGROUND-COLOR: #E4E4E4;
+	font-size: 9px;
+	color: #333333;
+	margin: 0px;
+	padding: 0px;
+}
+
+.td_dados /*cor diferenciada para destacar o campo com o dados*/ {
+	FONT-WEIGHT: bold;
+	font-size: 9px;
+	color: #333333;
+	margin: 0px;
+	padding: 0px;
+}
+
+#tabela_interna tr.link {
+	/*destacar uma linha da tabela quando passar o mouse sobre ela*/
+	padding: 3px;
+	background-color: #FFFFFF;
+	color: #CC0000
+		/*vermelho médio - para alternar link das linhas da tabela*/
+}
+
+.tabela_interna tr.link {
+	/*destacar uma linha da tabela quando passar o mouse sobre ela*/
+	padding: 3px;
+	background-color: #FFFFFF;
+	color: #CC0000
+		/*vermelho médio - para alternar link das linhas da tabela*/
+}
+
+#tabela_botoes { /*os botões devem ser aplicados dentro dessa div*/
+	background-color: none;
+	padding: 2px;
+}
+
+.tabela_botoes {
+	background-color: none;
+	padding: 2px;
+}
+
+.margem_botoes { /*os botões devem ter essa class*/
+	margin: 5px;
+}
+
+button,.button {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #737373;
+	background-color: #efefef;
+	text-align: center;
+	vertical-align: middle;
+	height: 16px;
+	width: auto;
+	border: 1px solid #737373;
+	cursor: hand;
+	/*ver como o texto deve ser escrito....primeira letra maiuscula ou tudo...*/
+}
+
+#tabela_erro {
+	border: 1px solid #cc0000;
+	background-color: #FDF3F3;
+	color: #CC0000;
+	text-align: center;
+	font-weight: bold;
+}
+
+.tabela_verm { /*tabela de erro*/
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	border: #FFFFFF;
+	color: #CC0000;
+	text-align: center;
+	vertical-align: 0%;
+	background-color: #F7EAEA;
+}
+
+.tabela_verm ul,.tabela_sucesso li {
+	list-style: disc;
+}
+
+.tabela_verm li,.tabela_sucesso li {
+	list-style: disc;
+}
+
+.tabela_sucesso { /*tabela de erro*/
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	border: #FFFFFF;
+	color: #737373;
+	text-align: center;
+	vertical-align: 0%;
+	background-color: #eeeeee;
+}
+
+/*classes*/
+.estilo { /*class para destacar alguma palavra, colocando em negrito*/
+	font-weight: bold;
+}
+
+.destaque {
+	/*class para destacar alguma palavra, colocando em vermelho*/
+	color: #CC0000;
+}
+
+.sucesso { /*class para destacar alguma palavra, colocando em vermelho*/
+	color: #009900;
+	text-align: center;
+	font-weight: bold;
+	padding: 10px;
+	font-size: 10px;
+}
+
+.obrigatorio {
+	/*aplicar nos * e na frase campo de preenchimento obrigatório*/
+	font-style: italic;
+	font-size: 9px;
+	color: #CC0000;
+}
+
+.titulo { /*provisório para o site assessorias, tirar depois*/
+	font-family: Arial, Tahoma, Verdana;
+	font-size: 14px;
+	font-weight: bold;
+	color: #CC0000;
+	text-align: left;
+}
+
+.subtitulo { /*no subtitulo deve ser aplicada essa classe*/
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #666666;
+	text-transform: capitalize;
+}
+
+.subtitulo_2 {
+	/*essa classe deve ser usada para subtitulo com preposições que vêm direto da tabela de dados*/
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #666666;
+}
+
+.capitalize { /*colocar a primeira letra maiuscula*/
+	text-transform: capitalize;
+}
+
+.optionbutton { /*colocar o radio button transparente*/
+	background: none;
+}
+
+.lowcap { /*colocar a primeira letra minuscula*/
+	text-transform: lowercase;
+}
+
+.noborder,img {
+	border: 0
+}
+
+img {
+	vertical-align: middle;
+}
+
+.fundo_branco {
+	background-color: #FFFFFF;
+}
+
+a.destaque:link {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #FF0000;
+	text-decoration: underline;
+}
+
+a.destaque:visited {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #FF0000;
+	text-decoration: underline;
+}
+
+a.destaque:hover {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	text-decoration: none;
+	color: #FF0000;
+}
+
+a.destaque:active {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	text-decoration: none;
+	color: #FF0000;
+}

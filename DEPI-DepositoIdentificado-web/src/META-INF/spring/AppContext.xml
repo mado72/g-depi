@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/jee
+           http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+           http://www.springframework.org/schema/jms
+           http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+           http://cxf.apache.org/jaxws
+           http://cxf.apache.org/schemas/jaxws.xsd
+           http://cxf.apache.org/jaxrs 
+           http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<bean id="objectMapper" class="br.com.bradseg.depi.depositoidentificado.util.json.DepiObjectMapper" >
+	</bean>
+
+	<!--
+		Habilitar BSAD Foundation - Core
+	 -->
+	<import resource="classpath*:META-INF/bsad/spring/AppContext-Core.xml" />
+
+	<!--
+		Habilitar BSAD Foundation - Integração ao WebSphere
+    -->
+    <import resource="classpath*:META-INF/bsad/spring/AppContext-WebSphere.xml" />
+
+    <!--
+      Habilitar BSAD Foundation - Integração ao CICS
+    -->
+    <!-- <import resource="classpath*:META-INF/bsad/spring/AppContext-Resources-Cics.xml" /> -->
+
+    <!--
+      Habilitar BSAD Foundation - Integração para envio de email
+    -->
+    <!--
+	<import resource="classpath*:META-INF/bsad/spring/AppContext-Mail.xml" />
+    -->
+
+	<!--
+		Habilitar BSAD Foundation - WebServices
+	 -->
+	<import resource="classpath*:META-INF/bsad/spring/AppContext-WebServices.xml" />
+
+	<bean id="cors-filter" class="org.apache.cxf.rs.security.cors.CrossOriginResourceSharingFilter"/>
+	
+    <jaxrs:server id="servicosServer" address="/servicos" >  
+       <jaxrs:serviceBeans>
+          <ref bean="servicos" /> 
+       </jaxrs:serviceBeans> 
+       <jaxrs:providers>
+       		<ref bean="cors-filter" />
+			<bean class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+				<property name="ignoreNamespaces" value="true" />
+				<property name="dropRootElement" value="true" />
+				<property name="writeXsiType" value="false" />
+				<property name="dropCollectionWrapperElement" value="true" />
+				<property name="serializeAsArray" value="true" />
+				<property name="supportUnwrapped" value="true" />
+			</bean>
+		</jaxrs:providers>
+   </jaxrs:server>
+
+	<!--
+		Declaração do serviço /FuncionalidadeWebService
+		Atenção: na tag <jaxws:endpoint ... />, não definir id.
+	 -->
+	<jaxws:endpoint implementor="#inicioWebService" address="/InicioWebService" />
+
+	<!--
+		Lookup do DataSource padrão da aplicação.
+	-->
+	<!-- PARA HABILITAR O RECURSO DE ACESSO A UM BANCO DE DADOS, E NECESSARIO CRIAR UM DATASOURCE NO SERVIDOR, -->
+    <!-- E ALTERAR O VALOR DO JNDI NO WEB.XML (REFERENCIAS -> LIGACOES DO WEBSPHERE) PARA O VALOR NECESSARIO. -->
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/DEPI-DepositoIdentificado" resource-ref="true" lookup-on-startup="true" /> 
+	
+	<!-- Pegando um objeto URL para o caminho das imagens e do CSS do servidor através de um JNDI -->
+	<jee:jndi-lookup id="www3" jndi-name="url/www3" resource-ref="true" lookup-on-startup="true" /> 
+	
+	<!-- Pegando um objeto URL para CBBS-Pagamento através de um JNDI -->
+	<jee:jndi-lookup id="IBusc2" jndi-name="url/IBusc2" resource-ref="true" lookup-on-startup="true" />
+
+	<!--
+		Habilitar BSAD Mobile
+		
+		Escolha o metodo mais adequado para o projeto.
+	-->
+	<!-- 
+	   <import resource="classpath:META-INF/bsad/spring/AppContext-Mobile-Utils.xml" />
+	-->            
+	<!-- SiteSwitch + ResourceSwitch -->
+	<!-- 
+	   <import resource="classpath:META-INF/bsad/spring/AppContext-Mobile.xml" />
+	-->
+	<!-- SiteSwitch -->
+	<!--
+	   <import resource="classpath:META-INF/bsad/spring/AppContext-MobileSite.xml" />
+	-->
+	<!-- ResourceSwitch -->
+	<!--
+	   <import resource="classpath:META-INF/bsad/spring/AppContext-MobileDevice.xml" />
+	-->
+	
+</beans>
+

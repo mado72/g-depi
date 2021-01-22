@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<libraries:Library xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:libraries="http://www.ibm.com/websphere/appserver/schemas/5.0/libraries.xmi" xmi:id="Library_1610993961560" name="BSAD" isolatedClassLoader="true">
+  <classPath>C:\@Java\@Libs\BSAD-3.6.10-all\Bibliotecas</classPath>
+  <classPath>C:\@Java\@Libs\Fake-FiltroSeguranca</classPath>
+</libraries:Library>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<!-- *********************************** -->
+	<!-- Padrao para o pom.xml do modulo WEB -->
+	<!-- *********************************** -->
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>DEPI-DepositoIdentificado-web</artifactId>
+	<name>DEPI-DepositoIdentificado-web</name>
+	<packaging>war</packaging>
+
+	<!-- ************************************ -->
+	<!-- Configuracao do parent project (POM) -->
+	<!-- ************************************ -->
+	<parent>
+		<groupId>DEPI-DepositoIdentificado</groupId>
+		<artifactId>DEPI-DepositoIdentificado-pom</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../DEPI-DepositoIdentificado-pom/pom.xml</relativePath>
+	</parent>
+
+	<!-- **************************************** -->
+	<!-- Configuracao das dependencias do projeto -->
+	<!-- **************************************** -->
+	<dependencies>
+
+		<!-- Dependencia da framework BSAD 3 -->
+		<dependency>
+			<groupId>BSAD-Framework-3.6.10</groupId>
+			<artifactId>bsad-framework</artifactId>
+			<version>3.6.10</version>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Dependencia das regras de conformidade da framework BSAD 3 -->
+	    <dependency>
+	        <groupId>BSAD-Framework-3-Resources</groupId>
+	        <artifactId>bsad-framework-resources</artifactId>
+	        <version>3</version>
+			<type>pom</type>
+			<scope>provided</scope>
+	    </dependency>
+
+		<!-- Dependencia da api WAS 8 -->
+		<dependency>
+			<groupId>ibm.was-8</groupId>
+			<artifactId>ibm-was</artifactId>
+			<version>8</version>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+		
+		 <dependency>
+			<groupId>BRADSEG-Servicos</groupId>
+			<artifactId>BUCB-Servicos-ejbClient</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>BSAD-Framework-3.6.10</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.8.0</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>BRADSEG-Servicos</groupId>
+			<artifactId>BSAD-ManipuladorJWT</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>BSAD-FiltroSeguranca</groupId>
+			<artifactId>bsad-filtro-seguranca</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>pom</type>
+			<scope>provided</scope>
+		</dependency>
+		
+	</dependencies>
+
+	<!-- ******************************** -->
+	<!-- Configuracao do build do projeto -->
+	<!-- ******************************** -->
+	<build>
+		<finalName>${project.parent.groupId}-web</finalName>
+		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>test</directory>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warSourceDirectory>web</warSourceDirectory>
+					<archive>
+						<manifestFile>web/META-INF/MANIFEST.MF</manifestFile>
+						<manifestEntries>
+							<Application-Name>${pom.build.finalName}</Application-Name>
+							<Iteration-Name>${iteration}</Iteration-Name>
+							<BuildServerReleaseVersion>${RELEASE_VERSION}</BuildServerReleaseVersion>
+							<BuildServerExecutorNumber>${EXECUTOR_NUMBER}</BuildServerExecutorNumber>
+							<BuildServerBuildId>${BUILD_ID}</BuildServerBuildId>
+							<BuildServerBuildNumber>${BUILD_NUMBER}</BuildServerBuildNumber>
+							<BuildServerDisplayName>${BUILD_DISPLAY_NAME}</BuildServerDisplayName>
+							<BuildServerJobName>${JOB_NAME}</BuildServerJobName>
+							<BuildServerNodeName>${NODE_NAME}</BuildServerNodeName>
+							<BuildServerNodeLabels>${NODE_LABELS}</BuildServerNodeLabels>
+							<BuildServerWorkspace>${WORKSPACE}</BuildServerWorkspace>
+							<BuildServerJobUrl>${JOB_URL}</BuildServerJobUrl>
+							<BuildServerBuildUrl>${BUILD_URL}</BuildServerBuildUrl>
+							<BuildServerSvnRevision>${SVN_REVISION}</BuildServerSvnRevision>
+							<BuildServerSvnUrl>${SVN_URL}</BuildServerSvnUrl>
+							<addClasspath>true</addClasspath>							
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+	<display-name>DEPI-DepositoIdentificado-web</display-name>
+
+	<listener>
+		<listener-class>br.com.bradseg.bsad.framework.web.spring.DefaultContextLoaderListener</listener-class>
+	</listener>
+
+	<!--
+            FILTROS DE SEGURANCA
+		Exemplo de utilizacao de filtros de seguranca.
+		Este filtro deverá estar a frente dos outros.
+                E necessaria a utilizacao dos arquivos JAR de filtros de seguranca,
+                que deverao ser obtidos com a arquitetura da BSP.
+	-->
+     <filter>
+		<filter-name>filtro-login-bsad-intranet</filter-name>
+		<filter-class>br.com.bradseg.bsad.filtrointranet.filters.IntranetFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>login-filter</filter-name>
+		<filter-class>br.com.bradseg.bsad.filtrologin.filters.LoginFilter</filter-class>
+		<init-param>
+			<param-name>security-error-page</param-name>
+			<param-value>/WEB-INF/jsp/layout/erro.jsp</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>filtro-login-bsad-intranet</filter-name>
+		<url-pattern>/index.do</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>login-filter</filter-name>
+		<url-pattern>/*.do</url-pattern>
+	</filter-mapping>
+
+
+	<!--
+		Necessário para LogBack.
+		Permite que o Logger imprima informações como URL, QueryString e outras.
+	 -->
+	<filter>
+		<filter-name>MDCInsertingServletFilter</filter-name>
+		<filter-class>ch.qos.logback.classic.helpers.MDCInsertingServletFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>MDCInsertingServletFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!--
+		Necessário para WebSphere.
+		Associa o ApplicationContext do Spring à requisição.
+	 -->
+	<filter>
+		<filter-name>spring-request</filter-name>
+		<filter-class>br.com.bradseg.bsad.framework.web.spring.DefaultRequestContextFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>spring-request</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>spring-request</filter-name>
+		<url-pattern>/service/*</url-pattern>
+	</filter-mapping>
+
+	<!--
+		Struts2 - Inicializa/limpa o contexto do struts2.
+	 -->
+	<filter>
+		<filter-name>action2-cleanup</filter-name>
+		<filter-class>br.com.bradseg.bsad.framework.web.struts.DefaultStrutsPrepareFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>action2-cleanup</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!--
+		Sitemesh - Decora as URL's
+	 -->
+	<filter>
+		<filter-name>sitemesh</filter-name>
+		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!--
+		Struts2 - Executa as actions do struts2
+	 -->
+	<filter>
+		<filter-name>action2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>action2</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- CharacterEncoding UTF-8 -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>br.com.bradseg.depi.depositoidentificado.util.web.CharacterEncodingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!--
+		Apache CXF - Responde os serviços WebServices.
+	 -->
+	<servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/service/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.do</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://www.opensymphony.com/sitemesh/decorator</taglib-uri>
+			<taglib-location>META-INF/sitemesh-decorator.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>http://www.opensymphony.com/sitemesh/page</taglib-uri>
+			<taglib-location>META-INF/sitemesh-page.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/struts-tags</taglib-uri>
+			<taglib-location>META-INF/struts-tags.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/bsad-tags</taglib-uri>
+			<taglib-location>META-INF/bsad-tags.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+
+	<context-param>
+		<param-name>sitemesh.configfile</param-name>
+		<param-value>/WEB-INF/conf/sitemesh/sitemesh.xml</param-value>
+	</context-param>
+ 	
+	<resource-ref id="ResourceRef_1391530093040">
+		<res-ref-name>eis/DEPI-DepositoIdentificado</res-ref-name>
+		<res-type>javax.resource.cci.ConnectionFactory</res-type>
+		<res-auth>Container</res-auth>
+		<res-sharing-scope>Shareable</res-sharing-scope>
+	</resource-ref>
+
+	<resource-env-ref id="ResourceEnvRef_202010210832184">
+		<resource-env-ref-name>jdbc/DEPI-DepositoIdentificado</resource-env-ref-name>
+		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+	</resource-env-ref>
+	
+	<resource-ref id="ResourceRef_1244470445292">
+		<res-ref-name>url/www3</res-ref-name>
+		<res-type>java.net.URL</res-type>
+		<res-auth>Container</res-auth>
+		<res-sharing-scope>Shareable</res-sharing-scope>
+	</resource-ref>
+	
+	<resource-ref id="ResourceRef_1547660949546">
+		<res-ref-name>url/IBusc2</res-ref-name>
+		<res-type>java.net.URL</res-type>
+		<res-auth>Container</res-auth>
+		<res-sharing-scope>Shareable</res-sharing-scope>
+	</resource-ref>
+	
+	<ejb-ref id="EjbRef_1264160332218">
+		<description>PessoaSessionRemoteFacadeRef</description>
+		<ejb-ref-name>ejb/PessoaSessionRemoteFacadeRef</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<home>br.com.bradseg.bucb.servicos.model.ejb.PessoaSessionFacadeHome</home>
+		<remote>br.com.bradseg.bucb.servicos.model.ejb.PessoaSessionFacade</remote>
+	</ejb-ref>
+
+</web-app>
