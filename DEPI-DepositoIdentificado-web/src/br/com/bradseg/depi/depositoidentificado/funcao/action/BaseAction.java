@@ -99,8 +99,8 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	public String getEstatico() {
 		// @FIXME Deve estar dentro da aplicação, não na intranet: return request.getContextPath() + "/includes";
 		
-		return getWww3() + "includes";
-//		return request.getContextPath() + "/includes";
+//		return getWww3() + "includes";
+		return request.getContextPath() + "/includes";
 	}
 
 	/**

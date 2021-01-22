@@ -2,8 +2,8 @@
 <webappbnd:WebAppBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:webappbnd="webappbnd.xmi" xmi:id="WebAppBinding_202010210832184" virtualHostName="default_host">
   <webapp href="WEB-INF/web.xml#WebApp_ID"/>
   
-  <resourceEnvRefBindings xmi:id="ResourceRef_1366035580586" jndiName="jdbc/DEPI-DepositoIdentificado">
-    <bindingResourceEnvRef href="WEB-INF/web.xml#ResourceRef_1366035580586"/>
+  <resourceEnvRefBindings xmi:id="ResourceEnvRef_202010210832184" jndiName="jdbc/DEPI-DepositoIdentificado">
+    <bindingResourceEnvRef href="WEB-INF/web.xml#ResourceEnvRef_202010210832184"/>
   </resourceEnvRefBindings>
   
   <resRefBindings xmi:id="ResourceRef_1547660949546" jndiName="url/IBusc2">
@@ -18,8 +18,8 @@
     <bindingEjbRef href="WEB-INF/web.xml#EjbRef_1264160332218"/>
   </ejbRefBindings>
 
-  <resRefBindings xmi:id="ResourceRef_1369062285248" jndiName="eis/DEPI-DepositoIdentificado">
-    <bindingResourceRef href="WEB-INF/web.xml#ResourceRef_1369062285248"/>
+  <resRefBindings xmi:id="ResourceRef_1391530093040" jndiName="eis/DEPI-DepositoIdentificado">
+    <bindingResourceRef href="WEB-INF/web.xml#ResourceRef_1391530093040"/>
   </resRefBindings>
     
 </webappbnd:WebAppBinding>

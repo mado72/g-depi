@@ -1,40 +1,28 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
+import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
 /**
  * Superclasse para Actions que processam filtros de consulta.
  * 
+ * <ul>
  * <p>
- * {@link FiltroAction#iniciarFormulario()} prepara os dados para gerar os
- * dropbox de consulta, preparando lista de campos de uma entidade e as
- * operações relacionadas. Além disso, limpa os critérios de consulta, que
- * possam estar na sessão.
- * </p>
- * 
- * <p>
- * {@link FiltroAction#prepararFiltro()} cria uma nova instância do Model para a
- * sessão e limpa a coleção de dados.
- * </p>
- * 
- * <p>
- * {@link FiltroAction#persistirContextoFiltro()} adiciona os dados do model na
- * sessão corrente.
- * </p>
- * 
- * <p>
- * {@link FiltroAction#montarCriterioConsulta(IEntidadeCampo, TipoOperacao, String, String)}
- * processa os dados do filtro para gerar os critérios de filtro para pesquisar
- * a fonte de dados.
- * </p>
+ * Os estados possíveis da Action são:</p>
+ * <li><b>iniciar</b>: inicia o formulário</li>
+ * <li><b>consultar</b>: processa o formulário de filtro</li>
+ * <li><b>refrescar</b>: força a renovação da consulta com base nos dados de filtro já editados anteriormente</li>
+ * </ul>
  * 
  * 
  * @author Marcelo Damasceno
@@ -49,65 +37,117 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FiltroAction.class);
 	
-	protected void prepararFiltro() {
-		LOGGER.info("Preparando contexto de filtro da consulta");
-		
-		if (getModel() != null && getModel().getColecaoDados() != null) {
-			getModel().setColecaoDados(null);
-		}
-		
-		LOGGER.debug("Removendo formulário do contexto de sessão e criando nova instância");
-		String actionName = this.getClass().getSimpleName();
-		sessionData.remove(actionName);
-		this.getModel().setColecaoDados(null);
-		
-		this.novaInstanciaModel();
-		
-		this.getModel().setColecaoDados(null);
-	}
+	private T model;
 	
-	protected void persistirContextoFiltro() {
-		T model = getModel();
-		
-		String actionName = this.getClass().getSimpleName();
-		sessionData.put(actionName, model);
+	protected abstract CrudHelper<?, ?> getFiltroHelper();
+	
+	@SuppressWarnings("unchecked")
+	public FiltroAction() {
+		this.model = (T) getFiltroHelper().criarFiltroModel();
 	}
 
-	protected CriterioConsultaVO montarCriterioConsulta(
-			IEntidadeCampo campo, TipoOperacao operacao, String valor,
-			String param) {
-		String clausula = operacao.formatarClausula(campo.getNome(), param);
-		String valorFormatado = operacao.formatarValor(valor);
-		return new CriterioConsultaVO(clausula, param, valorFormatado);
-	}
-	
 	/**
-	 * Primeiro método chamado da Action. Cria uma nova instância de formulário
-	 * na sessão e armazena-a na sessão do usuário.
-	 * 
-	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
+	 * Sobrescreve para retornar INPUT
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
-	public String iniciarFormulario() {
+	public String execute() {
+		setSubtituloChave(getFiltroHelper().getChaveTituloConsultar());
+		
+		clearErrorsAndMessages();
 		
 		this.prepararFiltro();
 		
-		this.persistirContextoFiltro();
+		return INPUT;
+	}
+	
+	/**
+	 * Apresenta o estado atual do formulário e da lista
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
+	 */
+	public String listar() {
+		setSubtituloChave(getFiltroHelper().getChaveTituloListar());
 		
 		return SUCCESS;
 	}
 	
-	protected abstract void processarCriterios(Collection<String> criterioColecao);
+	/**
+	 * Processa os dados do filtro.
+	 * 
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}, quando consegue realizar a consulta. Senão {@link com.opensymphony.xwork2.Action#ERROR}
+	 */
+	public String consultar() {
+		try {
+			clearErrorsAndMessages();
+			
+			List<String> criteriosCol = Arrays.asList(request.getParameterValues("criterio"));
+			
+			T model = getModel();
+			
+			List<CriterioConsultaVO> criterios = new ArrayList<>(model
+					.preencherCriterios(criteriosCol));
+
+			List<?> lista = getFiltroHelper().processarCriterios(criterios);
+			model.setColecaoDados(lista);
+			
+			if (lista == null || lista.isEmpty()) {
+				String message = super.getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
+				addActionMessage(message);
+			}
+			
+			return INPUT;
+		} catch (DEPIIntegrationException e) {
+			LOGGER.error("Falha na consulta", e);
+			addActionError(e.getMessage());
+			
+			return ERROR;
+		}
+	}
 	
 	/**
 	 * Limpa os resultados da consulta anterior e envia para a lista.
 	 * 
-	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String refrescar() {
-		getModel().setColecaoDados(null);
-		processarCriterios(getModel().getCriterios());
+		T model = getModel();
+		model.setColecaoDados(null);
 		
-		return SUCCESS;
+		List<CriterioConsultaVO> criterios = model.obterCriteriosConsulta();
+		List<?> lista = getFiltroHelper().processarCriterios(criterios);
+		model.setColecaoDados(lista);
+		
+		return INPUT;
+	}
+	
+	@Override
+	public final T getModel() {
+		return model;
+	}
+	
+	protected String getSimpleName() {
+		String simpleName = this.getClass().getSimpleName().replaceAll("\\$\\$Enhancer.*$", "");
+		LOGGER.debug("SimpleName: {}", simpleName);
+		return simpleName;
+	}
+	
+	protected String getFormName() {
+		String formName = getSimpleName() + "_FORM";
+		LOGGER.debug("FormName: {}", formName);
+		return formName;
+	}
+	
+	private void prepararFiltro() {
+		LOGGER.info("Preparando contexto de filtro da consulta");
+		
+		if (model != null && model.getColecaoDados() != null) {
+			model.setColecaoDados(null);
+		}
+		
+		this.getModel().setColecaoDados(null);
+
+		if (this.getModel().getCriterios() != null) {
+			this.getModel().clearCriterios();
+		}
 	}
 
 }

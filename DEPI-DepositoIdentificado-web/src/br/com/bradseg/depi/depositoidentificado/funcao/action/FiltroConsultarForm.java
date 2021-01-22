@@ -88,13 +88,23 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 			return Collections.emptyList();
 		}
 		
+		for (String criterio: criterioArray) {
+			this.addCriterio(criterio);
+		}
+		
+		return obterCriteriosConsulta();
+	}
+
+	/**
+	 * Obtém os critérios da consulta
+	 * @return Lista com os critérios
+	 */
+	public List<CriterioConsultaVO> obterCriteriosConsulta() {
 		List<CriterioConsultaVO> criterios = new ArrayList<>();
 		
 		int paramIdx = 0;
 		
-		for (String criterio: criterioArray) {
-			this.addCriterio(criterio);
-			
+		for (String criterio: criteriosInformados) {
 			String[] criterioFiltro = criterio.split(";");
 			
 			IEntidadeCampo campo = this.obterEntidade.apply(criterioFiltro[0]); 
@@ -151,8 +161,12 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 		}
 	}
 
+	/**
+	 * Devolve uma cópia dos critérios definidos na consulta
+	 * @return critérios.
+	 */
 	public List<String> getCriterios() {
-		return Collections.unmodifiableList(criteriosInformados);
+		return Collections.unmodifiableList(new ArrayList<>(criteriosInformados));
 	}
 	
 	public void clearCriterios() {

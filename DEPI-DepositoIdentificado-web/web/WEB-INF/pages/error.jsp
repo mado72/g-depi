@@ -6,15 +6,18 @@
 <meta name="titulo" content="Erro interno">
 </head>
 <body>
-<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tabela_verm" id="msgErros">
+<table class="tabela_verm" id="msgErros">
 	<tbody>
 		<tr>
 			<td>
 				<ul>
-					<li>Ocorreu um erro interno. Tente novamente em alguns minutos.<br/><br/>
-					Caso o erro persista, favor entrar em contato com o analista responsável e informar o código do erro: "<s:text name="exception.requestId" />".</li>
+					<li>
+						Ocorreu um erro interno. Tente novamente em alguns minutos. 
+						Caso o erro persista, favor entrar em contato com o analista responsável e informar o código do erro:
+						<p>"<s:text name="exception.message" />".</p>
+					</li>
 				</ul>
-				<pre style="display:none" class="error">
+<pre style="display:none" class="error">
 Mensagem:
 ---------
 <s:text name="exception"/>
@@ -22,9 +25,7 @@ Mensagem:
 Stacktrace:
 -----------
 <s:text name="exceptionStack"/>
-
-
-				</pre>
+</pre>
 			</td>
 		</tr>
 	</tbody>

@@ -48,7 +48,12 @@ public class GrupoAcessoVO implements Serializable{
 	private CompanhiaSeguradoraVO cia = new CompanhiaSeguradoraVO();
 
 	private List<UsuarioVO> usuarios = new ArrayList<UsuarioVO>();
-
+	
+    /**
+     * Codigo Responsavel Ultima Atualizacao.
+     */
+    private Integer codigoResponsavelUltimaAtualizacao;
+    
 	/**
      * Retorna o valor do atributo usuarios.
      * @return o valor do atributo usuarios
@@ -132,4 +137,20 @@ public class GrupoAcessoVO implements Serializable{
 		this.depto = depto;
 	}
 
+    /**
+     * Retorna o CodigoResponsavelUltimaAtualizacao.
+     * @return O atributo CodigoResponsavelUltimaAtualizacao
+     */
+	public Integer getCodigoResponsavelUltimaAtualizacao() {
+		return codigoResponsavelUltimaAtualizacao;
+	}
+
+    /**
+     * Especifica o CodigoResponsavelUltimaAtualizacao.
+     * @param codigoResponsavelUltimaAtualizacao Integer do codigoDepartamento a ser setado
+     */
+	public void setCodigoResponsavelUltimaAtualizacao(Integer codigoResponsavelUltimaAtualizacao) {
+		this.codigoResponsavelUltimaAtualizacao = codigoResponsavelUltimaAtualizacao;
+	}
+	
 }

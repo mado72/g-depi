@@ -60,7 +60,7 @@
 			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoDepartamento}"/>"/>
 		</td>
 		<td class="sigla">
-			<s:url action="detalhar" namespace="/cadastro/departamento/editar" var="linkExibir">
+			<s:url action="exibir" namespace="/cadastro/departamento/editar" var="linkExibir">
 				<s:param name="codigo">${item.codigoDepartamento}</s:param>
 			</s:url>
 			<s:a href="%{linkExibir}">
@@ -87,7 +87,7 @@
 		<tr>
 			<td align="center">
 				<div id="tabela_botoes">
-					<s:a action="incluir" class="button" id="BtnIncluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
+					<s:a id="BtnIncluir2" class="btnIncluir" action="incluir" namespace="/cadastro/departamento/editar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
 					<a class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
 					<a class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
 				</div>
