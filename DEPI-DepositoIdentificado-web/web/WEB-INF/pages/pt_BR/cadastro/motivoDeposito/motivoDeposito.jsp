@@ -8,6 +8,7 @@
 </s:include>
 
 <s:if test="colecaoDados">
+
 <s:form action="acao.do" namespace="/cadastro/motivoDeposito/editar" id="AcaoForm">
 
 <table id="tabela_interna" class="MotivoDeposito Consulta">

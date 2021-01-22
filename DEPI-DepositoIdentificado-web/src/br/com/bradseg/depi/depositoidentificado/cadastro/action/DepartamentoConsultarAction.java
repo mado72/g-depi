@@ -19,24 +19,26 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepartamentoCam
  * @author Marcelo Damasceno
  */
 @Controller
-@Scope("request")
+@Scope("session")
 public class DepartamentoConsultarAction extends FiltroAction<FiltroConsultarForm<DepartamentoCampo>> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoConsultarAction.class);
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	@Autowired
-	private transient DepartamentoFacade facade;
-
 	private transient DepartamentoCrudHelper filtroHelper;
 	
 	@Override
 	protected CrudHelper<?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
-			filtroHelper = new DepartamentoCrudHelper(facade);
+			filtroHelper = new DepartamentoCrudHelper();
 		}
 		return filtroHelper;
+	}
+	
+	@Autowired
+	public void setFacade(DepartamentoFacade facade) {
+		filtroHelper.setFacade(facade);
 	}
 
 }

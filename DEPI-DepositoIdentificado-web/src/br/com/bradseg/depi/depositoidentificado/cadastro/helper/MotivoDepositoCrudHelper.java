@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.MotivoDepositoEditarForm;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.MotivoDepositoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
@@ -19,7 +19,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 public class MotivoDepositoCrudHelper implements
-		CrudHelper<MotivoDepositoVO, MotivoDepositoEditarForm> {
+		CrudHelper<MotivoDepositoVO, MotivoDepositoEditarFormModel> {
 
 	private static final String TITLE_DEPOSITO_CONSULTAR = "title.deposito.consultar";
 
@@ -118,12 +118,12 @@ public class MotivoDepositoCrudHelper implements
 	}
 
 	@Override
-	public MotivoDepositoEditarForm criarCrudModel() {
-		return new MotivoDepositoEditarForm();
+	public MotivoDepositoEditarFormModel criarCrudModel() {
+		return new MotivoDepositoEditarFormModel();
 	}
 
 	@Override
-	public void preencherFormularioEdicao(MotivoDepositoEditarForm model)
+	public void preencherFormularioEdicao(MotivoDepositoEditarFormModel model)
 			throws DEPIIntegrationException {
 		
 		MotivoDepositoVO instancia = obterPeloCodigo(Integer.parseInt(model.getCodigo()));
@@ -142,7 +142,7 @@ public class MotivoDepositoCrudHelper implements
 
 	@Override
 	public EstadoRegistro persistirDados(
-			MotivoDepositoEditarForm model, LoginVo usuarioLogado)
+			MotivoDepositoEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 
 		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();

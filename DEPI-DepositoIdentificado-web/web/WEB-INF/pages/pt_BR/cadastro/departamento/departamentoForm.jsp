@@ -17,12 +17,8 @@
 </span>
 </s:if>
 
-<s:form action="enviar">
-	<s:hidden property="acaoAnterior" />
-	<s:hidden property="codigoDepartamento" />
-	<s:hidden property="postBack" value="S" />
-
-
+<s:form action="processar">
+<s:hidden name="codigo"/>
 	<table id="tabela_interna">
 	<caption>
 		<span class="obrigatorio"><s:text name="label.campos.obrigatorios" /></span>

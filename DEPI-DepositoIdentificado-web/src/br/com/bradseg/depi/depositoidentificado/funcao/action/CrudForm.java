@@ -21,6 +21,12 @@ public abstract class CrudForm implements Serializable {
 	
 	private String acao;
 	
+	public abstract void limparDados();
+	
+	public boolean isDetalhar() {
+		return this.estado == EstadoCrud.EXIBIR;
+	}
+	
 	/**
 	 * Retorna Estado
 	 * @return estado corrente

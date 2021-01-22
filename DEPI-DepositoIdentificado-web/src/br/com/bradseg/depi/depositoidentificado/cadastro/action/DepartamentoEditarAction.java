@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditarForm;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepartamentoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
@@ -22,24 +22,26 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
  * @author Marcelo Damasceno
  */
 @Controller
-@Scope("request")
-public class DepartamentoEditarAction extends CrudAction<DepartamentoVO, DepartamentoEditarForm> {
+@Scope("session")
+public class DepartamentoEditarAction extends CrudAction<DepartamentoVO, DepartamentoEditarFormModel> {
 	
     protected static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoEditarAction.class);
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	@Autowired
-	private transient DepartamentoFacade facade;
-	
 	private transient DepartamentoCrudHelper crudHelper;
 
 	@Override
-	protected CrudHelper<DepartamentoVO, DepartamentoEditarForm> getCrudHelper() {
+	protected CrudHelper<DepartamentoVO, DepartamentoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
-			crudHelper = new DepartamentoCrudHelper(facade);
+			crudHelper = new DepartamentoCrudHelper();
 		}
 		return crudHelper;
+	}
+	
+	@Autowired
+	public void setFacade(DepartamentoFacade facade) {
+		this.crudHelper.setFacade(facade);
 	}
 
 	@Override
@@ -51,7 +53,7 @@ public class DepartamentoEditarAction extends CrudAction<DepartamentoVO, Departa
             DepartamentoVO vo = new DepartamentoVO();
             vo.setCodigoDepartamento(new Integer(codigo));
             
-            vo = facade.obterPorChave(vo);
+            vo = getCrudHelper().obterPorChave(vo);
             lista.add(vo);
         }
         

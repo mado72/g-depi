@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditarForm;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
@@ -19,9 +19,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 public class DepartamentoCrudHelper implements
-		CrudHelper<DepartamentoVO, DepartamentoEditarForm> {
+		CrudHelper<DepartamentoVO, DepartamentoEditarFormModel> {
 	
-	private final transient DepartamentoFacade facade;
+	private transient DepartamentoFacade facade;
 	
 	private static final String TITLE_DEPARTAMENTO_CONSULTAR = "title.departamento.consultar";
 	
@@ -33,8 +33,7 @@ public class DepartamentoCrudHelper implements
 
 	private static final String TITLE_DEPARTAMENTO_INCLUIR = "title.deposito.novo";
 
-	public DepartamentoCrudHelper(DepartamentoFacade facade) {
-		super();
+	public void setFacade(DepartamentoFacade facade) {
 		this.facade = facade;
 	}
 	
@@ -105,16 +104,15 @@ public class DepartamentoCrudHelper implements
 	}
 
 	@Override
-	public DepartamentoEditarForm criarCrudModel() {
-		return new DepartamentoEditarForm();
+	public DepartamentoEditarFormModel criarCrudModel() {
+		return new DepartamentoEditarFormModel();
 	}
 
 	@Override
-	public void preencherFormularioEdicao(DepartamentoEditarForm model)
+	public void preencherFormularioEdicao(DepartamentoEditarFormModel model)
 			throws DEPIIntegrationException {
 		
 		DepartamentoVO instancia = obterPeloCodigo(model.getCodigo());
-		model.setDetalhar(false);
 		model.setCodigo(String.valueOf(instancia.getCodigoDepartamento()));
 		model.setSiglaDepartamento(instancia.getSiglaDepartamento());
 		model.setNomeDepartamento(instancia.getNomeDepartamento());
@@ -130,10 +128,10 @@ public class DepartamentoCrudHelper implements
 	}
 
 	@Override
-	public EstadoRegistro persistirDados(DepartamentoEditarForm model, LoginVo usuarioLogado)
+	public EstadoRegistro persistirDados(DepartamentoEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 		
-		DepartamentoEditarForm form = (DepartamentoEditarForm) model;
+		DepartamentoEditarFormModel form = (DepartamentoEditarFormModel) model;
 		
 		boolean novo = form.getCodigo() == null || form.getCodigo().trim().isEmpty();
 	

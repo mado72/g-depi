@@ -6,7 +6,7 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
  * Representa o modelo do formulário da consulta para Motivo de Depósito 
  * @author Marcelo Damasceno
  */
-public class MotivoDepositoEditarForm extends CrudForm {
+public class MotivoDepositoEditarFormModel extends CrudForm {
 
 	private static final long serialVersionUID = 957768938376772158L;
 
@@ -42,6 +42,13 @@ public class MotivoDepositoEditarForm extends CrudForm {
 
 	public boolean isDetalhar() {
 		return getEstado() == EstadoCrud.EXIBIR;
+	}
+
+	@Override
+	public void limparDados() {
+		codigo = "";
+		descricaoBasica = "";
+		descricaoDetalhada = "";
 	}
 	
 }

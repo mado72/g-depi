@@ -44,10 +44,6 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	 */
 	protected abstract CrudHelper<VO, F> getCrudHelper();
 	
-	public boolean detalhar() {
-		return getModel().getEstado() == EstadoCrud.EXIBIR;
-	}
-	
 	/**
 	 * Prepara o model para exibir um registro
 	 * @return {@link Action#INPUT}
@@ -59,6 +55,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 		CrudHelper<VO, F> crudHelper = getCrudHelper();
 		setSubtituloChave(crudHelper.getChaveTituloDetalhar());
 		crudHelper.preencherFormularioEdicao(model);
+		clearErrorsAndMessages();
 		
 		return INPUT;
 	}
@@ -70,6 +67,8 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	public String incluir() {
 		LOGGER.debug("Preparando formulário para inclusão de um novo registro");
 		getModel().setEstado(EstadoCrud.INSERIR);
+
+		this.model.limparDados();
 		
 		setSubtituloChave(getCrudHelper().getChaveTituloIncluir());
 		clearErrorsAndMessages();
@@ -90,7 +89,6 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 
 		setSubtituloChave(crudHelper.getChaveTituloAlterar());
 		crudHelper.preencherFormularioEdicao(model);
-
 		clearErrorsAndMessages();
 		
 		return INPUT;

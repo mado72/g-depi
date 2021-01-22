@@ -91,12 +91,14 @@ public final class ConstantesDEPI {
 	 */
 	public static final String ERRO_INTERNO = "msg.erro.interno";
 	public static final String ERRO_REGISTRO_DUPLICADO = "msg.erro.registroduplicado";
-	public static final String ERRO_REGISTRO_INEXISTENTE = "msg.erro.registroinexistente";
 	public static final String ERRO_RELACIONAMENTOS_NAO_CADASTRADOS = "msg.erro.relecionamentosDependestesNaoCadastrados";
 
+	public static final String ERRO_REGISTRO_INEXISTENTE = "msg.erro.registroinexistente";
 	public static final String ERRO_REGISTRO_INEXISTENTE2 = "msg.erro.registroinexistente2";
 	public static final String ERRO_REGISTRO_COM_DEPENDENCIA = "msg.erro.registrocomdependencia";
 	public static final String ERRO_REGISTRO_JA_CADASTRADO = "msg.erro.registrojacadastrado";
+	public static final String ERRO_REGISTRO_JA_CADASTRADO2 = "msg.erro.registrojacadastrado2";
+
 	public static final String ERRO_CUSTOMIZADA = "msg.erro.customizada";
 
 	public static final String ERRO_REGISTRO_DEP_COMP_JA_CADASTRADO = "msg.erro.departamentocompanhia.registrojacadastrado";

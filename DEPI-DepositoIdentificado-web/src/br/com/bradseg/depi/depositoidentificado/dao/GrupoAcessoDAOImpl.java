@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.GrupoAcessoDataMapper;
@@ -28,6 +29,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
  */
 @Repository
 public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
+	
+	@Autowired
+	private UsuarioDAO usuarioDAO;
 
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GrupoAcessoDAOImpl.class);
@@ -83,7 +87,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             
 			paramsInsert.addValue("prm1", vo.getDepto().getCodigoDepartamento());
 			paramsInsert.addValue("prm2", vo.getCia().getCodigoCompanhia());
-			paramsInsert.addValue("prm3", ""); // ----> vo.getCodigoResponsavelUltimaAtualizacao);
+			paramsInsert.addValue("prm3", vo.getCodigoResponsavelUltimaAtualizacao()); 
 			
 			int count = getJdbcTemplate() .update(queryInsert.toString(), paramsInsert);
 
@@ -100,9 +104,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 
             	paramsAlocar.addValue("prm1", vo.getCodigoGrupoAcesso());
             	paramsAlocar.addValue("prm2", usuario.getCodigoUsuario());
-            	paramsAlocar.addValue("prm3", ""); // ----> vo.getCodigoResponsavelUltimaAtualizacao);
-
-    			getJdbcTemplate() .update(queryAlocar.toString(), paramsAlocar);
+            	paramsAlocar.addValue("prm3", vo.getCodigoResponsavelUltimaAtualizacao()); 
+    			getJdbcTemplate().update(queryAlocar.toString(), paramsAlocar);
             	
             } 
         } finally { 
@@ -117,32 +120,25 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
      */
     @Override
     public void alterar(GrupoAcessoVO vo) {
-    	/*beginMethod(LOGGER, "alterar(GrupoAcessoVO vo)");
-        DataSource ds;
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        try {
 
-            List<UsuarioVO> usuariosAtuais = BaseDAOFactoryDB2.getBaseDAOFactory().createUsuarioDAO().obterPorGrupoAcesso(vo);
+    	try {
+
+            List<UsuarioVO> usuariosAtuais = usuarioDAO.obterPorGrupoAcesso(vo);
 
             //**
             // * Proteção da rotina.
             // *
             if (vo.getCodigoGrupoAcesso() <= 0) {
-                throw new IntegrationException("Código Grupo de Acesso inv�lido na atualiza��o.");
+                throw new BusinessException("Código Grupo de Acesso inv�lido na atualiza��o.");
             }
 
             if (vo.getUsuarios() == null) {
-                throw new IntegrationException("Lista de usu�rios inválida na atualiza��o.");
+                throw new BusinessException("Lista de usu�rios inválida na atualiza��o.");
             }
 
             if (vo.getCodigoResponsavelUltimaAtualizacao().doubleValue() <= 0) {
                 throw new IntegrationException("Código do responsável pela �ltima atualiza��o inv�lido na atualiza��o.");
             }
-
-            ds = getDAO().getDataSource();
-            conn = ds.getConnection();
 
             //**
             //* desaloca usu�rios.
@@ -160,11 +156,17 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
                 }
 
                 if (!encontrado) {
-                    pstm = conn.prepareStatement(this.getSQL("grupoAcesso.desalocarFuncionario"));
-                    pstm.setObject(1, vo.getCodigoResponsavelUltimaAtualizacao());
-                    pstm.setInt(2, vo.getCodigoGrupoAcesso());
-                    pstm.setInt(3, usuarioAtual.getCodigoUsuario());
-                    pstm.executeUpdate();
+                	
+                	StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_DESALOCARFUNCIONARIO);
+
+          			MapSqlParameterSource params = new MapSqlParameterSource();
+
+          			params.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
+           			params.addValue("whr1", vo.getCodigoGrupoAcesso());
+           			params.addValue("whr2", usuarioAtual.getCodigoUsuario());
+           			
+        			getJdbcTemplate().update(query.toString(), params);
+           			
                 }
                 encontrado = false;
             }
@@ -173,46 +175,58 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             //* Aloca��o dos usu�rios novos.
             //*
             for (UsuarioVO usr : vo.getUsuarios()) {
+            	
+            	StringBuilder queryAlocar = new StringBuilder(QuerysDepi.ALOCACAO_EXISTSUSUARIO);
 
-                pstm = conn.prepareStatement(this.getSQL("alocacao.existsUsuario"));
-                pstm.setInt(1, vo.getCodigoGrupoAcesso());
-                pstm.setInt(2, usr.getCodigoUsuario());
+      			MapSqlParameterSource paramsAlocar = new MapSqlParameterSource();
 
-                rs = pstm.executeQuery();
-                if (rs.next()) {
-                    if (ConstantesDEPI.INDICADOR_INATIVO.toString().equals(rs.getString(1).toString())) {
-                        pstm = conn.prepareStatement(this.getSQL("grupoAcesso.realocarFuncionario"));
-                        pstm.setObject(1, vo.getCodigoResponsavelUltimaAtualizacao());
-                        pstm.setInt(2, vo.getCodigoGrupoAcesso());
-                        pstm.setInt(3, usr.getCodigoUsuario());
-                        pstm.executeUpdate();
+      			paramsAlocar.addValue("whr1", vo.getCodigoGrupoAcesso());
+      			paramsAlocar.addValue("whr2", usr.getCodigoUsuario());
+       			
+    			List<String> indAtivo = getJdbcTemplate().queryForList(queryAlocar.toString(), paramsAlocar, String.class) ; 
+    
+                if (!indAtivo.isEmpty()) {
+                    if (ConstantesDEPI.INDICADOR_INATIVO.toString().equals(indAtivo.get(0))) {
+                    	
+                    	StringBuilder queryRealocar = new StringBuilder(QuerysDepi.GRUPOACESSO_REALOCARFUNCIONARIO);
+
+              			MapSqlParameterSource paramsRealocar = new MapSqlParameterSource();
+
+              			paramsRealocar.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
+              			paramsRealocar.addValue("whr1", vo.getCodigoGrupoAcesso());
+              			paramsRealocar.addValue("whr2", usr.getCodigoUsuario());
+               			
+            			getJdbcTemplate().update(queryRealocar.toString(), paramsRealocar);
+                        
                     }
                 } else {
-                    pstm = conn.prepareStatement(this.getSQL("grupoAcesso.alocarFuncionario"));
-                    pstm.setInt(1, vo.getCodigoGrupoAcesso());
-                    pstm.setInt(2, usr.getCodigoUsuario());
-                    pstm.setObject(3, vo.getCodigoResponsavelUltimaAtualizacao());
-                    pstm.executeUpdate();
+                	
+                	StringBuilder queryAloc = new StringBuilder(QuerysDepi.GRUPOACESSO_ALOCARFUNCIONARIO);
+
+          			MapSqlParameterSource paramsAloc = new MapSqlParameterSource();
+
+          			paramsAloc.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
+          			paramsAloc.addValue("whr1", vo.getCodigoGrupoAcesso());
+          			paramsAloc.addValue("whr2", usr.getCodigoUsuario());
+           			
+        			getJdbcTemplate().update(queryAloc.toString(), paramsAloc);
+                	
                 }
             }
 
-            pstm = conn.prepareStatement(this.getSQL("grupoAcesso.update"));
-            pstm.setObject(1, vo.getCodigoResponsavelUltimaAtualizacao());
-            pstm.setInt(2, vo.getCodigoGrupoAcesso());
-            pstm.executeUpdate();
+            
+        	StringBuilder queryAloc = new StringBuilder(QuerysDepi.GRUPOACESSO_UPDATE);
 
-        } catch (DAOException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } catch (SQLException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
+  			MapSqlParameterSource paramsAloc = new MapSqlParameterSource();
+
+  			paramsAloc.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
+  			paramsAloc.addValue("whr1", vo.getCodigoGrupoAcesso());
+   			
+			getJdbcTemplate().update(queryAloc.toString(), paramsAloc);
+
         } finally {
-        	closeResultSet(rs); 
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "alterar(GrupoAcessoVO vo)"); 
-        }*/
+        	LOGGER.info("alterar(GrupoAcessoVO vo)"); 
+        }
     }
 
     /**
@@ -221,71 +235,44 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
      * @return List - Lista de GrupoAcessoVO
      */
     public List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro)  {
-		return null;
-/*        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        StringBuilder sql = new StringBuilder(this.getSQL("grupoAcesso.obterPorFiltroNew"));
-        
-        GrupoAcessoVO grupoAcessoVO = null;
-        List<GrupoAcessoVO> listaGrupoAcessoVO = new ArrayList<GrupoAcessoVO>();
+
+    	
+    	StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_OBTERPORFILTRONEW);
+
         try {
 
+        	StringBuilder sql = null;
+        	
             if (filtro != null) {
-                sql = new StringBuilder(sql.toString().replace("{0}", filtro.getCriterioWithOperatorAnd()));
+                sql = new StringBuilder(query.toString().replace("{0}", filtro.getClausaAndFiltro()));
             } else {
-                sql = new StringBuilder(sql.toString().replace("{0}", ""));
-            }
-            
-            conn = getDAO().getDataSource().getConnection();
-            pstm = conn.prepareStatement(sql.toString());
-
-            rs = pstm.executeQuery();
-            
-            while (rs.next()) {
-                grupoAcessoVO = new GrupoAcessoVO();
-                
-                grupoAcessoVO.setCodigoGrupoAcesso(Integer.valueOf(rs.getString("CGRP_DEPTO_DEP")));
-                grupoAcessoVO.setCia(new CompanhiaSeguradoraVO(Integer.valueOf(rs.getString("CINTRN_CIA_SEGDR"))));
-                grupoAcessoVO.setDepto(new DepartamentoVO(Integer.valueOf(rs.getString("CDEPTO_DEP_IDTFD")), rs.getString("IDEPTO_DEP_IDTFD"), rs.getString("CSGL_DEPTO_DEP")));
-                grupoAcessoVO.setCodigoIndicativoAtivo(rs.getString("CIND_REG_ATIVO"));
-                grupoAcessoVO.setCodigoResponsavelUltimaAtualizacao(new BigDecimal(rs.getString("CUSUAR_RESP_ATULZ")));
-                grupoAcessoVO.setDataInclusao(rs.getTimestamp("DHORA_INCL_REG"));
-                grupoAcessoVO.setDataHoraAtualizacao(rs.getTimestamp("DHORA_ULT_ATULZ"));
-                
-                listaGrupoAcessoVO.add(grupoAcessoVO);
-           
+                sql = new StringBuilder(query.toString().replace("{0}", ""));
             }
 
-        } catch (SQLException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
-        } catch (DAOException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
+  			MapSqlParameterSource params = new MapSqlParameterSource();
+  			
+			List<GrupoAcessoVO> listGrupoAcessoVO = getJdbcTemplate() .query(sql.toString(), params, new GrupoAcessoDataMapper());
+			
+			return listGrupoAcessoVO;
         } finally {
-        	closeResultSet(rs);
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "obterPorFiltro(CriterioFiltroUtil filtro)"); 
+        	LOGGER.info("obterPorFiltro(CriterioFiltroUtil filtro)"); 
         }
-        return listaGrupoAcessoVO;*/
+        
     }
 
     /**
      * {@inheritDoc}
      */
     public void desalocarUsuarios(GrupoAcessoVO grupo) {
-  /*      grupo.setUsuarios(new ArrayList<UsuarioVO>());
-    	beginMethod(LOGGER, "desalocarUsuarios(GrupoAcessoVO grupo)"); 
+    
         try {
-	        **
+	        /**
 	         * Alterar Desaloca usu�rios na altera��o, pois a lista de usu�rios n�o � enviada.
-	         *
+	         */
 	        alterar(grupo); 
         } finally {
-    	  endMethod(LOGGER, "desalocarUsuarios(GrupoAcessoVO grupo)");
-        } */
+    	  LOGGER.info("desalocarUsuarios(GrupoAcessoVO grupo)");
+        } 
     }
 
     /**
@@ -293,35 +280,27 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
      */
     @Override
     public void excluir(GrupoAcessoVO grupo) {
-    	/*beginMethod(LOGGER, "excluir(GrupoAcessoVO grupo)"); 
-        DataSource ds;
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        try {
-            ds = getDAO().getDataSource();
-            conn = ds.getConnection();
-
-            **
+    
+    	try {
+        
+            /**
              * Desalocar Usu�rios.
-             *
+             */
             desalocarUsuarios(grupo);
+            
+            
+        	StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_DESATIVAR);
 
-            pstm = conn.prepareStatement(this.getSQL("grupoAcesso.desativar"));
-            pstm.setObject(1, grupo.getCodigoResponsavelUltimaAtualizacao());
-            pstm.setInt(2, grupo.getCodigoGrupoAcesso());
-            pstm.executeUpdate();
+  			MapSqlParameterSource params = new MapSqlParameterSource();
 
-        } catch (SQLException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
-        } catch (DAOException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
+  			params.addValue("prm1", grupo.getCodigoResponsavelUltimaAtualizacao());
+  			params.addValue("whr1", grupo.getCodigoGrupoAcesso());
+   			
+			getJdbcTemplate().update(query.toString(), params);
+
         } finally {
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "excluir(GrupoAcessoVO grupo)"); 
-        }*/
+        	LOGGER.info("excluir(GrupoAcessoVO grupo)"); 
+        }
     }
 
     /**
@@ -329,76 +308,44 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
      */
     @Override
     public synchronized Boolean isReferenciado(GrupoAcessoVO grupo) {
-		return null;
-    	/*beginMethod(LOGGER, "isReferenciado(GrupoAcessoVO grupo)"); 
-        DataSource ds;
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        try {
-            ds = getDAO().getDataSource();
-            conn = ds.getConnection();
 
-            pstm = conn.prepareStatement(this.getSQL("grupoAcesso.referenciado.parametroDeposito"));
-            pstm.setInt(1, grupo.getCia().getCodigoCompanhia());
-            pstm.setInt(2, grupo.getDepto().getCodigoDepartamento());
-            rs = pstm.executeQuery();
-            return (rs.next());
+		
+    	StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_REFERENCIADO_PARAMETRODEPOSITO);
 
-        } catch (SQLException e) {
-        	LOGGER.error(e);
-            throw new IntegrationException(e);
-        } catch (DAOException e) {
-        	LOGGER.error(e);
-            throw new IntegrationException(e);
+    	try {
+
+			MapSqlParameterSource params = new MapSqlParameterSource();
+
+			params.addValue("whr1", grupo.getCia().getCodigoCompanhia());
+			params.addValue("whr2", grupo.getDepto().getCodigoDepartamento());
+
+			List<GrupoAcessoVO> grupoAcessoVO = getJdbcTemplate() .query(query.toString(), params, new GrupoAcessoDataMapper());
+
+            return (!grupoAcessoVO.isEmpty());
+
         } finally {
-        	//Verificar MHG
-        	closeResultSet(rs); 
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "isReferenciado(GrupoAcessoVO grupo)"); 
-        } */
+        	LOGGER.info("isReferenciado(GrupoAcessoVO grupo)"); 
+        }
     }
 
     public GrupoAcessoVO obterGrupoPorChave(GrupoAcessoVO grupo)  {
-		return null;
-/*        beginMethod(LOGGER, "obterGrupoPorChave(GrupoAcessoVO grupo)"); 
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        
-        try {
-            conn = getDAO().getDataSource().getConnection();
-            pstm = conn.prepareStatement(this.getSQL("grupoAcesso.obterGrupoPorChave"));
-            
-            pstm.setInt(1, grupo.getCodigoGrupoAcesso());
-            
-            rs = pstm.executeQuery();
-           
-            while (rs.next()) {
-                grupo.setDepto(new DepartamentoVO(Integer.valueOf(rs.getString("CDEPTO_DEP_IDTFD")), rs.getString("IDEPTO_DEP_IDTFD"), rs.getString("CSGL_DEPTO_DEP")));
-                grupo.setCia(new CompanhiaSeguradoraVO(Integer.valueOf(rs.getString("CINTRN_CIA_SEGDR"))));
-                grupo.setCodigoIndicativoAtivo(rs.getString("CIND_REG_ATIVO"));
-                
-                grupo.setCodigoResponsavelUltimaAtualizacao(new BigDecimal(rs.getString("CUSUAR_RESP_ATULZ")));
-                grupo.setDataInclusao(rs.getTimestamp("DHORA_INCL_REG"));
-                grupo.setDataHoraAtualizacao(rs.getTimestamp("DHORA_ULT_ATULZ"));
-            } 
-            
-        } catch (SQLException e) {
-        	LOGGER.error(e);
-            throw new IntegrationException(e);
-        } catch (DAOException e) {
-        	LOGGER.error(e);
-            throw new IntegrationException(e);
+
+    	StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_OBTERGRUPOPORCHAVE);
+
+    	try {
+
+			MapSqlParameterSource params = new MapSqlParameterSource();
+
+			params.addValue("whr1", grupo.getCodigoGrupoAcesso());
+
+			List<GrupoAcessoVO> grupoAcessoVO = getJdbcTemplate().query(query.toString(), params, new GrupoAcessoDataMapper());
+
+	        return grupoAcessoVO.get(0); 
+
         } finally {
-        	closeResultSet(rs); 
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "obterGrupoPorChave(GrupoAcessoVO grupo)"); 
+        	LOGGER.info("obterGrupoPorChave(GrupoAcessoVO grupo)"); 
         }
         
-        return grupo; */
     }
 
 }

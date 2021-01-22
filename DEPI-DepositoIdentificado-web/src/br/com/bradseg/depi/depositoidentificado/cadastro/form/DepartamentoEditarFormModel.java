@@ -6,15 +6,13 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
  * Representa o modelo do formulário da consulta para Departamentos 
  * @author Marcelo Damasceno
  */
-public class DepartamentoEditarForm extends CrudForm {
+public class DepartamentoEditarFormModel extends CrudForm {
 
 	private static final long serialVersionUID = 957768938376772158L;
 
-	public static final String NOME_FORM = DepartamentoEditarForm.class.getSimpleName();
+	public static final String NOME_FORM = DepartamentoEditarFormModel.class.getSimpleName();
 	
 	private String codigo;
-	
-	private boolean detalhar;
 	
 	private String siglaDepartamento;
 	
@@ -28,14 +26,6 @@ public class DepartamentoEditarForm extends CrudForm {
 		this.codigo = codigo;
 	}
 
-	public boolean isDetalhar() {
-		return detalhar;
-	}
-	
-	public void setDetalhar(boolean detalhar) {
-		this.detalhar = detalhar;
-	}
-	
 	public String getSiglaDepartamento() {
 		return siglaDepartamento;
 	}
@@ -50,6 +40,13 @@ public class DepartamentoEditarForm extends CrudForm {
 
 	public void setNomeDepartamento(String nomeDepartamento) {
 		this.nomeDepartamento = nomeDepartamento;
+	}
+
+	@Override
+	public void limparDados() {
+		codigo = "";
+		siglaDepartamento = "";
+		nomeDepartamento = "";
 	}
 	
 }

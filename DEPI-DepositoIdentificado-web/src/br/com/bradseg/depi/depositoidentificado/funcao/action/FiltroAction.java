@@ -53,6 +53,8 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	public String execute() {
 		setSubtituloChave(getFiltroHelper().getChaveTituloConsultar());
 		
+		clearErrorsAndMessages();
+		
 		this.prepararFiltro();
 		
 		return INPUT;
@@ -75,6 +77,8 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	 */
 	public String consultar() {
 		try {
+			clearErrorsAndMessages();
+			
 			List<String> criteriosCol = Arrays.asList(request.getParameterValues("criterio"));
 			
 			T model = getModel();
