@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,9 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
-import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO;
-import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
@@ -27,7 +24,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 
-    private static final String CODIGO_RESPONSAVEL = "CÃ³digo do ResponsÃ¡vel";
+//    private static final String CODIGO_RESPONSAVEL = "CÃ³digo do ResponsÃ¡vel";
     
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GrupoAcessoFacadeImpl.class);
@@ -37,13 +34,13 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 
     /**
      * alterar
-     * @param grupo vo que será alterado
-     * @throws IntegrationException - Integração.
+     * @param grupo vo que serï¿½ alterado
+     * @throws IntegrationException - Integraï¿½ï¿½o.
      */
     @Override
     public void alterar(GrupoAcessoVO grupo) throws IntegrationException {
         // BaseUtil.validarParametro(grupo, "grupo - GrupoAcessoVO");
-        // BaseUtil.validarParametro(grupo.getCodigoGrupoAcesso(), "Código do Grupo de Acesso");
+        // BaseUtil.validarParametro(grupo.getCodigoGrupoAcesso(), "Cï¿½digo do Grupo de Acesso");
 
     	validarParametrosInclusao(grupo);
         try {
@@ -63,7 +60,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     public void excluir(List<GrupoAcessoVO> grupos) throws IntegrationException {
         StringBuilder sb = new StringBuilder();
         if (grupos == null || grupos.isEmpty()) {
-            throw new BusinessException("Lista de Grupos de Acesso inválida na atualização do Grupo de Acesso.");
+            throw new BusinessException("Lista de Grupos de Acesso invï¿½lida na atualizaï¿½ï¿½o do Grupo de Acesso.");
         }
         for (GrupoAcessoVO grupo : grupos) {
             if (grupoAcessoDAO.isReferenciado(grupo)) {
@@ -77,7 +74,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
             }
         }
         if (sb.length() > 0) {
-            throw new BusinessException(ConstantesDEPI.ERRO_DEPENDENCIA + " - " + sb.toString() + " - " + "Parâmetros de Depósito");
+            throw new BusinessException(ConstantesDEPI.ERRO_DEPENDENCIA + " - " + sb.toString() + " - " + "Parï¿½metros de Depï¿½sito");
         }
     }
 
@@ -101,7 +98,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     /**
      * Inserir um novo Grupo de Acesso.
      * @param grupo - GrupoAcessoVO.
-     * @return int - Código grupo.
+     * @return int - Cï¿½digo grupo.
      * @throws IntegrationException - IntegrationException.
      * @throws IntegrationExceptionsCollection - IntegrationExceptionsCollection.
      */
@@ -138,8 +135,8 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      */
     @Override
     public void validarParametrosInclusao(GrupoAcessoVO grupo) throws IntegrationException {
-/*        BaseUtil.validarParametro(grupo.getUsuarios(), "Funcionários");
-        BaseUtil.validarParametro(grupo.getCodigoResponsavelUltimaAtualizacao(), "Usuário Logado");
+/*        BaseUtil.validarParametro(grupo.getUsuarios(), "Funcionï¿½rios");
+        BaseUtil.validarParametro(grupo.getCodigoResponsavelUltimaAtualizacao(), "Usuï¿½rio Logado");
 */    }
 
     /**
@@ -149,7 +146,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      */
     @Override
     public void validarChaves(GrupoAcessoVO grupo) throws IntegrationException {
-/*        BaseUtil.assertTrueThrowException(BaseUtil.isNZB(grupo), ConstantesDEPI.MSG_CUSTOMIZADA, "Grupo Acesso: grupo - GrupoAcessoVO é null");
+/*        BaseUtil.assertTrueThrowException(BaseUtil.isNZB(grupo), ConstantesDEPI.MSG_CUSTOMIZADA, "Grupo Acesso: grupo - GrupoAcessoVO ï¿½ null");
         BaseUtil.validarParametro(grupo.getCia().getCodigoCompanhia(), "Cia");
         BaseUtil.validarParametro(grupo.getDepto().getCodigoDepartamento(), "Departamento");
 */    }
@@ -158,7 +155,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      * obterPorChave
      * @param grupo - GrupoAcessoVO.
      * @return GrupoAcessoVO.
-     * @throws IntegrationException - Integração.
+     * @throws IntegrationException - Integraï¿½ï¿½o.
      */
     @Override
     public GrupoAcessoVO obterPorChave(GrupoAcessoVO grupo) throws IntegrationException {
@@ -171,29 +168,30 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      * Consulta usando filtro.
      * @param filtro - CriterioFiltroUtil.
      * @return List.
-     * @throws IntegrationException - Integração.
+     * @throws IntegrationException - Integraï¿½ï¿½o.
      */
     @Override
-    public List obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
+    public List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
         // TraduzCriterioUtil.convert(filtro.getCriterios());
         List<GrupoAcessoVO> listaGrupoAcessoVO = new ArrayList<GrupoAcessoVO>();
         listaGrupoAcessoVO = grupoAcessoDAO.obterPorFiltro(filtro);
-        
+/*
+        FIXME FALTA IMPLEMENTAR
         for (GrupoAcessoVO acessoVO : listaGrupoAcessoVO) {
             // acessoVO.setCia(CICSBusinessDelegate.getInstance().obterCiaPorCodigo(acessoVO.getCia().getCodigoCompanhia()));
         	 throw new IntegrationException("inserir(GrupoAcessoVO grupo) -  FAAAAAALLLLTTTA IMPLEMENTAR");
         }
-        
+*/        
         return listaGrupoAcessoVO;
    }
 
     /**
      * obterTodos
      * @return - List<GrupoAcessoVO>.
-     * @throws IntegrationException - Integração.
+     * @throws IntegrationException - Integraï¿½ï¿½o.
      */
     @Override
-    public List obterTodos() throws IntegrationException {
+    public List<GrupoAcessoVO> obterTodos() throws IntegrationException {
 		return null;
  //        return grupoAcessoDAO.obterTodos();
     }

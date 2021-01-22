@@ -10,7 +10,7 @@ public interface GrupoAcessoFacade {
 
 	GrupoAcessoVO obterGrupoPorChave(GrupoAcessoVO grupo) throws IntegrationException;
 
-	List obterTodos() throws IntegrationException;
+	List<GrupoAcessoVO> obterTodos() throws IntegrationException;
 
 	GrupoAcessoVO obterPorChave(GrupoAcessoVO grupo) throws IntegrationException;
 
@@ -28,6 +28,6 @@ public interface GrupoAcessoFacade {
 
 	void alterar(GrupoAcessoVO grupo) throws IntegrationException;
 
-	List obterPorFiltro(FiltroUtil filtro) throws IntegrationException;
+	List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException;
 
 }

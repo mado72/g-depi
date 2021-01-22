@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
@@ -21,6 +22,7 @@ import com.opensymphony.xwork2.Action;
  * @param <VO> Tipo que é manipulado pelo CRUD
  * @param <F> Tipo do Model utilizado por esta Action.
  */
+@Controller
 public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction<F> {
 
 	private static final long serialVersionUID = -8669859699304965615L;
