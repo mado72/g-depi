@@ -12,8 +12,6 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper.Estad
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
-import com.opensymphony.xwork2.Action;
-
 /**
  * Superclasse para Actions que processam formulários de edição
  * 

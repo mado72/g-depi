@@ -18,6 +18,11 @@ import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
+/**
+ * Classe auxiliar para o fluxo de cadastro de departamento.
+ * 
+ * @author Marcelo Damasceno
+ */
 public class DepartamentoCrudHelper implements
 		CrudHelper<DepartamentoVO, DepartamentoEditarFormModel> {
 	

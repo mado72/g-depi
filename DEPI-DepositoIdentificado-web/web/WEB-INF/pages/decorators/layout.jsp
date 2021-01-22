@@ -5,9 +5,24 @@
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@ 
 	taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" 
-%><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+%><!--[if lt IE 7]> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html class="lt-ie9 lt-ie8 lt-ie7">
+<![endif]-->
+<!--[if IE 7]>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html class="lt-ie9 lt-ie8">
+<![endif]-->
+<!--[if IE 8]>
+<!DOCTYPE HTML>
+<html class="lt-ie9">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+<!DOCTYPE HTML>
+<html> 
+<!--<![endif]-->
 <head>
+	<META http-equiv="X-UA-Compatible" content="IE=8; IE=9; IE=10; IE=11, Edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><decorator:title default="DEPI-DepositoIdentificado"/></title>
 	<link href="${www3}padroes_web/intranet/css/tabs.css" rel="stylesheet" type="text/css"/>
@@ -86,7 +101,7 @@
 	</script>
 </s:if>
 <c:if test="${param.scriptOff != 'true'}">
-	<script type="text/javascript" src="${estatico}/js/depi-cadastro.js" charset="utf-8"></script>
+	<script type="text/javascript" src="<c:url value="/includes/js/depi-cadastro.js"/>" charset="utf-8"></script>
 	<c:out value="${scriptPage}" default="" escapeXml="false" />
 </c:if>
 </body>

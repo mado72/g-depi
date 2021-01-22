@@ -173,7 +173,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     @Override
     public List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
         // TraduzCriterioUtil.convert(filtro.getCriterios());
-        List<GrupoAcessoVO> listaGrupoAcessoVO = new ArrayList<GrupoAcessoVO>();
+        List<GrupoAcessoVO> listaGrupoAcessoVO = new ArrayList<>();
         listaGrupoAcessoVO = grupoAcessoDAO.obterPorFiltro(filtro);
 /*
         FIXME FALTA IMPLEMENTAR
