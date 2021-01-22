@@ -1,15 +1,20 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditarForm;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
-import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseEditorModelAction;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 /**
@@ -19,11 +24,17 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
  */
 @Controller
 @Scope("request")
-public class DepartamentoEditarAction extends BaseModelAction<DepartamentoEditarForm> {
+public class DepartamentoEditarAction extends BaseEditorModelAction<DepartamentoEditarForm> {
 	
     protected static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoEditarAction.class);
 
 	private static final long serialVersionUID = -7675543657126275320L;
+	
+	private static final String TITLE_DEPARTAMENTO_EDITAR = "title.deposito.editar";
+	
+	private static final String TITLE_DEPARTAMENTO_DETALHAR = "title.deposito.detalhar";
+
+	private static final String TITLE_DEPARTAMENTO_NOVO = "title.deposito.novo";
 	
 	private DepartamentoEditarForm model;
 	
@@ -47,29 +58,14 @@ public class DepartamentoEditarAction extends BaseModelAction<DepartamentoEditar
 		sessionData.put(DepartamentoEditarForm.NOME_FORM, model);
 	}
 	
-	/**
-	 * Apenas redireciona a saída para INPUT. Usado para apresentar o
-	 * formulário armazenado na sessão.
-	 * 
-	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
-	 */
-	public String novo() {
-		sessionData.remove(DepartamentoEditarForm.NOME_FORM);
-		
-		novaInstanciaModel();
-		getModel().setDetalhar(false);
-		
-		return INPUT;
-	}
-	
 	public String alterar() {
-		preencherFormulario();
+		preencherFormulario(TITLE_DEPARTAMENTO_EDITAR);
 		
 		return INPUT;
 	}
 	
 	public String detalhar() {
-		preencherFormulario();
+		preencherFormulario(TITLE_DEPARTAMENTO_DETALHAR);
 		
 		getModel().setDetalhar(true);
 		return INPUT;
@@ -86,44 +82,88 @@ public class DepartamentoEditarAction extends BaseModelAction<DepartamentoEditar
 		DepartamentoEditarForm model = getModel();
 		
 		if ("salvar".equals(model.getAcao())) {
-			persistirDados(model);
+			persistirDados();
 		}
 
 		return SUCCESS;
-	}
-
-	private void persistirDados(DepartamentoEditarForm model) {
-		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
-
-		DepartamentoVO instancia;
-		
-		if (novo) {
-			instancia = new DepartamentoVO();
-		}
-		else {
-			instancia = obterPeloCodigo();
-		}
-
-		instancia.setSiglaDepartamento(model.getSiglaDepartamento());
-		instancia.setNomeDepartamento(model.getNomeDepartamento());
-
-		try {
-			if (novo) {
-				facade.inserir(instancia);
-			}
-			else {
-				facade.alterar(instancia);
-			}
-		} catch (Exception e) {
-			throw new DEPIIntegrationException(e, "msg.erro.interno");
-		}
 	}
 	
 	public String voltar() {
 		return SUCCESS;
 	}
+
+	@Override
+	public String novo() {
+		getModel().setDetalhar(false);
+		
+		setSubtituloChave(TITLE_DEPARTAMENTO_NOVO);
+		
+		return INPUT;
+	}
 	
-	private void preencherFormulario() {
+	public String excluir() {
+		excluirRegistros();
+		
+		return SUCCESS;
+	}
+
+	@Override
+	protected void persistirDados() {
+		DepartamentoEditarForm model = getModel();
+		
+		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
+	
+		DepartamentoVO instancia;
+		
+		if (novo) {
+			LoginVo usuarioLogado = getUsuarioLogado();
+			instancia = new DepartamentoVO();
+			
+			int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
+			instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
+		}
+		else {
+			instancia = obterPeloCodigo();
+		}
+	
+		instancia.setSiglaDepartamento(model.getSiglaDepartamento());
+		instancia.setNomeDepartamento(model.getNomeDepartamento());
+	
+		try {
+			if (novo) {
+				facade.inserir(instancia);
+				addActionMessage(ConstantesDEPI.MSG_INSERIR_EXITO);
+			}
+			else {
+				facade.alterar(instancia);
+				addActionMessage(ConstantesDEPI.MSG_ALTERAR_EXITO);
+			}
+		} catch (Exception e) {
+			throw new DEPIIntegrationException(e, ConstantesDEPI.ERRO_INTERNO);
+		}
+	}
+
+	private void excluirRegistros() {
+		String[] codigos = request.getParameterValues("codigo");
+		
+		List<DepartamentoVO> lista = new ArrayList<>();
+		
+		for (String codigo: codigos) {
+			DepartamentoVO vo = new DepartamentoVO();
+			vo.setCodigoDepartamento(new Integer(codigo));
+			
+			vo = facade.obterPorChave(vo);
+			lista.add(vo);
+		}
+		
+		facade.excluir(lista);
+		addActionMessage(ConstantesDEPI.MSG_EXCLUIR_EXITO);
+	}
+	
+	@Override
+	protected void preencherFormulario(String subtituloChave) {
+		super.preencherFormulario(subtituloChave);
+		
 		DepartamentoVO instancia = obterPeloCodigo();
 		
 		DepartamentoEditarForm model = getModel();

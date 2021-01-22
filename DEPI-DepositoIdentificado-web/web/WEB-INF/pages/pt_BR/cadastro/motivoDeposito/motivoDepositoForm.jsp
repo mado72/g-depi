@@ -16,7 +16,7 @@
 </table>
 </span>
 </s:if>
-<s:form action="enviar">
+<s:form action="processar">
 <s:hidden name="codigo"/>
 	<table id="tabela_interna">
 	<caption>

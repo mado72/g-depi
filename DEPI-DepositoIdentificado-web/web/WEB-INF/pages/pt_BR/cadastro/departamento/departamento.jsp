@@ -8,7 +8,8 @@
 </s:include>
 
 <s:if test="colecaoDados">
-<s:form action="acao.do" id="AcaoForm">
+
+<s:form action="acao.do" namespace="/cadastro/departamento/editar" id="AcaoForm">
 
 <table id="tabela_interna" class="Departamento Consulta">
 	<thead>
@@ -78,15 +79,17 @@
 	</s:iterator>
  	</tbody>
 </table>
+<div class="paginacao"></div>
+
 <br/>
 	<br/>
-	<table width="90%" style="tabela_botoes" align="center">
+	<table class="tabela_botoes">
 		<tr>
 			<td align="center">
 				<div id="tabela_botoes">
 					<s:a action="incluir" class="button" id="BtnIncluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
-					<a role="button" class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
-					<a role="button" class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
+					<a class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
+					<a class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
 				</div>
 			</td>
 		</tr>
@@ -99,6 +102,14 @@
 <script>
 jQuery(document).ready(function($){
 	$.consulta.prepararFormulario("#AcaoForm");
+	<s:if test="colecaoDados">
+	$.paginacao.paginar({
+		tblSeletor: ".Departamento",
+		pagSeletor: ".paginacao",
+		registros: 7,
+		pattern: ":reg itens encontrados, mostrando :idxIni até :idxFin."
+	});
+	</s:if>
 }(jQuery));
 </script>
 </c:set>

@@ -29,10 +29,6 @@
 	
 	<package name="root" namespace="/" extends="depi-default">
 	
-		<action name="login" class="loginAction">
-			<result name="success" type="redirectAction">index</result>
-		</action>
-	
 		<action name="index" class="indexAction">
 			<result name="success">
 			    <param name="location">/WEB-INF/pages/layout/vazio.jsp</param>
@@ -90,9 +86,7 @@
 			</result>
 		</global-results>
 
-		<action name="index" method="iniciarFormulario">
-			<param name="subtituloChave">title.deposito.consultarStruts</param>
-        </action>
+		<action name="index" method="iniciarFormulario"/>
         
 		<action name="listar" method="execute"/>
         
@@ -136,7 +130,6 @@
 	<package name="cadastroDepartamentoConsultar" namespace="/cadastro/departamento/consultar" extends="depi-default">
 	
 		<default-class-ref class="departamentoConsultarAction"/>
-		
 	
 		<global-results>
 			<result name="success">
@@ -147,9 +140,7 @@
 			</result>
 		</global-results>
 
-		<action name="index" method="iniciarFormulario">
-			<param name="subtituloChave">title.deposito.consultarStruts</param>
-        </action>
+		<action name="index" method="iniciarFormulario"/>
         
 		<action name="listar" method="execute"/>
         
@@ -163,29 +154,27 @@
 	
 	<package name="cadastroDepartamentoEditar" namespace="/cadastro/departamento/editar" extends="depi-default">
 
-		<default-class-ref class="motivoDepositoEditarAction"></default-class-ref>
+		<default-class-ref class="departamentoEditarAction"></default-class-ref>
 		
 		<global-results>
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoForm.jsp</param>
-			</result>
 			<result name="success" type="redirectAction">
 			    <param name="actionName">listar</param>
 			    <param name="namespace">/cadastro/departamento/consultar</param>
 			</result>
 		</global-results>
 		
+		<action name="exibir" method="exibir">
+			<result name="input">/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoForm.jsp</result>
+		</action>
+		
 		<action name="novo" method="novo">
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
 			<result name="input" type="redirectAction">exibir</result>
 		</action>
-		
-		<action name="alterar" method="novo">
-			<result name="input" type="redirectAction">exibir</result>
-		</action>
         
         <action name="*" method="{1}">
+			<result name="input" type="redirectAction">exibir</result>
         </action>
         
 	</package>

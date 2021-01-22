@@ -1,12 +1,12 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.form;
 
-import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseForm;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
 
 /**
  * Representa o modelo do formulário da consulta para Motivo de Depósito 
  * @author Marcelo Damasceno
  */
-public class MotivoDepositoEditarForm extends BaseForm {
+public class MotivoDepositoEditarForm extends CrudForm {
 
 	private static final long serialVersionUID = 957768938376772158L;
 
@@ -15,8 +15,6 @@ public class MotivoDepositoEditarForm extends BaseForm {
 	private String descricaoBasica;
 	
 	private String descricaoDetalhada;
-	
-	private boolean detalhar;
 	
 	public String getCodigo() {
 		return codigo;
@@ -43,11 +41,7 @@ public class MotivoDepositoEditarForm extends BaseForm {
 	}
 
 	public boolean isDetalhar() {
-		return detalhar;
-	}
-	
-	public void setDetalhar(boolean detalhar) {
-		this.detalhar = detalhar;
+		return getEstado() == EstadoCrud.EXIBIR;
 	}
 	
 }

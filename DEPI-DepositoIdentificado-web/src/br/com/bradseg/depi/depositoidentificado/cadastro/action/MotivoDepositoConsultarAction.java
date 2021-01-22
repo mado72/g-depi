@@ -1,6 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,7 +30,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
  * @author Marcelo Damasceno
  */
 @Controller
-@Scope("session")
+@Scope("request")
 public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarForm<MotivoDepositoCampo>> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoConsultarAction.class);
@@ -124,11 +125,13 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 	}
 	
 	private void processarFiltro() {
-		FiltroConsultarForm<MotivoDepositoCampo> model = getModel();
-		
 		String[] criterioArray = request.getParameterValues("criterio");
-		
-		List<CriterioConsultaVO> criterios = new ArrayList<>(model.preencherCriterios(criterioArray));
+		processarCriterios(Arrays.asList(criterioArray));
+	}
+	
+	@Override
+	protected void processarCriterios(Collection<String> criterioColecao) {
+		List<CriterioConsultaVO> criterios = new ArrayList<>(model.preencherCriterios(criterioColecao));
 		criterios.add(new CriterioConsultaVO("CIND_REG_ATIVO = :OPT1", "OPT1", ConstantesDEPI.SIM));
 		
 		FiltroUtil filtro = new FiltroUtil();
@@ -136,6 +139,7 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 
 		List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
 		
+		FiltroConsultarForm<MotivoDepositoCampo> model = getModel();
 		model.setColecaoDados(retorno);
 
 		if (retorno == null || retorno.isEmpty()) {
