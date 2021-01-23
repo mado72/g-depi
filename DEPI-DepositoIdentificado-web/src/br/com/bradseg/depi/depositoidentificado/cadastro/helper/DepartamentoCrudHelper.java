@@ -104,7 +104,7 @@ public class DepartamentoCrudHelper implements
 					}
 				}
 			}
-			throw e;
+			throw new DEPIIntegrationException(e);
 		}
 	}
 

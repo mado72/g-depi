@@ -25,8 +25,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 
-    private static final String CODIGO_RESPONSAVEL = "Código do Responsável";
-    
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GrupoAcessoFacadeImpl.class);
     
@@ -101,7 +99,6 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      * @param grupo - GrupoAcessoVO.
      * @return int - C�digo grupo.
      * @throws IntegrationException - IntegrationException.
-     * @throws IntegrationExceptionsCollection - IntegrationExceptionsCollection.
      */
     @Override
     public int inserir(GrupoAcessoVO grupo) throws IntegrationException {
