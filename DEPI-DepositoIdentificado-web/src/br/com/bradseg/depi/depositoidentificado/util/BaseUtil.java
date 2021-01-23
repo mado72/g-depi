@@ -21,6 +21,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.log4j.Logger;
 
+import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.message.Message;
 
@@ -184,8 +185,43 @@ public final class BaseUtil {
      */
     public static void assertTrueThrowException(boolean b, String chave, List<Message> msg) throws IntegrationException {
         if (b) {
-            throw new IntegrationException(msg);
+            throw new BusinessException(msg);
         }
+    }
+    /**
+     * Envelope para o if de lançamento de Exception.
+     * @param b - boolean.
+     * @param chave - String.
+     * @param msg - String.
+     * @throws IntegrationException - IntegrationException.
+     */
+    public static void assertTrueThrowException(boolean b, String chave, String msg) throws IntegrationException {
+        if (b) {
+            throw new BusinessException(msg);
+        }
+    }    
+
+    /**
+     * Validar Parâmetro.
+     * @param param - String.
+     * @param valor - Object.
+     * @param nomeParametro - String.
+     * @throws IntegrationException - IntegrationException.
+     */
+    public static void validarParametro(String param, Object valor, String nomeParametro) throws IntegrationException {
+        assertTrueThrowException(ConstantesDEPI.CODIGO_SIM.equals(param) && isNZB(valor),
+            ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, nomeParametro);
+    }
+
+    /**
+     * Validar Parâmetro.
+     * @param valor - Object.
+     * @param nomeParametro - String.
+     * @throws IntegrationException - IntegrationException.
+     */
+    public static void validarParametro(Object valor, String nomeParametro) throws IntegrationException {
+        validarParametro(ConstantesDEPI.CODIGO_SIM, valor, nomeParametro);
+
     }
 
     /**
