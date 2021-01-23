@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
@@ -24,7 +25,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 
-//    private static final String CODIGO_RESPONSAVEL = "Código do Responsável";
+    private static final String CODIGO_RESPONSAVEL = "Código do Responsável";
     
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GrupoAcessoFacadeImpl.class);
@@ -123,10 +124,10 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      */
     @Override
     public void validarObjetos(GrupoAcessoVO grupo) throws IntegrationException {
-/*        BaseUtil.validarParametro(grupo, "grupo - GrupoAcessoVO");
+        BaseUtil.validarParametro(grupo, "grupo - GrupoAcessoVO");
         BaseUtil.validarParametro(grupo.getCia(), "Cia");
         BaseUtil.validarParametro(grupo.getDepto(), "Departamento");
-*/    }
+    }
 
     /**
      * Validar Parametros.
@@ -135,9 +136,9 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      */
     @Override
     public void validarParametrosInclusao(GrupoAcessoVO grupo) throws IntegrationException {
-/*        BaseUtil.validarParametro(grupo.getUsuarios(), "Funcion�rios");
+        BaseUtil.validarParametro(grupo.getUsuarios(), "Funcion�rios");
         BaseUtil.validarParametro(grupo.getCodigoResponsavelUltimaAtualizacao(), "Usu�rio Logado");
-*/    }
+    }
 
     /**
      * Validar Chaves.
@@ -146,10 +147,10 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      */
     @Override
     public void validarChaves(GrupoAcessoVO grupo) throws IntegrationException {
-/*        BaseUtil.assertTrueThrowException(BaseUtil.isNZB(grupo), ConstantesDEPI.MSG_CUSTOMIZADA, "Grupo Acesso: grupo - GrupoAcessoVO � null");
+        BaseUtil.assertTrueThrowException(BaseUtil.isNZB(grupo), ConstantesDEPI.MSG_CUSTOMIZADA, "Grupo Acesso: grupo - GrupoAcessoVO � null");
         BaseUtil.validarParametro(grupo.getCia().getCodigoCompanhia(), "Cia");
         BaseUtil.validarParametro(grupo.getDepto().getCodigoDepartamento(), "Departamento");
-*/    }
+    }
 
     /**
      * obterPorChave

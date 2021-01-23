@@ -154,6 +154,14 @@ public class DepositoVO implements Serializable {
     
     private List<ParcelaCobrancaVO> listaParcelas;
     
+    private Integer codigoResponsavelUltimaAtualizacao;
+    
+    private String codigoIndicativoAtivo;
+    
+    private Date dataHoraAtualizacao;
+    
+    private Date dataInclusao;
+    
     /**
      * Retorna o valor do atributo trps.
      * @return o valor do atributo trps
@@ -738,4 +746,38 @@ public class DepositoVO implements Serializable {
 	public void setListaParcelas(List<ParcelaCobrancaVO> listaParcelas) {
 		this.listaParcelas = listaParcelas;
 	}
+
+	public Integer getCodigoResponsavelUltimaAtualizacao() {
+		return codigoResponsavelUltimaAtualizacao;
+	}
+
+	public void setCodigoResponsavelUltimaAtualizacao(Integer codigoResponsavelUltimaAtualizacao) {
+		this.codigoResponsavelUltimaAtualizacao = codigoResponsavelUltimaAtualizacao;
+	}
+
+	public String getCodigoIndicativoAtivo() {
+		return codigoIndicativoAtivo;
+	}
+
+	public void setCodigoIndicativoAtivo(String codigoIndicativoAtivo) {
+		this.codigoIndicativoAtivo = codigoIndicativoAtivo;
+	}
+
+	public Date getDataHoraAtualizacao() {
+		return dataHoraAtualizacao;
+	}
+
+	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
+		this.dataHoraAtualizacao = dataHoraAtualizacao;
+	}
+
+	public Date getDataInclusao() {
+		return dataInclusao;
+	}
+
+	public void setDataInclusao(Date dataInclusao) {
+		this.dataInclusao = dataInclusao;
+	}
+	
+	
 }

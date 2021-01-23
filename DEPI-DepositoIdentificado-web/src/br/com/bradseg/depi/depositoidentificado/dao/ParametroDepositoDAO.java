@@ -22,10 +22,10 @@ public interface ParametroDepositoDAO  {
     /**
      * Método de obter por filtro
      * @param filtro par�metro dep�sito com o código do objeto requisitado
-     * @param codigoUsuario - BigDecimal.
+     * @param codigoUsuario - Integer.
      * @return List<ParametroDepositoVO>
      */
-    List<ParametroDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Double codigoUsuario);
+    List<ParametroDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Integer codigoUsuario);
 
     /**
      * isReferenciado. 
@@ -47,4 +47,11 @@ public interface ParametroDepositoDAO  {
      * @param parametro de ParametroDepositoVO
      */
     public void inserir(ParametroDepositoVO parametro) ;
+
+	Boolean isReferenciado(ParametroDepositoVO vo);
+
+	void excluir(ParametroDepositoVO vo);
+
+	ParametroDepositoVO obterPorChave(ParametroDepositoVO parametro);
+
 }

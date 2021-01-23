@@ -1,6 +1,5 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
@@ -38,7 +37,7 @@ public interface DepositoDAO{
      * @param codigoUsuario - BigDecimal.
      * @return List<DepositoVO>
      */
-    List<DepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, BigDecimal codigoUsuario);
+    List<DepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Integer codigoUsuario);
 
     /**
      * Método repons�vel pela atualiza��o normal de um registro de Dep�sito
@@ -131,6 +130,8 @@ public interface DepositoDAO{
      * {@inheritDoc}
      */
 	void excluir(DepositoVO vo);
+
+	void inserirDV(DepositoVO vo);
 
 }
 
