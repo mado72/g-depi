@@ -4,7 +4,7 @@ import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 /**
- * Classe de exceção de aplicação com mensagem de negocio amigável.
+ * Classe de exceï¿½ï¿½o de aplicaï¿½ï¿½o com mensagem de negocio amigï¿½vel.
  * @author fabio.pinto
  */
 public class DEPIBusinessException extends BusinessException {
@@ -21,9 +21,9 @@ public class DEPIBusinessException extends BusinessException {
     }
 
     /**
-     * Construtor genérico
+     * Construtor genï¿½rico
      * @param chave Chave da mensagem
-     * @param params Parâmetros da mensagem
+     * @param params Parï¿½metros da mensagem
      */
     public DEPIBusinessException(String chave, String... params) {
         super(BaseUtil.getInstance().getMensagem(chave, params));
@@ -32,10 +32,10 @@ public class DEPIBusinessException extends BusinessException {
     }
 
     /**
-     * Construtor genérico
-     * @param excecao Exceção nativa
+     * Construtor genï¿½rico
+     * @param excecao Exceï¿½ï¿½o nativa
      * @param chave Chave da mensagem
-     * @param params Parâmetros da mensagem
+     * @param params Parï¿½metros da mensagem
      */
     public DEPIBusinessException(Exception excecao, String chave, String... params) {
         super(BaseUtil.getInstance().getMensagem(chave, params), excecao);
@@ -43,14 +43,14 @@ public class DEPIBusinessException extends BusinessException {
         this.chave = chave;
     }
 
-    /**
+    /*
      * {@inheritDoc}
      */
     public String getChave() {
         return chave;
     }
 
-    /**
+    /*
      * {@inheritDoc}
      */
     public String[] getParametros() {

@@ -7,14 +7,13 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
  * Enumerator dos campos de filtro de Deposito
- * @author F�bio Henrique
  */
 public enum DepositoCampo implements IEntidadeCampo {
 
     /**
      * Cia.
      */
-    CodigoAutorizador(ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO_ID, "Código Autorizador", TipoCampo.NUM, false,
+    CodigoAutorizador(ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO_ID, TipoCampo.NUM, false,
         ConstantesDEPI.SIZE_NAO_DEFINIDO),
 
     /**
@@ -23,7 +22,7 @@ public enum DepositoCampo implements IEntidadeCampo {
     CodigoCia(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, CompanhiaSeguradoraCampo.CodigoCompanhia),
 
     /**
-     * Descri��o Cia. DescricaoCia(CompanhiaSeguradoraCampo.DescricaoCompanhia),
+     * Descrição Cia. DescricaoCia(CompanhiaSeguradoraCampo.DescricaoCompanhia),
      */
 
     /**
@@ -47,7 +46,7 @@ public enum DepositoCampo implements IEntidadeCampo {
     CodigoMotivo(ConstantesDEPI.TABELA_MOTIVO_ID, MotivoDepositoCampo.Codigo),
 
     /**
-     * Motivo Dep�sito.
+     * Motivo Depósito.
      */
     MotivoDepositoDescricaoBasica(MotivoDepositoCampo.DescricaoBasica),
 
@@ -69,12 +68,11 @@ public enum DepositoCampo implements IEntidadeCampo {
     /**
      * Tipo Recebimento.
      */
-    TipoRecebimento(ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO_TIPO_GRUPO_RECEBIMENTO, "Tipo Grupo Recebimento",
-        TipoCampo.ALFA_OBRIG, false, ConstantesDEPI.SIZE_NAO_DEFINIDO);
+	TipoRecebimento(
+			ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO_TIPO_GRUPO_RECEBIMENTO,
+			TipoCampo.ALFA_OBRIG, false, ConstantesDEPI.SIZE_NAO_DEFINIDO);
 
     private String nome;
-
-    private String descricao;
 
     private TipoCampo tipoCampo;
 
@@ -86,7 +84,8 @@ public enum DepositoCampo implements IEntidadeCampo {
      * Retorna o valor do atributo size.
      * @return o valor do atributo size
      */
-    public int getSize() {
+    @Override
+	public int getSize() {
         return size;
     }
 
@@ -101,7 +100,8 @@ public enum DepositoCampo implements IEntidadeCampo {
     /**
      * {@inheritDoc}
      */
-    public boolean isCics() {
+    @Override
+	public boolean isCics() {
         return cics;
     }
 
@@ -111,7 +111,6 @@ public enum DepositoCampo implements IEntidadeCampo {
      */
     DepositoCampo(IEntidadeCampo campo) {
         this.nome = campo.getNome();
-        this.descricao = campo.getDescricao();
         this.tipoCampo = campo.getTipoCampo();
         this.cics = campo.isCics();
         this.size = campo.getSize();
@@ -125,7 +124,6 @@ public enum DepositoCampo implements IEntidadeCampo {
     DepositoCampo(String nome, IEntidadeCampo campo) {
         this.nome = ConstantesDEPI.SCHEMA_BANCO.concat(ConstantesDEPI.DOT).concat(ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO)
             .concat(ConstantesDEPI.DOT).concat(nome);
-        this.descricao = campo.getDescricao();
         this.tipoCampo = campo.getTipoCampo();
         this.cics = campo.isCics();
         this.size = campo.getSize();
@@ -133,15 +131,13 @@ public enum DepositoCampo implements IEntidadeCampo {
 
     /**
      * @param nome - String - nome do campo
-     * @param descricao - String - descri��o exibida.
      * @param tipoCampo - String - tipo do campo.
      * @param cics - boolean.
      * @param size - int
      */
-    DepositoCampo(String nome, String descricao, TipoCampo tipoCampo, boolean cics, int size) {
+    DepositoCampo(String nome, TipoCampo tipoCampo, boolean cics, int size) {
         this.nome = ConstantesDEPI.SCHEMA_BANCO.concat(ConstantesDEPI.DOT).concat(ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO)
             .concat(ConstantesDEPI.DOT).concat(nome);
-        this.descricao = descricao;
         this.tipoCampo = tipoCampo;
         this.cics = cics;
         this.size = size;
@@ -163,20 +159,6 @@ public enum DepositoCampo implements IEntidadeCampo {
     }
     
     /**
-     * retorna o elemento
-     * @param descricao - descri��o de motivo dep�sito
-     * @return - retorna o elemento do campo
-     */
-    public static DepositoCampo obterPorDescricao(String descricao) {
-    	for (DepositoCampo campo : DepositoCampo.values()) {
-    		if (campo.getDescricao().equals(descricao)) {
-    			return campo;
-    		}
-    	}
-    	return null;
-    }
-
-    /**
      * Retorna valores da combo de consulta.
      * @return DepositoCampo[].
      */
@@ -195,50 +177,21 @@ public enum DepositoCampo implements IEntidadeCampo {
     }
 
     /**
-     * metodo que retorna a descicao
-     * @return o descricao
-     */
-    public String getDescricao() {
-        return descricao;
-    }
-
-    /**
-     * metodo que seta a descricao
-     * @param descricao o descricao a ser configurado
-     */
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    /**
      * metodo que retorna o nome
      * @return o nome
      */
-    public String getNome() {
+    @Override
+	public String getNome() {
         return nome;
-    }
-
-    /**
-     * metodo que seta o nome
-     * @param nome o nome a ser configurado
-     */
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     /**
      * metodo que retorna o tipoCampo
      * @return o tipoCampo
      */
-    public TipoCampo getTipoCampo() {
+    @Override
+	public TipoCampo getTipoCampo() {
         return tipoCampo;
     }
 
-    /**
-     * metodo que seta o tipoCampo
-     * @param tipoCampo o tipoCampo a ser configurado
-     */
-    public void setTipoCampo(TipoCampo tipoCampo) {
-        this.tipoCampo = tipoCampo;
-    }
 }

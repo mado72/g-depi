@@ -2,6 +2,7 @@ package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FiltroAction.class);
 	
-	private T model;
+	private final T model;
 	
 	protected abstract CrudHelper<?, ?> getFiltroHelper();
 	
@@ -50,6 +51,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	 * Sobrescreve para retornar INPUT
 	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
+	@Override
 	public String execute() {
 		setSubtituloChave(getFiltroHelper().getChaveTituloConsultar());
 		
@@ -86,6 +88,17 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 			List<CriterioConsultaVO> criterios = new ArrayList<>(model
 					.preencherCriterios(criteriosCol));
 
+			return processarCriterios(criterios);
+		} catch (DEPIIntegrationException e) {
+			LOGGER.error("Falha na consulta", e);
+			addActionError(e.getMessage());
+			
+			return ERROR;
+		}
+	}
+
+	private String processarCriterios(List<CriterioConsultaVO> criterios) {
+		try {
 			List<?> lista = getFiltroHelper().processarCriterios(criterios);
 			model.setColecaoDados(lista);
 			
@@ -93,14 +106,11 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 				String message = super.getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
 				addActionMessage(message);
 			}
-			
-			return INPUT;
 		} catch (DEPIIntegrationException e) {
-			LOGGER.error("Falha na consulta", e);
-			addActionError(e.getMessage());
-			
-			return ERROR;
+			getModel().setColecaoDados(Collections.emptyList());
+			getModel().addActionError(e.getMessage());
 		}
+		return INPUT;
 	}
 	
 	/**
@@ -113,10 +123,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 		model.setColecaoDados(null);
 		
 		List<CriterioConsultaVO> criterios = model.obterCriteriosConsulta();
-		List<?> lista = getFiltroHelper().processarCriterios(criterios);
-		model.setColecaoDados(lista);
-		
-		return INPUT;
+		return processarCriterios(criterios);
 	}
 	
 	@Override

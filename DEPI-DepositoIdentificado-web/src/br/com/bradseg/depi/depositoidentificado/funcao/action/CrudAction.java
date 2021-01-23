@@ -46,7 +46,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	
 	/**
 	 * Prepara o model para exibir um registro
-	 * @return {@link Action#INPUT}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String exibir() {
 		LOGGER.debug("Preparando formulário para exibir um registro");
@@ -62,7 +62,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	
 	/**
 	 * Prepara o model para incluir um registro
-	 * @return {@link Action#INPUT}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String incluir() {
 		LOGGER.debug("Preparando formulário para inclusão de um novo registro");
@@ -78,7 +78,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	
 	/**
 	 * Prepara o model para alterar um registro
-	 * @return {@link Action#INPUT}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String alterar() {
 		LOGGER.debug("Preparando formulário para alterar um registro");
@@ -96,7 +96,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	
 	/**
 	 * Processa a ação sobre o formulário
-	 * @return {@link Action#SUCCESS}
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
 	public String processar() {
 		LOGGER.info("Processando submissão do formulário");
@@ -111,7 +111,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	
 	/**
 	 * Processa a ação de excluir sobre os registros enviados pelo formulário
-	 * @return {@link Action#SUCCESS}
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
 	public String excluir() {
 		excluirRegistros();

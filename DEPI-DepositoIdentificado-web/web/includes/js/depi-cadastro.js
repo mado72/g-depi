@@ -174,7 +174,7 @@ var fnReady = function ($) {
 			};
 
 			item.texto = [optPrincipal.text(), optSecundario.text(), item.valor].join(' ');
-		    item.prop = [optPrincipal.text(), optSecundario.val(), item.valor].join(';');
+		    item.prop = [optPrincipal.val(), optSecundario.val(), item.valor].join(';');
 			
 			dados.recipiente.push(item);
 
@@ -218,7 +218,7 @@ var fnReady = function ($) {
 
 		// Definir valores iniciais
 		$(dados.principal).each(function(idx, item) {
-			var opt = jqPrincipal.append($('<option>', {text: item.texto}));
+			var opt = jqPrincipal.append($('<option>', {text: item.texto, value: item.valor}));
 			opt.data("sublista", item.sublista);
 		});
 
@@ -226,7 +226,7 @@ var fnReady = function ($) {
 			$(dados.recipiente).each(function(idx, criterio) {
 				var valores = criterio.split(';');
 				var pri = dados.principal.find(function(v){
-					return v.texto === valores[0];
+					return v.valor === valores[0];
 				});
 				var sec = pri.sublista.find(function(v){
 					return v.valor === valores[1];
@@ -234,7 +234,7 @@ var fnReady = function ($) {
 				
 				var item = {
 					prop: criterio,
-					texto: [valores[0], sec.texto, valores[2]].join(' ')
+					texto: [pri.texto, sec.texto, valores[2]].join(' ')
 				};
 
 				$.filtro.adicionarCriterio(jqRecipiente, item);

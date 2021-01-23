@@ -150,6 +150,11 @@
 		</action>
         
 		<action name="*" method="{1}"/>
+		<action name="listar" method="listar">
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
+			</result>
+		</action>
 
 	</package>
 	

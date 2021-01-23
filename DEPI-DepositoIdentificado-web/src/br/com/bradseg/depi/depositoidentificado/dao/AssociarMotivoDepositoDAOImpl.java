@@ -304,7 +304,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
     
     /**
      * Método de obter por chave
-     * @param AssociarMotivoDepositoVO
+     * @param vo AssociarMotivoDepositoVO
      * @return List<AssociarMotivoDepositoVO>
      */
 	@Override

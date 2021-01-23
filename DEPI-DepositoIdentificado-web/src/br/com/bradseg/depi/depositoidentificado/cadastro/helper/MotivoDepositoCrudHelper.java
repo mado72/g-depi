@@ -83,7 +83,7 @@ public class MotivoDepositoCrudHelper implements
 
 			@Override
 			public IEntidadeCampo apply(String source) {
-				return MotivoDepositoCampo.obterPorDescricao(source);
+				return MotivoDepositoCampo.valueOf(source);
 			}
 		};
 

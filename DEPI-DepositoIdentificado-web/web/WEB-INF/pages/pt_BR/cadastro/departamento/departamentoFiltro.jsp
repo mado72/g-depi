@@ -88,7 +88,7 @@ jQuery(document).ready(function($){
 			principal: parametros.map(function(item){
 				return {
 					texto: item.entidade.descricao,
-					valor: item.entidade.tipo,
+					valor: item.entidade.campo,
 					sublista: item.operacoes.map(function(subitem){
 						return {
 							texto: subitem.d,
