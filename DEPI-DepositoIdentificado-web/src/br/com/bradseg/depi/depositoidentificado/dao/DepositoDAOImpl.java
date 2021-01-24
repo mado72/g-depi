@@ -1,6 +1,5 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,10 +12,12 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
+import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.DepositoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
@@ -33,19 +34,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 @Repository
 public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 	
-    private static final String MSG_NENHUM_REGISTRO_AFETADO = "A atualiza��o n�o afetou nenhum registro.";
-
-	private static final String PARAM_WHR1 = "whr1";
-
-	private static final String PARAM_WHR2 = "whr2";
-
-	private static final String PARAM_WHR3 = "whr3";
-
-	private static final String PARAM_WHR4 = "whr4";
-
-	private static final String PARAM_WHR5 = "whr5";
-
-	private static final String PARAM_WHR6 = "whr6";
+    private static final String MSG_NENHUM_REGISTRO_AFETADO = "A atualiza��o n�o afetou nenhum registro.";
 
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoDAOImpl.class);
@@ -78,7 +67,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
 			MapSqlParameterSource params = ajustarParametrosQuery(filtro, query); 
 
-    		params.addValue(PARAM_WHR1,codigoUsuario);
+    		params.addValue("whr1",codigoUsuario);
 			
     		List<DepositoVO> depositosVo = getJdbcTemplate() .query(query.toString(), params, new DepositoDataMapper());
     		
@@ -178,7 +167,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
             Integer count = getJdbcTemplate().update(query.toString(), params);
 
             if (count == 0) {
-                throw new IntegrationException(MSG_NENHUM_REGISTRO_AFETADO);
+                throw new BusinessException(MSG_NENHUM_REGISTRO_AFETADO);
             }
 
         } finally {
@@ -237,7 +226,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
             Integer count = getJdbcTemplate().update(query.toString(), params);
 
             if (count == 0) {
-                throw new IntegrationException(MSG_NENHUM_REGISTRO_AFETADO);
+                throw new BusinessException(MSG_NENHUM_REGISTRO_AFETADO);
             }
 
         } catch (SQLException e) {
@@ -253,34 +242,28 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      */
     @Override
     public void prorrogar(DepositoVO vo) {
-    	/*beginMethod(LOGGER, "prorrogar(DepositoVO vo)");
-    	Connection cnn = null;
-        PreparedStatement stmt = null;
 
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_PRORROGAR);
+
+    	
         try {
-            cnn = getDAO().getDataSource().getConnection();
-            stmt = cnn.prepareStatement(this.getSQL("deposito.prorrogar"));
-            StatementUtil su = StatementUtil.getNewInstance(stmt);
-            su.setStatementValue(vo.getSituacaoArquivoTransferencia());
-            su.setStatementValue(vo.getDataProrrogacao());
-            su.setStatementValue(vo.getCodigoResponsavelUltimaAtualizacao());
-            su.setStatementValue(vo.getCodigoDepositoIdentificado());            
+        	
+        	MapSqlParameterSource params = new MapSqlParameterSource();
 
-            if (stmt.executeUpdate() == 0) {
-                throw new IntegrationException(MSG_NENHUM_REGISTRO_AFETADO);
+        	params.addValue("prm1", vo.getSituacaoArquivoTransferencia());
+        	params.addValue("prm2", vo.getDataProrrogacao());
+        	params.addValue("prm3", vo.getCodigoResponsavelUltimaAtualizacao());
+        	params.addValue("prm4", vo.getCodigoDepositoIdentificado());  
+            
+            Integer count = getJdbcTemplate().update(query.toString(), params);
+
+            if (count == 0) {
+                throw new BusinessException(MSG_NENHUM_REGISTRO_AFETADO);
             }
 
-        } catch (DAOException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
-        } catch (SQLException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
         } finally {
-        	closeStatement(stmt);
-        	closeConnection(cnn);
-        	endMethod(LOGGER, "atualizar(DepositoVO vo, ParametroDepositoVO param)");
-        } */
+        	LOGGER.info("atualizar(DepositoVO vo, ParametroDepositoVO param)");
+        } 
     }
 
     /**
@@ -289,34 +272,28 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      */
     @Override
     public void cancelar(DepositoVO deposito)  {
-    	/*beginMethod(LOGGER, "cancelar(DepositoVO deposito)");
-        Connection cnn = null;
-        PreparedStatement stmt = null;
 
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_CANCELAR);
+
+    	
         try {
-            cnn = getDAO().getDataSource().getConnection();
-            stmt = cnn.prepareStatement(this.getSQL("deposito.cancelar"));
-          
-            StatementUtil.getNewInstance(stmt).setStatementValue(
-                deposito.getSituacaoArquivoTransferencia(), 
-                deposito.getCodigoResponsavelUltimaAtualizacao(),
-                deposito.getCodigoDepositoIdentificado());
+        	
+        	MapSqlParameterSource params = new MapSqlParameterSource();
 
-            if (stmt.executeUpdate() == 0) {
-                throw new IntegrationException(MSG_NENHUM_REGISTRO_AFETADO);
+        	params.addValue("prm1", deposito.getSituacaoArquivoTransferencia());
+        	params.addValue("whr1", deposito.getCodigoResponsavelUltimaAtualizacao());
+        	params.addValue("whr2", deposito.getCodigoDepositoIdentificado());
+            
+            Integer count = getJdbcTemplate().update(query.toString(), params);
+
+            if (count == 0) {
+                throw new BusinessException(MSG_NENHUM_REGISTRO_AFETADO);
             }
 
-        } catch (DAOException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
-        } catch (SQLException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
         } finally {
-        	closeStatement(stmt);
-        	closeConnection(cnn);
-        	endMethod(LOGGER, "cancelar(DepositoVO deposito)");
-        } */
+        	LOGGER.info("cancelar(DepositoVO deposito)");
+        } 
+
     }
 
     /**
@@ -326,31 +303,26 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
     @Override
     public void excluir(DepositoVO vo)  {
-/*    	beginMethod(LOGGER, "excluir(DepositoVO vo)");
-        Connection cnn = null;
-        PreparedStatement stmt = null;
+
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_INATIVAR);
 
         try {
-            cnn = getDAO().getDataSource().getConnection();
-            stmt = cnn.prepareStatement(this.getSQL("deposito.inativar"));
-            StatementUtil.getNewInstance(stmt).setStatementValue(vo.getCodigoResponsavelUltimaAtualizacao(),
-                vo.getCodigoDepositoIdentificado());
 
-            if (stmt.executeUpdate() == 0) {
-            	throw  new IntegrationException(ConstantesModel.MSG_CUSTOMIZADA, "A exclus�o n�o afetou nenhum registro.");                
+        	
+        	MapSqlParameterSource params = new MapSqlParameterSource();
+
+        	params.addValue("whr1", vo.getCodigoResponsavelUltimaAtualizacao());
+        	params.addValue("whr2", vo.getCodigoDepositoIdentificado());
+            
+            Integer count = getJdbcTemplate().update(query.toString(), params);
+
+            if (count == 0) {
+            	throw  new BusinessException(ConstantesDEPI.MSG_CUSTOMIZADA + " - A exclus�o n�o afetou nenhum registro.");
             }
 
-        } catch (DAOException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
-        } catch (SQLException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
         } finally {
-        	closeStatement(stmt);
-        	closeConnection(cnn);
-        	endMethod(LOGGER, "excluir(DepositoVO vo)");
-        } */
+        	LOGGER.info("excluir(DepositoVO vo)");
+        }
     }
 
     /**
@@ -362,31 +334,20 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      */
     @Override
     public List<LogDepositoVO> registrarLogs(DepositoVO oldObj, DepositoVO newObj, String actionName) {
-/*    	beginMethod(LOGGER, "registrarLogs(DepositoVO oldObj, DepositoVO newObj, String actionName)");
-        try {
+
+    	try {
             List<LogDepositoVO> logs = gerarLogs(oldObj, newObj, actionName);
+/* FIXME Código comentado porque estava dando erro de compilação ao acessar métodos da LogDepositoVO
             for (LogDepositoVO log : logs) {
                 log.setIdLog(registrarLog(log));
             }
-        	endMethod(LOGGER, "registrarLogs(DepositoVO oldObj, DepositoVO newObj, String actionName)"); 
+*/            
+        	LOGGER.info("registrarLogs(DepositoVO oldObj, DepositoVO newObj, String actionName)"); 
             return logs;
-        } catch (IllegalArgumentException e) {
-        	LOGGER.error(e);
-            throw new IntegrationException(e);
-        } catch (ReflectionException e) {
-        	LOGGER.error(e);
-            throw new IntegrationException(e);
-        } catch (ConverterException e) {
-        	LOGGER.error(e);
-            throw new IntegrationException(e);
-        } catch (PersistenceException e) {
-        	LOGGER.error(e);
-            throw new IntegrationException(e);
         } finally {
-         	endMethod(LOGGER, "registrarLogs(DepositoVO oldObj, DepositoVO newObj, String actionName)"); 
+         	LOGGER.info("registrarLogs(DepositoVO oldObj, DepositoVO newObj, String actionName)"); 
         }
-*/ 
-    	 return null;
+
     }
 
     /**
@@ -395,35 +356,31 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      * @return Generated Key - long
      */
     private long registrarLog(LogDepositoVO log) {
-  /*  	beginMethod(LOGGER, "registrarLog(LogDepositoVO log)");
-        Connection cnn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        long generatedKey = 0L;
-        try {
-            cnn = getDAO().getDataSource().getConnection();
-            stmt = cnn.prepareStatement(this.getSQL("deposito.logs.insert"), Statement.RETURN_GENERATED_KEYS);
-            StatementUtil.getNewInstance(stmt).setStatementValue(log.getCodigo(), log.getFieldName(),
-                log.getValorAntigo(), log.getValorNovo(), log.getUsuarioAntigo(), log.getUsuarioNovo());
-            stmt.executeUpdate();
-            rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                generatedKey = rs.getLong(1);
-            }
-        } catch (DAOException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
-        } catch (SQLException e) {
-        	LOGGER.error(e);
-            tratarExcecao(e);
+        
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_LOGS_INSERT);
+
+    	try {
+    		
+	        	MapSqlParameterSource params = new MapSqlParameterSource();
+
+/* FIXME Código comentado porque estava dando erro de compilação ao acessar métodos da LogDepositoVO
+	
+	        	params.addValue("prm1", log.getCodigo() );
+	        	params.addValue("prm2", log.getFieldName());
+	        	params.addValue("prm3", log.getValorAntigo());
+	        	params.addValue("prm4", log.getValorNovo());
+	        	params.addValue("prm5", log.getUsuarioAntigo());
+	        	params.addValue("prm6", log.getUsuarioNovo());
+*/	            		
+	            GeneratedKeyHolder key = new GeneratedKeyHolder();
+	            
+	            Integer count = getJdbcTemplate().update(query.toString(), params, key);
+	
+	            return key.getKey().longValue();
+
         } finally {
-        	closeResultSet(rs);
-        	closeStatement(stmt);
-        	closeConnection(cnn);
-        	endMethod(LOGGER, "registrarLog(LogDepositoVO log)");
+        	LOGGER.info("registrarLog(LogDepositoVO log)");
         }
-        return generatedKey; */
-    	 return 0L;
     }    
 
     /**
@@ -433,34 +390,25 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 	 * @return Generated Key - long
 	 */
 	public long updateLog(DepositoVO dep) {
-/*    	beginMethod(LOGGER, "updateLog(DepositoVO dep)");
-		Connection cnn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		long generatedKey = 0L;
-		try {
-			cnn = getDAO().getDataSource().getConnection();
-			stmt = cnn.prepareStatement(this.getSQL("deposito.updateLogs"),
-					Statement.RETURN_GENERATED_KEYS);
-			StatementUtil.getNewInstance(stmt).setStatementValue(
-					dep.getCodigoResponsavelUltimaAtualizacao(),
-					dep.getCodigoDepositoIdentificado());
-			stmt.executeUpdate();
+
+    	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_UPDATELOGS);
+
+    	try {
+    		
+	        	MapSqlParameterSource params = new MapSqlParameterSource();
+	
+	        	params.addValue("prm1", dep.getCodigoResponsavelUltimaAtualizacao());
+	        	params.addValue("prm2", dep.getCodigoDepositoIdentificado());
+	        	
+	            GeneratedKeyHolder key = new GeneratedKeyHolder();
+	            
+	            Integer count = getJdbcTemplate().update(query.toString(), params, key);
+	
+	            return key.getKey().longValue();
 			
-		} catch (DAOException e) {
-			LOGGER.error(e);
-			tratarExcecao(e);
-		} catch (SQLException e) {
-			LOGGER.error(e);
-			tratarExcecao(e);
 		} finally {
-        	closeResultSet(rs);
-        	closeStatement(stmt);
-        	closeConnection(cnn);
-        	endMethod(LOGGER, "updateLog(DepositoVO dep)");
+        	LOGGER.info("updateLog(DepositoVO dep)");
 		}
-		return generatedKey; */
-		 return 0L;
 	}
 
     
