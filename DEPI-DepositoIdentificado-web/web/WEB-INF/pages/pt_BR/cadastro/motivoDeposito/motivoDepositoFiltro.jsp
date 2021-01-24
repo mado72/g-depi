@@ -88,7 +88,7 @@ jQuery(document).ready(function($){
 			principal: parametros.map(function(item){
 				return {
 					texto: item.entidade.descricao,
-					valor: item.entidade.tipo,
+					valor: item.entidade.campo,
 					sublista: item.operacoes.map(function(subitem){
 						return {
 							texto: subitem.d,
@@ -103,6 +103,6 @@ jQuery(document).ready(function($){
 }(jQuery));
 </script>
 </c:set>
-<pre class="debug">
+<pre class="debug" style="display:none">
 MODEL: <c:out value="${model}"/>
 </pre>

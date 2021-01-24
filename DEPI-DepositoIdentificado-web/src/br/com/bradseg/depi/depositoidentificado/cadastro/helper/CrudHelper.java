@@ -4,11 +4,8 @@ import java.util.List;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseForm;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
-import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
-import br.com.bradseg.depi.depositoidentificado.model.cadastro.EntidadeCampoOperacoesFiltro;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
 /**
@@ -17,8 +14,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  * 
  * @author Marcelo Damasceno
  * 
- * @param <T>
- *            Classe da {@link EntidadeCampoOperacoesFiltro} que é consultada.
  * @param <VO>
  *            Classe de dados que são listadas na consulta.
  * @param <EF>
@@ -79,13 +74,13 @@ public interface CrudHelper<VO, EF extends CrudForm> {
 	/**
 	 * Instancia um novo model para o formulário de edição
 	 * 
-	 * @return Nova instância de {@link BaseForm}
+	 * @return Nova instância de {@link br.com.bradseg.depi.depositoidentificado.funcao.action.BaseForm}
 	 */
 	EF criarCrudModel();
 	
 	/**
 	 * Processa os critérios de pesquisa e preenche o
-	 * {@link FiltroAction#getModel()}
+	 * {@link br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction#getModel()}
 	 * 
 	 * @param criterioCol
 	 *            Coleção de critérios para ser utilizado na pesquisa.

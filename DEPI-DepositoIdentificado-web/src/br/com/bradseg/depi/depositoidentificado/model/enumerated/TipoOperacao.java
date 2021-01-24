@@ -12,12 +12,12 @@ public enum TipoOperacao {
     /**
      * Alfanumérico Obrigatório
      */
-    IgualAlfanumericoObrigatorio("Igual", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) = :{1}", null), 
-    DiferenteAlfanumericoObrigatorio("Diferente", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) <> :{1}", null), 
-    ContemObrigatorio("Contém", TipoCampo.ALFA_OBRIG, true,"UPPER({0}) LIKE :{1}", "%{0}%"), 
-    NaoContemObrigatorio("Não contém", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) NOT LIKE :{1}", "%{0}%"), 
-    IniciaComObrigatorio("Inicia com", TipoCampo.ALFA_OBRIG, true, "UPPER({0}) LIKE :{1}", "{0}%"), 
-    TerminaComObrigatorio("Termina com", TipoCampo.ALFA_OBRIG, true, "RTRIM (UPPER({0})) LIKE :{1}", "%{0}"),
+    IgualAlfanumericoObrigatorio(TipoCampo.ALFA_OBRIG, true, "UPPER({0}) = :{1}", null), 
+    DiferenteAlfanumericoObrigatorio(TipoCampo.ALFA_OBRIG, true, "UPPER({0}) <> :{1}", null), 
+    ContemObrigatorio(TipoCampo.ALFA_OBRIG, true,"UPPER({0}) LIKE :{1}", "%{0}%"), 
+    NaoContemObrigatorio(TipoCampo.ALFA_OBRIG, true, "UPPER({0}) NOT LIKE :{1}", "%{0}%"), 
+    IniciaComObrigatorio(TipoCampo.ALFA_OBRIG, true, "UPPER({0}) LIKE :{1}", "{0}%"), 
+    TerminaComObrigatorio(TipoCampo.ALFA_OBRIG, true, "RTRIM (UPPER({0})) LIKE :{1}", "%{0}"),
 
     /**
      * Alfanumérico Opcional
@@ -28,7 +28,7 @@ public enum TipoOperacao {
     NaoContemOpcional(TipoCampo.ALFA_OPT, NaoContemObrigatorio),
     IniciaComOpcional(TipoCampo.ALFA_OPT, IniciaComObrigatorio),
     TerminaComOpcional(TipoCampo.ALFA_OPT, TerminaComObrigatorio), 
-    EmBrancoOpcional("Em branco", TipoCampo.ALFA_OPT, false, "RTRIM ({0}) = ''''", ""),
+    EmBrancoOpcional(TipoCampo.ALFA_OPT, false, "RTRIM ({0}) = ''''", ""),
 
     /**
      * Alfanumérico Obrigatório Big
@@ -41,14 +41,12 @@ public enum TipoOperacao {
     /**
      * Numérico
      */
-    IgualNumerico("Igual", TipoCampo.NUM, true, "{0} = :{1}", null), 
-    DiferenteNumerico("Diferente", TipoCampo.NUM, true, "{0} <> :{1}", null), 
-    MenorQue("Menor que", TipoCampo.NUM, true, "{0} < :{1}", null), 
-    MaiorQue("Maior que", TipoCampo.NUM, true, "{0} > :{1}", null), 
-    MenorIgual("Menor igual", TipoCampo.NUM, true, "{0} <= :{1}", null), 
-    MaiorIgual("Maior igual", TipoCampo.NUM, true, "{0} >= :{1}", null);
-
-    private final String descricao;
+    IgualNumerico(TipoCampo.NUM, true, "{0} = :{1}", null), 
+    DiferenteNumerico(TipoCampo.NUM, true, "{0} <> :{1}", null), 
+    MenorQue(TipoCampo.NUM, true, "{0} < :{1}", null), 
+    MaiorQue(TipoCampo.NUM, true, "{0} > :{1}", null), 
+    MenorIgual(TipoCampo.NUM, true, "{0} <= :{1}", null), 
+    MaiorIgual(TipoCampo.NUM, true, "{0} >= :{1}", null);
 
     private final String clausula;
     
@@ -60,13 +58,11 @@ public enum TipoOperacao {
 
     /**
      * Construtor
-     * @param descricao Descrição da operação
      * @param tipoCampo TipoCampo
      * @param temValor Se tem valor operando
      * @param clausula Cláusula associada
      */
-    TipoOperacao(String descricao, TipoCampo tipoCampo, boolean temValor, String clausula, String formatoValor) {
-        this.descricao = descricao;
+    TipoOperacao(TipoCampo tipoCampo, boolean temValor, String clausula, String formatoValor) {
         this.tipoCampo = tipoCampo;
         this.temValor = temValor;
         this.clausula = clausula;
@@ -80,18 +76,9 @@ public enum TipoOperacao {
      */
     TipoOperacao(TipoCampo tipoCampo, TipoOperacao tipoOperacao) {
         this.tipoCampo = tipoCampo;
-        this.descricao = tipoOperacao.descricao;
         this.temValor = tipoOperacao.temValor;
         this.clausula = tipoOperacao.clausula;
         this.formatoValor = tipoOperacao.formatoValor;
-    }
-
-    /**
-     * Obter descricao
-     * @return Descrição
-     */
-    public String getDescricao() {
-        return descricao;
     }
 
     /**

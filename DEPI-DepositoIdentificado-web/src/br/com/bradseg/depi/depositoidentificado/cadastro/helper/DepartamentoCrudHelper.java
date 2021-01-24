@@ -1,10 +1,14 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.helper;
 
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
+import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
@@ -18,6 +22,11 @@ import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
+/**
+ * Classe auxiliar para o fluxo de cadastro de departamento.
+ * 
+ * @author Marcelo Damasceno
+ */
 public class DepartamentoCrudHelper implements
 		CrudHelper<DepartamentoVO, DepartamentoEditarFormModel> {
 	
@@ -64,7 +73,7 @@ public class DepartamentoCrudHelper implements
 			
 			@Override
 			public IEntidadeCampo apply(String source) {
-				return DepartamentoCampo.obterPorDescricao(source);
+				return DepartamentoCampo.valueOf(source);
 			}
 		};
 		
@@ -82,8 +91,21 @@ public class DepartamentoCrudHelper implements
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(criterios);
 		
-		List<DepartamentoVO> lista = facade.obterPorFiltro(filtro);
-		return lista;
+		try {
+			List<DepartamentoVO> lista = facade.obterPorFiltro(filtro);
+			return lista;
+		} catch (IntegrationException e) {
+			if (e.getCause() instanceof DataIntegrityViolationException) {
+				DataIntegrityViolationException dataE = (DataIntegrityViolationException) e.getCause();
+				if (dataE.getCause() instanceof SQLDataException) {
+					SQLDataException sqlE = (SQLDataException) dataE.getCause();
+					if (sqlE.getSQLState().contains("22001")) {
+						throw new DEPIIntegrationException(sqlE, "erro.SQLSTATE.22001");
+					}
+				}
+			}
+			throw new DEPIIntegrationException(e);
+		}
 	}
 
 	// Métodos para o CRUD
@@ -131,9 +153,7 @@ public class DepartamentoCrudHelper implements
 	public EstadoRegistro persistirDados(DepartamentoEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 		
-		DepartamentoEditarFormModel form = (DepartamentoEditarFormModel) model;
-		
-		boolean novo = form.getCodigo() == null || form.getCodigo().trim().isEmpty();
+		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
 	
 		DepartamentoVO instancia;
 		
@@ -144,11 +164,11 @@ public class DepartamentoCrudHelper implements
 			instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 		}
 		else {
-			instancia = obterPeloCodigo(form.getCodigo());
+			instancia = obterPeloCodigo(model.getCodigo());
 		}
 	
-		instancia.setSiglaDepartamento(form.getSiglaDepartamento());
-		instancia.setNomeDepartamento(form.getNomeDepartamento());
+		instancia.setSiglaDepartamento(model.getSiglaDepartamento());
+		instancia.setNomeDepartamento(model.getNomeDepartamento());
 	
 		try {
 			if (novo) {

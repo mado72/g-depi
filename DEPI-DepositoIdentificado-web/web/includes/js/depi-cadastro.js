@@ -1,3 +1,73 @@
+//Detecting IE
+var oldIE;
+if ($('html').is('.lt-ie7, .lt-ie8, .lt-ie9')) {
+    oldIE = true;
+}
+
+if (oldIE) {
+	if (!Array.prototype.indexOf) {
+		Array.prototype.indexOf = function(a) {
+			for (var b = this, c = 0, d = b.length; d > c; ++c)
+				if (b[c] === a) return c;
+			return -1;
+		};		
+	}
+	if (! Array.prototype.map) {
+		Array.prototype.map = function(a, b) {
+		    for (var g, c = this, d = [], e = 0, f = c.length; f > e; ++e) {
+		    	g = c[e], d.push(a.call(b || window, c[e], e, c));
+		    }
+		    return d;
+		};	
+	}
+	if (! Function.prototype.bind) {
+		Function.prototype.bind = function(a) {
+		    var b = this,
+		        c = Array.prototype.slice.call(arguments, 1),
+		        d = function() {},
+		        e = function() {
+		            return b.apply(this instanceof d && a ? this : a, Array.prototype.concat.apply(c, arguments))
+		        };
+		    return d.prototype = e.prototype = b.prototype, e;
+		};		
+	}
+	if (!Object.keys) {
+		Object.keys = function(a) {
+		    var c, b = [];
+		    for (c in a) Object.prototype.hasOwnProperty.call(a, c) && b.push(c);
+		    return b
+		};		
+	}
+	(function (con) {
+		con.log = con.profile = con.profileEnd = con.timeStamp = con.trace =
+			con.debug = con.info = con.warn = con.error = con.dir = con.dirxml =
+			con.group = con.groupCollapsed = con.groupEnd = con.time = con.timeEnd =
+			con.assert = con.count = con.clear = function(){};
+	})(window.console = window.console || {});
+}
+if (! Array.prototype.find) {
+	Array.prototype.find = function(predicate) {
+		  if (this === null) {
+		  throw new TypeError('Array.prototype.find called on null or undefined');
+	  }
+	  if (typeof predicate !== 'function') {
+		  throw new TypeError('predicate must be a function');
+	  }
+	  var list = Object(this);
+	  var length = list.length >>> 0;
+	  var thisArg = arguments[1];
+	  var value;
+
+	  for (var i = 0; i < length; i++) {
+		  value = list[i];
+		  if (predicate.call(thisArg, value, i, list)) {
+			  return value;
+		  }
+	  }
+	  return undefined;
+  };
+}
+
 console.log("depi-cadastro.js");
 
 var fnReady = function ($) {
@@ -10,7 +80,7 @@ var fnReady = function ($) {
 	        for (j=0; j<d.length; j=j+1) {
 	            o[d[j]]=o[d[j]] || {};
 	            o=o[d[j]];
-	        }
+	        };
 	    }
 	    return o;
 	};
@@ -67,7 +137,7 @@ var fnReady = function ($) {
 					$(sublista).each(function(idx, op){
 						jqSecundario.append($('<option>', {text: op.texto, value: op.valor}));
 					});
-				}
+				};
 			});
 
 		jqSecundario
@@ -85,7 +155,7 @@ var fnReady = function ($) {
 					jqPrincipal.change();
 					jqSecundario.val(value[1]);
 					jqValor.val(value[2]);
-				}
+				};
 			});
 		
 		jqValor
@@ -100,11 +170,11 @@ var fnReady = function ($) {
 			var item = {
 				principal: optPrincipal.text(),
 				secundario: optSecundario.val(),
-				valor: jqValor.val().toLocaleUpperCase(),
+				valor: jqValor.val().toLocaleUpperCase()
 			};
 
 			item.texto = [optPrincipal.text(), optSecundario.text(), item.valor].join(' ');
-		    item.prop = [optPrincipal.text(), optSecundario.val(), item.valor].join(';');
+		    item.prop = [optPrincipal.val(), optSecundario.val(), item.valor].join(';');
 			
 			dados.recipiente.push(item);
 
@@ -132,7 +202,7 @@ var fnReady = function ($) {
 				if (! window.confirm(MENSAGEM["msg.confirmacao.consulta"])) {
 					ev.stopPropagation();
 					return;
-				}
+				};
 			}
 
 			criterios.each(function(idx, opt) {
@@ -148,7 +218,7 @@ var fnReady = function ($) {
 
 		// Definir valores iniciais
 		$(dados.principal).each(function(idx, item) {
-			var opt = jqPrincipal.append($('<option>', {text: item.texto}));
+			var opt = jqPrincipal.append($('<option>', {text: item.texto, value: item.valor}));
 			opt.data("sublista", item.sublista);
 		});
 
@@ -156,7 +226,7 @@ var fnReady = function ($) {
 			$(dados.recipiente).each(function(idx, criterio) {
 				var valores = criterio.split(';');
 				var pri = dados.principal.find(function(v){
-					return v.texto === valores[0];
+					return v.valor === valores[0];
 				});
 				var sec = pri.sublista.find(function(v){
 					return v.valor === valores[1];
@@ -164,14 +234,14 @@ var fnReady = function ($) {
 				
 				var item = {
 					prop: criterio,
-					texto: [valores[0], sec.texto, valores[2]].join(' ')
+					texto: [pri.texto, sec.texto, valores[2]].join(' ')
 				};
 
 				$.filtro.adicionarCriterio(jqRecipiente, item);
 			});
 		}
 		
-		jqPrincipal.val(dados.principal[0].valor);
+		jqPrincipal.val($(jqPrincipal.find("option")[0]).val());
 		jqPrincipal.change();
 
 		jqRecipiente.val(null);
@@ -187,8 +257,7 @@ var fnReady = function ($) {
 
 		if (opt.val() === "NUM") {
 			jqValor.val(jqValor.val().replace(/D+//g));
-		}
-		else {
+		} else {
 			jqValor.val(jqValor.val().toLocaleUpperCase());
 		}
 	};
@@ -199,7 +268,7 @@ var fnReady = function ($) {
 	$.namespace( '$.consulta' );
 
 	$.consulta.prepararFormulario = function(formSeletor) {
-		var jqForm = $(formSeletor)
+		var jqForm = $(formSeletor);
 
 		var btnExcluir = jqForm.find("#BtnExcluir"),
 		
@@ -220,8 +289,7 @@ var fnReady = function ($) {
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length != 1) {
 				alert(MENSAGEM["msg.selecao.edicao"]);
-			}
-			else {
+			} else {
 				var action = jqForm.attr("action");
 				action = action.replace(/\/\w+.do/, "/alterar.do");
 				jqForm.attr("action", action);
@@ -312,11 +380,10 @@ var fnReady = function ($) {
 
 		if (opt.val() === "NUM") {
 			jqValor.val(jqValor.val().replace(/D+//g));
-		}
-		else {
+		} else {
 			jqValor.val(jqValor.val().toLocaleUpperCase());
 		}
-	}
+	};
 
 	// checkbox obrigatório
 	// Pré condições: deve ser chamada após a rotina "verificarBoxEdicao" que valida
@@ -404,7 +471,7 @@ var fnReady = function ($) {
 			"<span class='pre_pages'><a class='GoFirst'>Primeiro</a>/<a class='GoPrev'>Anterior</a></span>",
 			"<span class='nav_pages'></span>",
 			"<span class='pos_pages'><a class='GoNext'>Próximo</a>/<a class='GoLast'>Último</a></span>|"].join('|'));
-		const pagSel = $(opcoes.pagSeletor);
+		var pagSel = $(opcoes.pagSeletor);
 		pagSel.append(ctrls);
 		
 		opcoes.info = pagSel.find(".paginacao_info");
@@ -413,7 +480,7 @@ var fnReady = function ($) {
 		var pages = [];
 		for (var i = 1; i <= opcoes.pgs; i++) {
 			var epg = "<a class='GoPage' page='"+(i-1)+"'>"+i+"</a>";
-			pages.push(epg)
+			pages.push(epg);
 		}
 
 		pagSel.find('.nav_pages').append($(pages.join(',')));
@@ -428,7 +495,7 @@ var fnReady = function ($) {
 		pagSel.find('.GoLast').click(function(){$.paginacao.goLast(opcoes)});
 
 		$.paginacao.goFirst(opcoes);
-	}
+	};
 	
 	$.paginacao.irPara = function(opcoes, pagina) {
 		opcoes.corrente = pagina;
@@ -445,24 +512,24 @@ var fnReady = function ($) {
 		opcoes.info.text(function(){
 			var txt = opcoes.pattern.replace(/:reg/, opcoes.jqTrs.length).replace(/:idxIni/, idxi).replace(/:idxFin/, idxf);
 			return txt;
-		})
-	}
+		});
+	};
 
 	$.paginacao.goFirst = function(opcoes) {
 		$.paginacao.irPara(opcoes, 0);
-	}
+	};
 
 	$.paginacao.goPrev = function(opcoes) {
 		$.paginacao.irPara(opcoes, opcoes.corrente - 1);
-	}
+	};
 
 	$.paginacao.goNext = function(opcoes) {
 		$.paginacao.irPara(opcoes, opcoes.corrente + 1);
-	}
+	};
 
 	$.paginacao.goLast = function(opcoes) {
 		$.paginacao.irPara(opcoes, opcoes.pgs - 1 );
-	}
+	};
 };
 
 jQuery(document).ready(fnReady(jQuery));

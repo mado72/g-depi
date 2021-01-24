@@ -94,7 +94,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
      * @param codigoUsuario - Double.
      * @return List<ParametroDepositoVO>
      */
-    public List<ParametroDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Double codigoUsuario) {
+	@Override
+    public List<ParametroDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Integer codigoUsuario) {
     	
     	List<ParametroDepositoVO> parametros = null;
     	
@@ -123,6 +124,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
      * @param filtro parâmetro depósito com o código do objeto requisitado
      * @return List<ParametroDepositoVO>
      */
+    @Override
     public List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro) {
 
     	
@@ -161,6 +163,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
      * @param referenciado - boolean
      * {@inheritDoc}
      */
+    @Override
     public void alterar(ParametroDepositoVO parametro , boolean referenciado) {
 
         try {
@@ -248,13 +251,14 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
      * @param vo - ParametroDepositoVO.
      * {@inheritDoc}
      */
-    public void excluir(ParametroDepositoVO vo, Integer usuarioAtualizacao) {
+    @Override
+    public void excluir(ParametroDepositoVO vo) {
 
     	try {
 
 			MapSqlParameterSource params = new MapSqlParameterSource();
 
-            params.addValue(PARAM_PRM1, usuarioAtualizacao);
+            params.addValue(PARAM_PRM1, vo.getCodigoResponsavelUltimaAtualizacao());
             
             /**
              * Where
@@ -277,6 +281,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
      * @return Boolean.
      * @param vo - ParametroDepositoVO.
      */
+    @Override
     public synchronized Boolean isReferenciado(ParametroDepositoVO vo)  {
 
         StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_ASSOCIACAOMOTIVODEPOSITO_REFERENCIADO);
@@ -473,6 +478,33 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
         } finally {
         	LOGGER.info("inserir(ParametroDepositoVO parametro)"); 
         }
+    }
+    
+    /**
+     * Inserir registro de ParametroDepositoVO
+     * @param parametro de ParametroDepositoVO
+     */
+    @Override
+    public ParametroDepositoVO obterPorChave(ParametroDepositoVO parametro) {
+
+        //* Verifica se j� existe um parametro cadastrado e ativo com os dados informados
+        StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_EXISTS);
+        
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        
+        params.addValue(PARAM_PRM1, parametro.getCompanhia().getCodigoCompanhia());
+        params.addValue(PARAM_PRM2, parametro.getDepartamento().getCodigoDepartamento());
+        params.addValue(PARAM_PRM3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+
+        List<ParametroDepositoVO> retorno =  getJdbcTemplate().query(query.toString(), params, new ParametroDepositosDataMapper());
+
+        if (retorno.isEmpty()) {
+        	return null;
+        } else { 
+    		return retorno.get(0);        	
+        }
+
+        
     }
 
 }
