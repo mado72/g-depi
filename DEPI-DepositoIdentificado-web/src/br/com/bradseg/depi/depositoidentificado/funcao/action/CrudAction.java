@@ -27,7 +27,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CrudAction.class);
 
-	private F model;
+	private final F model;
 	
 	public CrudAction() {
 		this.model = getCrudHelper().criarCrudModel();
@@ -95,8 +95,8 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	}
 	
 	/**
-	 * Processa a ação sobre o formulário
-	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
+	 * Processa a ação sobre o formulário quando a ação for salvar. Caso contrário, devolve ação Voltar
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS} ou "voltar"
 	 */
 	public String processar() {
 		LOGGER.info("Processando submissão do formulário");
@@ -104,9 +104,10 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 		
 		if ("salvar".equals(form.getAcao())) {
 			persistirDados();
+			return SUCCESS;
 		}
 		
-		return SUCCESS;
+		return "voltar";
 	}
 	
 	/**

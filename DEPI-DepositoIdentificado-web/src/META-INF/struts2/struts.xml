@@ -116,6 +116,10 @@
 			    <param name="actionName">refrescar</param>
 			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
 			</result>
+			<result name="voltar" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
+			</result>
 		</global-results>
 		
 		<action name="novo" method="novo">
