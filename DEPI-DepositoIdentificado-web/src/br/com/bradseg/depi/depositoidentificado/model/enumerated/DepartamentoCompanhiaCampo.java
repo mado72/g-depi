@@ -31,10 +31,7 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
      */
     CodigoCompanhia(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, CompanhiaSeguradoraCampo.CodigoCompanhia);
 
-
     private String nome;
-
-    private String descricao;
 
     private TipoCampo tipoCampo;
 
@@ -51,7 +48,6 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
         this.nome = ConstantesDEPI.SCHEMA_BANCO.concat(ConstantesDEPI.DOT).concat(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO)
             .concat(ConstantesDEPI.DOT).concat(nome);
 
-        this.descricao = campo.getDescricao();
         this.tipoCampo = campo.getTipoCampo();
         this.cics = campo.isCics();
         this.size = campo.getSize();
@@ -63,7 +59,6 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
      */
     DepartamentoCompanhiaCampo(IEntidadeCampo campo) {
         this.nome = campo.getNome();
-        this.descricao = campo.getDescricao();
         this.tipoCampo = campo.getTipoCampo();
         this.cics = campo.isCics();
         this.size = campo.getSize();
@@ -84,11 +79,6 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
     }
 
     @Override
-    public String getDescricao() {
-        return descricao;
-    }
-
-    @Override
     public boolean isCics() {
         return cics;
     }
@@ -106,14 +96,6 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
     @Override
     public int getSize() {
         return size;
-    }
-
-    /**
-     * define descrição a ser configurada
-     * @param descricao a descrição a ser configurada
-     */
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     /**

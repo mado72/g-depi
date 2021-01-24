@@ -31,7 +31,7 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
      */
     DepartamentoNome(DepartamentoCampo.Nome),
     /**
-     * Descri��o B�sica do Motivo
+     * Descrição Básica do Motivo
      */
     MotivoDescricaoBasica(MotivoDepositoCampo.DescricaoBasica),
     /**
@@ -40,8 +40,6 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
     MotivoDescricaoDetalhada(MotivoDepositoCampo.DescricaoDetalhada);
 
     private String nome;
-
-    private String descricao;
 
     private TipoCampo tipoCampo;
 
@@ -58,7 +56,6 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
     ParametroDepositoCampo(String nome, IEntidadeCampo campo) {
         this.nome = ConstantesDEPI.SCHEMA_BANCO.concat(ConstantesDEPI.DOT).concat(ConstantesDEPI.TABELA_PARAMETRIZACAO).concat(
             ConstantesDEPI.DOT).concat(nome);
-        this.descricao = campo.getDescricao();
         this.tipoCampo = campo.getTipoCampo();
         this.cics = campo.isCics();
         this.size = campo.getSize();
@@ -70,7 +67,6 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
      */
     ParametroDepositoCampo(IEntidadeCampo campo) {
         this.nome = campo.getNome();
-        this.descricao = campo.getDescricao();
         this.tipoCampo = campo.getTipoCampo();
         this.cics = campo.isCics();
         this.size = campo.getSize();
@@ -80,7 +76,8 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
      * Retorna o valor do atributo cics.
      * @return o valor do atributo cics
      */
-    public boolean isCics() {
+    @Override
+	public boolean isCics() {
         return cics;
     }
 
@@ -90,14 +87,6 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
      */
     public void setCics(boolean cics) {
         this.cics = cics;
-    }
-
-    /**
-     * Altera descri��o
-     * @param descricao descricao
-     */
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
     }
 
     /**
@@ -133,18 +122,11 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
     }
 
     /**
-     * Retorna descri��o
-     * @return descricao
-     */
-    public String getDescricao() {
-        return descricao;
-    }
-
-    /**
      * Retorna Tipo Campo
      * @return tipoCampo
      */
-    public TipoCampo getTipoCampo() {
+    @Override
+	public TipoCampo getTipoCampo() {
         return tipoCampo;
     }
 
@@ -152,7 +134,8 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
      * Retorna nome
      * @return nome
      */
-    public String getNome() {
+    @Override
+	public String getNome() {
         return nome;
     }
 
@@ -178,7 +161,8 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
      * Retorna o valor do atributo size.
      * @return o valor do atributo size
      */
-    public int getSize() {
+    @Override
+	public int getSize() {
         return size;
     }
 

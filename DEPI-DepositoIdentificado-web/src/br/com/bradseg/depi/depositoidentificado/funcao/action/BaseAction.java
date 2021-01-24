@@ -50,8 +50,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
      * @return Retorna o recurso de propriedades
      */
     protected PropertyResourceBundle getResources() {
-        PropertyResourceBundle resources = null;
-            resources = ((PropertyResourceBundle) ResourceBundle.getBundle(ConstantesDEPI.PATHCONFIG));
+        PropertyResourceBundle resources = ((PropertyResourceBundle) ResourceBundle.getBundle(ConstantesDEPI.PATHCONFIG));
  
         return resources;
     }
@@ -61,9 +60,10 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
      */
     @Override
     public String getText(String chave) {
-    	return getResources().getString(chave);
+    	return BaseUtil.getInstance().getText(chave);
     }
 
+	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -107,6 +107,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	 * Sempre retorna SUCCESS
 	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
+	@Override
 	public String execute() {
 		return SUCCESS;
 	}

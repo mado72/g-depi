@@ -18,6 +18,11 @@ import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
+/**
+ * Classe auxiliar para o fluxo de cadastro de motivo depósito.
+ * 
+ * @author Marcelo Damasceno
+ */
 public class MotivoDepositoCrudHelper implements
 		CrudHelper<MotivoDepositoVO, MotivoDepositoEditarFormModel> {
 
@@ -78,7 +83,7 @@ public class MotivoDepositoCrudHelper implements
 
 			@Override
 			public IEntidadeCampo apply(String source) {
-				return MotivoDepositoCampo.obterPorDescricao(source);
+				return MotivoDepositoCampo.valueOf(source);
 			}
 		};
 

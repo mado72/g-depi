@@ -7,12 +7,6 @@ package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 public interface IEntidadeCampo {
 
     /**
-     * Obter descricao
-     * @return descricao
-     */
-    String getDescricao();
-
-    /**
      * Obter nome
      * @return nome
      */

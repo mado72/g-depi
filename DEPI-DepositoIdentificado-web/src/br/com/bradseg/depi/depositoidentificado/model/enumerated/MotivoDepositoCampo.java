@@ -15,21 +15,19 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
     /**
      * Código
      */
-    Codigo(ConstantesDEPI.TABELA_MOTIVO_ID, "Código Motivo", TipoCampo.NUM, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    Codigo(ConstantesDEPI.TABELA_MOTIVO_ID, TipoCampo.NUM, ConstantesDEPI.SIZE_NAO_DEFINIDO),
     /**
      * Descrição
      */
-    DescricaoBasica("RMOTVO_DEP_IDTFD", "Descrição Básica Motivo", TipoCampo.ALFA_OBRIG, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    DescricaoBasica("RMOTVO_DEP_IDTFD", TipoCampo.ALFA_OBRIG, ConstantesDEPI.SIZE_NAO_DEFINIDO),
     /**
      * Descrição Detalhada.
      */
-    DescricaoDetalhada("RDETLH_MOTVO_DEP", "Descrição Detalhada Motivo", TipoCampo.ALFA_OBRIG_BIG, ConstantesDEPI.SIZE_DUZENTOS);
+    DescricaoDetalhada("RDETLH_MOTVO_DEP", TipoCampo.ALFA_OBRIG_BIG, ConstantesDEPI.SIZE_DUZENTOS);
     
     private final static List<MotivoDepositoCampo> CRITERIAS = Arrays.asList(DescricaoBasica, DescricaoDetalhada);
     
     private String nome;
-
-    private String descricao;
 
     private TipoCampo tipoCampo;
 
@@ -37,14 +35,12 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
     
     /**
      * @param nome - nome do campo
-     * @param descricao - descrição exibida
      * @param tipoCampo - tipo do campo
      * @param size - int
      */
-    MotivoDepositoCampo(String nome, String descricao, TipoCampo tipoCampo, int size) {
+    MotivoDepositoCampo(String nome, TipoCampo tipoCampo, int size) {
     	this.nome = ConstantesDEPI.SCHEMA_BANCO.concat(ConstantesDEPI.DOT).concat(ConstantesDEPI.TABELA_MOTIVO).concat(
     			ConstantesDEPI.DOT).concat(nome);
-    	this.descricao = descricao;
     	this.tipoCampo = tipoCampo;
     	this.size = size;
     }
@@ -60,11 +56,6 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
     }
 
     @Override
-    public String getDescricao() {
-        return descricao;
-    }
-
-    @Override
     public TipoCampo getTipoCampo() {
         return tipoCampo;
     }
@@ -73,7 +64,8 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
      * retorna o nome
      * @return - retorna o nome do campo
      */
-    public String getNome() {
+    @Override
+	public String getNome() {
         return nome;
     }
 
@@ -89,20 +81,6 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
             }
         }
         return null;
-    }
-    
-    /**
-     * retorna o elemento
-     * @param descricao - descrição de motivo depósito
-     * @return - retorna o elemento do campo
-     */
-    public static MotivoDepositoCampo obterPorDescricao(String descricao) {
-    	for (MotivoDepositoCampo campo : MotivoDepositoCampo.values()) {
-    		if (campo.getDescricao().equals(descricao)) {
-    			return campo;
-    		}
-    	}
-    	return null;
     }
 
     /**

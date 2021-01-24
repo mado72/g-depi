@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoCampo;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,10 +26,23 @@ public class IEntidadeCampoSerializer extends
 		TipoCampo tipoCampo = campo.getTipoCampo();
 
 		generator.writeStartObject();
-		generator.writeObjectField("campo", campo.getNome());
-		generator.writeObjectField("descricao", campo.getDescricao());
+		generator.writeObjectField("campo", campo.toString());
+		
+		String descricao = getDescricao(campo);
+		
+		generator.writeObjectField("descricao", descricao);
 		generator.writeObjectField("tipo", tipoCampo);
 		generator.writeEndObject();
+	}
+	
+	private String getDescricao(IEntidadeCampo campo) {
+		String classe = campo.getClass().getSimpleName();
+		if (campo instanceof Enum) {
+			Enum<?> enumCampo = (Enum<?>) campo;
+			String chave = String.format("enum.%s.%s", classe, enumCampo.name());
+			return BaseUtil.getInstance().getText(chave);
+		}
+		return BaseUtil.getInstance().getText(String.format("entidade.%s", classe));
 	}
 
 }

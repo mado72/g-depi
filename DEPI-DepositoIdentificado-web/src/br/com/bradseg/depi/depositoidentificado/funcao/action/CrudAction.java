@@ -4,14 +4,13 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper.EstadoRegistro;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
-
-import com.opensymphony.xwork2.Action;
 
 /**
  * Superclasse para Actions que processam formulários de edição
@@ -21,13 +20,14 @@ import com.opensymphony.xwork2.Action;
  * @param <VO> Tipo que é manipulado pelo CRUD
  * @param <F> Tipo do Model utilizado por esta Action.
  */
+@Controller
 public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction<F> {
 
 	private static final long serialVersionUID = -8669859699304965615L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CrudAction.class);
 
-	private F model;
+	private final F model;
 	
 	public CrudAction() {
 		this.model = getCrudHelper().criarCrudModel();
@@ -46,7 +46,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	
 	/**
 	 * Prepara o model para exibir um registro
-	 * @return {@link Action#INPUT}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String exibir() {
 		LOGGER.debug("Preparando formulário para exibir um registro");
@@ -62,7 +62,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	
 	/**
 	 * Prepara o model para incluir um registro
-	 * @return {@link Action#INPUT}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String incluir() {
 		LOGGER.debug("Preparando formulário para inclusão de um novo registro");
@@ -78,7 +78,7 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	
 	/**
 	 * Prepara o model para alterar um registro
-	 * @return {@link Action#INPUT}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String alterar() {
 		LOGGER.debug("Preparando formulário para alterar um registro");
@@ -95,8 +95,8 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	}
 	
 	/**
-	 * Processa a ação sobre o formulário
-	 * @return {@link Action#SUCCESS}
+	 * Processa a ação sobre o formulário quando a ação for salvar. Caso contrário, devolve ação Voltar
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS} ou "voltar"
 	 */
 	public String processar() {
 		LOGGER.info("Processando submissão do formulário");
@@ -104,14 +104,15 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 		
 		if ("salvar".equals(form.getAcao())) {
 			persistirDados();
+			return SUCCESS;
 		}
 		
-		return SUCCESS;
+		return "voltar";
 	}
 	
 	/**
 	 * Processa a ação de excluir sobre os registros enviados pelo formulário
-	 * @return {@link Action#SUCCESS}
+	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
 	public String excluir() {
 		excluirRegistros();
