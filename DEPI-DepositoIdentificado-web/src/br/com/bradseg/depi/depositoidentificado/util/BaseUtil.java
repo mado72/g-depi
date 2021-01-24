@@ -696,8 +696,7 @@ public final class BaseUtil {
 	 * @return Retorna o recurso de propriedades
 	 */
 	public PropertyResourceBundle getResources() {
-	    PropertyResourceBundle resources = ((PropertyResourceBundle) ResourceBundle.getBundle(ConstantesDEPI.PATHCONFIG));
-	    return resources;
+	    return (PropertyResourceBundle) ResourceBundle.getBundle(ConstantesDEPI.PATHCONFIG);
 	}
 
 	/**
@@ -727,7 +726,7 @@ public final class BaseUtil {
     		if (m.start() > last) {
     			sb.append(text.substring(last, m.start()));
     		}
-    		String refTxt = getText(m.group());
+    		String refTxt = getText(m.group(1));
     		sb.append(refTxt);
     		last = m.end();
     	}

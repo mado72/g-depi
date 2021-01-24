@@ -764,7 +764,7 @@ public class DepositoVO implements Serializable {
 	}
 
 	public Date getDataHoraAtualizacao() {
-		return dataHoraAtualizacao;
+		return (Date) dataHoraAtualizacao.clone();
 	}
 
 	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
@@ -772,7 +772,7 @@ public class DepositoVO implements Serializable {
 	}
 
 	public Date getDataInclusao() {
-		return dataInclusao;
+		return (Date) dataInclusao.clone();
 	}
 
 	public void setDataInclusao(Date dataInclusao) {
