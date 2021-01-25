@@ -44,10 +44,10 @@
 			</result>
         </action>
 
-		<action name="ConsultarDepartamento" class="consultarDepartamentoAction" 
+		<action name="ConsultarGrupoAcesso" class="consultarGrupoAcessoAction" 
 			method="menu">
 			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/includes/cadastro/ConsultarDepartamento.jsp</param>
+			    <param name="location">/WEB-INF/pages/pt_BR/includes/cadastro/ConsultarGrupoAcesso.jsp</param>
 			</result>
 			<result name="error">
 			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
@@ -137,13 +137,13 @@
         
 	</package>
 
-	<package name="cadastroDepartamentoConsultar" namespace="/cadastro/departamento/consultar" extends="depi-default">
+	<package name="cadastroGrupoAcessoConsultar" namespace="/cadastro/grupoAcesso/consultar" extends="depi-default">
 	
-		<default-class-ref class="departamentoConsultarAction"/>
+		<default-class-ref class="grupoAcessoConsultarAction"/>
 		
 		<global-results>
 			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcesso.jsp</param>
 			</result>
 			<result name="input" type="redirectAction">listar</result>
 		</global-results>
@@ -156,24 +156,79 @@
 		<action name="*" method="{1}"/>
 		<action name="listar" method="listar">
 			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcesso.jsp</param>
 			</result>
 		</action>
 
 	</package>
 	
 	
-	<package name="cadastroDepartamentoEditar" namespace="/cadastro/departamento/editar" extends="depi-default">
+	<package name="cadastroGrupoAcessoEditar" namespace="/cadastro/grupoAcesso/editar" extends="depi-default">
 	
-		<default-class-ref class="departamentoEditarAction"></default-class-ref>
+		<default-class-ref class="grupoAcessoEditarAction"></default-class-ref>
 	
 		<global-results>
 			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoForm.jsp</param>
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcessoForm.jsp</param>
 			</result>
 			<result name="success" type="redirectAction">
 			    <param name="actionName">refrescar</param>
-			    <param name="namespace">/cadastro/departamento/consultar</param>
+			    <param name="namespace">/cadastro/grupoAcesso/consultar</param>
+			</result>
+		</global-results>
+		
+		<action name="novo" method="novo">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+			<result name="input" type="redirectAction">input</result>
+		</action>
+		
+		<action name="alterar" method="alterar">
+			<result name="input" type="redirectAction">input</result>
+		</action>
+        
+        <action name="*" method="{1}">
+        </action>
+        
+	</package>
+
+	<package name="cadastroGrupoAcessoConsultar" namespace="/cadastro/grupoAcesso/consultar" extends="depi-default">
+	
+		<default-class-ref class="grupoAcessoConsultarAction"/>
+		
+		<global-results>
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcesso.jsp</param>
+			</result>
+			<result name="input" type="redirectAction">listar</result>
+		</global-results>
+
+		<action name="index">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+        
+		<action name="*" method="{1}"/>
+		<action name="listar" method="listar">
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcesso.jsp</param>
+			</result>
+		</action>
+
+	</package>
+	
+	
+	<package name="cadastroGrupoAcessoEditar" namespace="/cadastro/grupoAcesso/editar" extends="depi-default">
+	
+		<default-class-ref class="grupoAcessoEditarAction"></default-class-ref>
+	
+		<global-results>
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcessoForm.jsp</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">refrescar</param>
+			    <param name="namespace">/cadastro/grupoAcesso/consultar</param>
 			</result>
 		</global-results>
 		

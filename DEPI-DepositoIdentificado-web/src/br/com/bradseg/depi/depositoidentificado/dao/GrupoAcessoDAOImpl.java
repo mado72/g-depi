@@ -3,6 +3,7 @@
  */
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -20,6 +21,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.mapper.GrupoAcessoDataMapper
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
@@ -234,24 +236,32 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
      * @param filtro - filtro CriterioFiltroUtil
      * @return List - Lista de GrupoAcessoVO
      */
-    public List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro)  {
+    @Override
+	public List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro)  {
 
     	
     	StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_OBTERPORFILTRONEW);
 
         try {
 
-        	StringBuilder sql = null;
+        	MapSqlParameterSource params = null;
         	
-            if (filtro != null) {
-                sql = new StringBuilder(query.toString().replace("{0}", filtro.getClausaAndFiltro()));
-            } else {
-                sql = new StringBuilder(query.toString().replace("{0}", ""));
-            }
+        	StringBuilder where = new StringBuilder();
 
-  			MapSqlParameterSource params = new MapSqlParameterSource();
+        	if (!filtro.getCriterios().isEmpty()) {
+        		for (CriterioConsultaVO criterio : filtro.getCriterios()) {
+        			where.append(" AND ").append(criterio.getCriterio());
+        		}
+				// builder.append(filtro.getClausaWhereFiltro());
+        		
+				params = filtro.getMapParamFiltro();
+			} 
+        	
+        	String aux = MessageFormat.format(query.toString(), where.toString());
+        	query = new StringBuilder(aux);
   			
-			List<GrupoAcessoVO> listGrupoAcessoVO = getJdbcTemplate() .query(sql.toString(), params, new GrupoAcessoDataMapper());
+			List<GrupoAcessoVO> listGrupoAcessoVO = getJdbcTemplate().query(
+					query.toString(), params, new GrupoAcessoDataMapper());
 			
 			return listGrupoAcessoVO;
         } finally {
@@ -263,7 +273,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     /**
      * {@inheritDoc}
      */
-    public void desalocarUsuarios(GrupoAcessoVO grupo) {
+    @Override
+	public void desalocarUsuarios(GrupoAcessoVO grupo) {
     
         try {
 	        /**
@@ -328,7 +339,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
         }
     }
 
-    public GrupoAcessoVO obterGrupoPorChave(GrupoAcessoVO grupo)  {
+    @Override
+	public GrupoAcessoVO obterGrupoPorChave(GrupoAcessoVO grupo)  {
 
     	StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_OBTERGRUPOPORCHAVE);
 
