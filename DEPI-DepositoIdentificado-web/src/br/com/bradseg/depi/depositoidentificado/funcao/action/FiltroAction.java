@@ -80,7 +80,8 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	public String consultar() {
 		try {
 			clearErrorsAndMessages();
-			model.getColecaoDados().clear();
+			
+			model.setColecaoDados(new ArrayList<>());
 			
 			String[] parameterValues = request.getParameterValues("criterio");
 
@@ -129,6 +130,11 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	 */
 	public String refrescar() {
 		T model = getModel();
+		
+		if (model.getCriterios() == null || model.getCriterios().isEmpty()) {
+			return listar();
+		}
+		
 		model.setColecaoDados(null);
 		
 		List<CriterioConsultaVO> criterios = model.obterCriteriosConsulta();

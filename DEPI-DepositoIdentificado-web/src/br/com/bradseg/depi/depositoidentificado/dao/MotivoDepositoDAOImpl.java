@@ -179,7 +179,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     
     /**
      * Método responsável por excluir lista um Motivo Depósito.
-     * @param vo - Motivo Depósito a ser excluído.
+     * @param listvo - Motivo Depósito a ser excluído.
      */
     @Override
     public void excluirLista(List<MotivoDepositoVO> listvo) {
@@ -244,7 +244,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
      * @param e - Tabelas.
      * @return List<MotivoDepositoVO>.
      */
-    public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep,final Double codigoUsuario, final Tabelas e){
+    @Override
+	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep,final Double codigoUsuario, final Tabelas e){
     	
     	LOGGER.error("obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep,final Double codigoUsuario, final Tabelas e)"); 
 
@@ -290,7 +291,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     
     /**
      * Obtém apenas os Motivos por Chave.
-     * @param MotivoDepositoVO - MotivoDepositoVO
+     * @param vo - MotivoDepositoVO
      * @return List<MotivoDepositoVO>.
      */
     @Override
@@ -326,7 +327,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 
     /**
      * Obtém apenas os Motivos por Filtro.
-     * @param MotivoDepositoVO - MotivoDepositoVO
+     * @param filtro - critérios da consulta.
      * @return List<MotivoDepositoVO>.
      */
 	@Override

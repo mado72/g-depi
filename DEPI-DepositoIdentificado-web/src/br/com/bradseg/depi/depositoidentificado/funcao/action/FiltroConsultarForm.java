@@ -29,6 +29,8 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 		ActionSupport {
 
 	private static final long serialVersionUID = -1473697395894253132L;
+	
+	private String namespaceEditar;
 
 	/**
 	 * Usado internamente para montar um JSON usado na passagem de valores para
@@ -79,6 +81,14 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 
 			parametroFiltroList.add(item);
 		}
+	}
+	
+	public String getNamespaceEditar() {
+		return namespaceEditar;
+	}
+	
+	public void setNamespaceEditar(String namespaceEditar) {
+		this.namespaceEditar = namespaceEditar;
 	}
 	
 	public List<CriterioConsultaVO> preencherCriterios(Collection<String> criterioArray) {

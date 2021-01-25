@@ -2,7 +2,6 @@
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-
 <!--mensagem de erro de negocio-->
 <s:if test="hasActionMessages()">
 <span id="box_msg_erro">

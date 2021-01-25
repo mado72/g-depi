@@ -1,28 +1,27 @@
-<%@ page language="java" %><%@ 
+<%@ page language="java" %><%@
+	page import="com.opensymphony.xwork2.ActionContext"%><%@
+	page import="com.opensymphony.xwork2.ActionSupport"%><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@ 
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %><%@ 
 	taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@ 
 	taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" 
-%><!--[if lt IE 7]> 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+%><!DOCTYPE HTML>
+<!--[if lt IE 7]> 
 <html class="lt-ie9 lt-ie8 lt-ie7">
 <![endif]-->
 <!--[if IE 7]>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html class="lt-ie9 lt-ie8">
 <![endif]-->
 <!--[if IE 8]>
-<!DOCTYPE HTML>
 <html class="lt-ie9">
 <![endif]-->
 <!--[if gt IE 8]><!-->
-<!DOCTYPE HTML>
-<html> 
+<html>
 <!--<![endif]-->
 <head>
-	<META http-equiv="X-UA-Compatible" content="IE=8; IE=9; IE=10; IE=11, Edge">
+	<META http-equiv="X-UA-Compatible" content="IE=9; IE=10; IE=11">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><decorator:title default="DEPI-DepositoIdentificado"/></title>
 	<link href="${www3}padroes_web/intranet/css/tabs.css" rel="stylesheet" type="text/css"/>
@@ -40,12 +39,11 @@
 	<script type="text/javascript" src="<s:url value="/includes/js/mensagens.js"/>"></script>
 	<script type="text/javascript" src="${www3}padroes_web/intranet/js/bradesco_menu.js"></script>
 
- <!--
-    	<script type="text/javascript" src="<s:url value="/includes/js/lib.js"/>"></script>
-	<script type="text/javascript" src="<s:url value='/includes/js/jquery-1.10.2.min.js'/>"></script>
-	<script type="text/javascript" src="<s:url value="/includes/js/jquery.numberLetters.js"/>"></script>
-	<script type="text/javascript" src="<s:url value="/includes/js/comum.js"/>"></script>
- -->	
+<style>
+#box_loading {
+	background-image: url("${www3}padroes_web/intranet/imagens/carregando.gif");
+}
+</style>
 	<decorator:head />
 </head>
 <body id="depi-app">
@@ -53,6 +51,7 @@
 <table id="tabela_principal">
 	<tr>
 		<td>
+			<s:include value="/WEB-INF/pages/layout/menu.jsp"/>
 			<br />
 			<s:if test="hasFieldErrors()">
 				<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tabela_verm" id="msgErros">
@@ -88,7 +87,6 @@
 				</table>
 			</s:if>
 			<br />
-			<s:include value="/WEB-INF/pages/layout/menu.jsp"/>
 			<s:include value="/WEB-INF/pages/pt_BR/includes/logo-sistema.jsp"/>
 			<br />
 			<decorator:body />
@@ -104,5 +102,6 @@
 	<script type="text/javascript" src="<c:url value="/includes/js/depi-cadastro.js"/>" charset="utf-8"></script>
 	<c:out value="${scriptPage}" default="" escapeXml="false" />
 </c:if>
+<%((ActionSupport) ActionContext.getContext().getActionInvocation().getAction()).clearErrorsAndMessages();%>
 </body>
 </html>

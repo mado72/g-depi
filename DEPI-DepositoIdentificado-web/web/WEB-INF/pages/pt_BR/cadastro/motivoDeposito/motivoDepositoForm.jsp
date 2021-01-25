@@ -16,7 +16,7 @@
 </table>
 </span>
 </s:if>
-<s:form action="processar">
+<s:form action="salvar">
 <s:hidden name="codigo"/>
 	<table id="tabela_interna">
 	<caption>
@@ -37,7 +37,7 @@
 		<tr>
 			<td class="td_label"><s:text name="label.cadastro.motivodeposito.descricaoDetalhada" /><span class="obrigatorio">*</span></td>
 			<td colspan="3">
-				<s:textarea name="model.descricaoDetalhada" rows="5" tabindex="2" cols="70" style="text-transform: uppercase;" readonly="detalhar"/>
+				<s:textarea name="descricaoDetalhada" rows="5" tabindex="2" cols="70" style="text-transform: uppercase;" readonly="detalhar"/>
 			</td>
 		</tr>
 	</tbody>
@@ -48,17 +48,17 @@
 				<td align="center" valign="middle" colspan="3">
 					<c:choose>
 						<c:when test="${detalhar}">
-							<button class="btn-img" id="BtnVoltar" type="submit" name="acao" value="voltar">
+							<s:a action="listar" namespace="/cadastro/motivoDeposito/consultar" class="button">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_voltar.gif"/>
-							</button>
-						</c:when>
+							</s:a>
+ 						</c:when>
 						<c:otherwise>
-							<button class="btn-img" id="BtnSalvar" type="submit" name="acao" value="salvar">
+							<button class="btn-img" id="BtnSalvar" type="submit">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_salvar.gif"/>
 							</button>
-							<button class="btn-img" id="BtnCancelar" type="submit" name="acao" value="cancelar">
+							<s:a action="listar" namespace="/cadastro/motivoDeposito/consultar" class="button">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_cancelar.gif"/>
-							</button>
+							</s:a>
 						</c:otherwise>
 					</c:choose>
 				</td>

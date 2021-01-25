@@ -44,6 +44,13 @@ button.btn-img {
 	left: 239px;
 }
 
+#box_loading {
+	display: none;
+	margin-left: auto;
+	margin-right: auto;
+    width: 100px;
+    height: 10px;
+}
 #carregandoImg {
 	display: none;
 }

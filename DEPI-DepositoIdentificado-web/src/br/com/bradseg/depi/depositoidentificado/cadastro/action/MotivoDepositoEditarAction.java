@@ -11,7 +11,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.form.MotivoDepositoEdit
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.MotivoDepositoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
-import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudAction;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
@@ -21,7 +21,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
  */
 @Controller
 @Scope("session")
-public class MotivoDepositoEditarAction extends CrudAction<MotivoDepositoVO, MotivoDepositoEditarFormModel> {
+public class MotivoDepositoEditarAction extends EditarFormAction<MotivoDepositoVO, MotivoDepositoEditarFormModel> {
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	

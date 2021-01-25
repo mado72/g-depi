@@ -13,7 +13,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditar
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepartamentoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
-import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudAction;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 /**
@@ -23,7 +23,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
  */
 @Controller
 @Scope("session")
-public class DepartamentoEditarAction extends CrudAction<DepartamentoVO, DepartamentoEditarFormModel> {
+public class DepartamentoEditarAction extends EditarFormAction<DepartamentoVO, DepartamentoEditarFormModel> {
 	
     protected static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoEditarAction.class);
 

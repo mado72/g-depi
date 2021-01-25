@@ -12,7 +12,7 @@
 	<constant name="struts.custom.i18n.resources" value="br.com.bradseg.depi.depositoidentificado.properties.ApplicationResources" />
 	
 	<package name="depi-default" abstract="true" extends="bsad-default">
-		
+	
 		<interceptors>
 			<interceptor name="limparDados" class="br.com.bradseg.depi.depositoidentificado.util.LimparDadosFormularioStrutsInterceptor"/>
 		</interceptors>
@@ -135,7 +135,12 @@
         <action name="*" method="{1}">
         </action>
         
-	</package>
+        <action name="salvar" class="motivoDepositoSalvarAction">
+			<result name="input">
+				<param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoForm.jsp</param>
+			</result>
+        </action>
+    </package>
 
 	<package name="cadastroDepartamentoConsultar" namespace="/cadastro/departamento/consultar" extends="depi-default">
 	

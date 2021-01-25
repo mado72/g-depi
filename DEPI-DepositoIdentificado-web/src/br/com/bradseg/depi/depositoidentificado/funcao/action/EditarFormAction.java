@@ -6,9 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
-import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper.EstadoRegistro;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
@@ -21,15 +19,15 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
  * @param <F> Tipo do Model utilizado por esta Action.
  */
 @Controller
-public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction<F> {
+public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModelAction<F> {
 
 	private static final long serialVersionUID = -8669859699304965615L;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(CrudAction.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EditarFormAction.class);
 
 	private final F model;
 	
-	public CrudAction() {
+	public EditarFormAction() {
 		this.model = getCrudHelper().criarCrudModel();
 	}
 	
@@ -95,18 +93,10 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	}
 	
 	/**
-	 * Processa a ação sobre o formulário quando a ação for salvar. Caso contrário, devolve ação Voltar
-	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS} ou "voltar"
+	 * Processa ação para voltar ao formulário de consulta.
+	 * @return "voltar"
 	 */
-	public String processar() {
-		LOGGER.info("Processando submissão do formulário");
-		F form = getModel();
-		
-		if ("salvar".equals(form.getAcao())) {
-			persistirDados();
-			return SUCCESS;
-		}
-		
+	public String voltar() {
 		return "voltar";
 	}
 	
@@ -118,24 +108,6 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 		excluirRegistros();
 		
 		return SUCCESS;
-	}
-	
-	private void persistirDados() {
-		LOGGER.info("Persistindo dados do formulário");
-		
-		F model = getModel();
-		CrudHelper<VO, F> helper = getCrudHelper();
-		
-		LoginVo usuarioLogado = getUsuarioLogado();
-		
-		EstadoRegistro estado = helper.persistirDados(model, usuarioLogado);
-		
-		if (estado == EstadoRegistro.NOVO) {
-			addActionMessage(ConstantesDEPI.MSG_INSERIR_EXITO);
-		}
-		else {
-			addActionMessage(ConstantesDEPI.MSG_ALTERAR_EXITO);
-		}
 	}
 	
 	/**

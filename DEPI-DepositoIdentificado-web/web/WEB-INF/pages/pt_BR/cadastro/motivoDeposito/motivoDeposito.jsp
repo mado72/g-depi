@@ -3,8 +3,13 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoFiltro.jsp">
+<c:set var="namespaceEditar">/cadastro/motivoDeposito/editar</c:set>
+<s:include value="/WEB-INF/pages/pt_BR/cadastro/comum/filtro2dropbox.jsp">
 	<s:param name="scriptOff" value="true"/>
+</s:include>
+
+<s:include value="/WEB-INF/pages/pt_BR/cadastro/comum/incluir-consultar.jsp">
+	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
 </s:include>
 
 <s:if test="colecaoDados">
@@ -66,22 +71,12 @@
  	</tbody>
 </table>
 <div class="paginacao"></div>
-<br/>
-	<br/>
-	<table class="tabela_botoes">
-		<tr>
-			<td align="center">
-				<div id="tabela_botoes">
-					<s:a id="BtnIncluir2" class="btnIncluir" action="incluir" namespace="/cadastro/motivoDeposito/editar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
-					<a class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
-					<a class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
-				</div>
-			</td>
-		</tr>
-	</table>
 
+<s:include value="/WEB-INF/pages/pt_BR/cadastro/comum/incluir-alterar-excluir.jsp">
+	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
+</s:include>
 </s:form>
-<br/>
+
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>
 <script>

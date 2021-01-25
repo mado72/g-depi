@@ -40,6 +40,7 @@ public class MotivoDepositoEditarFormModel extends CrudForm {
 		this.descricaoDetalhada = descricaoDetalhada;
 	}
 
+	@Override
 	public boolean isDetalhar() {
 		return getEstado() == EstadoCrud.EXIBIR;
 	}

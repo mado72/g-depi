@@ -209,6 +209,8 @@ var fnReady = function ($) {
 				elements = elements.add($('<input>', { type:"hidden", name: "criterio" , value: $(opt).val()}));
 			});
 			
+			$("#box_loading").show();
+			
 			jqForm.append(elements);
 
 			jqForm.submit();
