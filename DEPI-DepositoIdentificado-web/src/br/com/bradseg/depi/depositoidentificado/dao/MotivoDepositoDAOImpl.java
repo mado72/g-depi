@@ -208,6 +208,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
      */
     @Override
     public synchronized Boolean isReferenciado(MotivoDepositoVO vo){
+    	
+    	LOGGER.error("Inicio - isReferenciado(MotivoDepositoVO vo)"); 
 
     	StringBuilder query = new StringBuilder(QuerysDepi.MOTIVODEPOSITO_REFERENCIADO_PARAMETRODEPOSITO);
     	
@@ -243,6 +245,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
      * @return List<MotivoDepositoVO>.
      */
     public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep,final Double codigoUsuario, final Tabelas e){
+    	
+    	LOGGER.error("obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep,final Double codigoUsuario, final Tabelas e)"); 
 
 		StringBuilder query = new StringBuilder();
     	
@@ -291,6 +295,8 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
      */
     @Override
     public MotivoDepositoVO obterPorChave(MotivoDepositoVO vo){
+    	
+    	LOGGER.error("MotivoDepositoVO obterPorChave(MotivoDepositoVO vo)"); 
 
 		StringBuilder query = new StringBuilder();
     	query.append(QuerysDepi.MOTIVODEPOSITO_OBTERPORCHAVE);
@@ -325,6 +331,9 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
      */
 	@Override
 	public List<MotivoDepositoVO> obterPorFiltro(FiltroUtil filtro) {
+		
+		LOGGER.error("obterPorFiltro(FiltroUtil filtro)"); 
+		
 		StringBuilder query = new StringBuilder();
     	query.append(QuerysDepi.MOTIVODEPOSITO_ALL);
     	
@@ -360,6 +369,9 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
      */
 	@Override
 	public List<MotivoDepositoVO> obterTodos() {
+		
+		LOGGER.error("obterPorFiltro(FiltroUtil filtro)"); 
+		
 		StringBuilder query = new StringBuilder();
     	query.append(QuerysDepi.MOTIVODEPOSITO_ALL);
    	

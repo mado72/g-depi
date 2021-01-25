@@ -118,7 +118,7 @@ var fnReady = function ($) {
 			jqSecundario = jqForm.find("#DropboxSecundario"),
 			jqValor = jqForm.find("#Valor"),
 			jqRecipiente = jqForm.find("#Lista"),
-			btnConsultar = jqForm.find("#BtnConsultar"),
+			btnConsultar = $("#BtnConsultar"),
 			btnPlus = jqForm.find("#BtnPlus"),
 			btnMinus = jqForm.find("#BtnMinus");
 

@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -26,6 +28,8 @@ import com.opensymphony.xwork2.ActionSupport;
 @Controller
 @Scope("request")
 public class BaseAction extends ActionSupport implements ServletRequestAware {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(BaseAction.class);
 
 	private static final long serialVersionUID = -6643036342809251102L;
 
@@ -83,11 +87,16 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	 */
 	protected LoginVo getUsuarioLogado() {
 
+		// FIXME retirar este log da publicação final
+		LOGGER.error("Tentando recuperar o usuário logado usando LoginUtils.getLoginObject(this.request)");
 		LoginVo loginVO = LoginUtils.getLoginObject(this.request);
+		LOGGER.error("Usuário logado {}", loginVO);
 		
         if (BaseUtil.isNZB(loginVO) || BaseUtil.isNZB(loginVO.getId())) {
+        	LOGGER.error("Não encontrou usuário logado");
             throw new IntegrationException(getText(MSG_LOGIN_USUARIO));
         }
+        LOGGER.error("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		
 		return loginVO;
 

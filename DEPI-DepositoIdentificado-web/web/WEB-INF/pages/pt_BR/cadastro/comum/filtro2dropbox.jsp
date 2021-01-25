@@ -2,11 +2,11 @@
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+
 <!--mensagem de erro de negocio-->
 <s:if test="hasActionMessages()">
 <span id="box_msg_erro">
 <br />
-
 <table class="tabela_verm" >
 <tr>
 	<td align="left" >
@@ -20,13 +20,17 @@
 <s:form action="consultar.do" id="FiltroForm">
 <s:hidden key="model.acao"></s:hidden>
 <s:hidden key="model.acaoAnterior"></s:hidden>
-	<table width="90%" id="tabela_interna" border="0" align="center">
+	<table id="tabela_interna">
 		<tr>
 			<td colspan="2" width="50%"></td>
-			<td>Critério(s) de Consulta</td>
+			<td>
+				<s:text name="label.filtro.criterio"/>
+			</td>
 		</tr>
 		<tr>
-			<td class="td_label" width="20%">Consultar por </td>
+			<td class="td_label" width="20%">
+				<s:text name="label.filtro.consultaPor"/>
+			</td>
 			<td>
 				<select id="DropboxPrincipal" class="select"></select>
 			</td>
@@ -36,14 +40,18 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="td_label">Tipo de Operação </td>
+			<td class="td_label">
+				<s:text name="label.filtro.tipoOperacao"/>
+			</td>
 			<td>
 				<select id="DropboxSecundario" class="select" tabindex="6">
 				</select>
 			</td>
 		</tr>
 		<tr>
-			<td class="td_label">Valor </td>
+			<td class="td_label">
+				<s:text name="label.filtro.valor"/>
+			</td>
 			<td>
 				<INPUT id="Valor" tabIndex=3 style="WIDTH: 150px; TEXT-TRANSFORM: uppercase" maxLength=50 size=40>
 			</td>
@@ -55,25 +63,6 @@
 				<a class="button" id="BtnPlus"><img src="<c:url value="${www3}padroes_web/intranet/imagens/plus.gif"/>"></a>
 				<a class="button" id="BtnMinus"><img src="<c:url value="${www3}padroes_web/intranet/imagens/minus.gif"/>"></a>
 			</td>
-		</tr>
-	</table>
-	<br />
-	<table class="tabela_botoes">
-		<tr>
-			<td align="center">
-				<div class="tabela_botoes">
-				<s:if test="!colecaoDados">
-					<s:a class="button" id="BtnIncluir" action="incluir" namespace="/cadastro/departamento/editar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
-				</s:if>
-					<a class="button" id="BtnConsultar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_consultar.jpg"/>"></a>
-				</div>
-			</td>
-		</tr>
-	</table>
-	
-	<table class="tabela_botoes">
-		<tr>
-			<td align="center"><div id="box_loading"></div></td>
 		</tr>
 	</table>
 </s:form>

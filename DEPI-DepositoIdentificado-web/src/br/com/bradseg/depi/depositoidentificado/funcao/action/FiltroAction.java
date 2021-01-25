@@ -80,8 +80,17 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	public String consultar() {
 		try {
 			clearErrorsAndMessages();
+			model.getColecaoDados().clear();
 			
-			List<String> criteriosCol = Arrays.asList(request.getParameterValues("criterio"));
+			String[] parameterValues = request.getParameterValues("criterio");
+
+			List<String> criteriosCol;
+			if (parameterValues != null) {
+				criteriosCol = Arrays.asList(parameterValues);
+			}
+			else {
+				criteriosCol = Collections.emptyList();
+			}
 			
 			T model = getModel();
 			
