@@ -1,5 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -24,12 +26,14 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 public class MotivoDepositoSalvarAction extends
 		SalvarAction<MotivoDepositoVO, MotivoDepositoEditarFormModel> {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoSalvarAction.class);
+
 	private static final long serialVersionUID = -3923052243969907744L;
 	
 	private transient MotivoDepositoCrudHelper crudHelper;
 	
 	@Autowired
-	void setFacade(MotivoDepositoFacade facade) {
+	protected void setFacade(MotivoDepositoFacade facade) {
 		crudHelper.setFacade(facade);
 	}
 	
@@ -53,6 +57,7 @@ public class MotivoDepositoSalvarAction extends
 		)
 	@Override
 	public String execute() {
+		LOGGER.info("Formulário validado. Chamando método para concluir a operação.");
 		return super.execute();
 	}
 

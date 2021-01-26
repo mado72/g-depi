@@ -70,21 +70,23 @@
 jQuery(document).ready(function($){
 	var parametros = <c:out value="${parametrosFiltroJson}" escapeXml="false"/>;
 	
+	var principal = [];
+	$.each(parametros, function(idx, item) {
+		var operacoes = [];
+		$.each(item.operacoes, function(idxOp, subitem) {
+			operacoes[idxOp] = {texto: subitem.d, valor: subitem.n};
+		});
+		principal[idx] = {
+			texto: item.entidade.descricao,
+			valor: item.entidade.campo,
+			sublista: operacoes
+		};
+	});
+	
 	$.filtro.prepararFormulario(
 		"#FiltroForm", 
 		{
-			principal: parametros.map(function(item){
-				return {
-					texto: item.entidade.descricao,
-					valor: item.entidade.campo,
-					sublista: item.operacoes.map(function(subitem){
-						return {
-							texto: subitem.d,
-							valor: subitem.n
-						};
-					})
-				};
-			}),
+			principal: principal,
 			recipiente: <c:out value="${recipienteListJson}" default="[]" escapeXml="false"/>
 		}
 	);

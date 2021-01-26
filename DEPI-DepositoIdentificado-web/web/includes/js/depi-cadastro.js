@@ -38,13 +38,13 @@ if (oldIE) {
 		    return b
 		};		
 	}
-	(function (con) {
-		con.log = con.profile = con.profileEnd = con.timeStamp = con.trace =
-			con.debug = con.info = con.warn = con.error = con.dir = con.dirxml =
-			con.group = con.groupCollapsed = con.groupEnd = con.time = con.timeEnd =
-			con.assert = con.count = con.clear = function(){};
-	})(window.console = window.console || {});
 }
+(function (con) {
+	con.log = con.profile = con.profileEnd = con.timeStamp = con.trace =
+		con.debug = con.info = con.warn = con.error = con.dir = con.dirxml =
+		con.group = con.groupCollapsed = con.groupEnd = con.time = con.timeEnd =
+		con.assert = con.count = con.clear = function(){};
+})(window.console = window.console || {});
 if (! Array.prototype.find) {
 	Array.prototype.find = function(predicate) {
 		  if (this === null) {
