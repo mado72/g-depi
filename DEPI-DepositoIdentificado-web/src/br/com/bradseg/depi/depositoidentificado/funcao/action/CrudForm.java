@@ -17,9 +17,9 @@ public abstract class CrudForm implements Serializable {
 		EXIBIR, INSERIR, ALTERAR, REMOVER;
 	}
 	
-	private EstadoCrud estado;
+	private String subtitulo;
 	
-	private String acao;
+	private EstadoCrud estado;
 	
 	public abstract void limparDados();
 	
@@ -44,19 +44,19 @@ public abstract class CrudForm implements Serializable {
 	}
 	
 	/**
-	 * Retorna Ação
-	 * @return Ação
+	 * Obtém o subtítulo
+	 * @return subtítulo.
 	 */
-	public String getAcao() {
-		return acao;
+	public String getSubtitulo() {
+		return subtitulo;
 	}
 	
 	/**
-	 * Define a ação
-	 * @param acao Ação
+	 * Define o subtítlo
+	 * @param subtitulo valor a ser definido
 	 */
-	public void setAcao(String acao) {
-		this.acao = acao;
+	public void setSubtitulo(String subtitulo) {
+		this.subtitulo = subtitulo;
 	}
 
 }

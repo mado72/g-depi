@@ -90,6 +90,7 @@ public final class ConstantesDEPI {
 	 * Erros.
 	 */
 	public static final String ERRO_INTERNO = "msg.erro.interno";
+	public static final String ERRO_SEMRESULTADO = "errors.semresultado";
 	public static final String ERRO_REGISTRO_DUPLICADO = "msg.erro.registroduplicado";
 	public static final String ERRO_RELACIONAMENTOS_NAO_CADASTRADOS = "msg.erro.relecionamentosDependestesNaoCadastrados";
 

@@ -2,23 +2,7 @@
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<!--mensagem de erro de negocio-->
-<s:if test="hasActionMessages()">
-<span id="box_msg_erro">
-<br />
-<table class="tabela_verm" >
-<tr>
-	<td align="left" >
-	<ul><s:actionerror/></ul>
-	</td>
-</tr>
-</table>
-</span>
-</s:if>
-
 <s:form action="consultar.do" id="FiltroForm">
-<s:hidden key="model.acao"></s:hidden>
-<s:hidden key="model.acaoAnterior"></s:hidden>
 	<table id="tabela_interna">
 		<tr>
 			<td colspan="2" width="50%"></td>

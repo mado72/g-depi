@@ -8,7 +8,7 @@
 	 -->
 	<include file="META-INF/bsad/struts2/struts-config.xml" />
 	
-	<constant name="struts.devMode" value="true" />
+	<constant name="struts.devMode" value="false" />
 	<constant name="struts.custom.i18n.resources" value="br.com.bradseg.depi.depositoidentificado.properties.ApplicationResources" />
 	
 	<package name="depi-default" abstract="true" extends="bsad-default">
@@ -63,26 +63,6 @@
 		</action> -->
 		
 	</package>
-	
-	<package name="cadastroConsultar" namespace="/cadastro/{entidade}/consultar" extends="depi-default">
-	
-		<default-class-ref class="{1}ConsultarAction"/>
-		
-		<global-results>
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/{1}/{1}.jsp</param>
-			</result>
-			<result name="input" type="redirectAction">listar</result>
-		</global-results>
-
-		<action name="index">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-		</action>
-        
-		<action name="*" method="{1}"/>
-
-	</package>
 
 	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito/consultar" extends="depi-default">
 	
@@ -99,8 +79,19 @@
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
 		</action>
+		
+		<action name="listar" method="listar">
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
+			</result>
+		</action>
         
-		<action name="*" method="{1}"/>
+		<action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+		</action>
 
 	</package>
 	
@@ -122,7 +113,9 @@
 			</result>
 		</global-results>
 		
-		<action name="novo" method="novo">
+		<action name="input" method="input"/>
+		
+		<action name="incluir" method="incluir">
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
 			<result name="input" type="redirectAction">input</result>
@@ -132,13 +125,22 @@
 			<result name="input" type="redirectAction">input</result>
 		</action>
         
-        <action name="*" method="{1}">
+        <action name="excluir" method="excluir">
+			<interceptor-ref name="store">
+				<param name="operationMode">STORE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+			<result name="success" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
+			</result>
         </action>
         
         <action name="salvar" class="motivoDepositoSalvarAction">
-			<result name="input">
-				<param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoForm.jsp</param>
-			</result>
+			<interceptor-ref name="store">
+				<param name="operationMode">STORE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
         </action>
     </package>
 
@@ -164,6 +166,13 @@
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
 			</result>
 		</action>
+        
+		<action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+		</action>
 
 	</package>
 	
@@ -180,19 +189,41 @@
 			    <param name="actionName">refrescar</param>
 			    <param name="namespace">/cadastro/departamento/consultar</param>
 			</result>
+			<result name="voltar" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/departamento/consultar</param>
+			</result>
 		</global-results>
-		
-		<action name="novo" method="novo">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-			<result name="input" type="redirectAction">input</result>
-		</action>
 		
 		<action name="alterar" method="alterar">
 			<result name="input" type="redirectAction">input</result>
 		</action>
         
-        <action name="*" method="{1}">
+        <action name="incluir" method="incluir">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+			<result name="input" type="redirectAction">input</result>
+        </action>
+        
+        <action name="excluir" method="excluir">
+			<interceptor-ref name="store">
+				<param name="operationMode">STORE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+			<result name="success" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/departamento/consultar</param>
+			</result>
+        </action>
+        
+        <action name="salvar" class="departamentoSalvarAction">
+			<interceptor-ref name="store">
+				<param name="operationMode">STORE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+			<result name="input">
+				<param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoForm.jsp</param>
+			</result>
         </action>
         
 	</package>

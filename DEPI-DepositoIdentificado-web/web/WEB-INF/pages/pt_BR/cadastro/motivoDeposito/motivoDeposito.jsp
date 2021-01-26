@@ -1,21 +1,22 @@
 <%@ page contentType="text/html; charset=UTF-8" %><%@ 
+	taglib prefix="depi" uri="/depi-tags" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
-	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" 
+%>
 <c:set var="namespaceEditar">/cadastro/motivoDeposito/editar</c:set>
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/comum/filtro2dropbox.jsp">
+<s:include value="/WEB-INF/pages/pt_BR/comum/filtro2dropbox.jsp">
 	<s:param name="scriptOff" value="true"/>
 </s:include>
 
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/comum/incluir-consultar.jsp">
+<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-consultar.jsp">
 	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
 </s:include>
 
-<s:if test="colecaoDados">
+<s:if test="colecaoDados && !colecaoDados.isEmpty()">
+<c:url value="/cadastro/motivoDeposito/editar/alterar.do" var="actionForm"></c:url>
 
-<s:form action="acao.do" namespace="/cadastro/motivoDeposito/editar" id="AcaoForm">
-
+<form action="${actionForm}" id="AcaoForm" method="post">
 <table id="tabela_interna" class="MotivoDeposito Consulta">
 	<thead>
 		<tr>
@@ -72,10 +73,10 @@
 </table>
 <div class="paginacao"></div>
 
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/comum/incluir-alterar-excluir.jsp">
+<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-alterar-excluir.jsp">
 	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
 </s:include>
-</s:form>
+</form>
 
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>

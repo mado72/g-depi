@@ -1,21 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" %><%@ 
+	taglib prefix="depi" uri="/depi-tags" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!--mensagem de erro de negocio-->
-<s:if test="hasActionMessages()">
-<span id="box_msg_erro">
-<br />
-
-<table class="tabela_verm" >
-<tr>
-	<td align="left" >
-	<ul><s:actionerror/></ul>
-	</td>
-</tr>
-</table>
-</span>
-</s:if>
+<s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
 <s:form action="salvar">
 <s:hidden name="codigo"/>
 	<table id="tabela_interna">
@@ -71,3 +59,4 @@
 		</tbody>
 	</table>
 </s:form>
+<depi:clearMessages actionErrors="true" fieldErrors="true" messages="true"/>

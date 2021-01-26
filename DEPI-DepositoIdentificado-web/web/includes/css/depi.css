@@ -44,6 +44,15 @@ button.btn-img {
 	left: 239px;
 }
 
+#depi-app .tabela_verm, #depi-app .tabela_sucesso {
+	width: 100%;
+}
+
+#depi-app .tabela_verm li, #depi-app .tabela_sucesso li {
+	list-style: none;
+	text-align: left;
+}
+
 #box_loading {
 	display: none;
 	margin-left: auto;

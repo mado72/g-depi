@@ -10,7 +10,7 @@ if (oldIE) {
 			for (var b = this, c = 0, d = b.length; d > c; ++c)
 				if (b[c] === a) return c;
 			return -1;
-		};		
+		};
 	}
 	if (! Array.prototype.map) {
 		Array.prototype.map = function(a, b) {
@@ -206,7 +206,7 @@ var fnReady = function ($) {
 			}
 
 			criterios.each(function(idx, opt) {
-				elements = elements.add($('<input>', { type:"hidden", name: "criterio" , value: $(opt).val()}));
+				elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: $(opt).val()}));
 			});
 			
 			$("#box_loading").show();
@@ -273,8 +273,8 @@ var fnReady = function ($) {
 		var jqForm = $(formSeletor);
 
 		var btnExcluir = jqForm.find("#BtnExcluir"),
-		
 			btnAlterar = jqForm.find("#BtnAlterar");
+		
 		btnExcluir.click(function(ev) {
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length == 0) {

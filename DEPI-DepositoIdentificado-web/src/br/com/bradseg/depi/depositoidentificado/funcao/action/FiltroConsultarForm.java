@@ -1,6 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,8 +15,6 @@ import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.util.json.DepiObjectMapper;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
-import com.opensymphony.xwork2.ActionSupport;
-
 /**
  * Representa o modelo do formulário de filtro, com entidade alinhadas com as
  * operações disponíveis, elegíveis por duas dropbox: a primeira, para definir a
@@ -25,10 +24,11 @@ import com.opensymphony.xwork2.ActionSupport;
  *
  * @param <T> Tipo que implementa {@link IEntidadeCampo}
  */
-public class FiltroConsultarForm<T extends IEntidadeCampo> extends
-		ActionSupport {
+public class FiltroConsultarForm<T extends IEntidadeCampo> implements Serializable {
 
 	private static final long serialVersionUID = -1473697395894253132L;
+	
+	private String subtitulo;
 	
 	private String namespaceEditar;
 
@@ -36,13 +36,13 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 	 * Usado internamente para montar um JSON usado na passagem de valores para
 	 * os dropbox.
 	 */
-	private DepiObjectMapper mapper = new DepiObjectMapper();
+	private final DepiObjectMapper mapper = new DepiObjectMapper();
 
 	/**
 	 * Possui a lista de entidades relacionadas com as possíveis operações de
 	 * consulta
 	 */
-	private List<EntidadeCampoOperacoesFiltro<T>> parametroFiltroList;
+	private final List<EntidadeCampoOperacoesFiltro<T>> parametroFiltroList;
 
 	/**
 	 * Armazena os critérios enviados (selecionados) pelo usuário
@@ -81,6 +81,14 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 
 			parametroFiltroList.add(item);
 		}
+	}
+	
+	public String getSubtitulo() {
+		return subtitulo;
+	}
+	
+	public void setSubtitulo(String subtitulo) {
+		this.subtitulo = subtitulo;
 	}
 	
 	public String getNamespaceEditar() {
@@ -191,6 +199,10 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> extends
 		for (String criterio : criterios) {
 			this.criteriosInformados.add(criterio);
 		}
+	}
+	
+	public void setCriteriosInformados(List<String> criteriosInformados) {
+		this.criteriosInformados = criteriosInformados;
 	}
 
 	public List<?> getColecaoDados() {

@@ -19,10 +19,12 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  * 
  * <ul>
  * <p>
- * Os estados possíveis da Action são:</p>
+ * Os estados possíveis da Action são:
+ * </p>
  * <li><b>iniciar</b>: inicia o formulário</li>
  * <li><b>consultar</b>: processa o formulário de filtro</li>
- * <li><b>refrescar</b>: força a renovação da consulta com base nos dados de filtro já editados anteriormente</li>
+ * <li><b>refrescar</b>: força a renovação da consulta com base nos dados de
+ * filtro já editados anteriormente</li>
  * </ul>
  * 
  * 
@@ -46,6 +48,15 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	public FiltroAction() {
 		this.model = (T) getFiltroHelper().criarFiltroModel();
 	}
+	
+	public void validateConsultar() {
+		clearErrorsAndMessages();
+	}
+	
+	@Override
+	public void validate() {
+		LOGGER.debug("Tem erros {}", hasErrors());
+	}
 
 	/**
 	 * Sobrescreve para retornar INPUT
@@ -53,9 +64,9 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	 */
 	@Override
 	public String execute() {
-		setSubtituloChave(getFiltroHelper().getChaveTituloConsultar());
+		getModel().setSubtitulo(getText(getFiltroHelper().getChaveTituloConsultar()));
 		
-		clearErrorsAndMessages();
+		clearErrors();
 		
 		this.prepararFiltro();
 		
@@ -67,7 +78,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
 	public String listar() {
-		setSubtituloChave(getFiltroHelper().getChaveTituloListar());
+		getModel().setSubtitulo(getText(getFiltroHelper().getChaveTituloListar()));
 		
 		return SUCCESS;
 	}
@@ -75,15 +86,16 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	/**
 	 * Processa os dados do filtro.
 	 * 
-	 * @return {@link com.opensymphony.xwork2.Action#INPUT}, quando consegue realizar a consulta. Senão {@link com.opensymphony.xwork2.Action#ERROR}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}, quando consegue
+	 *         realizar a consulta. Senão
+	 *         {@link com.opensymphony.xwork2.Action#ERROR}
 	 */
 	public String consultar() {
 		try {
-			clearErrorsAndMessages();
-			
 			model.setColecaoDados(new ArrayList<>());
+			model.clearCriterios();
 			
-			String[] parameterValues = request.getParameterValues("criterio");
+			String[] parameterValues = request.getParameterValues("criteriosInformados");
 
 			List<String> criteriosCol;
 			if (parameterValues != null) {
@@ -113,12 +125,11 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 			model.setColecaoDados(lista);
 			
 			if (lista == null || lista.isEmpty()) {
-				String message = super.getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-				addActionMessage(message);
+				addActionError(getText(ConstantesDEPI.ERRO_SEMRESULTADO));
 			}
-		} catch (DEPIIntegrationException e) {
+		} catch (Exception e) {
 			getModel().setColecaoDados(Collections.emptyList());
-			getModel().addActionError(e.getMessage());
+			addActionError(e.getMessage());
 		}
 		return INPUT;
 	}

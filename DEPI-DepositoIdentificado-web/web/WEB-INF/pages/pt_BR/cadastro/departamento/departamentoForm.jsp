@@ -17,7 +17,7 @@
 </span>
 </s:if>
 
-<s:form action="processar">
+<s:form action="salvar">
 <s:hidden name="codigo"/>
 	<table id="tabela_interna">
 	<caption>
@@ -32,7 +32,7 @@
 		<tr>
 			<td class="td_label" ><s:text name="label.grid.departamento.siglaDepartamento" /><span class="obrigatorio">*</span></td>
 			<td colspan="3" >
-				<s:textfield tabindex="1" key="siglaDepartamento" styleClass="input" style="text-transform: uppercase;"  maxlength="20" size="26" disabled="detalhar"/>
+				<s:textfield tabindex="1" key="siglaDepartamento" styleClass="input" style="text-transform: uppercase;"  maxlength="3" size="26" disabled="detalhar"/>
 			</td>
 		</tr>
 		<tr>
@@ -49,17 +49,17 @@
 				<td align="center" valign="middle" colspan="3">
 					<c:choose>
 						<c:when test="${detalhar}">
-							<button class="btn-img" type="submit" id="BtnVoltar" name="acao" value="voltar">
+							<s:a action="listar" namespace="/cadastro/departamento/consultar" class="button">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_voltar.gif"/>
-							</button>
+							</s:a>
 						</c:when>
 						<c:otherwise>
-							<button class="btn-img" id="BtnSalvar" type="submit" name="acao" value="salvar">
+							<button class="btn-img" id="BtnSalvar" type="submit" value="salvar">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_salvar.gif"/>
 							</button>
-							<button class="btn-img" id="BtnCancelar" name="acao" value="cancelar">
+							<s:a action="listar" namespace="/cadastro/departamento/consultar" class="button">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_cancelar.gif"/>
-							</button>
+							</s:a>
 						</c:otherwise>
 					</c:choose>
 				</td>

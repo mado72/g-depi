@@ -42,19 +42,38 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 	 */
 	protected abstract CrudHelper<VO, F> getCrudHelper();
 	
+	public void validateExibir() {
+		LOGGER.debug("Validando exibir");
+		clearErrorsAndMessages();
+	}
+	
+	public void validateIncluir() {
+		LOGGER.debug("Validando incluir. Tem erros: {}", hasErrors());
+		this.model.limparDados();
+	}
+	
+	public void validateAlterar() {
+		LOGGER.debug("Validando alterar. Tem erros: {}", hasErrors());
+		// não limpa mensagens de erro 
+	}
+	
+	public void validateExcluir() {
+		LOGGER.debug("Validando excluir. Tem erros: {}", hasErrors());
+		// não limpa mensagens de erro 
+	}
+	
 	/**
 	 * Prepara o model para exibir um registro
 	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String exibir() {
 		LOGGER.debug("Preparando formulário para exibir um registro");
-		getModel().setEstado(EstadoCrud.EXIBIR);
 		
 		CrudHelper<VO, F> crudHelper = getCrudHelper();
-		setSubtituloChave(crudHelper.getChaveTituloDetalhar());
-		crudHelper.preencherFormularioEdicao(model);
-		clearErrorsAndMessages();
+		model.setEstado(EstadoCrud.EXIBIR);
+		model.setSubtitulo(getText(crudHelper.getChaveTituloDetalhar()));
 		
+		crudHelper.preencherFormularioEdicao(model);
 		return INPUT;
 	}
 	
@@ -64,12 +83,10 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 	 */
 	public String incluir() {
 		LOGGER.debug("Preparando formulário para inclusão de um novo registro");
-		getModel().setEstado(EstadoCrud.INSERIR);
 
 		this.model.limparDados();
-		
-		setSubtituloChave(getCrudHelper().getChaveTituloIncluir());
-		clearErrorsAndMessages();
+		this.model.setEstado(EstadoCrud.INSERIR);
+		this.model.setSubtitulo(getText(getCrudHelper().getChaveTituloIncluir()));
 		
 		return INPUT;
 	}
@@ -81,13 +98,12 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 	public String alterar() {
 		LOGGER.debug("Preparando formulário para alterar um registro");
 
-		getModel().setEstado(EstadoCrud.ALTERAR);
-		
 		CrudHelper<VO, F> crudHelper = getCrudHelper();
 
-		setSubtituloChave(crudHelper.getChaveTituloAlterar());
+		this.model.setEstado(EstadoCrud.ALTERAR);
+		this.model.setSubtitulo(getText(crudHelper.getChaveTituloAlterar()));
+		
 		crudHelper.preencherFormularioEdicao(model);
-		clearErrorsAndMessages();
 		
 		return INPUT;
 	}
@@ -105,7 +121,11 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
 	public String excluir() {
-		excluirRegistros();
+		String[] codigos = request.getParameterValues("codigo");
+		List<VO> listaVO = mapearListaVO(codigos);
+		
+		getCrudHelper().excluirRegistros(listaVO);
+		addActionMessage(getText(ConstantesDEPI.MSG_EXCLUIR_EXITO));
 		
 		return SUCCESS;
 	}
@@ -120,13 +140,5 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 	 * @return Lista de VO preenchidos com os códigos.
 	 */
 	protected abstract List<VO> mapearListaVO(String[] codigos);
-
-	private void excluirRegistros() {
-		String[] codigos = request.getParameterValues("codigo");
-		List<VO> listaVO = mapearListaVO(codigos);
-		
-		getCrudHelper().excluirRegistros(listaVO);
-		addActionMessage(ConstantesDEPI.MSG_EXCLUIR_EXITO);
-	}
 
 }

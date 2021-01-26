@@ -27,15 +27,6 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 	private static final long serialVersionUID = -7675543657126275320L;
 	
 	private transient MotivoDepositoCrudHelper filtroHelper;
-	
-	public MotivoDepositoConsultarAction() {
-		LOGGER.debug("Instancia de filtroHelper", filtroHelper);
-	}
-	
-	@Autowired
-	protected void setFacade(MotivoDepositoFacade facade) {
-		this.filtroHelper.setFacade(facade);
-	}
 
 	@Override
 	protected CrudHelper<?, ?> getFiltroHelper() {
@@ -43,6 +34,11 @@ public class MotivoDepositoConsultarAction extends FiltroAction<FiltroConsultarF
 			filtroHelper = new MotivoDepositoCrudHelper();
 		}
 		return filtroHelper;
+	}
+	
+	@Autowired
+	protected void setFacade(MotivoDepositoFacade facade) {
+		this.filtroHelper.setFacade(facade);
 	}
 
 }

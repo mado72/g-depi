@@ -1,11 +1,10 @@
 <%@ page language="java" %><%@
-	page import="com.opensymphony.xwork2.ActionContext"%><%@
-	page import="com.opensymphony.xwork2.ActionSupport"%><%@ 
-	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@ 
-	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %><%@ 
-	taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %><%@ 
-	taglib prefix="s" uri="/struts-tags" %><%@ 
-	taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@ 
+	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
+	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %><%@
+	taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %><%@
+	taglib prefix="s" uri="/struts-tags" %><%@
+	taglib prefix="depi" uri="/depi-tags" %><%@
+	taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %><%@
 	taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" 
 %><!DOCTYPE HTML>
 <!--[if lt IE 7]> 
@@ -53,38 +52,42 @@
 		<td>
 			<s:include value="/WEB-INF/pages/layout/menu.jsp"/>
 			<br />
-			<s:if test="hasFieldErrors()">
-				<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tabela_verm" id="msgErros">
+			<s:if test="hasActionMessages()">
+				<!-- mensagens layout -->
+				<table class="tabela_sucesso" id="msgSucesso">
 					<tbody>
 						<tr>
-							<td><s:iterator value="fieldErrors">
-								<li><s:property value="value[0]" /></li>
-							</s:iterator></td>
+							<td><ul><s:iterator value="actionMessages">
+								<li><s:property /></li>
+							</s:iterator></ul></td>
 						</tr>
 					</tbody>
 				</table>
+				<depi:clearMessages messages="true"/>
+			</s:if>
+			<s:if test="hasFieldErrors()">
+				<!-- field errors layout -->
+				<table class="tabela_verm" id="msgErros">
+					<tbody>
+						<tr>
+							<td><ul><s:iterator value="fieldErrors">
+								<li><s:property value="value[0]" /></li>
+							</s:iterator></ul></td>
+						</tr>
+					</tbody>
+				</table>
+				<depi:clearMessages fieldErrors="true"/>
 			</s:if>
 			<s:if test="hasActionErrors()">
-				<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tabela_verm" id="msgErros">
+				<!-- action errors layout -->
+				<table class="tabela_verm" id="msgErros">
 					<tbody>
 						<tr>
-							<td><s:iterator value="actionErrors">
-								<li><s:property /></li>
-							</s:iterator></td>
+							<td><ul><s:actionerror/></ul></td>
 						</tr>
 					</tbody>
 				</table>
-			</s:if>
-			<s:if test="hasActionMessages()">
-				<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tabela_sucesso" id="msgSucesso">
-					<tbody>
-						<tr>
-							<td><s:iterator value="actionMessages">
-								<li><s:property /></li>
-							</s:iterator></td>
-						</tr>
-					</tbody>
-				</table>
+				<depi:clearMessages actionErrors="true"/>
 			</s:if>
 			<br />
 			<s:include value="/WEB-INF/pages/pt_BR/includes/logo-sistema.jsp"/>
@@ -102,6 +105,7 @@
 	<script type="text/javascript" src="<c:url value="/includes/js/depi-cadastro.js"/>" charset="utf-8"></script>
 	<c:out value="${scriptPage}" default="" escapeXml="false" />
 </c:if>
-<%((ActionSupport) ActionContext.getContext().getActionInvocation().getAction()).clearErrorsAndMessages();%>
+
 </body>
 </html>
+<depi:clearMessages actionErrors="true" fieldErrors="true" messages="true"/>

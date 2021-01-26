@@ -37,9 +37,6 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	
 	private static final String MSG_LOGIN_USUARIO = "msg.erro.usuario.logado";
 	
-	private String subtitulo;
-
-
 	/**
 	 * Construtor da classe BaseAction
 	 */
@@ -106,9 +103,6 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	 * Método para facilitar o desenvolvimento para expôr os arquivos estáticos por URL configurável 
 	 */
 	public String getEstatico() {
-		// @FIXME Deve estar dentro da aplicação, não na intranet: return request.getContextPath() + "/includes";
-		
-//		return getWww3() + "includes";
 		return request.getContextPath() + "/includes";
 	}
 
@@ -119,31 +113,6 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	@Override
 	public String execute() {
 		return SUCCESS;
-	}
-	
-	/**
-	 * Retorna Subtítulo da página
-	 * @return Subtítulo da página
-	 */
-	public String getSubtitulo() {
-		return subtitulo;
-	}
-	
-	/**
-	 * Define subtítulo
-	 * @param subtitulo Subtítulo a ser definido
-	 */
-	protected void setSubtitulo(String subtitulo) {
-		this.subtitulo = subtitulo;
-	}
-	
-	/**
-	 * Recupera o subtítulo da página a partir de uma chave do ResourceBundle
-	 * @param chave Chave do subtítulo
-	 */
-	protected void setSubtituloChave(String chave) {
-		String subtitulo = getText(chave);
-		setSubtitulo(subtitulo);
 	}
 
 }

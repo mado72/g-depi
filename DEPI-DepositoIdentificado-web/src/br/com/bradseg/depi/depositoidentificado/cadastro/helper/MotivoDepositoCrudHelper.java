@@ -169,17 +169,13 @@ public class MotivoDepositoCrudHelper implements
 		instancia.setCodigoEventoContabil(CODIGO_EVENTO_CONTABIL);
 		instancia.setCodigoItemContabil(CODIGO_ITEM_CONTABIL);
 		
-		try {
-			if (novo) {
-				facade.inserir(instancia);
-				return EstadoRegistro.NOVO;
-			}
-			else {
-				facade.alterar(instancia);
-				return EstadoRegistro.PERSISTIDO;
-			}
-		} catch (Exception e) {
-			throw new DEPIIntegrationException(e, ConstantesDEPI.ERRO_INTERNO);
+		if (novo) {
+			facade.inserir(instancia);
+			return EstadoRegistro.NOVO;
+		}
+		else {
+			facade.alterar(instancia);
+			return EstadoRegistro.PERSISTIDO;
 		}
 	}
 
