@@ -3,8 +3,6 @@ package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -25,8 +23,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 @Scope("session")
 public class DepartamentoEditarAction extends EditarFormAction<DepartamentoVO, DepartamentoEditarFormModel> {
 	
-    protected static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoEditarAction.class);
-
 	private static final long serialVersionUID = -7675543657126275320L;
 	
 	private transient DepartamentoCrudHelper crudHelper;

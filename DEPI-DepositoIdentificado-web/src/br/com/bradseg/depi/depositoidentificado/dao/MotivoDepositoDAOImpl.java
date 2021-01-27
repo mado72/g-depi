@@ -3,7 +3,6 @@
  */
 package br.com.bradseg.depi.depositoidentificado.dao;
 
-import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.concatenar;
 import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.concatenarComHifen;
 
 import java.util.List;
@@ -83,8 +82,9 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 			if (motivoDepto.size() >= 1 ) {
                 MotivoDepositoVO motivoDepositoVO = motivoDepto.get(0);
 				if (motivoDepositoVO.getIndicadorAtivo().equals("S")) {
-                    throw new BusinessException(concatenar(":", ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO, new StringBuilder(
-                        " Descrição Básica: ").append(vo.getDescricaoBasica()).append(".").toString()));
+					throw new DEPIBusinessException(
+							ConstantesDEPI.ERRO_MOTIVO_DESC_BSCO_JA_CADASTRADA,
+							vo.getDescricaoBasica());
                 } else {
 
                     params.addValue(PARAM_PRM1, vo.getDescricaoDetalhada().trim());
@@ -125,14 +125,10 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 			MotivoDepositoVO motivoExistente = obterPorChave(vo); 
 
             if (motivoExistente == null) {
-                StringBuilder sb = new StringBuilder("Motivo Depósito com Descrição Básica: ").append(vo.getDescricaoBasica())
-                    .append(" não está cadastrado.");
-                throw new BusinessException(ConstantesDEPI.ERRO_CUSTOMIZADA + " : " + sb.toString());
+                throw new DEPIBusinessException(ConstantesDEPI.ERRO_MOTIVODEPOSITO_NAOCADASTRADO, vo.getDescricaoBasica());
             }
             else if (motivoExistente.getIndicadorAtivo().equals("N")) {
-            	StringBuilder sb = new StringBuilder("Motivo Depósito com Descrição Básica: ").append(vo.getDescricaoBasica())
-            		.append(" com status inativo.");
-            	throw new BusinessException(concatenarComHifen(ConstantesDEPI.ERRO_CUSTOMIZADA, sb.toString()));
+            	throw new DEPIBusinessException(ConstantesDEPI.ERRO_MOTIVODEPOSITO_STATUSINATIVO, vo.getDescricaoBasica());
             }
             
 			MapSqlParameterSource paramsUpd = new MapSqlParameterSource();
@@ -152,7 +148,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 			}
 
             if (count == 0) {
-                throw new BusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+                throw new DEPIBusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
             }
 
         }  finally {
@@ -341,8 +337,6 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 	@Override
 	public List<MotivoDepositoVO> obterPorFiltro(FiltroUtil filtro) {
 		
-		LOGGER.error("obterPorFiltro(FiltroUtil filtro)"); 
-		
 		StringBuilder query = new StringBuilder();
     	query.append(QuerysDepi.MOTIVODEPOSITO_ALL);
     	
@@ -379,7 +373,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 	@Override
 	public List<MotivoDepositoVO> obterTodos() {
 		
-		LOGGER.error("obterPorFiltro(FiltroUtil filtro)"); 
+		LOGGER.error("obterTodos"); 
 		
 		StringBuilder query = new StringBuilder();
     	query.append(QuerysDepi.MOTIVODEPOSITO_ALL);
@@ -397,7 +391,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
             return motivoDepto;
             
         } finally {
-        	LOGGER.info("obterPorFiltro(FiltroUtil filtro)"); 
+        	LOGGER.info("obterTodos"); 
         }
 	}
 	

@@ -27,6 +27,8 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 
 	private final F model;
 	
+	private List<String> codigo;
+	
 	public EditarFormAction() {
 		this.model = getCrudHelper().criarCrudModel();
 	}
@@ -50,11 +52,12 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 	public void validateIncluir() {
 		LOGGER.debug("Validando incluir. Tem erros: {}", hasErrors());
 		this.model.limparDados();
+		clearErrorsAndMessages();
 	}
 	
 	public void validateAlterar() {
 		LOGGER.debug("Validando alterar. Tem erros: {}", hasErrors());
-		// não limpa mensagens de erro 
+		clearErrorsAndMessages();
 	}
 	
 	public void validateExcluir() {
@@ -140,5 +143,13 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 	 * @return Lista de VO preenchidos com os códigos.
 	 */
 	protected abstract List<VO> mapearListaVO(String[] codigos);
+	
+	public List<String> getCodigo() {
+		return codigo;
+	}
+	
+	public void setCodigo(List<String> codigo) {
+		this.codigo = codigo;
+	}
 
 }

@@ -28,19 +28,23 @@ public class ClearActionMessagesTag extends TagSupport {
 			if (invocation.getAction() instanceof ActionSupport) {
 				ActionSupport action = (ActionSupport) invocation.getAction();
 				if (action != null) {
-					if (messages && action.hasActionMessages()) {
-						action.clearMessages();
-					}
-					if (fieldErrors && action.hasFieldErrors()) {
-						action.clearFieldErrors();
-					}
-					if (actionErrors && action.hasActionErrors()) {
-						action.clearFieldErrors();
-					}
+					limparMensagens(action);
 				}
 			}
 		}
 		return super.doEndTag();
+	}
+
+	private void limparMensagens(ActionSupport action) {
+		if (messages && action.hasActionMessages()) {
+			action.clearMessages();
+		}
+		if (fieldErrors && action.hasFieldErrors()) {
+			action.clearFieldErrors();
+		}
+		if (actionErrors && action.hasActionErrors()) {
+			action.clearActionErrors();
+		}
 	}
 
 	public void setActionErrors(boolean actionErrors) {

@@ -1,7 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,6 +48,20 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 		this.model = (T) getFiltroHelper().criarFiltroModel();
 	}
 	
+	public void validateExecute() {
+		clearErrorsAndMessages();
+		model.limparDados();
+	}
+	
+	public void validateRetornar() {
+		clearErrors();
+		model.limparDados();
+	}
+	
+	public void validateRefrescar() {
+		clearErrorsAndMessages();
+	}
+	
 	public void validateConsultar() {
 		clearErrorsAndMessages();
 	}
@@ -73,6 +86,10 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 		return INPUT;
 	}
 	
+	public String retornar() {
+		return execute();
+	}
+	
 	/**
 	 * Apresenta o estado atual do formulário e da lista
 	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
@@ -93,22 +110,10 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	public String consultar() {
 		try {
 			model.setColecaoDados(new ArrayList<>());
-			model.clearCriterios();
-			
-			String[] parameterValues = request.getParameterValues("criteriosInformados");
-
-			List<String> criteriosCol;
-			if (parameterValues != null) {
-				criteriosCol = Arrays.asList(parameterValues);
-			}
-			else {
-				criteriosCol = Collections.emptyList();
-			}
 			
 			T model = getModel();
 			
-			List<CriterioConsultaVO> criterios = new ArrayList<>(model
-					.preencherCriterios(criteriosCol));
+			List<CriterioConsultaVO> criterios = model.obterCriteriosConsulta();
 
 			return processarCriterios(criterios);
 		} catch (DEPIIntegrationException e) {

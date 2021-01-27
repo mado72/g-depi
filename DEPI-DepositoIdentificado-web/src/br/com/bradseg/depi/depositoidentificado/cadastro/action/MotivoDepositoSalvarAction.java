@@ -51,8 +51,10 @@ public class MotivoDepositoSalvarAction extends
 					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="descricaoDetalhada", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.motivodeposito.descricaoDetalhada')})}")
 			},
 			stringLengthFields={
-					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="descricaoBasica", trim=true, minLength="1", maxLength="20", key="errors.minlength"),
-					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="descricaoDetalhada", trim=true, minLength="1", maxLength="200", key="errors.minlength")
+					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="descricaoBasica", trim=true, minLength="1", message="${getText('errors.minlength', new java.lang.String[] {getText('label.cadastro.motivodeposito.descricaoBasica'), '1'})}"),
+					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="descricaoBasica", trim=true, maxLength="20", message="${getText('errors.maxlength', new java.lang.String[] {getText('label.cadastro.motivodeposito.descricaoBasica'), '20'})}"),
+					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="descricaoDetalhada", trim=true, minLength="1", message="${getText('errors.minlength', new java.lang.String[] {getText('label.cadastro.motivodeposito.descricaoDetalhada'), '1'})}"),
+					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="descricaoDetalhada", trim=true, maxLength="200", message="${getText('errors.maxlength', new java.lang.String[] {getText('label.cadastro.motivodeposito.descricaoDetalhada'), '200'})}")
 			}
 		)
 	@Override

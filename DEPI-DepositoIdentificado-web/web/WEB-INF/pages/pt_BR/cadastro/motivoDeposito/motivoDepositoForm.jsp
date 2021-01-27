@@ -5,7 +5,7 @@
 
 <s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
 <s:form action="salvar">
-<s:hidden name="codigo"/>
+<input name="codigo" type="hidden" value="${codigo.isEmpty() ? '' : codigo }">
 	<table id="tabela_interna">
 	<caption>
 		<span class="obrigatorio"><s:text name="label.campos.obrigatorios" /></span>

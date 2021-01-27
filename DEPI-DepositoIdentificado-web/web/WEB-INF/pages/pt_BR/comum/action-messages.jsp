@@ -30,7 +30,6 @@
 	</table>
 	<depi:clearMessages fieldErrors="true"/>
 </s:if>
-<%-- 
 <s:if test="hasActionErrors()">
 	<!-- action errors motivoDepositoForm -->
 	<table class="tabela_verm" id="msgErros">
@@ -42,4 +41,3 @@
 	</table>
 	<depi:clearMessages actionErrors="true"/>
 </s:if>
- --%>

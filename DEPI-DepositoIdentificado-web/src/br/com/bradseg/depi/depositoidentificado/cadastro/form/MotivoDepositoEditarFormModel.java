@@ -10,20 +10,10 @@ public class MotivoDepositoEditarFormModel extends CrudForm {
 
 	private static final long serialVersionUID = 957768938376772158L;
 
-	private String codigo;
-	
 	private String descricaoBasica;
 	
 	private String descricaoDetalhada;
 	
-	public String getCodigo() {
-		return codigo;
-	}
-	
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
 	public String getDescricaoBasica() {
 		return descricaoBasica;
 	}
@@ -47,7 +37,7 @@ public class MotivoDepositoEditarFormModel extends CrudForm {
 
 	@Override
 	public void limparDados() {
-		codigo = "";
+		setCodigo(null);
 		descricaoBasica = "";
 		descricaoDetalhada = "";
 	}

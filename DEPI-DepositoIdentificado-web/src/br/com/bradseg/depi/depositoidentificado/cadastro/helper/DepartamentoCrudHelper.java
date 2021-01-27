@@ -135,7 +135,6 @@ public class DepartamentoCrudHelper implements
 			throws DEPIIntegrationException {
 		
 		DepartamentoVO instancia = obterPeloCodigo(model.getCodigo());
-		model.setCodigo(String.valueOf(instancia.getCodigoDepartamento()));
 		model.setSiglaDepartamento(instancia.getSiglaDepartamento());
 		model.setNomeDepartamento(instancia.getNomeDepartamento());
 	}
@@ -153,7 +152,8 @@ public class DepartamentoCrudHelper implements
 	public EstadoRegistro persistirDados(DepartamentoEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 		
-		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
+		String codigo = model.getCodigo();
+		boolean novo = codigo == null || codigo.isEmpty();
 	
 		DepartamentoVO instancia;
 		
@@ -164,7 +164,7 @@ public class DepartamentoCrudHelper implements
 			instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 		}
 		else {
-			instancia = obterPeloCodigo(model.getCodigo());
+			instancia = obterPeloCodigo(codigo);
 		}
 	
 		instancia.setSiglaDepartamento(model.getSiglaDepartamento());

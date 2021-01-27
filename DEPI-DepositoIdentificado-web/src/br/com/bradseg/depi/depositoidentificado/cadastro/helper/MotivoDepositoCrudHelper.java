@@ -8,6 +8,7 @@ import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.MotivoDepositoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
@@ -132,7 +133,6 @@ public class MotivoDepositoCrudHelper implements
 			throws DEPIIntegrationException {
 		
 		MotivoDepositoVO instancia = obterPeloCodigo(Integer.parseInt(model.getCodigo()));
-		model.setCodigo(String.valueOf(instancia.getCodigoMotivoDeposito()));
 		model.setDescricaoBasica(instancia.getDescricaoBasica());
 		model.setDescricaoDetalhada(instancia.getDescricaoDetalhada());
 	}
@@ -150,18 +150,21 @@ public class MotivoDepositoCrudHelper implements
 			MotivoDepositoEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 
-		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
+		String codigo = model.getCodigo();
+		boolean novo = codigo == null || codigo.isEmpty();
 		
 		MotivoDepositoVO instancia;
 
 		if (novo) {
+			model.setEstado(EstadoCrud.INSERIR);
 			instancia = new MotivoDepositoVO();
 			
 			int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
 			instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 		}
 		else {
-			instancia = obterPeloCodigo(Integer.parseInt(model.getCodigo()));
+			model.setEstado(EstadoCrud.ALTERAR);
+			instancia = obterPeloCodigo(Integer.parseInt(codigo));
 		}
 		
 		instancia.setDescricaoBasica(model.getDescricaoBasica());

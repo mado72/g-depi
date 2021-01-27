@@ -245,5 +245,8 @@ public final class ConstantesDEPI {
 	public static final String MSG_INSERIR_EXITO = "msg.inserir.sucesso";
 	public static final String MSG_ALTERAR_EXITO = "msg.alterar.sucesso";
 	public static final String MSG_EXCLUIR_EXITO = "msg.excluir.sucesso";
+	
+	public static final String ERRO_MOTIVODEPOSITO_STATUSINATIVO = "msg.erro.motivodeposito.status.inativo";
+	public static final String ERRO_MOTIVODEPOSITO_NAOCADASTRADO = "msg.erro.motivodeposito.naocadastrado";
 
 }

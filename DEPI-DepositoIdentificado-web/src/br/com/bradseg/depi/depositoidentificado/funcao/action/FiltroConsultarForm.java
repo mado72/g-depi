@@ -83,6 +83,12 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> implements Serializab
 		}
 	}
 	
+	public void limparDados() {
+		setNamespaceEditar(null);
+		setColecaoDados(null);
+		setCriteriosInformados(null);
+	}
+	
 	public String getSubtitulo() {
 		return subtitulo;
 	}
@@ -98,26 +104,16 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> implements Serializab
 	public void setNamespaceEditar(String namespaceEditar) {
 		this.namespaceEditar = namespaceEditar;
 	}
-	
-	public List<CriterioConsultaVO> preencherCriterios(Collection<String> criterioArray) {
-		clearCriterios();
-		
-		if (criterioArray == null) {
-			return Collections.emptyList();
-		}
-		
-		for (String criterio: criterioArray) {
-			this.addCriterio(criterio);
-		}
-		
-		return obterCriteriosConsulta();
-	}
 
 	/**
 	 * Obtém os critérios da consulta
 	 * @return Lista com os critérios
 	 */
 	public List<CriterioConsultaVO> obterCriteriosConsulta() {
+		if (criteriosInformados == null) {
+			return Collections.emptyList();
+		}
+		
 		List<CriterioConsultaVO> criterios = new ArrayList<>();
 		
 		int paramIdx = 0;
@@ -184,23 +180,18 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> implements Serializab
 	 * @return critérios.
 	 */
 	public List<String> getCriterios() {
+		if (criteriosInformados == null) {
+			return Collections.emptyList();
+		}
 		return Collections.unmodifiableList(new ArrayList<>(criteriosInformados));
 	}
 	
 	public void clearCriterios() {
-		this.criteriosInformados.clear();
-	}
-
-	public void addCriterio(String criterio) {
-		this.criteriosInformados.add(criterio);
-	}
-	
-	public void addCriterios(String[] criterios) {
-		for (String criterio : criterios) {
-			this.criteriosInformados.add(criterio);
+		if (this.criteriosInformados != null) {
+			this.criteriosInformados.clear();
 		}
 	}
-	
+
 	public void setCriteriosInformados(List<String> criteriosInformados) {
 		this.criteriosInformados = criteriosInformados;
 	}

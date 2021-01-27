@@ -8,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper.EstadoRegistro;
-import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
-import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
@@ -68,11 +66,14 @@ public abstract class SalvarAction<VO, F extends CrudForm> extends BaseModelActi
 	public String execute() {
 		try {
 			persistirDados();
-		} catch (DEPIBusinessException e) {
+		} catch (Exception e) {
 			addActionError(e.getMessage());
-			return INPUT;
-		} catch (DEPIIntegrationException e) {
-			addActionError(e.getMessage());
+			if (getModel().getEstado() == EstadoCrud.INSERIR) {
+				getModel().setSubtitulo(getText(getCrudHelper().getChaveTituloIncluir()));
+			}
+			else {
+				getModel().setSubtitulo(getText(getCrudHelper().getChaveTituloAlterar()));
+			}
 			return INPUT;
 		}
 		return SUCCESS;

@@ -1,8 +1,11 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
 import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.concatenarComHifen;
+
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,19 +26,28 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 @Service
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
+	
+	/** A Constante LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoFacadeImpl.class);
 
 	@Autowired
 	private MotivoDepositoDAO motivoDepositoDAO;
 	
 	@Override
 	public MotivoDepositoVO obterPorChave(MotivoDepositoVO vo) {
+		
+    	LOGGER.error("Inicio - obterPorChave(MotivoDepositoVO vo)"); 
 
 		return motivoDepositoDAO.obterPorChave(vo); 
+		
+
 		
 	}
 
 	@Override
 	public void alterar(MotivoDepositoVO vo) {
+		
+    	LOGGER.error("Inicio - alterar(MotivoDepositoVO vo)"); 
 		
         validaOperacao(vo);
 
@@ -46,12 +58,18 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
 		
 		motivoDepositoDAO.alterar(vo);
 		
+    	LOGGER.error("Fim - alterar(MotivoDepositoVO vo)"); 
+		
 	}
 
 	@Override
 	public void excluir(MotivoDepositoVO vo) {
 
+    	LOGGER.error("Inicio - excluir(MotivoDepositoVO vo)"); 
+		
 		motivoDepositoDAO.excluir(vo);
+		
+    	LOGGER.error("Fim - excluir(MotivoDepositoVO vo)"); 
 						
 	}
 	
@@ -81,6 +99,8 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
 	@Override
 	public List<MotivoDepositoVO> obterPorFiltroMotivoDepositvo(FiltroUtil filtro) {
 		
+    	LOGGER.error("Inicio - obterPorFiltroMotivoDepositvo(FiltroUtil filtro)"); 
+		
 		return motivoDepositoDAO.obterPorFiltro(filtro);
 		
 	}
@@ -88,13 +108,16 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
 	@Override
 	public List<MotivoDepositoVO> obterTodosMotivoDepositvo() {
 		
+    	LOGGER.error("Inicio - obterTodosMotivoDepositvo()"); 
+		
 		return motivoDepositoDAO.obterTodos();
 		
 	}
 
 	@Override
-	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(int codigoCia,
-			int codigoDep, Double codigoUsuario, Tabelas e) {
+	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(int codigoCia,int codigoDep, Double codigoUsuario, Tabelas e) {
+		
+		LOGGER.error("Inicio - obterComRestricaoDeGrupoAcesso(int codigoCia,int codigoDep, Double codigoUsuario, Tabelas e)"); 
 
 		return motivoDepositoDAO.obterComRestricaoDeGrupoAcesso(codigoCia, codigoDep, codigoUsuario, e);
 		
@@ -125,6 +148,9 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
      * @throws IntegrationException - trata erros
      */
     private void validaResponsavel(MotivoDepositoVO vo) throws IntegrationException {
+    	
+    	LOGGER.error("Inicio - validaResponsavel(MotivoDepositoVO vo)"); 
+    	
         if (BaseUtil.isNZB(vo.getCodigoResponsavelUltimaAtualizacao())) {
             throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Código do Responsável"));
         }
@@ -141,6 +167,9 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
      * @throws IntegrationException - trata erros
      */
     private void validaChave(MotivoDepositoVO vo) throws IntegrationException {
+    	
+    	LOGGER.error("Inicio - validaResponsavel(MotivoDepositoVO vo)"); 
+    	
         if (vo.getCodigoMotivoDeposito() == 0) {
 			throw new IntegrationException(concatenarComHifen(
 					ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO,

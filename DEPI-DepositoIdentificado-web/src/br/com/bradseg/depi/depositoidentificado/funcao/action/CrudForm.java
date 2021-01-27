@@ -19,6 +19,8 @@ public abstract class CrudForm implements Serializable {
 	
 	private String subtitulo;
 	
+	private String codigo;
+	
 	private EstadoCrud estado;
 	
 	public abstract void limparDados();
@@ -57,6 +59,22 @@ public abstract class CrudForm implements Serializable {
 	 */
 	public void setSubtitulo(String subtitulo) {
 		this.subtitulo = subtitulo;
+	}
+	
+	/**
+	 * Retorna o código informado.
+	 * @return Retorna o código.
+	 */
+	public String getCodigo() {
+		return codigo;
+	}
+	
+	/**
+	 * Define o código relacionado
+	 * @param codigo código
+	 */
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 }

@@ -104,7 +104,7 @@
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoForm.jsp</param>
 			</result>
 			<result name="success" type="redirectAction">
-			    <param name="actionName">refrescar</param>
+			    <param name="actionName">retornar</param>
 			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
 			</result>
 			<result name="voltar" type="redirectAction">
@@ -113,7 +113,7 @@
 			</result>
 		</global-results>
 		
-		<action name="input" method="input"/>
+		<action name="*" method="{1}"/>
 		
 		<action name="incluir" method="incluir">
 			<interceptor-ref name="limparDados"/>
@@ -130,10 +130,6 @@
 				<param name="operationMode">STORE</param>
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
-			<result name="success" type="redirectAction">
-			    <param name="actionName">listar</param>
-			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
-			</result>
         </action>
         
         <action name="salvar" class="motivoDepositoSalvarAction">
@@ -161,6 +157,7 @@
 		</action>
         
 		<action name="*" method="{1}"/>
+		
 		<action name="listar" method="listar">
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
@@ -195,7 +192,7 @@
 			</result>
 		</global-results>
 		
-		<action name="alterar" method="alterar">
+		<action name="*" method="{1}">
 			<result name="input" type="redirectAction">input</result>
 		</action>
         
@@ -211,7 +208,11 @@
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
 			<result name="success" type="redirectAction">
-			    <param name="actionName">listar</param>
+			    <param name="actionName">refrescar</param>
+			    <param name="namespace">/cadastro/departamento/consultar</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">refrescar</param>
 			    <param name="namespace">/cadastro/departamento/consultar</param>
 			</result>
         </action>

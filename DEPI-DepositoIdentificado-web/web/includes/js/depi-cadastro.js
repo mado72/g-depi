@@ -67,6 +67,11 @@ if (! Array.prototype.find) {
 	  return undefined;
   };
 }
+if (typeof String.prototype.trim !== 'function') {
+	String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g, '');
+	};
+}
 
 console.log("depi-cadastro.js");
 
@@ -166,6 +171,12 @@ var fnReady = function ($) {
 		btnPlus.click(function(ev){
 			var optPrincipal = jqPrincipal.find("option:selected");
 			var optSecundario = jqSecundario.find("option:selected");
+			
+			if (jqValor.val().trim().length == 0) {
+				ev.stopPropagation();
+				alert(MENSAGEM["msg.valor.invalido"]);
+				return;
+			}
 
 			var item = {
 				principal: optPrincipal.text(),
