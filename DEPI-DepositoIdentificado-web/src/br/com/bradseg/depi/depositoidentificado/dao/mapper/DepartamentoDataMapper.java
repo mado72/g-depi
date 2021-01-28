@@ -27,6 +27,7 @@ public class DepartamentoDataMapper implements RowMapper<DepartamentoVO> {
 		departamentoVO.setSiglaDepartamento(rs.getString("CSGL_DEPTO_DEP"));
 		departamentoVO.setIndicadoRegistroAtivo(rs.getString("CIND_REG_ATIVO"));
 		departamentoVO.setCodigoResponsavelUltimaAtualizacao(rs.getInt("CUSUAR_RESP_ATULZ"));
+		departamentoVO.setUltimaAtualizacao(rs.getDate("DHORA_ULT_ATULZ"));
 		
 		DepositoVO deposito = new DepositoVO();
 	    deposito.setCodigoDepositoIdentificado(rs.getLong("CDEPTO_DEP_IDTFD"));

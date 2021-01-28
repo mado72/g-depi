@@ -46,6 +46,7 @@ public class RelatorioDadosComplementaresDAOImpl extends JdbcDao implements Rela
 	 * @param filtro do relatório
 	 * @return List<RelatorioDadosComplementaresVO>
 	 */
+	@Override
 	public List<RelatorioDadosComplementaresVO> obterDadosComplementaresAnalitico(FiltroUtil filtro) {
 
     	List<RelatorioDadosComplementaresVO> relatorio = null;
@@ -57,7 +58,10 @@ public class RelatorioDadosComplementaresDAOImpl extends JdbcDao implements Rela
 
 		try {
 			MapSqlParameterSource params = new MapSqlParameterSource();
-			
+			/*
+			 * FIXME - Remover referências diretas aos campos e utilizar os
+			 * critérios de consulta.
+			 */
         	params.addValue("dtInicioA", filtro.getDataInicio());
         	params.addValue("dtFimA", filtro.getDataFinal());
         	params.addValue("dtInicioB", filtro.getDataInicio());

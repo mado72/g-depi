@@ -14,6 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.com.bradseg.depi.depositoidentificado.vo.LoginPostVO;
+
+import com.opensymphony.xwork2.ModelDriven;
+
 /**
  * Action de entrada no sistema.
  * 
@@ -22,7 +26,7 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 @Scope("request")
-public class IndexAction extends BaseAction implements SessionAware, ServletRequestAware {
+public class IndexAction extends BaseAction implements SessionAware, ServletRequestAware, ModelDriven<LoginPostVO> {
 
 	private static final long serialVersionUID = 8105460905681770564L;
 
@@ -32,6 +36,13 @@ public class IndexAction extends BaseAction implements SessionAware, ServletRequ
 	private transient String www3;
 	private transient Map<String, Object> session;
 	private transient HttpServletRequest request;
+	
+	private LoginPostVO model = new LoginPostVO();
+	
+	@Override
+	public LoginPostVO getModel() {
+		return model;
+	};
 
 	public String index() {
 		
@@ -63,6 +74,7 @@ public class IndexAction extends BaseAction implements SessionAware, ServletRequ
 		this.request = request;
 	}
 
+	@Override
 	public String getWww3() {
 		return www3;
 	}

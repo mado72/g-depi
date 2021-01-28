@@ -6,10 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
-import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper.EstadoRegistro;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
@@ -21,15 +20,17 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
  * @param <F> Tipo do Model utilizado por esta Action.
  */
 @Controller
-public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction<F> {
+public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends CrudForm> extends BaseModelAction<F> {
 
 	private static final long serialVersionUID = -8669859699304965615L;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(CrudAction.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EditarFormAction.class);
 
 	private final F model;
 	
-	public CrudAction() {
+	private List<String> codigo;
+	
+	public EditarFormAction() {
 		this.model = getCrudHelper().criarCrudModel();
 	}
 	
@@ -42,7 +43,28 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	 * Obtém o helper para processar as ações do formulário
 	 * @return instância de {@link CrudHelper}
 	 */
-	protected abstract CrudHelper<VO, F> getCrudHelper();
+	protected abstract CrudHelper<C, VO, F> getCrudHelper();
+	
+	public void validateExibir() {
+		LOGGER.debug("Validando exibir");
+		clearErrorsAndMessages();
+	}
+	
+	public void validateIncluir() {
+		LOGGER.debug("Validando incluir. Tem erros: {}", hasErrors());
+		this.model.limparDados();
+		clearErrorsAndMessages();
+	}
+	
+	public void validateAlterar() {
+		LOGGER.debug("Validando alterar. Tem erros: {}", hasErrors());
+		clearErrorsAndMessages();
+	}
+	
+	public void validateExcluir() {
+		LOGGER.debug("Validando excluir. Tem erros: {}", hasErrors());
+		// não limpa mensagens de erro 
+	}
 	
 	/**
 	 * Prepara o model para exibir um registro
@@ -50,13 +72,12 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	 */
 	public String exibir() {
 		LOGGER.debug("Preparando formulário para exibir um registro");
-		getModel().setEstado(EstadoCrud.EXIBIR);
 		
-		CrudHelper<VO, F> crudHelper = getCrudHelper();
-		setSubtituloChave(crudHelper.getChaveTituloDetalhar());
+		CrudHelper<C, VO, F> crudHelper = getCrudHelper();
+		model.setEstado(EstadoCrud.EXIBIR);
+		model.setSubtitulo(getText(crudHelper.getChaveTituloDetalhar()));
+		
 		crudHelper.preencherFormularioEdicao(model);
-		clearErrorsAndMessages();
-		
 		return INPUT;
 	}
 	
@@ -66,12 +87,10 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	 */
 	public String incluir() {
 		LOGGER.debug("Preparando formulário para inclusão de um novo registro");
-		getModel().setEstado(EstadoCrud.INSERIR);
 
 		this.model.limparDados();
-		
-		setSubtituloChave(getCrudHelper().getChaveTituloIncluir());
-		clearErrorsAndMessages();
+		this.model.setEstado(EstadoCrud.INSERIR);
+		this.model.setSubtitulo(getText(getCrudHelper().getChaveTituloIncluir()));
 		
 		return INPUT;
 	}
@@ -83,30 +102,21 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	public String alterar() {
 		LOGGER.debug("Preparando formulário para alterar um registro");
 
-		getModel().setEstado(EstadoCrud.ALTERAR);
-		
-		CrudHelper<VO, F> crudHelper = getCrudHelper();
+		CrudHelper<C, VO, F> crudHelper = getCrudHelper();
 
-		setSubtituloChave(crudHelper.getChaveTituloAlterar());
+		this.model.setEstado(EstadoCrud.ALTERAR);
+		this.model.setSubtitulo(getText(crudHelper.getChaveTituloAlterar()));
+		
 		crudHelper.preencherFormularioEdicao(model);
-		clearErrorsAndMessages();
 		
 		return INPUT;
 	}
 	
 	/**
-	 * Processa a ação sobre o formulário quando a ação for salvar. Caso contrário, devolve ação Voltar
-	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS} ou "voltar"
+	 * Processa ação para voltar ao formulário de consulta.
+	 * @return "voltar"
 	 */
-	public String processar() {
-		LOGGER.info("Processando submissão do formulário");
-		F form = getModel();
-		
-		if ("salvar".equals(form.getAcao())) {
-			persistirDados();
-			return SUCCESS;
-		}
-		
+	public String voltar() {
 		return "voltar";
 	}
 	
@@ -115,27 +125,13 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
 	public String excluir() {
-		excluirRegistros();
+		String[] codigos = request.getParameterValues("codigo");
+		List<VO> listaVO = mapearListaVO(codigos);
+		
+		getCrudHelper().excluirRegistros(listaVO);
+		addActionMessage(getText(ConstantesDEPI.MSG_EXCLUIR_EXITO));
 		
 		return SUCCESS;
-	}
-	
-	private void persistirDados() {
-		LOGGER.info("Persistindo dados do formulário");
-		
-		F model = getModel();
-		CrudHelper<VO, F> helper = getCrudHelper();
-		
-		LoginVo usuarioLogado = getUsuarioLogado();
-		
-		EstadoRegistro estado = helper.persistirDados(model, usuarioLogado);
-		
-		if (estado == EstadoRegistro.NOVO) {
-			addActionMessage(ConstantesDEPI.MSG_INSERIR_EXITO);
-		}
-		else {
-			addActionMessage(ConstantesDEPI.MSG_ALTERAR_EXITO);
-		}
 	}
 	
 	/**
@@ -148,13 +144,13 @@ public abstract class CrudAction<VO, F extends CrudForm> extends BaseModelAction
 	 * @return Lista de VO preenchidos com os códigos.
 	 */
 	protected abstract List<VO> mapearListaVO(String[] codigos);
-
-	private void excluirRegistros() {
-		String[] codigos = request.getParameterValues("codigo");
-		List<VO> listaVO = mapearListaVO(codigos);
-		
-		getCrudHelper().excluirRegistros(listaVO);
-		addActionMessage(ConstantesDEPI.MSG_EXCLUIR_EXITO);
+	
+	public List<String> getCodigo() {
+		return codigo;
+	}
+	
+	public void setCodigo(List<String> codigo) {
+		this.codigo = codigo;
 	}
 
 }

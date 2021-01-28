@@ -33,7 +33,7 @@ button.btn-img {
 
 #depi-app #menu_horizontal .dropdown {
 	border-bottom: 1px solid #bc0000;
-	top: 90px;
+	top: 68px;
 	width: 200px;
 }
 #depi-app #menu_horizontal #s1 {
@@ -44,6 +44,21 @@ button.btn-img {
 	left: 239px;
 }
 
+#depi-app .tabela_verm, #depi-app .tabela_sucesso {
+	width: 100%;
+}
+
+#depi-app .tabela_verm li, #depi-app .tabela_sucesso li {
+	text-align: left;
+}
+
+#box_loading {
+	display: none;
+	margin-left: auto;
+	margin-right: auto;
+    width: 100px;
+    height: 10px;
+}
 #carregandoImg {
 	display: none;
 }

@@ -10,7 +10,7 @@ if (oldIE) {
 			for (var b = this, c = 0, d = b.length; d > c; ++c)
 				if (b[c] === a) return c;
 			return -1;
-		};		
+		};
 	}
 	if (! Array.prototype.map) {
 		Array.prototype.map = function(a, b) {
@@ -38,13 +38,13 @@ if (oldIE) {
 		    return b
 		};		
 	}
-	(function (con) {
-		con.log = con.profile = con.profileEnd = con.timeStamp = con.trace =
-			con.debug = con.info = con.warn = con.error = con.dir = con.dirxml =
-			con.group = con.groupCollapsed = con.groupEnd = con.time = con.timeEnd =
-			con.assert = con.count = con.clear = function(){};
-	})(window.console = window.console || {});
 }
+(function (con) {
+	con.log = con.profile = con.profileEnd = con.timeStamp = con.trace =
+		con.debug = con.info = con.warn = con.error = con.dir = con.dirxml =
+		con.group = con.groupCollapsed = con.groupEnd = con.time = con.timeEnd =
+		con.assert = con.count = con.clear = function(){};
+})(window.console = window.console || {});
 if (! Array.prototype.find) {
 	Array.prototype.find = function(predicate) {
 		  if (this === null) {
@@ -66,6 +66,11 @@ if (! Array.prototype.find) {
 	  }
 	  return undefined;
   };
+}
+if (typeof String.prototype.trim !== 'function') {
+	String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g, '');
+	};
 }
 
 console.log("depi-cadastro.js");
@@ -118,7 +123,7 @@ var fnReady = function ($) {
 			jqSecundario = jqForm.find("#DropboxSecundario"),
 			jqValor = jqForm.find("#Valor"),
 			jqRecipiente = jqForm.find("#Lista"),
-			btnConsultar = jqForm.find("#BtnConsultar"),
+			btnConsultar = $("#BtnConsultar"),
 			btnPlus = jqForm.find("#BtnPlus"),
 			btnMinus = jqForm.find("#BtnMinus");
 
@@ -166,6 +171,12 @@ var fnReady = function ($) {
 		btnPlus.click(function(ev){
 			var optPrincipal = jqPrincipal.find("option:selected");
 			var optSecundario = jqSecundario.find("option:selected");
+			
+			if (jqValor.val().trim().length == 0) {
+				ev.stopPropagation();
+				alert(MENSAGEM["msg.valor.invalido"]);
+				return;
+			}
 
 			var item = {
 				principal: optPrincipal.text(),
@@ -205,9 +216,16 @@ var fnReady = function ($) {
 				};
 			}
 
-			criterios.each(function(idx, opt) {
-				elements = elements.add($('<input>', { type:"hidden", name: "criterio" , value: $(opt).val()}));
-			});
+			if (criterios.length > 0) {
+				criterios.each(function(idx, opt) {
+					elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: $(opt).val()}));
+				});
+			}
+			else {
+				elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: null}));
+			}
+			
+			$("#box_loading").show();
 			
 			jqForm.append(elements);
 
@@ -271,8 +289,8 @@ var fnReady = function ($) {
 		var jqForm = $(formSeletor);
 
 		var btnExcluir = jqForm.find("#BtnExcluir"),
-		
 			btnAlterar = jqForm.find("#BtnAlterar");
+		
 		btnExcluir.click(function(ev) {
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length == 0) {

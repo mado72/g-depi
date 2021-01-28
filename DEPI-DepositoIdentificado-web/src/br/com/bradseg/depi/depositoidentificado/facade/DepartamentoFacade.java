@@ -15,8 +15,23 @@ public interface DepartamentoFacade {
 
 	public List<DepartamentoVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) throws IntegrationException;
 
-	public List<DepartamentoVO> obterPorFiltro(FiltroUtil filtro);
+	/**
+	 * Processa filtro
+	 * @param filtro critérios
+	 * @return Lista de VO.
+	 * @throws IntegrationException
+	 */
+	List<DepartamentoVO> obterPorFiltro(FiltroUtil filtro)
+			throws IntegrationException;
 
+    /**
+     * Obter Departamentos por Cia e Usuário.
+     * @param codigoCia - int.
+     * @param codigoUsuario - BigDecimal.
+     * @param e Tabelas.
+     * @return List<DepartamentoVO>.
+     * @throws IntegrationException - IntegrationException.
+     */
 	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e) throws IntegrationException;
 
 	public List<DepartamentoVO> obterTodos() throws IntegrationException;
