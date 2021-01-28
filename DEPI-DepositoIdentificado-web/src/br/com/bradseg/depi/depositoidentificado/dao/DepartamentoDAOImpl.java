@@ -62,15 +62,22 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	
 		try {
 			
-			DepartamentoVO inativo = obterRegistroInativo(vo);
+			DepartamentoVO existente = obterRegistroPorSiglaDepartamento(vo);
 			
-			if (inativo == null) {
+			if (existente == null) {
 				LOGGER.info("Inserindo novo registro para a sigla {}", vo.getSiglaDepartamento());
 				queryInsert(vo);
 			}
 			else {
+				
+				if (existente.getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_ATIVO)) {
+					throw new DEPIIntegrationException(
+							ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO2,
+							"Sigla", vo.getSiglaDepartamento());
+				}
+
 				LOGGER.info("Reativando registro com a sigla {} para ativar e atualizar.", vo.getSiglaDepartamento());
-				vo.setCodigoDepartamento(inativo.getCodigoDepartamento());
+				vo.setCodigoDepartamento(existente.getCodigoDepartamento());
 				queryAtivar(vo);
 			}
 	    	
@@ -86,13 +93,28 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	public void alterar(DepartamentoVO vo){
 	    	
 	   	try {
-	   		validarRegistroInativo(vo);
-	        
-			Integer count = queryDepartamentoUpdate(vo);
-	
-	        if (count == 0) {
-	            throw new DEPIBusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
-	        }
+	   		DepartamentoVO existente = obterRegistroPorSiglaDepartamento(vo);
+	   		
+	   		if (existente != null) {
+	   			
+				if (existente.getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_INATIVO)) {
+					throw new DEPIIntegrationException(
+							ConstantesDEPI.ERRO_DEPARTAMENTO.ERRO_CADASTRADO_INATIVO,
+							vo.getSiglaDepartamento());
+				}
+				
+				if (existente.getCodigoDepartamento() != vo.getCodigoDepartamento()) {
+					throw new DEPIIntegrationException(
+							ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO2,
+							vo.getSiglaDepartamento(), "Sigla");
+				}
+	   		}
+			
+			Integer count = queryUpdate(vo);
+			
+			if (count == 0) {
+				throw new DEPIBusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+			}
 	
 	    } finally {
 	    	LOGGER.info("alterar(DepartamentoVO vo)"); 
@@ -105,9 +127,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	@Override
 	public void excluir(DepartamentoVO vo) {
 	    try {
-
-	    	queryDeparamentoInativar(vo);
-	    
+	    	queryInativar(vo);
 	    } finally {
 	    	LOGGER.info("excluir(DepartamentoVO vo)"); 
 	    } 
@@ -120,7 +140,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	public void excluir(List<DepartamentoVO> vos) {
 		try { 
 	        for (DepartamentoVO dep : vos) {
-	            this.queryDeparamentoInativar(dep);
+	        	excluir(dep);
 	        }
 		} finally {
 			LOGGER.info("excluir(List<DepartamentoVO> vos)"); 
@@ -130,7 +150,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Boolean isReferenciado(DepartamentoVO vo) {
+	public boolean isReferenciado(DepartamentoVO vo) {
 	    try {
 			
 	    	return queryDepartamentoReferenciadoCompanhia(vo);
@@ -256,39 +276,11 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	}
 
 	/**
-	 * Valida se existe algum registro inativo para o departamento escolhido com
-	 * mesma sigla, porém com código diferente.
-	 * 
-	 * @param vo
-	 *            departamento
-	 */
-	private void validarRegistroInativo(DepartamentoVO vo) {
-		List<DepartamentoVO> departamentos = queryDepartamentoExists(vo);
-		  
-		if (!departamentos.isEmpty()) {
-			
-			for (DepartamentoVO depto: departamentos) {
-				
-				if (vo.getCodigoDepartamento() != depto.getCodigoDepartamento()
-						&& depto.getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_INATIVO)) {
-					
-					throw new DEPIIntegrationException(
-							ConstantesDEPI.ERRO_DEPARTAMENTO.ERRO_CADASTRADO_INATIVO,
-							new StringBuilder(" Sigla: ").append(
-									vo.getSiglaDepartamento()).toString());
-				}
-			}
-			
-		}
-		
-	}
-	
-    /**
-     * Obtém registro com a mesma sigla, porém inativo
+     * Obtém registro por sigla departamento.
      * @param vo Contém a sigla a ser pesquisada
      * @return O primeiro item encontrado
      */
-    private DepartamentoVO obterRegistroInativo(DepartamentoVO vo) {
+    private DepartamentoVO obterRegistroPorSiglaDepartamento(DepartamentoVO vo) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
    
 		params.addValue(PARAM_WHR1, vo.getSiglaDepartamento());
@@ -297,18 +289,6 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 				QuerysDepi.DEPARTAMENTO_EXISTS, params, new DepartamentoDataMapper());
 		 
 		if (!lista.isEmpty()) {
-			
-			for (DepartamentoVO departamentoVO : lista) {
-
-				// Valida se há registro ativo. 
-				if (departamentoVO.getIndicadoRegistroAtivo().equals(
-						ConstantesDEPI.INDICADOR_ATIVO)) {
-					throw new DEPIIntegrationException(
-							ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO2,
-							"Sigla", vo.getSiglaDepartamento());
-				}
-				
-			}
 			
 			return lista.get(0);
 		}
@@ -352,7 +332,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_ATIVAR, paramsIns);
 	}
 
-	private void queryDeparamentoInativar(DepartamentoVO vo) {
+	private void queryInativar(DepartamentoVO vo) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		
 		params.addValue(PARAM_PRM1, vo.getCodigoResponsavelUltimaAtualizacao());
@@ -370,7 +350,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_INSERT, paramsIns);
 	}
 	
-	private Integer queryDepartamentoUpdate(DepartamentoVO vo) {
+	private Integer queryUpdate(DepartamentoVO vo) {
 		MapSqlParameterSource paramsUpd = new MapSqlParameterSource();
 
 		paramsUpd.addValue(PARAM_PRM1, vo.getSiglaDepartamento());
@@ -380,16 +360,6 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		
 		Integer count = getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_UPDATE, paramsUpd);
 		return count;
-	}
-	
-	private List<DepartamentoVO> queryDepartamentoExists(DepartamentoVO vo) {
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue(PARAM_WHR1, vo.getSiglaDepartamento().trim());
-
-		List<DepartamentoVO> departamentos = getJdbcTemplate().query(
-				QuerysDepi.DEPARTAMENTO_EXISTS, params,
-				new DepartamentoDataMapper());
-		return departamentos;
 	}
 	
 	private boolean queryDepartamentoReferenciadoCompanhia(
