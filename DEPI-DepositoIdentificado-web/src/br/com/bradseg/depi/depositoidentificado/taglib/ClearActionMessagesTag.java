@@ -24,10 +24,8 @@ public class ClearActionMessagesTag extends TagSupport {
 	@Override
 	public int doEndTag() throws JspException {
 		ActionInvocation invocation = ActionContext.getContext().getActionInvocation();
-		if (invocation != null && invocation.getAction() != null) {
-			if (invocation.getAction() instanceof ActionSupport) {
-				limparMensagens((ActionSupport) invocation.getAction());
-			}
+		if ((invocation != null && invocation.getAction() != null) && invocation.getAction() instanceof ActionSupport) {
+			limparMensagens((ActionSupport) invocation.getAction());
 		}
 		return super.doEndTag();
 	}
