@@ -6,6 +6,7 @@ import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
 /**
@@ -14,12 +15,14 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  * 
  * @author Marcelo Damasceno
  * 
+ * @param <C>
+ *            Tipo de entidade manipulado pelo Crud.
  * @param <VO>
  *            Classe de dados que são listadas na consulta.
  * @param <EF>
  *            Classe do formulário que possuem os dados editados pelo crud.
  */
-public interface CrudHelper<VO, EF extends CrudForm> {
+public interface CrudHelper<C extends IEntidadeCampo, VO, EF extends CrudForm> {
 	
 	/**
 	 * Estados de um registro em edição 
@@ -85,7 +88,7 @@ public interface CrudHelper<VO, EF extends CrudForm> {
 	 * @param criterioCol
 	 *            Coleção de critérios para ser utilizado na pesquisa.
 	 */
-	List<VO> processarCriterios(List<CriterioConsultaVO> criterioCol);
+	List<VO> processarCriterios(List<CriterioConsultaVO<C>> criterioCol);
 	
 	/**
 	 * Preenche formulário para edição de um registro.

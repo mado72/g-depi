@@ -150,6 +150,10 @@
 			<taglib-uri>/bsad-tags</taglib-uri>
 			<taglib-location>META-INF/bsad-tags.tld</taglib-location>
 		</taglib>
+		<taglib>
+			<taglib-uri>/depi-tags</taglib-uri>
+			<taglib-location>/WEB-INF/tld/depi-taglibs.tld</taglib-location>
+		</taglib>
 	</jsp-config>
 
 	<context-param>

@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
+import br.com.bradseg.depi.depositoidentificado.dao.mapper.BooleanDataHelper;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.DepartamentoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
@@ -55,178 +55,168 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		return dataSource;
 	}
     /**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void inserir(DepartamentoVO vo) {
+	
+		try {
+				
+			if (validarRegistroNaoExiste(vo)) {
+				queryInsert(vo);
+			}
+			else {
+				queryAtivar(vo);
+			}
+	    	
+		} finally {
+	    	LOGGER.info( "inserir(DepartamentoVO vo)"); 
+	    }
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void alterar(DepartamentoVO vo){
+	    	
+	   	try {
+	   		verificarRegistroExistente(vo);
+	        
+			Integer count = queryDepartamentoUpdate(vo);
+	
+	        if (count == 0) {
+	            throw new DEPIBusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+	        }
+	
+	    } finally {
+	    	LOGGER.info("alterar(DepartamentoVO vo)"); 
+	    }
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void excluir(DepartamentoVO vo) {
+	    try {
+
+	    	queryDeparamentoInativar(vo);
+	    
+	    } finally {
+	    	LOGGER.info("excluir(DepartamentoVO vo)"); 
+	    } 
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void excluir(List<DepartamentoVO> vos) {
+		try { 
+	        for (DepartamentoVO dep : vos) {
+	            this.queryDeparamentoInativar(dep);
+	        }
+		} finally {
+			LOGGER.info("excluir(List<DepartamentoVO> vos)"); 
+		}
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Boolean isReferenciado(DepartamentoVO vo) {
+	    try {
+			
+	    	return queryDepartamentoReferenciadoCompanhia(vo);
+			 
+	    } finally {
+	    	LOGGER.info("isReferenciado(DepartamentoVO vo)"); 
+	    }
+	}
+
+	/**
      * {@inheritDoc}
      */
 	@Override
     public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e)    {
- 
-    	StringBuilder query = null;
-        final String msg;
-       
-        try {
 
-            if (e.equals(Tabelas.GRUPO_ACESSO)) {
-            	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEGRUPOACESSO);
-                msg = " um Grupo de Acesso vinculado ao usuário.";
-            } else if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
-            	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO);
-                msg = " um Parametro de Depósito ou Grupo de Acesso vinculado ao usuário.";
-            } else if (e.equals(Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO)) {
-            	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODECONTACORRENTEMOTIVODEPOSITO);
-                msg = " uma Associação de Motivo ou Grupo de Acesso vinculado ao usuário.";
-            } else if (e.equals(Tabelas.DEPOSITO)) {
-            	query = new StringBuilder (QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEDEPOSITO);
-                msg = " um Depósito ou Grupo de Acesso vinculado ao usuário.";
-            } else {
-                throw new IntegrationException("Enum inválido.");
-            }
+		try {
+			
+			final String query;
+			final String msg;
 
-            MapSqlParameterSource params = new MapSqlParameterSource();
-            params.addValue(PARAM_WHR1,codigoCia);
-            params.addValue(PARAM_WHR2,codigoUsuario);
-            
-            List<DepartamentoVO> departamentoVO = getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
-            
-            
-            if (departamentoVO == null || departamentoVO.isEmpty() ) {
-                    throw new IntegrationException(ConstantesDEPI.ERRO_RELACIONAMENTOS_NAO_CADASTRADOS + " - " + new StringBuilder(msg).toString());
-                }
-                return departamentoVO;
-            } finally {
-            	LOGGER.info("obterComRestricaoDeGrupoAcesso(int codigoCia, BigDecimal codigoUsuario, Tabelas e)");
-        }
-        
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void alterar(DepartamentoVO vo){
-    	 
-        	
-       	try {
-       		verificarRegistroExistente(vo);
-            
-            StringBuilder queryUpd = new StringBuilder(QuerysDepi.DEPARTAMENTO_UPDATE);
-
-			MapSqlParameterSource paramsUpd = new MapSqlParameterSource();
-
-			paramsUpd.addValue(PARAM_PRM1, vo.getSiglaDepartamento());
-			paramsUpd.addValue(PARAM_PRM2, vo.getNomeDepartamento());
-			paramsUpd.addValue(PARAM_PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
-			paramsUpd.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
-    		
-			Integer count = getJdbcTemplate().update(queryUpd.toString(), paramsUpd);
-
-            if (count == 0) {
-                throw new BusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
-            }
-
-        } finally {
-        	LOGGER.info("alterar(DepartamentoVO vo)"); 
-        }
-    }
-	private void verificarRegistroExistente(DepartamentoVO vo) {
-		StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_EXISTS);
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue(PARAM_WHR1, vo.getSiglaDepartamento().trim());
-
-		List<DepartamentoVO> departamentos = getJdbcTemplate().query(query.toString(), params, new DepartamentoDataMapper());
-		  
-		if (!departamentos.isEmpty()) {
-			for (DepartamentoVO depto: departamentos) {
-				
-				if (!(vo.getCodigoDepartamento() == depto.getCodigoDepartamento())
-						&& depto.getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_ATIVO)) {
-					
-					throw new IntegrationException(
-							BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE2,
-									new StringBuilder(" Sigla: ").append(
-											vo.getSiglaDepartamento())
-											.toString()));
-				}
+			if (e.equals(Tabelas.GRUPO_ACESSO)) {
+				query = QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEGRUPOACESSO;
+				msg = " um Grupo de Acesso vinculado ao usuário.";
+			} else if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
+				query = QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO;
+				msg = " um Parametro de Depósito ou Grupo de Acesso vinculado ao usuário.";
+			} else if (e.equals(Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO)) {
+				query = QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODECONTACORRENTEMOTIVODEPOSITO;
+				msg = " uma Associação de Motivo ou Grupo de Acesso vinculado ao usuário.";
+			} else if (e.equals(Tabelas.DEPOSITO)) {
+				query = QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEDEPOSITO;
+				msg = " um Depósito ou Grupo de Acesso vinculado ao usuário.";
+			} else {
+				throw new IntegrationException("Enum inválido.");
 			}
+
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue(PARAM_WHR1, codigoCia);
+			params.addValue(PARAM_WHR2, codigoUsuario);
+
+			List<DepartamentoVO> departamentoVO = getJdbcTemplate().query(
+					query, params, new DepartamentoDataMapper());
+
+			if (departamentoVO == null || departamentoVO.isEmpty()) {
+				throw new DEPIIntegrationException(
+						ConstantesDEPI.ERRO_RELACIONAMENTOS_NAO_CADASTRADOS,
+						msg);
+			}
+			
+			return departamentoVO;
+			
+		} finally {
+			LOGGER.info("obterComRestricaoDeGrupoAcesso(int codigoCia, BigDecimal codigoUsuario, Tabelas e)");
 		}
+
 	}
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void excluir(List<DepartamentoVO> vos) {
-    	try { 
-            for (DepartamentoVO dep : vos) {
-                this.excluir(dep);
-            }
-    	} finally {
-    		LOGGER.info("excluir(List<DepartamentoVO> vos)"); 
-    	}
-    }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean isReferenciado(DepartamentoVO vo) {
-
-    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_REFERENCIADO_COMPANHIADEPARTAMENTO);
-
-        try {
+	 * {@inheritDoc}
+	 */
+	@Override
+	public DepartamentoVO obterPorChave(DepartamentoVO vo) {
+	
+	    try {
 			
-        	MapSqlParameterSource params = new MapSqlParameterSource();
-			params.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
-
-			
-			 List<DepartamentoVO> departamentoVO = getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
-			 
-			 if (!departamentoVO.isEmpty()) {
-				 return true;
-			 }
-
- 
-			 
-        } finally {
-        	LOGGER.info("isReferenciado(DepartamentoVO vo)"); 
-        }
-        return false;
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public DepartamentoVO obterPorChave(DepartamentoVO vo) {
-
-    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE);
-
-        try {
-			
-        	MapSqlParameterSource params = new MapSqlParameterSource();
+	    	MapSqlParameterSource params = new MapSqlParameterSource();
 			params.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
 			
-			List<DepartamentoVO> departamentoVO = getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			List<DepartamentoVO> departamentoVO = getJdbcTemplate().query(
+					QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE, params,
+					new DepartamentoDataMapper());
+			
 			return departamentoVO.get(0);
 			 
-        } finally {
-        	LOGGER.info("obterPorChave(DepartamentoVO vo) "); 
-        }
-     
-    }
-    
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<DepartamentoVO> obterPorFiltro(FiltroUtil filtro) {
-
-    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERTODOS);
-
-        try {
+	    } finally {
+	    	LOGGER.info("obterPorChave(DepartamentoVO vo) "); 
+	    }
+	
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<DepartamentoVO> obterPorFiltro(FiltroUtil filtro) {
+	
+	    try {
 			
-        	MapSqlParameterSource params = null;
-        	
+	    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERTODOS);
+	    	
+	    	MapSqlParameterSource params = null;
+	    	
 	        /**
 	         * Parametros.
 	         */
@@ -237,97 +227,71 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 			
 			return getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
 			 
-        } finally {
-        	LOGGER.info("obterPorChave(DepartamentoVO vo) "); 
-        }
-     
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<DepartamentoVO> obterTodos() {
-
-    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERTODOS);
-
-        try {
+	    } finally {
+	    	LOGGER.info("obterPorChave(DepartamentoVO vo) "); 
+	    }
+	
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<DepartamentoVO> obterTodos() {
+	
+	    try {
 			
-        	MapSqlParameterSource params = new MapSqlParameterSource();
-			
-        	return getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			return getJdbcTemplate().query(QuerysDepi.DEPARTAMENTO_OBTERTODOS,
+					new MapSqlParameterSource(), new DepartamentoDataMapper());
 			 
-        } finally {
-        	LOGGER.info("obterPorTodos() "); 
-        }
-     
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void excluir(DepartamentoVO vo) {
- 
-     	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_INATIVAR);
-     	
-        try {
-        	
-        	MapSqlParameterSource params = new MapSqlParameterSource();
-        	
-        	params.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
-        	params.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
-  
-			getJdbcTemplate().update(query.toString(), params);
-
-        } finally {
-        	LOGGER.info("excluir(DepartamentoVO vo)"); 
-        } 
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void inserir(DepartamentoVO vo) {
-
-        
-    	try {
-			validarRegistroNaoExiste(vo);
-        	
-			StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_INSERT);
-
-    		MapSqlParameterSource paramsIns = new MapSqlParameterSource();
-    	    
-    		paramsIns.addValue("prm1", vo.getSiglaDepartamento());        	
-    		paramsIns.addValue("prm2", vo.getNomeDepartamento());
-    		paramsIns.addValue("prm3", vo.getCodigoResponsavelUltimaAtualizacao());
-
-    		getJdbcTemplate().update(query.toString(), paramsIns);
-    		
-    		
-    	} finally {
-        	LOGGER.info( "inserir(DepartamentoVO vo)"); 
-        }
-    }
-	private void validarRegistroNaoExiste(DepartamentoVO vo) {
-		StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_EXISTS);
+	    } finally {
+	    	LOGGER.info("obterPorTodos() "); 
+	    }
+	
+	}
+	private void verificarRegistroExistente(DepartamentoVO vo) {
+		List<DepartamentoVO> departamentos = queryDepartamentoExists(vo);
+		  
+		if (!departamentos.isEmpty()) {
+			for (DepartamentoVO depto: departamentos) {
+				
+				if (vo.getCodigoDepartamento() != depto.getCodigoDepartamento()
+						&& depto.getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_INATIVO)) {
+					
+					throw new DEPIIntegrationException(
+							ConstantesDEPI.ERRO_DEPARTAMENTO.ERRO_CADASTRADO_INATIVO,
+							new StringBuilder(" Sigla: ").append(
+									vo.getSiglaDepartamento()).toString());
+				}
+			}
+		}
+	}
+	
+    private boolean validarRegistroNaoExiste(DepartamentoVO vo) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
    
 		params.addValue(PARAM_WHR1, vo.getSiglaDepartamento());
 
-		 List<DepartamentoVO> departamentoVO = getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+		List<DepartamentoVO> departamentoVO = getJdbcTemplate().query(
+				QuerysDepi.DEPARTAMENTO_EXISTS, params, new DepartamentoDataMapper());
 		 
 		if (!departamentoVO.isEmpty()) {
-         
+
 			int i = 0;
-		    while (i <= departamentoVO.size()) {
-		        if (departamentoVO.get(i).getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_ATIVO)) {
-					throw new DEPIIntegrationException(ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO2, "Sigla", vo.getSiglaDepartamento());
-		        }
-		        ++i;
-		   }
+			while (i < departamentoVO.size()) {
+				if (departamentoVO.get(i).getIndicadoRegistroAtivo()
+						.equals(ConstantesDEPI.INDICADOR_ATIVO)) {
+					throw new DEPIIntegrationException(
+							ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO2,
+							"Sigla", vo.getSiglaDepartamento());
+				}
+				++i;
+			}
+			
+			return false;
 		}
+		
+		return true;
 	}
 
     /**
@@ -355,5 +319,71 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
         }
 
     }
-    
+ 
+	private void queryAtivar(DepartamentoVO vo) {
+		MapSqlParameterSource paramsIns = new MapSqlParameterSource();
+		paramsIns.addValue(PARAM_PRM1, vo.getSiglaDepartamento());        	
+		paramsIns.addValue(PARAM_PRM2, vo.getNomeDepartamento());
+		paramsIns.addValue(PARAM_PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
+		paramsIns.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
+						
+		getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_ATIVAR, paramsIns);
+	}
+
+	private void queryDeparamentoInativar(DepartamentoVO vo) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		params.addValue(PARAM_PRM1, vo.getCodigoResponsavelUltimaAtualizacao());
+		params.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
+
+		getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_INATIVAR, params);
+	}
+	
+	private void queryInsert(DepartamentoVO vo) {
+		MapSqlParameterSource paramsIns = new MapSqlParameterSource();
+		paramsIns.addValue(PARAM_PRM1, vo.getSiglaDepartamento());        	
+		paramsIns.addValue(PARAM_PRM2, vo.getNomeDepartamento());
+		paramsIns.addValue(PARAM_PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
+		
+		getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_INSERT, paramsIns);
+	}
+	
+	private Integer queryDepartamentoUpdate(DepartamentoVO vo) {
+		MapSqlParameterSource paramsUpd = new MapSqlParameterSource();
+
+		paramsUpd.addValue(PARAM_PRM1, vo.getSiglaDepartamento());
+		paramsUpd.addValue(PARAM_PRM2, vo.getNomeDepartamento());
+		paramsUpd.addValue(PARAM_PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
+		paramsUpd.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
+		
+		Integer count = getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_UPDATE, paramsUpd);
+		return count;
+	}
+	
+	private List<DepartamentoVO> queryDepartamentoExists(DepartamentoVO vo) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue(PARAM_WHR1, vo.getSiglaDepartamento().trim());
+
+		List<DepartamentoVO> departamentos = getJdbcTemplate().query(
+				QuerysDepi.DEPARTAMENTO_EXISTS, params,
+				new DepartamentoDataMapper());
+		return departamentos;
+	}
+	
+	private boolean queryDepartamentoReferenciadoCompanhia(
+			DepartamentoVO vo) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		// Tratamento para evitar erro -4460
+		// Ref.: https://www.ibm.com/support/pages/db2-sql-query-select-gives-sql-errorcode-4460
+		String query = QuerysDepi.DEPARTAMENTO_REFERENCIADO_COMPANHIADEPARTAMENTO
+				.replaceAll(String.format(":%s", PARAM_WHR1),
+						String.valueOf(vo.getCodigoDepartamento()));
+		
+		List<Boolean> exists = getJdbcTemplate().query(
+				query,
+				params, new BooleanDataHelper());
+		return ! exists.isEmpty() && exists.get(0);
+	}
+	
 }

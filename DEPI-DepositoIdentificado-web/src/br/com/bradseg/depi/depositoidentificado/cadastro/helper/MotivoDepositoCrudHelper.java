@@ -8,10 +8,9 @@ import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.MotivoDepositoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
-import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
@@ -24,7 +23,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
  * @author Marcelo Damasceno
  */
 public class MotivoDepositoCrudHelper implements
-		CrudHelper<MotivoDepositoVO, MotivoDepositoEditarFormModel> {
+		CrudHelper<MotivoDepositoCampo, MotivoDepositoVO, MotivoDepositoEditarFormModel> {
 
 	private static final String TITLE_DEPOSITO_CONSULTAR = "title.deposito.consultar";
 
@@ -79,10 +78,13 @@ public class MotivoDepositoCrudHelper implements
 
 		};
 
-		Funcao<String, IEntidadeCampo> obterEntidadeCampo = new Funcao<String, IEntidadeCampo>() {
+		Funcao<String, MotivoDepositoCampo> obterEntidadeCampo = new Funcao<String, MotivoDepositoCampo>() {
 
 			@Override
-			public IEntidadeCampo apply(String source) {
+			public MotivoDepositoCampo apply(String source) {
+				if (source == null || source.isEmpty()) {
+					return null;
+				}
 				return MotivoDepositoCampo.valueOf(source);
 			}
 		};
@@ -93,13 +95,13 @@ public class MotivoDepositoCrudHelper implements
 
 	@Override
 	public List<MotivoDepositoVO> processarCriterios(
-			List<CriterioConsultaVO> criterios) {
-		criterios = new ArrayList<>(criterios);
-		criterios.add(new CriterioConsultaVO("CIND_REG_ATIVO = :OPT1", "OPT1",
-				ConstantesDEPI.SIM));
+			List<CriterioConsultaVO<MotivoDepositoCampo>> criterios) {
+		
+		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);
+		aux.add(new CriterioConsultaVO<MotivoDepositoCampo>("CIND_REG_ATIVO = 'S'"));
 		
 		FiltroUtil filtro = new FiltroUtil();
-		filtro.setCriterios(criterios);
+		filtro.setCriterios(aux);
 
 		List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
 		return retorno;
@@ -132,7 +134,6 @@ public class MotivoDepositoCrudHelper implements
 			throws DEPIIntegrationException {
 		
 		MotivoDepositoVO instancia = obterPeloCodigo(Integer.parseInt(model.getCodigo()));
-		model.setCodigo(String.valueOf(instancia.getCodigoMotivoDeposito()));
 		model.setDescricaoBasica(instancia.getDescricaoBasica());
 		model.setDescricaoDetalhada(instancia.getDescricaoDetalhada());
 	}
@@ -150,18 +151,21 @@ public class MotivoDepositoCrudHelper implements
 			MotivoDepositoEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 
-		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
+		String codigo = model.getCodigo();
+		boolean novo = codigo == null || codigo.isEmpty();
 		
 		MotivoDepositoVO instancia;
 
 		if (novo) {
+			model.setEstado(EstadoCrud.INSERIR);
 			instancia = new MotivoDepositoVO();
 			
 			int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
 			instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 		}
 		else {
-			instancia = obterPeloCodigo(Integer.parseInt(model.getCodigo()));
+			model.setEstado(EstadoCrud.ALTERAR);
+			instancia = obterPeloCodigo(Integer.parseInt(codigo));
 		}
 		
 		instancia.setDescricaoBasica(model.getDescricaoBasica());
@@ -169,17 +173,13 @@ public class MotivoDepositoCrudHelper implements
 		instancia.setCodigoEventoContabil(CODIGO_EVENTO_CONTABIL);
 		instancia.setCodigoItemContabil(CODIGO_ITEM_CONTABIL);
 		
-		try {
-			if (novo) {
-				facade.inserir(instancia);
-				return EstadoRegistro.NOVO;
-			}
-			else {
-				facade.alterar(instancia);
-				return EstadoRegistro.PERSISTIDO;
-			}
-		} catch (Exception e) {
-			throw new DEPIIntegrationException(e, ConstantesDEPI.ERRO_INTERNO);
+		if (novo) {
+			facade.inserir(instancia);
+			return EstadoRegistro.NOVO;
+		}
+		else {
+			facade.alterar(instancia);
+			return EstadoRegistro.PERSISTIDO;
 		}
 	}
 

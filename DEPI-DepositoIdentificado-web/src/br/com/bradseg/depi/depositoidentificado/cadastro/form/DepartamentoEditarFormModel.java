@@ -12,19 +12,9 @@ public class DepartamentoEditarFormModel extends CrudForm {
 
 	public static final String NOME_FORM = DepartamentoEditarFormModel.class.getSimpleName();
 	
-	private String codigo;
-	
 	private String siglaDepartamento;
 	
 	private String nomeDepartamento;
-
-	public String getCodigo() {
-		return codigo;
-	}
-	
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
 
 	public String getSiglaDepartamento() {
 		return siglaDepartamento;
@@ -44,7 +34,7 @@ public class DepartamentoEditarFormModel extends CrudForm {
 
 	@Override
 	public void limparDados() {
-		codigo = "";
+		setCodigo(null);
 		siglaDepartamento = "";
 		nomeDepartamento = "";
 	}

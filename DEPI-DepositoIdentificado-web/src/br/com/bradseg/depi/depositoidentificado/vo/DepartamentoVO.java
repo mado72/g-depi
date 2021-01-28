@@ -4,7 +4,11 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
+
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 /**
  * Classe Anotada de Mapeamento com a tabela DEPTO.
@@ -58,6 +62,11 @@ public class DepartamentoVO implements Serializable {
      * Indicado Registro Ativo.
      */
     private String indicadoRegistroAtivo;
+    
+	/**
+	 * Atributo que receberá um depósito vinculado ao departamento
+	 */
+    private Date ultimaAtualizacao;
     
     private DepositoVO deposito;
     
@@ -160,6 +169,24 @@ public class DepartamentoVO implements Serializable {
 	public void setIndicadoRegistroAtivo(String indicadoRegistroAtivo) {
 		this.indicadoRegistroAtivo = indicadoRegistroAtivo;
 	}
-    
+
+	/**
+	 * Retorna o ultima atualização.
+	 * 
+	 * @return O atributo ultima atualização.
+	 */
+	public Date getUltimaAtualizacao() {
+		return BaseUtil.getDate(ultimaAtualizacao);
+	}
+
+	/**
+	 * Especifica o data ultima atualização.
+	 * 
+	 * @param ultimaAtualizacao
+	 *            atualização a ser setado
+	 */
+	public void setUltimaAtualizacao(Date ultimaAtualizacao) {
+		this.ultimaAtualizacao = BaseUtil.getDate(ultimaAtualizacao);
+	}
     
 }

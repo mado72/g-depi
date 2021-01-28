@@ -30,7 +30,7 @@ public class GrupoAcessoVO implements Serializable{
 	}
 
 	/**
-     * Código seq�encial do Grupo Acesso.
+     * Código sequencial do Grupo Acesso.
      */
 //	@TableField(name = "CGRP_DEPTO_DEP")
 	private int codigoGrupoAcesso;

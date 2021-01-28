@@ -17,6 +17,6 @@
 </c:if>
 <decorator:body />
 <c:if test="${param.scriptOff != 'true'}">
-	<script type="text/javascript" src="<s:url value="/includes/script/depi-cadastro.js"/>" charset="utf-8"></script>
+	<script type="text/javascript" src="<s:url value="/includes/js/depi-cadastro.js"/>" charset="utf-8"></script>
 	<c:out value="${scriptPage}" default="" escapeXml="false" />
 </c:if>
