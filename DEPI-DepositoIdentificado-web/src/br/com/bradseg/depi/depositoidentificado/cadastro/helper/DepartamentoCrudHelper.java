@@ -1,14 +1,10 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.helper;
 
-import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.dao.DataIntegrityViolationException;
-
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
-import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
@@ -92,21 +88,7 @@ public class DepartamentoCrudHelper implements
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(aux);
 		
-		try {
-			List<DepartamentoVO> lista = facade.obterPorFiltro(filtro);
-			return lista;
-		} catch (IntegrationException e) {
-			if (e.getCause() instanceof DataIntegrityViolationException) {
-				DataIntegrityViolationException dataE = (DataIntegrityViolationException) e.getCause();
-				if (dataE.getCause() instanceof SQLDataException) {
-					SQLDataException sqlE = (SQLDataException) dataE.getCause();
-					if (sqlE.getSQLState().contains("22001")) {
-						throw new DEPIIntegrationException(sqlE, "erro.SQLSTATE.22001");
-					}
-				}
-			}
-			throw new DEPIIntegrationException(e);
-		}
+		return facade.obterPorFiltro(filtro);
 	}
 
 	// Métodos para o CRUD

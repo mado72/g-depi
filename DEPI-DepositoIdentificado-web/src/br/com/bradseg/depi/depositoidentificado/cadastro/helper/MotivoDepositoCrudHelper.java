@@ -103,8 +103,7 @@ public class MotivoDepositoCrudHelper implements
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(aux);
 
-		List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
-		return retorno;
+		return facade.obterPorFiltroMotivoDepositvo(filtro);
 	}
 	
 	// Métodos para atender ao CRUD
