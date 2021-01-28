@@ -768,12 +768,7 @@ public class DepositoVO implements Serializable {
 	}
 
 	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
-		if (dataHoraAtualizacao == null) {
-			this.dataHoraAtualizacao = null;
-		}
-		else {
-			this.dataHoraAtualizacao = new Date(dataHoraAtualizacao.getTime());
-		}
+		this.dataHoraAtualizacao = (Date) dataHoraAtualizacao.clone();
 	}
 
 	public Date getDataInclusao() {
@@ -781,12 +776,7 @@ public class DepositoVO implements Serializable {
 	}
 
 	public void setDataInclusao(Date dataInclusao) {
-		if (dataInclusao == null) {
-			this.dataInclusao = null;
-		}
-		else {
-			this.dataInclusao = new Date(dataInclusao.getTime());
-		}
+		this.dataInclusao = (Date) dataInclusao.clone();
 	}
 	
 	

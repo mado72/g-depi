@@ -95,6 +95,8 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     @Override
     public void inserir(DepositoVO vo, ParametroDepositoVO param) {
     	
+    	LOGGER.error("inserir(DepositoVO vo, ParametroDepositoVO param"); 
+    	
     	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_INSERT);
 
     	try {
@@ -143,7 +145,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
         } catch (SQLException e) {
         	LOGGER.error("inserir(DepositoVO vo, ParametroDepositoVO param", e); 
 		} finally {
-        	LOGGER.info("inserir(DepositoVO vo, ParametroDepositoVO param"); 
+        	LOGGER.error("inserir(DepositoVO vo, ParametroDepositoVO param"); 
         }
     }
 

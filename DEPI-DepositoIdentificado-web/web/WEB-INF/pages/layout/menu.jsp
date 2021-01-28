@@ -7,11 +7,11 @@
 		<div class="dropdown" id="s1">
 			<a href="<s:url value="/cadastro/motivoDeposito/consultar/index.do"/>">Motivos de Depósito</a>
 			<a href="<s:url value="/cadastro/departamento/consultar/index.do"/>">Departamento</a>
-			<a href="<s:url value="/cadastro/ConsultarDepartamentoCompanhia.do"/>">Associação Departamentos x Cia</a>
-			<a href="<s:url value="/cadastro/ConsultarGrupoAcesso.do"/>">Grupo de Acesso</a>
-			<a href="<s:url value="/cadastro/ConsultarParametroDeposito.do"/>">Parâmetros de Depósito</a>
-			<a href="<s:url value="/cadastro/ConsultarContaCorrenteAutorizada.do"/>">Conta Corrente</a>	
-			<a href="<s:url value="/cadastro/ConsultarAssociarMotivoDeposito.do"/>">Associação de Motivos</a>
+			<a href="<s:url value="/cadastro/departamentoCompanhia/consultar/index.do"/>">Associação Departamentos x Cia</a>
+			<a href="<s:url value="/cadastro/grupoAcesso/consultar/index.do"/>">Grupo de Acesso</a>
+			<a href="<s:url value="/cadastro/parametro/consultar/index.do"/>">Parâmetros de Depósito</a>
+			<a href="<s:url value="/cadastro/contaCorrenteAutorizada/consultar/index.do"/>">Conta Corrente</a>	
+			<a href="<s:url value="/cadastro/associarMotivoDeposito/consultar/index.do"/>">Associação de Motivos</a>
 		</div>
 	</div>
 	<div class="itemmenu"><a href="<s:url value="/deposito/ConsultarDeposito.do"/>" class="menu_horizontal">Identificação Depósitos</a></div>

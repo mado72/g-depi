@@ -1,16 +1,22 @@
 <%@ page contentType="text/html; charset=UTF-8" %><%@ 
+	taglib prefix="depi" uri="/depi-tags" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoFiltro.jsp">
+<c:set var="namespaceEditar">/cadastro/departamento/editar</c:set>
+<s:include value="/WEB-INF/pages/pt_BR/comum/filtro2dropbox.jsp">
 	<s:param name="scriptOff" value="true"/>
 </s:include>
 
-<s:if test="colecaoDados">
+<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-consultar.jsp">
+	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
+</s:include>
 
-<s:form action="acao.do" namespace="/cadastro/departamento/editar" id="AcaoForm">
+<s:if test="colecaoDados && !colecaoDados.isEmpty()">
+<c:url value="${namespaceEditar}/alterar.do" var="actionForm"></c:url>
 
+<form action="${actionForm}" id="AcaoForm" method="post">
 <table id="tabela_interna" class="Departamento Consulta">
 	<thead>
 		<tr>
@@ -69,34 +75,18 @@
 		</td>
 		<td class="nome">${item.nomeDepartamento}</td>
 		<td class="responsavel">${item.codigoResponsavelUltimaAtualizacao}</td>
-		<td class="atualizacao">
-			<%--
-				FIXME Adicionar campo atualização em DepartamentoVO 
-				<fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/> 
-			--%>
-		</td>
+		<td class="atualizacao"><fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/></td>
 		</tr>
 	</s:iterator>
  	</tbody>
 </table>
 <div class="paginacao"></div>
 
-<br/>
-	<br/>
-	<table class="tabela_botoes">
-		<tr>
-			<td align="center">
-				<div id="tabela_botoes">
-					<s:a id="BtnIncluir2" class="btnIncluir" action="incluir" namespace="/cadastro/departamento/editar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
-					<a class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
-					<a class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
-				</div>
-			</td>
-		</tr>
-	</table>
+<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-alterar-excluir.jsp">
+	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
+</s:include>
+</form>
 
-</s:form>
-<br/>
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>
 <script>

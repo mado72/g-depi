@@ -1,7 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
@@ -19,10 +19,12 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  * 
  * <ul>
  * <p>
- * Os estados possíveis da Action são:</p>
+ * Os estados possíveis da Action são:
+ * </p>
  * <li><b>iniciar</b>: inicia o formulário</li>
  * <li><b>consultar</b>: processa o formulário de filtro</li>
- * <li><b>refrescar</b>: força a renovação da consulta com base nos dados de filtro já editados anteriormente</li>
+ * <li><b>refrescar</b>: força a renovação da consulta com base nos dados de
+ * filtro já editados anteriormente</li>
  * </ul>
  * 
  * 
@@ -32,7 +34,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  *            Tipo do Model deste formulário
  */
 @Controller
-public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends BaseModelAction<T> {
+public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroConsultarForm<C>> extends BaseModelAction<T> {
 
 	private static final long serialVersionUID = 935947361413242271L;
 
@@ -40,11 +42,41 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	
 	private final T model;
 	
-	protected abstract CrudHelper<?, ?> getFiltroHelper();
+	protected abstract CrudHelper<C, ?, ?> getFiltroHelper();
 	
 	@SuppressWarnings("unchecked")
 	public FiltroAction() {
 		this.model = (T) getFiltroHelper().criarFiltroModel();
+	}
+	
+	public void validateExecute() {
+		clearErrorsAndMessages();
+		model.limparDados();
+	}
+	
+	public void validateRetornar() {
+		clearErrors();
+		model.limparDados();
+	}
+	
+	public void validateRefrescar() {
+		clearErrorsAndMessages();
+	}
+	
+	public void validateConsultar() {
+		clearErrorsAndMessages();
+		for (CriterioConsultaVO<C> criterio : model.obterCriteriosConsulta()) {
+			validarCriterio(criterio);
+		}
+	}
+	
+	protected void validarCriterio(CriterioConsultaVO<C> criterio) {
+		LOGGER.warn("Sem validação do critério " + criterio);
+	}
+	
+	@Override
+	public void validate() {
+		LOGGER.debug("Tem erros {}", hasErrors());
 	}
 
 	/**
@@ -53,13 +85,17 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	 */
 	@Override
 	public String execute() {
-		setSubtituloChave(getFiltroHelper().getChaveTituloConsultar());
+		getModel().setSubtitulo(getText(getFiltroHelper().getChaveTituloConsultar()));
 		
-		clearErrorsAndMessages();
+		clearErrors();
 		
 		this.prepararFiltro();
 		
 		return INPUT;
+	}
+	
+	public String retornar() {
+		return execute();
 	}
 	
 	/**
@@ -67,7 +103,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	 * @return {@link com.opensymphony.xwork2.Action#SUCCESS}
 	 */
 	public String listar() {
-		setSubtituloChave(getFiltroHelper().getChaveTituloListar());
+		getModel().setSubtitulo(getText(getFiltroHelper().getChaveTituloListar()));
 		
 		return SUCCESS;
 	}
@@ -75,18 +111,17 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	/**
 	 * Processa os dados do filtro.
 	 * 
-	 * @return {@link com.opensymphony.xwork2.Action#INPUT}, quando consegue realizar a consulta. Senão {@link com.opensymphony.xwork2.Action#ERROR}
+	 * @return {@link com.opensymphony.xwork2.Action#INPUT}, quando consegue
+	 *         realizar a consulta. Senão
+	 *         {@link com.opensymphony.xwork2.Action#ERROR}
 	 */
 	public String consultar() {
 		try {
-			clearErrorsAndMessages();
-			
-			List<String> criteriosCol = Arrays.asList(request.getParameterValues("criterio"));
+			model.setColecaoDados(new ArrayList<>());
 			
 			T model = getModel();
 			
-			List<CriterioConsultaVO> criterios = new ArrayList<>(model
-					.preencherCriterios(criteriosCol));
+			List<CriterioConsultaVO<C>> criterios = model.obterCriteriosConsulta();
 
 			return processarCriterios(criterios);
 		} catch (DEPIIntegrationException e) {
@@ -97,18 +132,17 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 		}
 	}
 
-	private String processarCriterios(List<CriterioConsultaVO> criterios) {
+	private String processarCriterios(List<CriterioConsultaVO<C>> criterios) {
 		try {
 			List<?> lista = getFiltroHelper().processarCriterios(criterios);
 			model.setColecaoDados(lista);
 			
 			if (lista == null || lista.isEmpty()) {
-				String message = super.getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-				addActionMessage(message);
+				addActionError(getText(ConstantesDEPI.ERRO_SEMRESULTADO));
 			}
-		} catch (DEPIIntegrationException e) {
+		} catch (Exception e) {
 			getModel().setColecaoDados(Collections.emptyList());
-			getModel().addActionError(e.getMessage());
+			addActionError(e.getMessage());
 		}
 		return INPUT;
 	}
@@ -120,9 +154,14 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	 */
 	public String refrescar() {
 		T model = getModel();
+		
+		if (model.getCriterios() == null || model.getCriterios().isEmpty()) {
+			return listar();
+		}
+		
 		model.setColecaoDados(null);
 		
-		List<CriterioConsultaVO> criterios = model.obterCriteriosConsulta();
+		List<CriterioConsultaVO<C>> criterios = model.obterCriteriosConsulta();
 		return processarCriterios(criterios);
 	}
 	
@@ -146,14 +185,13 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	private void prepararFiltro() {
 		LOGGER.info("Preparando contexto de filtro da consulta");
 		
-		if (model != null && model.getColecaoDados() != null) {
-			model.setColecaoDados(null);
-		}
-		
-		this.getModel().setColecaoDados(null);
-
-		if (this.getModel().getCriterios() != null) {
-			this.getModel().clearCriterios();
+		if (model != null) {
+			if (model.getColecaoDados() != null) {
+				model.setColecaoDados(null);
+			}
+			if (model.getCriterios() != null) {
+				model.clearCriterios();
+			}
 		}
 	}
 

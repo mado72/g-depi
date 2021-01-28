@@ -34,8 +34,8 @@ public interface DepartamentoDAO {
 	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e);
 	//List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, BigDecimal codigoUsuario, Tabelas e);
 
-	/** Excluir Departamentos. 
-	 * {@inheritDoc}
+	/**
+	 * Excluir Departamentos. 
 	 */
 	public void excluir(DepartamentoVO vo);
 

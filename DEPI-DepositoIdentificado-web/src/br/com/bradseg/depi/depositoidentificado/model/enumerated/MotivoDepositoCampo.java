@@ -23,7 +23,12 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
     /**
      * Descrição Detalhada.
      */
-    DescricaoDetalhada("RDETLH_MOTVO_DEP", TipoCampo.ALFA_OBRIG_BIG, ConstantesDEPI.SIZE_DUZENTOS);
+    DescricaoDetalhada("RDETLH_MOTVO_DEP", TipoCampo.ALFA_OBRIG_BIG, ConstantesDEPI.SIZE_DUZENTOS), 
+    
+    /**
+     * Ativo 
+     */
+    Ativo("CIND_REG_ATIVO", TipoCampo.ALFA_OBRIG, 1);
     
     private final static List<MotivoDepositoCampo> CRITERIAS = Arrays.asList(DescricaoBasica, DescricaoDetalhada);
     
