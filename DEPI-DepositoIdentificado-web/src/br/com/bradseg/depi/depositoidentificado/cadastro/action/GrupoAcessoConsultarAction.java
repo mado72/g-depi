@@ -20,7 +20,7 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCamp
  */
 @Controller
 @Scope("session")
-public class GrupoAcessoConsultarAction extends FiltroAction<FiltroConsultarForm<GrupoAcessoCampo>> {
+public class GrupoAcessoConsultarAction extends FiltroAction<GrupoAcessoCampo, FiltroConsultarForm<GrupoAcessoCampo>> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(GrupoAcessoConsultarAction.class);
 
@@ -38,7 +38,7 @@ public class GrupoAcessoConsultarAction extends FiltroAction<FiltroConsultarForm
 	}
 
 	@Override
-	protected CrudHelper<?, ?> getFiltroHelper() {
+	protected CrudHelper<GrupoAcessoCampo, ?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
 			filtroHelper = new GrupoAcessoCrudHelper();
 		}

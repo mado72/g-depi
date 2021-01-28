@@ -3,7 +3,6 @@
  */
 package br.com.bradseg.depi.depositoidentificado.dao;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -21,7 +20,6 @@ import br.com.bradseg.depi.depositoidentificado.dao.mapper.GrupoAcessoDataMapper
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
-import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
@@ -246,20 +244,11 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 
         	MapSqlParameterSource params = null;
         	
-        	StringBuilder where = new StringBuilder();
-
-        	if (!filtro.getCriterios().isEmpty()) {
-        		for (CriterioConsultaVO criterio : filtro.getCriterios()) {
-        			where.append(" AND ").append(criterio.getCriterio());
-        		}
-				// builder.append(filtro.getClausaWhereFiltro());
-        		
+			if (!filtro.getCriterios().isEmpty()) {
+				query.append(filtro.getClausaWhereFiltro());
 				params = filtro.getMapParamFiltro();
 			} 
         	
-        	String aux = MessageFormat.format(query.toString(), where.toString());
-        	query = new StringBuilder(aux);
-  			
 			List<GrupoAcessoVO> listGrupoAcessoVO = getJdbcTemplate().query(
 					query.toString(), params, new GrupoAcessoDataMapper());
 			

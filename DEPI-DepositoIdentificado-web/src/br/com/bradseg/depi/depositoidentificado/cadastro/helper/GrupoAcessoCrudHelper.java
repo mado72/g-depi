@@ -10,7 +10,6 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCampo;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
@@ -26,7 +25,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
  * @author Marcelo Damasceno
  */
 public class GrupoAcessoCrudHelper implements
-		CrudHelper<GrupoAcessoVO, GrupoAcessoEditarFormModel> {
+		CrudHelper<GrupoAcessoCampo, GrupoAcessoVO, GrupoAcessoEditarFormModel> {
 
 	private static final String TITLE_DEPOSITO_CONSULTAR = "title.deposito.consultar";
 
@@ -71,25 +70,29 @@ public class GrupoAcessoCrudHelper implements
 
 		};
 
-		Funcao<String, IEntidadeCampo> obterEntidadeCampo = new Funcao<String, IEntidadeCampo>() {
+		Funcao<String, GrupoAcessoCampo> obterEntidadeCampo = new Funcao<String, GrupoAcessoCampo>() {
 
 			@Override
-			public IEntidadeCampo apply(String source) {
+			public GrupoAcessoCampo apply(String source) {
+				if (source == null || source.trim().isEmpty()) {
+					return null;
+				}
 				return GrupoAcessoCampo.valueOf(source);
 			}
 		};
-
-		return new FiltroConsultarForm<GrupoAcessoCampo>(criterios,
-				obterEntidadeCampo);
+		
+		return new FiltroConsultarForm<GrupoAcessoCampo>(criterios, obterEntidadeCampo);
 	}
 
 	@Override
 	public List<GrupoAcessoVO> processarCriterios(
-			List<CriterioConsultaVO> criterios) {
-		criterios = new ArrayList<>(criterios);
+			List<CriterioConsultaVO<GrupoAcessoCampo>> criterios) {
+		
+		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);
+		// TODO Verificar o critério de deleção lógica.
 		
 		FiltroUtil filtro = new FiltroUtil();
-		filtro.setCriterios(criterios);
+		filtro.setCriterios(aux);
 
 		List<GrupoAcessoVO> retorno = facade.obterPorFiltro(filtro);
 		return retorno;

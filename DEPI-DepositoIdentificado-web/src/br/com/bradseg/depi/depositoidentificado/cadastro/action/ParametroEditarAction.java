@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.MotivoDepositoEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.ParametroDepositoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
-import br.com.bradseg.depi.depositoidentificado.cadastro.helper.MotivoDepositoCrudHelper;
-import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
-import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudAction;
-import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.cadastro.helper.ParametroDepositoCrudHelper;
+import br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.ParametroDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -21,32 +22,33 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
  */
 @Controller
 @Scope("session")
-public class ParametroEditarAction extends CrudAction<MotivoDepositoVO, MotivoDepositoEditarFormModel> {
+public class ParametroEditarAction extends EditarFormAction<ParametroDepositoCampo, ParametroDepositoVO, ParametroDepositoEditarFormModel> {
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	private transient MotivoDepositoCrudHelper crudHelper;
+	private transient ParametroDepositoCrudHelper crudHelper;
 	
 	@Override
-	protected CrudHelper<MotivoDepositoVO, MotivoDepositoEditarFormModel> getCrudHelper() {
+	protected CrudHelper<ParametroDepositoCampo, ParametroDepositoVO, ParametroDepositoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
-			crudHelper = new MotivoDepositoCrudHelper();
+			crudHelper = new ParametroDepositoCrudHelper();
 		}
 		return crudHelper;
 	}
 	
 	@Autowired
-	public void setFacade(MotivoDepositoFacade facade) {
+	public void setFacade(ParametroDepositoFacade facade) {
 		crudHelper.setFacade(facade);
 	}
 	
 	@Override
-	protected List<MotivoDepositoVO> mapearListaVO(String[] codigos) {
-		List<MotivoDepositoVO> lista = new ArrayList<>();
+	protected List<ParametroDepositoVO> mapearListaVO(String[] codigos) {
+		List<ParametroDepositoVO> lista = new ArrayList<>();
 		
 		for (String codigo : codigos) {
-			MotivoDepositoVO vo = new MotivoDepositoVO();
-			vo.setCodigoMotivoDeposito(new Integer(codigo));
+			ParametroDepositoVO vo = new ParametroDepositoVO();
+			// FIXME preencher a chave.
+			// vo.setCodigoParametroDeposito(new Integer(codigo));
 			
 			vo = crudHelper.obterPorChave(vo);
 			lista.add(vo);

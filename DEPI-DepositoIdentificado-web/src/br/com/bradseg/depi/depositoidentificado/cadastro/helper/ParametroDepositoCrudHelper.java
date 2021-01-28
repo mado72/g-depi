@@ -5,26 +5,25 @@ import java.util.Collection;
 import java.util.List;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.MotivoDepositoEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.ParametroDepositoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.ParametroDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
-import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
  * Classe auxiliar para o fluxo de cadastro de motivo depósito.
  * 
  * @author Marcelo Damasceno
  */
-public class ParametroCrudHelper implements
-		CrudHelper<MotivoDepositoVO, MotivoDepositoEditarFormModel> {
+public class ParametroDepositoCrudHelper implements
+		CrudHelper<ParametroDepositoCampo, ParametroDepositoVO, ParametroDepositoEditarFormModel> {
 
 	private static final String TITLE_DEPOSITO_CONSULTAR = "title.deposito.consultar";
 
@@ -36,23 +35,13 @@ public class ParametroCrudHelper implements
 
 	private static final String TITLE_DEPOSITO_INCLUIR = "title.deposito.novo";
 
-	/**
-     * código do evento contábil.
-     */
-	private static final int CODIGO_EVENTO_CONTABIL = 361;
+	private transient ParametroDepositoFacade facade;
 
-	/**
-     * código do evento contábil.
-     */
-	private static final int CODIGO_ITEM_CONTABIL = 472;
-
-	private transient MotivoDepositoFacade facade;
-
-	public MotivoDepositoFacade getFacade() {
+	public ParametroDepositoFacade getFacade() {
 		return facade;
 	}
 	
-	public void setFacade(MotivoDepositoFacade facade) {
+	public void setFacade(ParametroDepositoFacade facade) {
 		this.facade = facade;
 	}
 	
@@ -69,40 +58,43 @@ public class ParametroCrudHelper implements
 	}
 
 	@Override
-	public FiltroConsultarForm<MotivoDepositoCampo> criarFiltroModel() {
-		FornecedorObjeto<Collection<MotivoDepositoCampo>> criterios = new FornecedorObjeto<Collection<MotivoDepositoCampo>>() {
+	public FiltroConsultarForm<ParametroDepositoCampo> criarFiltroModel() {
+		FornecedorObjeto<Collection<ParametroDepositoCampo>> criterios = new FornecedorObjeto<Collection<ParametroDepositoCampo>>() {
 
 			@Override
-			public Collection<MotivoDepositoCampo> get() {
-				return MotivoDepositoCampo.valuesForCriteria();
+			public Collection<ParametroDepositoCampo> get() {
+				return ParametroDepositoCampo.valuesForCriteria();
 			}
 
 		};
 
-		Funcao<String, IEntidadeCampo> obterEntidadeCampo = new Funcao<String, IEntidadeCampo>() {
+		Funcao<String, ParametroDepositoCampo> obterEntidadeCampo = new Funcao<String, ParametroDepositoCampo>() {
 
 			@Override
-			public IEntidadeCampo apply(String source) {
-				return MotivoDepositoCampo.valueOf(source);
+			public ParametroDepositoCampo apply(String source) {
+				if (source == null || source.trim().isEmpty()) {
+					return null;
+				}
+				return ParametroDepositoCampo.valueOf(source);
 			}
 		};
 
-		return new FiltroConsultarForm<MotivoDepositoCampo>(criterios,
+		return new FiltroConsultarForm<ParametroDepositoCampo>(criterios,
 				obterEntidadeCampo);
 	}
 
 	@Override
-	public List<MotivoDepositoVO> processarCriterios(
-			List<CriterioConsultaVO> criterios) {
-		criterios = new ArrayList<>(criterios);
-		criterios.add(new CriterioConsultaVO("CIND_REG_ATIVO = :OPT1", "OPT1",
-				ConstantesDEPI.SIM));
+	public List<ParametroDepositoVO> processarCriterios(
+			List<CriterioConsultaVO<ParametroDepositoCampo>> criterios) {
+
+		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(
+				criterios);
+		aux.add(new CriterioConsultaVO<ParametroDepositoCampo>("CIND_REG_ATIVO = 'S'"));
 		
 		FiltroUtil filtro = new FiltroUtil();
-		filtro.setCriterios(criterios);
+		filtro.setCriterios(aux);
 
-		List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
-		return retorno;
+		return facade.obterPorFiltro(filtro);
 	}
 	
 	// Métodos para atender ao CRUD
@@ -123,51 +115,53 @@ public class ParametroCrudHelper implements
 	}
 
 	@Override
-	public MotivoDepositoEditarFormModel criarCrudModel() {
-		return new MotivoDepositoEditarFormModel();
+	public ParametroDepositoEditarFormModel criarCrudModel() {
+		return new ParametroDepositoEditarFormModel();
 	}
 
 	@Override
-	public void preencherFormularioEdicao(MotivoDepositoEditarFormModel model)
+	public void preencherFormularioEdicao(ParametroDepositoEditarFormModel model)
 			throws DEPIIntegrationException {
-		
-		MotivoDepositoVO instancia = obterPeloCodigo(Integer.parseInt(model.getCodigo()));
-		model.setCodigo(String.valueOf(instancia.getCodigoMotivoDeposito()));
-		model.setDescricaoBasica(instancia.getDescricaoBasica());
-		model.setDescricaoDetalhada(instancia.getDescricaoDetalhada());
+
+		// FIXME Obter pela chave primária e preencher os campos
+		ParametroDepositoVO instancia = obterPeloCodigo(1);
+//		model.setCodigo(String.valueOf(instancia.getCodigoMotivoDeposito()));
 	}
 
-	private MotivoDepositoVO obterPeloCodigo(int codigo) {
-		MotivoDepositoVO vo = new MotivoDepositoVO();
-		vo.setCodigoMotivoDeposito(codigo);
+	private ParametroDepositoVO obterPeloCodigo(int codigo) {
+		ParametroDepositoVO vo = new ParametroDepositoVO();
+		// FIXME definir método para obter pela chave primária
 		
-		MotivoDepositoVO instancia = facade.obterPorChave(vo);
-		return instancia;
+		return facade.obterPorChave(vo);
 	}
 
 	@Override
 	public EstadoRegistro persistirDados(
-			MotivoDepositoEditarFormModel model, LoginVo usuarioLogado)
+			ParametroDepositoEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 
 		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
 		
-		MotivoDepositoVO instancia;
+		ParametroDepositoVO instancia;
 
 		if (novo) {
-			instancia = new MotivoDepositoVO();
+			instancia = new ParametroDepositoVO();
 			
 			int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
 			instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 		}
 		else {
-			instancia = obterPeloCodigo(Integer.parseInt(model.getCodigo()));
+			// FIXME Obter pela chave primária
+			instancia = obterPeloCodigo(1);
 		}
 		
+		// FIXME Preencher os campos
+		/*
 		instancia.setDescricaoBasica(model.getDescricaoBasica());
 		instancia.setDescricaoDetalhada(model.getDescricaoDetalhada());
 		instancia.setCodigoEventoContabil(CODIGO_EVENTO_CONTABIL);
 		instancia.setCodigoItemContabil(CODIGO_ITEM_CONTABIL);
+		*/
 		
 		try {
 			if (novo) {
@@ -184,13 +178,14 @@ public class ParametroCrudHelper implements
 	}
 
 	@Override
-	public void excluirRegistros(List<MotivoDepositoVO> voList)
+	public void excluirRegistros(List<ParametroDepositoVO> voList)
 			throws DEPIIntegrationException {
-		facade.excluirLista(voList);		
+		// FIXME Criar exclusão por listta
+		// facade.excluirLista(voList);
 	}
 	
 	@Override
-	public MotivoDepositoVO obterPorChave(MotivoDepositoVO vo) {
+	public ParametroDepositoVO obterPorChave(ParametroDepositoVO vo) {
 		return facade.obterPorChave(vo);
 	}
 

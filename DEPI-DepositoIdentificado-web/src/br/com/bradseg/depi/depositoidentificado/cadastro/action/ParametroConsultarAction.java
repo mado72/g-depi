@@ -20,7 +20,7 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoC
  */
 @Controller
 @Scope("session")
-public class ParametroConsultarAction extends FiltroAction<FiltroConsultarForm<MotivoDepositoCampo>> {
+public class ParametroConsultarAction extends FiltroAction<MotivoDepositoCampo, FiltroConsultarForm<MotivoDepositoCampo>> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ParametroConsultarAction.class);
 
@@ -38,7 +38,7 @@ public class ParametroConsultarAction extends FiltroAction<FiltroConsultarForm<M
 	}
 
 	@Override
-	protected CrudHelper<?, ?> getFiltroHelper() {
+	protected CrudHelper<MotivoDepositoCampo, ?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
 			filtroHelper = new MotivoDepositoCrudHelper();
 		}
