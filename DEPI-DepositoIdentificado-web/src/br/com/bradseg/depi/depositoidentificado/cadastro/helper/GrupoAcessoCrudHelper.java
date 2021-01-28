@@ -27,15 +27,15 @@ import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 public class GrupoAcessoCrudHelper implements
 		CrudHelper<GrupoAcessoCampo, GrupoAcessoVO, GrupoAcessoEditarFormModel> {
 
-	private static final String TITLE_DEPOSITO_CONSULTAR = "title.deposito.consultar";
+	private static final String TITLE_DEPOSITO_CONSULTAR = "title.grupoAcesso.consultar";
 
-	private static final String TITLE_DEPOSITO_LISTAR = "title.deposito.listar";
+	private static final String TITLE_DEPOSITO_LISTAR = "title.grupoAcesso.listar";
 	
-	private static final String TITLE_DEPOSITO_ALTERAR = "title.deposito.editar";
+	private static final String TITLE_DEPOSITO_ALTERAR = "title.grupoAcesso.editar";
 	
-	private static final String TITLE_DEPOSITO_DETALHAR = "title.deposito.detalhar";
+	private static final String TITLE_DEPOSITO_DETALHAR = "title.grupoAcesso.detalhar";
 
-	private static final String TITLE_DEPOSITO_INCLUIR = "title.deposito.novo";
+	private static final String TITLE_DEPOSITO_INCLUIR = "title.grupoAcesso.novo";
 
 	private transient GrupoAcessoFacade facade;
 

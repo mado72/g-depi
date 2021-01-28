@@ -3,6 +3,7 @@
  */
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -30,6 +31,11 @@ import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 @Repository
 public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 	
+	private static final String WHR1 = "whr1";
+
+	private static final String WHR2 = "whr2";
+
+
 	@Autowired
 	private UsuarioDAO usuarioDAO;
 
@@ -47,6 +53,44 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 	public DataSource getDataSource() {		
 		return dataSource;
 	}
+
+    /**
+     * Método de obter por filtro um Grupo de Usuário
+     * @param filtro - filtro CriterioFiltroUtil
+     * @return List - Lista de GrupoAcessoVO
+     */
+    @Override
+	public List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro)  {
+
+    	
+    	String query = QuerysDepi.GRUPOACESSO_OBTERPORFILTRONEW;
+    	final String complementoQuery;
+
+        try {
+
+        	MapSqlParameterSource params = null;
+        	
+			if (!filtro.getCriterios().isEmpty()) {
+				complementoQuery = filtro.getClausaAndFiltro();
+				
+				params = filtro.getMapParamFiltro();
+			}
+			else {
+				complementoQuery = "";
+			}
+        	
+			query = MessageFormat.format(query, complementoQuery);
+			
+			List<GrupoAcessoVO> listGrupoAcessoVO = getJdbcTemplate().query(
+					query.toString(), params, new GrupoAcessoDataMapper());
+			
+			return listGrupoAcessoVO;
+        } finally {
+        	LOGGER.info("obterPorFiltro(CriterioFiltroUtil filtro)"); 
+        }
+        
+    }
+
 	/**
      * Inserir registro de GrupoAcessoVO
      * @param vo de GrupoAcessoVO
@@ -60,8 +104,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 
 			MapSqlParameterSource params = new MapSqlParameterSource();
 
-			params.addValue("whr1", vo.getDepto().getCodigoDepartamento());
-			params.addValue("whr2", vo.getCia().getCodigoCompanhia());
+			params.addValue(WHR1, vo.getDepto().getCodigoDepartamento());
+			params.addValue(WHR2, vo.getCia().getCodigoCompanhia());
 
 			List<GrupoAcessoVO> grupoAcessoVO = getJdbcTemplate() .query(query.toString(), params, new GrupoAcessoDataMapper());
 
@@ -162,8 +206,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
           			MapSqlParameterSource params = new MapSqlParameterSource();
 
           			params.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
-           			params.addValue("whr1", vo.getCodigoGrupoAcesso());
-           			params.addValue("whr2", usuarioAtual.getCodigoUsuario());
+           			params.addValue(WHR1, vo.getCodigoGrupoAcesso());
+           			params.addValue(WHR2, usuarioAtual.getCodigoUsuario());
            			
         			getJdbcTemplate().update(query.toString(), params);
            			
@@ -180,8 +224,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 
       			MapSqlParameterSource paramsAlocar = new MapSqlParameterSource();
 
-      			paramsAlocar.addValue("whr1", vo.getCodigoGrupoAcesso());
-      			paramsAlocar.addValue("whr2", usr.getCodigoUsuario());
+      			paramsAlocar.addValue(WHR1, vo.getCodigoGrupoAcesso());
+      			paramsAlocar.addValue(WHR2, usr.getCodigoUsuario());
        			
     			List<String> indAtivo = getJdbcTemplate().queryForList(queryAlocar.toString(), paramsAlocar, String.class) ; 
     
@@ -193,8 +237,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
               			MapSqlParameterSource paramsRealocar = new MapSqlParameterSource();
 
               			paramsRealocar.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
-              			paramsRealocar.addValue("whr1", vo.getCodigoGrupoAcesso());
-              			paramsRealocar.addValue("whr2", usr.getCodigoUsuario());
+              			paramsRealocar.addValue(WHR1, vo.getCodigoGrupoAcesso());
+              			paramsRealocar.addValue(WHR2, usr.getCodigoUsuario());
                			
             			getJdbcTemplate().update(queryRealocar.toString(), paramsRealocar);
                         
@@ -206,8 +250,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
           			MapSqlParameterSource paramsAloc = new MapSqlParameterSource();
 
           			paramsAloc.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
-          			paramsAloc.addValue("whr1", vo.getCodigoGrupoAcesso());
-          			paramsAloc.addValue("whr2", usr.getCodigoUsuario());
+          			paramsAloc.addValue(WHR1, vo.getCodigoGrupoAcesso());
+          			paramsAloc.addValue(WHR2, usr.getCodigoUsuario());
            			
         			getJdbcTemplate().update(queryAloc.toString(), paramsAloc);
                 	
@@ -220,43 +264,13 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
   			MapSqlParameterSource paramsAloc = new MapSqlParameterSource();
 
   			paramsAloc.addValue("prm1", vo.getCodigoResponsavelUltimaAtualizacao());
-  			paramsAloc.addValue("whr1", vo.getCodigoGrupoAcesso());
+  			paramsAloc.addValue(WHR1, vo.getCodigoGrupoAcesso());
    			
 			getJdbcTemplate().update(queryAloc.toString(), paramsAloc);
 
         } finally {
         	LOGGER.info("alterar(GrupoAcessoVO vo)"); 
         }
-    }
-
-    /**
-     * Método de obter por filtro um Grupo de Usu�rio
-     * @param filtro - filtro CriterioFiltroUtil
-     * @return List - Lista de GrupoAcessoVO
-     */
-    @Override
-	public List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro)  {
-
-    	
-    	StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_OBTERPORFILTRONEW);
-
-        try {
-
-        	MapSqlParameterSource params = null;
-        	
-			if (!filtro.getCriterios().isEmpty()) {
-				query.append(filtro.getClausaWhereFiltro());
-				params = filtro.getMapParamFiltro();
-			} 
-        	
-			List<GrupoAcessoVO> listGrupoAcessoVO = getJdbcTemplate().query(
-					query.toString(), params, new GrupoAcessoDataMapper());
-			
-			return listGrupoAcessoVO;
-        } finally {
-        	LOGGER.info("obterPorFiltro(CriterioFiltroUtil filtro)"); 
-        }
-        
     }
 
     /**
@@ -294,7 +308,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
   			MapSqlParameterSource params = new MapSqlParameterSource();
 
   			params.addValue("prm1", grupo.getCodigoResponsavelUltimaAtualizacao());
-  			params.addValue("whr1", grupo.getCodigoGrupoAcesso());
+  			params.addValue(WHR1, grupo.getCodigoGrupoAcesso());
    			
 			getJdbcTemplate().update(query.toString(), params);
 
@@ -316,8 +330,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 
 			MapSqlParameterSource params = new MapSqlParameterSource();
 
-			params.addValue("whr1", grupo.getCia().getCodigoCompanhia());
-			params.addValue("whr2", grupo.getDepto().getCodigoDepartamento());
+			params.addValue(WHR1, grupo.getCia().getCodigoCompanhia());
+			params.addValue(WHR2, grupo.getDepto().getCodigoDepartamento());
 
 			List<GrupoAcessoVO> grupoAcessoVO = getJdbcTemplate() .query(query.toString(), params, new GrupoAcessoDataMapper());
 
@@ -337,7 +351,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 
 			MapSqlParameterSource params = new MapSqlParameterSource();
 
-			params.addValue("whr1", grupo.getCodigoGrupoAcesso());
+			params.addValue(WHR1, grupo.getCodigoGrupoAcesso());
 
 			List<GrupoAcessoVO> grupoAcessoVO = getJdbcTemplate().query(query.toString(), params, new GrupoAcessoDataMapper());
 

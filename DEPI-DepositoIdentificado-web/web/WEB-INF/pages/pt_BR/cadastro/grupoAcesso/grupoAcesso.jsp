@@ -3,15 +3,19 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/comum/filtro2dropbox.jsp">
+<c:set var="namespaceEditar">/cadastro/grupoAcesso/editar</c:set>
+<s:include value="/WEB-INF/pages/pt_BR/comum/filtro2dropbox.jsp">
 	<s:param name="scriptOff" value="true"/>
 </s:include>
-<br />
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/comum/incluir-consultar.jsp" />
 
-<s:if test="colecaoDados">
-<s:form action="acao.do" namespace="/cadastro/grupoAcesso/editar" id="AcaoForm">
+<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-consultar.jsp">
+	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
+</s:include>
 
+<s:if test="colecaoDados && !colecaoDados.isEmpty()">
+<c:url value="${namespaceEditar}/alterar.do" var="actionForm"></c:url>
+
+<form action="${actionForm}" id="AcaoForm" method="post">
 <table id="tabela_interna" class="GrupoAcesso Consulta">
 	<thead>
 		<tr>
@@ -41,7 +45,7 @@
 				<s:param name="campo" value="cia.codigoCompanhia"/>
 			</s:url>
 			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.codigoCompanhia"/>
+				<s:text name="label.grid.departamentocompanhia.codigoCompanhia"/>
 			</s:a>
 		</th>
 		<th class="descricaoCompanhia">
@@ -49,15 +53,15 @@
 				<s:param name="campo" value="cia.descricaoCompanhia"/>
 			</s:url>
 			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.descricaoCompanhia"/>
+				<s:text name="label.grid.departamentocompanhia.descricaoCompanhia"/>
 			</s:a>
 		</th>
 		<th class="codigoDepartamento">
 			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
-				<s:param name="campo" value="depto.codigoDepartamento"/>
+				<s:param name="campo" value="depto.siglaDepartamento"/>
 			</s:url>
 			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.codigoDepartamento"/>
+				<s:text name="label.grid.grupoAcesso.siglaDepartamento"/>
 			</s:a>
 		</th>
 		<th class="nomeDepartamento">
@@ -89,29 +93,26 @@
 	<tbody class="lista">
  	<s:iterator value="colecaoDados" var="item" status="status">
 		<tr>
-		<td>
-			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoGrupoAcesso}"/>"/>
-		</td>
-		<td>
-			<s:url action="exibir" namespace="/cadastro/grupoAcesso/editar" var="linkExibir">
-				<s:param name="codigo">${item.codigoGrupoAcesso}</s:param>
-			</s:url>
-			<s:a href="%{linkExibir}">
-				${item.codigoGrupoAcesso}
-			</s:a>
-		</td>
-		<td>${item.nomeGrupoAcesso}</td>
-		<td>${item.cia.codigoCompanhia}</td>
-		<td>${item.cia.descricaoCompanhia}</td>
-		<td>${item.depto.codigoDepartamento}</td>
-		<td>${item.depto.nomeDepartamento}</td>
-		<td class="responsavel">${item.codigoResponsavelUltimaAtualizacao}</td>
-		<td class="atualizacao">
-			<%--
-				FIXME Adicionar campo atualização em GrupoAcessoVO 
-				<fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/> 
-			--%>
-		</td>
+			<td class="text-center">
+				<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoGrupoAcesso}"/>"/>
+			</td>
+			<td class="text-center">
+				<s:url action="exibir" namespace="/cadastro/grupoAcesso/editar" var="linkExibir">
+					<s:param name="codigo">${item.codigoGrupoAcesso}</s:param>
+				</s:url>
+				<s:a href="%{linkExibir}">
+					${item.codigoGrupoAcesso}
+				</s:a>
+			</td>
+			<td class="text-center">${item.nomeGrupoAcesso}</td>
+			<td class="text-center">${item.cia.codigoCompanhia}</td>
+			<td>${item.cia.descricaoCompanhia}</td>
+			<td class="text-center">${item.depto.siglaDepartamento}</td>
+			<td>${item.depto.nomeDepartamento}</td>
+			<td class="text-center">${item.codigoResponsavelUltimaAtualizacao}</td>
+			<td class="text-center">
+				<fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.dataHoraAtualizacao}"/>
+			</td>
 		</tr>
 	</s:iterator>
  	</tbody>
@@ -132,7 +133,10 @@
 		</tr>
 	</table>
 
-</s:form>
+<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-alterar-excluir.jsp">
+	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
+</s:include>
+</form>
 <br/>
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>
