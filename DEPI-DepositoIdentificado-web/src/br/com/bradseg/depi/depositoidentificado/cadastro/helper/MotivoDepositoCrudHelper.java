@@ -10,9 +10,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
-import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
@@ -25,7 +23,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
  * @author Marcelo Damasceno
  */
 public class MotivoDepositoCrudHelper implements
-		CrudHelper<MotivoDepositoVO, MotivoDepositoEditarFormModel> {
+		CrudHelper<MotivoDepositoCampo, MotivoDepositoVO, MotivoDepositoEditarFormModel> {
 
 	private static final String TITLE_DEPOSITO_CONSULTAR = "title.deposito.consultar";
 
@@ -80,10 +78,13 @@ public class MotivoDepositoCrudHelper implements
 
 		};
 
-		Funcao<String, IEntidadeCampo> obterEntidadeCampo = new Funcao<String, IEntidadeCampo>() {
+		Funcao<String, MotivoDepositoCampo> obterEntidadeCampo = new Funcao<String, MotivoDepositoCampo>() {
 
 			@Override
-			public IEntidadeCampo apply(String source) {
+			public MotivoDepositoCampo apply(String source) {
+				if (source == null || source.isEmpty()) {
+					return null;
+				}
 				return MotivoDepositoCampo.valueOf(source);
 			}
 		};
@@ -94,13 +95,13 @@ public class MotivoDepositoCrudHelper implements
 
 	@Override
 	public List<MotivoDepositoVO> processarCriterios(
-			List<CriterioConsultaVO> criterios) {
-		criterios = new ArrayList<>(criterios);
-		criterios.add(new CriterioConsultaVO("CIND_REG_ATIVO = :OPT1", "OPT1",
-				ConstantesDEPI.SIM));
+			List<CriterioConsultaVO<MotivoDepositoCampo>> criterios) {
+		
+		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);
+		aux.add(new CriterioConsultaVO<MotivoDepositoCampo>("CIND_REG_ATIVO = 'S'"));
 		
 		FiltroUtil filtro = new FiltroUtil();
-		filtro.setCriterios(criterios);
+		filtro.setCriterios(aux);
 
 		List<MotivoDepositoVO> retorno = facade.obterPorFiltroMotivoDepositvo(filtro);
 		return retorno;

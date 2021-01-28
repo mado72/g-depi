@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.model.cadastro.EntidadeCampoOperacoesFiltro;
@@ -54,7 +55,7 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> implements Serializab
 	 */
 	private List<?> colecaoDados;
 	
-	private transient final Funcao<String, IEntidadeCampo> obterEntidade;
+	private transient final Funcao<String, T> obterEntidade;
 
 	/**
 	 * Ação que trata as consultas pelo filtro.
@@ -65,7 +66,7 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> implements Serializab
 	 *            Função para receber o nome do campo ({@link IEntidadeCampo}) e
 	 *            devolve a instância referente.
 	 */
-	public FiltroConsultarForm(FornecedorObjeto<Collection<T>> fornecedor, Funcao<String, IEntidadeCampo> obterEntidade) {
+	public FiltroConsultarForm(FornecedorObjeto<Collection<T>> fornecedor, Funcao<String, T> obterEntidade) {
 		
 		this.obterEntidade = obterEntidade;
 		Collection<T> lista = fornecedor.get();
@@ -109,38 +110,35 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> implements Serializab
 	 * Obtém os critérios da consulta
 	 * @return Lista com os critérios
 	 */
-	public List<CriterioConsultaVO> obterCriteriosConsulta() {
+	public List<CriterioConsultaVO<T>> obterCriteriosConsulta() {
 		if (criteriosInformados == null) {
 			return Collections.emptyList();
 		}
 		
-		List<CriterioConsultaVO> criterios = new ArrayList<>();
+		List<CriterioConsultaVO<T>> criterios = new ArrayList<>();
 		
 		int paramIdx = 0;
 		
 		for (String criterio: criteriosInformados) {
 			String[] criterioFiltro = criterio.split(";");
 			
-			IEntidadeCampo campo = this.obterEntidade.apply(criterioFiltro[0]); 
-			TipoOperacao operacao = TipoOperacao.valueOf(criterioFiltro[1]);
-			String valor = criterioFiltro[2];
-			
-			String param = "param" + ++paramIdx;
-			
-			CriterioConsultaVO criterioConsultaVO = montarCriterioConsulta(
-					campo, operacao, valor, param);
-			criterios.add(criterioConsultaVO);
+			// Apenas processa quando há 3 argumentos.
+			if (criterioFiltro.length == 3) {
+				
+				T campo = this.obterEntidade.apply(criterioFiltro[0]); 
+				TipoOperacao operacao = TipoOperacao.valueOf(criterioFiltro[1]);
+				String valor = criterioFiltro[2];
+				
+				String param = "param" + ++paramIdx;
+				
+				CriterioConsultaVO<T> criterioConsultaVO = new CriterioConsultaVO<T>(
+						campo, operacao, valor, param);
+				criterios.add(criterioConsultaVO);
+				
+			}
 		}
 		
 		return criterios;
-	}
-
-	private CriterioConsultaVO montarCriterioConsulta(
-			IEntidadeCampo campo, TipoOperacao operacao, String valor,
-			String param) {
-		String clausula = operacao.formatarClausula(campo.getNome(), param);
-		String valorFormatado = operacao.formatarValor(valor);
-		return new CriterioConsultaVO(clausula, param, valorFormatado);
 	}
 
 	/**
@@ -163,12 +161,21 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> implements Serializab
 	 * @return Json
 	 */
 	public String getRecipienteListJson() {
-		if (getCriterios() == null) {
+		List<String> criterios = getCriterios();
+		if (criterios == null) {
 			return null;
+		}
+		criterios = new ArrayList<>(criterios);
+		
+		for (Iterator<String> iterator = criterios.iterator(); iterator.hasNext();) {
+			String[] string = iterator.next().split(";");
+			if (string.length != 3) {
+				iterator.remove();
+			}
 		}
 
 		try {
-			String json = new String(mapper.writeValueAsBytes(getCriterios()), "UTF-8");
+			String json = new String(mapper.writeValueAsBytes(criterios), "UTF-8");
 			return json;
 		} catch (IOException e) {
 			throw new RuntimeException("Falha ao converter em json", e);

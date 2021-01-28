@@ -14,7 +14,7 @@
 </s:include>
 
 <s:if test="colecaoDados && !colecaoDados.isEmpty()">
-<c:url value="/cadastro/motivoDeposito/editar/alterar.do" var="actionForm"></c:url>
+<c:url value="${namespaceEditar}/alterar.do" var="actionForm"></c:url>
 
 <form action="${actionForm}" id="AcaoForm" method="post">
 <table id="tabela_interna" class="MotivoDeposito Consulta">

@@ -14,15 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.ERRO_GERAL;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
- * XXXXXXX
- * @Service
- * */
+ * Implementação de MotivoDepositoFacade
+ */
 @Service
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
@@ -33,35 +34,35 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
 	@Autowired
 	private MotivoDepositoDAO motivoDepositoDAO;
 	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade#obterPorChave(br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO)
+	 */
 	@Override
 	public MotivoDepositoVO obterPorChave(MotivoDepositoVO vo) {
-		
-    	LOGGER.error("Inicio - obterPorChave(MotivoDepositoVO vo)"); 
-
 		return motivoDepositoDAO.obterPorChave(vo); 
-		
-
-		
 	}
 
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade#alterar(br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO)
+	 */
 	@Override
 	public void alterar(MotivoDepositoVO vo) {
 		
     	LOGGER.error("Inicio - alterar(MotivoDepositoVO vo)"); 
 		
         validaOperacao(vo);
-
         validaChave(vo);
 
         motivoDepositoDAO.obterPorChave(vo);
-
-		
 		motivoDepositoDAO.alterar(vo);
 		
     	LOGGER.error("Fim - alterar(MotivoDepositoVO vo)"); 
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade#excluir(br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO)
+	 */
 	@Override
 	public void excluir(MotivoDepositoVO vo) {
 
@@ -73,6 +74,9 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
 						
 	}
 	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade#excluirLista(java.util.List)
+	 */
 	@Override
 	public void excluirLista(List<MotivoDepositoVO> vo) {
 
@@ -132,12 +136,12 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
         if (vo.getDescricaoBasica() == null || vo.getDescricaoBasica().equals(ConstantesDEPI.VAZIO)) {
             throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Descrição Básica"));
         } else if (vo.getDescricaoBasica().length() > 20) {
-            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_EXCESSO, "Descrição Básica", "20"));
+            throw new IntegrationException(concatenarComHifen(ERRO_GERAL.ERRO_CAMPO_EXCESSO, "Descrição Básica", "20"));
         }
         if (vo.getDescricaoDetalhada() == null || vo.getDescricaoDetalhada().equals(ConstantesDEPI.VAZIO)) {
             throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO,  "Descrição Detalhada"));
         } else if (vo.getDescricaoDetalhada().length() > 200) {
-            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_EXCESSO, "Descrição Detalhada", "200"));
+            throw new IntegrationException(concatenarComHifen(ERRO_GERAL.ERRO_CAMPO_EXCESSO, "Descrição Detalhada", "200"));
         }
         validaResponsavel(vo);
     }
@@ -156,7 +160,7 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
         }
         if (vo.getCodigoResponsavelUltimaAtualizacao().doubleValue() > ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO) {
 			throw new IntegrationException(concatenarComHifen(
-					ConstantesDEPI.ERRO_CAMPO_EXCESSO, "Código do Responsável",
+					ERRO_GERAL.ERRO_CAMPO_EXCESSO, "Código do Responsável",
 					String.valueOf(ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO)));
         }
     }
@@ -171,9 +175,9 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
     	LOGGER.error("Inicio - validaResponsavel(MotivoDepositoVO vo)"); 
     	
         if (vo.getCodigoMotivoDeposito() == 0) {
-			throw new IntegrationException(concatenarComHifen(
+			throw new DEPIIntegrationException(
 					ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO,
-					"Código de Motivo de Depósito"));
+					"Código de Motivo de Depósito");
         }
     }
 

@@ -61,7 +61,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
      */
     @Override
     public String getText(String chave) {
-    	return BaseUtil.getInstance().getText(chave);
+    	return BaseUtil.getTexto(chave);
     }
 
 	@Override

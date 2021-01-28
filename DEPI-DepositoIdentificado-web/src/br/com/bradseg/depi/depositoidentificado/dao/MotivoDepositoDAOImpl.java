@@ -69,15 +69,15 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     @Override
     public void inserir(MotivoDepositoVO vo) {
 
-    	StringBuilder query = new StringBuilder(QuerysDepi.MOTIVODEPOSITO_EXISTS);
     	
     	try {
     		
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			params.addValue(PARAM_WHR1, vo.getDescricaoBasica().trim());
 
-
-			List<MotivoDepositoVO> motivoDepto = getJdbcTemplate().query(query.toString(), params, new MotivoDepositoDataMapper());
+			List<MotivoDepositoVO> motivoDepto = getJdbcTemplate().query(
+					QuerysDepi.MOTIVODEPOSITO_EXISTS, params,
+					new MotivoDepositoDataMapper());
 
 			if (motivoDepto.size() >= 1 ) {
                 MotivoDepositoVO motivoDepositoVO = motivoDepto.get(0);
@@ -85,16 +85,15 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 					throw new DEPIBusinessException(
 							ConstantesDEPI.ERRO_MOTIVO_DESC_BSCO_JA_CADASTRADA,
 							vo.getDescricaoBasica());
-                } else {
-
-                    params.addValue(PARAM_PRM1, vo.getDescricaoDetalhada().trim());
-                    params.addValue(PARAM_PRM2, vo.getCodigoEventoContabil());
-                    params.addValue(PARAM_PRM3, vo.getCodigoItemContabil());
-                    params.addValue(PARAM_PRM4, vo.getCodigoResponsavelUltimaAtualizacao());
-                    params.addValue(PARAM_WHR1, motivoDepositoVO.getCodigoMotivoDeposito());
-
-        			getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_ATIVAR, params);
                 }
+
+                params.addValue(PARAM_PRM1, vo.getDescricaoDetalhada().trim());
+                params.addValue(PARAM_PRM2, vo.getCodigoEventoContabil());
+                params.addValue(PARAM_PRM3, vo.getCodigoItemContabil());
+                params.addValue(PARAM_PRM4, vo.getCodigoResponsavelUltimaAtualizacao());
+                params.addValue(PARAM_WHR1, motivoDepositoVO.getCodigoMotivoDeposito());
+
+    			getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_ATIVAR, params);
         					
             } else {
 

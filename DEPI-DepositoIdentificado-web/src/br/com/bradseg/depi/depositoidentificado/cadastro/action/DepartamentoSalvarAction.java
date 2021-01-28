@@ -10,6 +10,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepartamentoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.SalvarAction;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepartamentoCampo;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -24,7 +25,7 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
  */
 @Controller
 public class DepartamentoSalvarAction extends
-		SalvarAction<DepartamentoVO, DepartamentoEditarFormModel> {
+		SalvarAction<DepartamentoCampo, DepartamentoVO, DepartamentoEditarFormModel> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoSalvarAction.class);
 
@@ -38,7 +39,7 @@ public class DepartamentoSalvarAction extends
 	}
 	
 	@Override
-	protected CrudHelper<DepartamentoVO, DepartamentoEditarFormModel> getCrudHelper() {
+	protected CrudHelper<DepartamentoCampo, DepartamentoVO, DepartamentoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
 			crudHelper = new DepartamentoCrudHelper();
 		}
@@ -51,8 +52,10 @@ public class DepartamentoSalvarAction extends
 					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="nomeDepartamento", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.departamento.nome')})}")
 			},
 			stringLengthFields={
-					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="siglaDepartamento", trim=true, minLength="3", maxLength="3", message="${getText('errors.rangelength', new java.lang.String[] {getText('label.cadastro.departamento.sigla'), 3, 3})}"),
-					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="nomeDepartamento", trim=true, minLength="1", maxLength="200", message="${getText('errors.rangelength', new java.lang.String[] {getText('label.cadastro.departamento.nome'), 1, 200})}")
+					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="siglaDepartamento", trim=true, minLength="1", message="${getText('errors.minlength', new java.lang.String[] {getText('label.cadastro.departamento.sigla'), '1'})}"),
+					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="siglaDepartamento", trim=true, maxLength="20", message="${getText('errors.maxlength', new java.lang.String[] {getText('label.cadastro.departamento.sigla'), '20'})}"),
+					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="nomeDepartamento", trim=true, minLength="1", message="${getText('errors.minlength', new java.lang.String[] {getText('label.cadastro.departamento.nome'), '1'})}"),
+					@StringLengthFieldValidator(type= ValidatorType.SIMPLE, fieldName="nomeDepartamento", trim=true, maxLength="200", message="${getText('errors.maxlength', new java.lang.String[] {getText('label.cadastro.departamento.nome'), '200'})}")
 			}
 		)
 	@Override

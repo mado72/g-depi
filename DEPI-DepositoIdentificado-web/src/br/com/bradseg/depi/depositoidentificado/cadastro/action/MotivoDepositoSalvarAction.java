@@ -10,6 +10,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.MotivoDepositoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.SalvarAction;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
@@ -24,7 +25,7 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
  */
 @Controller
 public class MotivoDepositoSalvarAction extends
-		SalvarAction<MotivoDepositoVO, MotivoDepositoEditarFormModel> {
+		SalvarAction<MotivoDepositoCampo, MotivoDepositoVO, MotivoDepositoEditarFormModel> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MotivoDepositoSalvarAction.class);
 
@@ -38,7 +39,7 @@ public class MotivoDepositoSalvarAction extends
 	}
 	
 	@Override
-	protected CrudHelper<MotivoDepositoVO, MotivoDepositoEditarFormModel> getCrudHelper() {
+	protected CrudHelper<MotivoDepositoCampo, MotivoDepositoVO, MotivoDepositoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
 			crudHelper = new MotivoDepositoCrudHelper();
 		}

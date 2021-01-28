@@ -6,13 +6,6 @@ package br.com.bradseg.depi.depositoidentificado.util;
 public final class ConstantesDEPI {
 
 	/**
-	 * Construtor privado.
-	 */
-	private ConstantesDEPI() {
-		super();
-	}
-
-	/**
 	 * Data Source.
 	 */
 	public static final String DEPI_DATASOURCE_JNDI_NAME = "java:comp/env/jdbc/DEPI-DepositoIdentificado";
@@ -188,7 +181,6 @@ public final class ConstantesDEPI {
 
 	// Erros de Negocio
 	public static final String ERRO_CAMPO_OBRIGATORIO = "msg.erro.campo.obrigatorio";
-	public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
 	public static final String ERRO_CAMPO_NUMERICO = "msg.erro.campo.numerico";
 	public static final String ERRO_DEPARTAMENTO_NOME_NAOENCONTRADO = "msg.erro.departamento.nome.naoencontrado";
 	public static final String ERRO_DEPARTAMENTO_DESCRICAO_NAOENCONTRADA = "msg.erro.departamento.descricao.naoencontrada";
@@ -248,5 +240,20 @@ public final class ConstantesDEPI {
 	
 	public static final String ERRO_MOTIVODEPOSITO_STATUSINATIVO = "msg.erro.motivodeposito.status.inativo";
 	public static final String ERRO_MOTIVODEPOSITO_NAOCADASTRADO = "msg.erro.motivodeposito.naocadastrado";
+
+	
+	public static final class ERRO_GERAL {
+		public static final String ERRORS_REQUIRED = "erros.required";
+		public static final String ERRORS_MAXLENGTH = "erros.maxlength";
+		public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
+	}
+	
+	public static final class ERRO_CRITERIO {
+		public static final String ERRO_CRITERIO_INVALIDO = "msg.erro.criterio.invalido";
+	}
+	
+	public static final class ERRO_DEPARTAMENTO {
+		public static final String ERRO_CADASTRADO_INATIVO = "msg.erro.departamento.inativo_cadastrado";
+	}
 
 }

@@ -2,34 +2,46 @@ package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
 
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
+
 /**
  * Classe utilitária para armazenar cláusulas SQL para filtrar consultas.
  * 
  * <p>
- * Na propriedade {@link #criterio}, deve-se passar a cláusula com as funções,
- * conversões etc., caso houver, associado com o nome do parâmetro de valor. Por
- * exemplo: <code>
+ * A classe mapeia o campo, a operação e o valor a ser utilizado em cláusulas
+ * para filtrar consultas SQL
+ * </p>
+ * <p>
+ * Através do método {@link #getClausula()}, esta classe formata a cláusula,
+ * como no exemplo abaixo: <code>
  * UPPER(DBPROD.MOTVO_DEP_IDTFD.RMOTVO_DEP_IDTFD) LIKE :param1
  * </code>
  * </p>
  * <p>
- * A propriedade {@link #param} armazena o nome do parâmetro usado em
- * {@link #criterio}. Por exemplo: <code>param1</code>
+ * A propriedade {@link #param} armazena o nome do parâmetro a ser usado na
+ * {@link #getClausula()}. Por exemplo: <code>param1</code>
  * <p>
- * A propriedade {@link #valor} armazena o valor já formatado para preenchimento
+ * O método {@link #valor} armazena o valor já formatado para preenchimento
  * do parâmetro. Por exemplo: <code>%TESTE</code>
  * 
  * @author Marcelo Damasceno
+ *
+ * @param <T> Tipo do campo que o critério armazena
  */
-public class CriterioConsultaVO implements Serializable {
+public class CriterioConsultaVO<T extends IEntidadeCampo> implements Serializable {
 
 	private static final long serialVersionUID = 5938378242394951493L;
-
-	private String criterio;
+	
+	private T campo;
+	
+	private TipoOperacao operacao;
 
 	private String param;
 
 	private String valor;
+	
+	private String clausula;
 
 	/**
 	 * Construtor para CriterioConsultaVO
@@ -41,38 +53,52 @@ public class CriterioConsultaVO implements Serializable {
 	/**
 	 * Construtor para CriterioConsultaVO
 	 * 
-	 * @param criterio
-	 *            Critério da consulta
-	 * @param param
-	 *            Nome do parâmetro usado no critério
+	 * @param campo
+	 *            Campo a ser mapeado
+	 * @param operacao
+	 *            Tipo de operação utilizada no critério de consulta.
 	 * @param valor
-	 *            Valor a ser preenchido no parâmetro
+	 *            Valor do campo.
+	 * @param param
+	 *            Nome do parâmetro
 	 */
-	public CriterioConsultaVO(String criterio, String param, String valor) {
+	public CriterioConsultaVO(T campo, TipoOperacao operacao, String valor, String param) {
 		super();
-		this.criterio = criterio;
+		this.campo = campo;
+		this.operacao = operacao;
 		this.param = param;
 		this.valor = valor;
+		this.clausula = operacao.formatarClausula(campo.getNome(), param);
+	}
+	
+	/**
+	 * Construtor para CriterioConsultaVO
+	 * 
+	 * @param clausula
+	 *            Cláusula fixa não dependente de campo ou parâmetro.
+	 */
+	public CriterioConsultaVO(String clausula) {
+		super();
+		this.clausula = clausula;
 	}
 
 	/**
-	 * Critério da consulta
+	 * Monta o critério da consulta
 	 * 
 	 * @return Critério da consulta
 	 */
-	public String getCriterio() {
-		return criterio;
+	public String getClausula() {
+		return clausula;
 	}
-
+	
 	/**
-	 * Critério a ser utilizado. O critério deve já estar com todas as funções,
-	 * conversões etc. que serão utilizadas na consulta.
+	 * Método utilitário para formatar o valor em função da operação definida
+	 * neste critério.
 	 * 
-	 * @param criterio
-	 *            o critério
+	 * @return Valor formatado para ser usado na query.
 	 */
-	public void setCriterio(String criterio) {
-		this.criterio = criterio;
+	public String getValorFormatado() {
+		return operacao.formatarValor(valor);
 	}
 
 	/**
@@ -82,16 +108,6 @@ public class CriterioConsultaVO implements Serializable {
 	 */
 	public String getParam() {
 		return param;
-	}
-
-	/**
-	 * Define o nome do parâmetro
-	 * 
-	 * @param param
-	 *            Define o nome do parâmetro
-	 */
-	public void setParam(String param) {
-		this.param = param;
 	}
 
 	/**
@@ -112,7 +128,23 @@ public class CriterioConsultaVO implements Serializable {
 	public void setValor(String valor) {
 		this.valor = valor;
 	}
-
+	
+	/**
+	 * Retorna campo
+	 * @return o campo
+	 */
+	public T getCampo() {
+		return campo;
+	}
+	
+	/**
+	 * Retorna operacao
+	 * @return o operacao
+	 */
+	public TipoOperacao getOperacao() {
+		return operacao;
+	}
+	
 	/*
 	 * (não-Javadoc)
 	 * 
@@ -121,7 +153,7 @@ public class CriterioConsultaVO implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append('[').append(criterio).append(", ").append(param).append(", ")
+		sb.append('[').append(getClausula()).append(", ").append(param).append(", ")
 				.append(valor).append(']');
 		return sb.toString();
 	}

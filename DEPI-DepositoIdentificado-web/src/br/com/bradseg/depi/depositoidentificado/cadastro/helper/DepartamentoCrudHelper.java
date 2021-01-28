@@ -14,7 +14,6 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepartamentoCampo;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
@@ -28,7 +27,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
  * @author Marcelo Damasceno
  */
 public class DepartamentoCrudHelper implements
-		CrudHelper<DepartamentoVO, DepartamentoEditarFormModel> {
+		CrudHelper<DepartamentoCampo, DepartamentoVO, DepartamentoEditarFormModel> {
 	
 	private transient DepartamentoFacade facade;
 	
@@ -36,11 +35,11 @@ public class DepartamentoCrudHelper implements
 	
 	private static final String TITLE_DEPARTAMENTO_LISTAR = "title.departamento.listar";
 	
-	private static final String TITLE_DEPARTAMENTO_EDITAR = "title.deposito.editar";
+	private static final String TITLE_DEPARTAMENTO_EDITAR = "title.departamento.editar";
 	
-	private static final String TITLE_DEPARTAMENTO_DETALHAR = "title.deposito.detalhar";
+	private static final String TITLE_DEPARTAMENTO_DETALHAR = "title.departamento.detalhar";
 
-	private static final String TITLE_DEPARTAMENTO_INCLUIR = "title.deposito.novo";
+	private static final String TITLE_DEPARTAMENTO_INCLUIR = "title.departamento.novo";
 
 	public void setFacade(DepartamentoFacade facade) {
 		this.facade = facade;
@@ -69,10 +68,13 @@ public class DepartamentoCrudHelper implements
 			
 		};
 		
-		Funcao<String, IEntidadeCampo> obterEntidade = new Funcao<String, IEntidadeCampo>() {
+		Funcao<String, DepartamentoCampo> obterEntidade = new Funcao<String, DepartamentoCampo>() {
 			
 			@Override
-			public IEntidadeCampo apply(String source) {
+			public DepartamentoCampo apply(String source) {
+				if (source == null || source.trim().isEmpty()) {
+					return null;
+				}
 				return DepartamentoCampo.valueOf(source);
 			}
 		};
@@ -82,14 +84,13 @@ public class DepartamentoCrudHelper implements
 
 	@Override
 	public List<DepartamentoVO> processarCriterios(
-			List<CriterioConsultaVO> criterios) {
+			List<CriterioConsultaVO<DepartamentoCampo>> criterios) {
 
-		// Para garantir que a lista pode ser editável.
-		criterios = new ArrayList<>(criterios);
-		criterios.add(new CriterioConsultaVO("CIND_REG_ATIVO = :OPT1", "OPT1", ConstantesDEPI.SIM));
+		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);
+		aux.add(new CriterioConsultaVO<DepartamentoCampo>("CIND_REG_ATIVO = 'S'"));
 		
 		FiltroUtil filtro = new FiltroUtil();
-		filtro.setCriterios(criterios);
+		filtro.setCriterios(aux);
 		
 		try {
 			List<DepartamentoVO> lista = facade.obterPorFiltro(filtro);
@@ -169,18 +170,15 @@ public class DepartamentoCrudHelper implements
 	
 		instancia.setSiglaDepartamento(model.getSiglaDepartamento());
 		instancia.setNomeDepartamento(model.getNomeDepartamento());
+		instancia.setIndicadoRegistroAtivo(ConstantesDEPI.INDICADOR_ATIVO);
 	
-		try {
-			if (novo) {
-				facade.inserir(instancia);
-				return EstadoRegistro.NOVO;
-			}
-			else {
-				facade.alterar(instancia);
-				return EstadoRegistro.PERSISTIDO;
-			}
-		} catch (Exception e) {
-			throw new DEPIIntegrationException(e, ConstantesDEPI.ERRO_INTERNO);
+		if (novo) {
+			facade.inserir(instancia);
+			return EstadoRegistro.NOVO;
+		}
+		else {
+			facade.alterar(instancia);
+			return EstadoRegistro.PERSISTIDO;
 		}
 
 	}

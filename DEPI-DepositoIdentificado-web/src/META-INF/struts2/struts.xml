@@ -140,7 +140,7 @@
         </action>
     </package>
 
-	<package name="cadastroDepartamentoConsultar" namespace="/cadastro/departamento/consultar" extends="depi-default">
+	<package name="cadastroDepartamento" namespace="/cadastro/departamento/consultar" extends="depi-default">
 	
 		<default-class-ref class="departamentoConsultarAction"/>
 		
@@ -155,8 +155,6 @@
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
 		</action>
-        
-		<action name="*" method="{1}"/>
 		
 		<action name="listar" method="listar">
 			<result name="input">
@@ -173,7 +171,6 @@
 
 	</package>
 	
-	
 	<package name="cadastroDepartamentoEditar" namespace="/cadastro/departamento/editar" extends="depi-default">
 	
 		<default-class-ref class="departamentoEditarAction"></default-class-ref>
@@ -183,7 +180,7 @@
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoForm.jsp</param>
 			</result>
 			<result name="success" type="redirectAction">
-			    <param name="actionName">refrescar</param>
+			    <param name="actionName">retornar</param>
 			    <param name="namespace">/cadastro/departamento/consultar</param>
 			</result>
 			<result name="voltar" type="redirectAction">
@@ -192,29 +189,23 @@
 			</result>
 		</global-results>
 		
-		<action name="*" method="{1}">
-			<result name="input" type="redirectAction">input</result>
-		</action>
-        
-        <action name="incluir" method="incluir">
+		<action name="*" method="{1}"/>
+		
+		<action name="incluir" method="incluir">
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
 			<result name="input" type="redirectAction">input</result>
-        </action>
+		</action>
+		
+		<action name="alterar" method="alterar">
+			<result name="input" type="redirectAction">input</result>
+		</action>
         
         <action name="excluir" method="excluir">
 			<interceptor-ref name="store">
 				<param name="operationMode">STORE</param>
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
-			<result name="success" type="redirectAction">
-			    <param name="actionName">refrescar</param>
-			    <param name="namespace">/cadastro/departamento/consultar</param>
-			</result>
-			<result name="success" type="redirectAction">
-			    <param name="actionName">refrescar</param>
-			    <param name="namespace">/cadastro/departamento/consultar</param>
-			</result>
         </action>
         
         <action name="salvar" class="departamentoSalvarAction">
@@ -222,11 +213,7 @@
 				<param name="operationMode">STORE</param>
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
-			<result name="input">
-				<param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoForm.jsp</param>
-			</result>
         </action>
-        
-	</package>
+    </package>
 	
 </struts>

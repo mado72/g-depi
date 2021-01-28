@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+
 /**
  * Globality
  */
@@ -13,22 +15,22 @@ public class LogDepositoVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Logs do Depósito
+     * Logs do Depï¿½sito
      */
     //@TableField(name = "CLOG_DEP_IDTFD")
     private long idLog;
     /**
-     * Nome do atributo de depósito que foi alterado.
+     * Nome do atributo de depï¿½sito que foi alterado.
      */
     //@TableField(name = "RNOME_ATRIB_ALT")
     private String fieldName;
     /**
-     * Valor antigo do atributo de depósito que foi alterado.
+     * Valor antigo do atributo de depï¿½sito que foi alterado.
      */
     //@TableField(name = "RCONTD_ANTIG")
     private String valorAntigo;
     /**
-     * Valor atual do atributo de depósito que foi alterado.
+     * Valor atual do atributo de depï¿½sito que foi alterado.
      */
     //@TableField(name = "RCONTD_NOVO")
     private String valorNovo;
@@ -43,7 +45,7 @@ public class LogDepositoVO implements Serializable {
     //@TableField(name = "CUSUAR_ATULZ_ANTIG", converter = BigDecimalToLongPersistenceConverter.class)
     private BigDecimal usuarioAntigo;
     /**
-     * Data da alteração do registro de depósito.
+     * Data da alteraï¿½ï¿½o do registro de depï¿½sito.
      */
     //@TableField(name = "DHORA_INCL_REG")
     private Date dtInclusaoRegistro;
@@ -117,11 +119,11 @@ public class LogDepositoVO implements Serializable {
 	}
 
 	public Date getDtInclusaoRegistro() {
-		return dtInclusaoRegistro;
+		return BaseUtil.getDate(dtInclusaoRegistro);
 	}
 
 	public void setDtInclusaoRegistro(Date dtInclusaoRegistro) {
-		this.dtInclusaoRegistro = dtInclusaoRegistro;
+		this.dtInclusaoRegistro = BaseUtil.getDate(dtInclusaoRegistro);
 	}
 
 }

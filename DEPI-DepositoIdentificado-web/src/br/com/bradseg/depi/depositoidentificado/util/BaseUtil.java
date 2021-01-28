@@ -5,11 +5,13 @@ import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -701,24 +703,43 @@ public final class BaseUtil {
 
 	/**
      * Retornar mensagem
-     * @param chave Chave da mensagem
+     * @param valor Chave da mensagem
      * @param params Parametros da mensagem
      * @return Retorna a mensagem transformada
      */
-    public String getMensagem(String chave, String... params) {
-        String mensagem = getResources().getString(chave);
+    public String getMensagem(String valor, String... params) {
+        String mensagem = getResources().getString(valor);
         return MessageFormat.format(mensagem, (Object[]) params);
     }
     
     private final static Pattern PATTERN_REF_PROP = Pattern.compile("\\%(.*)\\%");
     
-    public String getText(String chave) {
-    	String text = getResources().getString(chave);
-    	if (text == null) {
+    public static String getTexto(String valor) {
+    	return getInstance().getTextoInterno(valor);
+    }
+    
+    private String getTextoInterno(String valor) {
+    	if (valor == null) {
     		return null;
     	}
     	
-    	StringBuilder sb = new StringBuilder();
+    	PropertyResourceBundle resources = getResources();
+    	
+    	Matcher matcher = PATTERN_REF_PROP.matcher(valor);
+    	if (matcher.find()) {
+    		return analisarChave(valor);
+    	}
+    	
+		try {
+			String text = resources.getString(valor);
+			return analisarChave(text);
+		} catch (MissingResourceException e) {
+			return valor;
+		}
+    }
+
+	private String analisarChave(String text) {
+		StringBuilder sb = new StringBuilder();
     	
     	int last = 0;
     	Matcher m = PATTERN_REF_PROP.matcher(text);
@@ -726,7 +747,7 @@ public final class BaseUtil {
     		if (m.start() > last) {
     			sb.append(text.substring(last, m.start()));
     		}
-    		String refTxt = getText(m.group(1));
+    		String refTxt = getTextoInterno(m.group(1));
     		sb.append(refTxt);
     		last = m.end();
     	}
@@ -734,6 +755,47 @@ public final class BaseUtil {
     		sb.append(text.substring(last, text.length()));
     	}
 		return sb.toString();
+	}
+
+	/**
+	 * Obtém a mensagem com o texto já formatado
+	 * @param chave Chave que contém o padrão da mensagem
+	 * @param parametro Primeiro parâmetro (obrigatório)
+	 * @param strings Demais parâmetros (opcionais)
+	 * @return String formatada
+	 */
+    public static String getTextoFormatado(String chave, String parametro, String... strings) {
+    	return getInstance().getTextoFormatadoInterno(chave, parametro, strings);
+    }
+    
+	private String getTextoFormatadoInterno(String chave, String chaveParametro, String... strings) {
+		String pattern = getTextoInterno(chave);
+		
+		ArrayList<String> parametros = new ArrayList<>();
+		parametros.add(getTextoChaveInterno(chaveParametro));
+		
+		if (strings != null && strings.length > 0) {
+			for (String s : strings) {
+				parametros.add(getTextoChaveInterno(s));
+			}
+		}
+		
+		return MessageFormat.format(pattern, parametros.toArray());
+	}
+	
+	private String getTextoChaveInterno(String valor) {
+		if (valor.contains("%")) {
+			return getTextoInterno(valor);
+		}
+		return valor;
+	}
+    
+    public static Date getDate(Date d) {
+    	if (d == null) {
+    		return null;
+    	}
+    	
+    	return (Date) d.clone();
     }
 
 }

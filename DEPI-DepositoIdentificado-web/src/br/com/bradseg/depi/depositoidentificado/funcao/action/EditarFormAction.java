@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
@@ -19,7 +20,7 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
  * @param <F> Tipo do Model utilizado por esta Action.
  */
 @Controller
-public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModelAction<F> {
+public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends CrudForm> extends BaseModelAction<F> {
 
 	private static final long serialVersionUID = -8669859699304965615L;
 	
@@ -42,7 +43,7 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 	 * Obtém o helper para processar as ações do formulário
 	 * @return instância de {@link CrudHelper}
 	 */
-	protected abstract CrudHelper<VO, F> getCrudHelper();
+	protected abstract CrudHelper<C, VO, F> getCrudHelper();
 	
 	public void validateExibir() {
 		LOGGER.debug("Validando exibir");
@@ -72,7 +73,7 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 	public String exibir() {
 		LOGGER.debug("Preparando formulário para exibir um registro");
 		
-		CrudHelper<VO, F> crudHelper = getCrudHelper();
+		CrudHelper<C, VO, F> crudHelper = getCrudHelper();
 		model.setEstado(EstadoCrud.EXIBIR);
 		model.setSubtitulo(getText(crudHelper.getChaveTituloDetalhar()));
 		
@@ -101,7 +102,7 @@ public abstract class EditarFormAction<VO, F extends CrudForm> extends BaseModel
 	public String alterar() {
 		LOGGER.debug("Preparando formulário para alterar um registro");
 
-		CrudHelper<VO, F> crudHelper = getCrudHelper();
+		CrudHelper<C, VO, F> crudHelper = getCrudHelper();
 
 		this.model.setEstado(EstadoCrud.ALTERAR);
 		this.model.setSubtitulo(getText(crudHelper.getChaveTituloAlterar()));

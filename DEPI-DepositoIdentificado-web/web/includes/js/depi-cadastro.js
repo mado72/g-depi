@@ -216,9 +216,14 @@ var fnReady = function ($) {
 				};
 			}
 
-			criterios.each(function(idx, opt) {
-				elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: $(opt).val()}));
-			});
+			if (criterios.length > 0) {
+				criterios.each(function(idx, opt) {
+					elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: $(opt).val()}));
+				});
+			}
+			else {
+				elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: null}));
+			}
 			
 			$("#box_loading").show();
 			

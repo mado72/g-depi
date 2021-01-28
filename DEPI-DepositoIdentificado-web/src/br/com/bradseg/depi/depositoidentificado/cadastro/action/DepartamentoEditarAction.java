@@ -12,6 +12,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepartamentoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepartamentoCampo;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 /**
@@ -21,14 +22,14 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
  */
 @Controller
 @Scope("session")
-public class DepartamentoEditarAction extends EditarFormAction<DepartamentoVO, DepartamentoEditarFormModel> {
+public class DepartamentoEditarAction extends EditarFormAction<DepartamentoCampo, DepartamentoVO, DepartamentoEditarFormModel> {
 	
 	private static final long serialVersionUID = -7675543657126275320L;
 	
 	private transient DepartamentoCrudHelper crudHelper;
 
 	@Override
-	protected CrudHelper<DepartamentoVO, DepartamentoEditarFormModel> getCrudHelper() {
+	protected CrudHelper<DepartamentoCampo, DepartamentoVO, DepartamentoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
 			crudHelper = new DepartamentoCrudHelper();
 		}
@@ -42,14 +43,13 @@ public class DepartamentoEditarAction extends EditarFormAction<DepartamentoVO, D
 
 	@Override
 	protected List<DepartamentoVO> mapearListaVO(String[] codigos) {
-        
         List<DepartamentoVO> lista = new ArrayList<>();
         
         for (String codigo: codigos) {
             DepartamentoVO vo = new DepartamentoVO();
             vo.setCodigoDepartamento(new Integer(codigo));
             
-            vo = getCrudHelper().obterPorChave(vo);
+            vo = crudHelper.obterPorChave(vo);
             lista.add(vo);
         }
         

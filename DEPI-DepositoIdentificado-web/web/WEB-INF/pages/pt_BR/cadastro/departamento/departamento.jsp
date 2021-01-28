@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %><%@ 
+	taglib prefix="depi" uri="/depi-tags" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -13,9 +14,9 @@
 </s:include>
 
 <s:if test="colecaoDados && !colecaoDados.isEmpty()">
+<c:url value="${namespaceEditar}/alterar.do" var="actionForm"></c:url>
 
-<s:form action="acao.do" namespace="/cadastro/departamento/editar" id="AcaoForm">
-
+<form action="${actionForm}" id="AcaoForm" method="post">
 <table id="tabela_interna" class="Departamento Consulta">
 	<thead>
 		<tr>
@@ -74,21 +75,17 @@
 		</td>
 		<td class="nome">${item.nomeDepartamento}</td>
 		<td class="responsavel">${item.codigoResponsavelUltimaAtualizacao}</td>
-		<td class="atualizacao">
-			<%--
-				FIXME Adicionar campo atualização em DepartamentoVO 
-				<fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/> 
-			--%>
-		</td>
+		<td class="atualizacao"><fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/></td>
 		</tr>
 	</s:iterator>
  	</tbody>
 </table>
 <div class="paginacao"></div>
+
 <s:include value="/WEB-INF/pages/pt_BR/comum/incluir-alterar-excluir.jsp">
 	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
 </s:include>
-</s:form>
+</form>
 
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>

@@ -9,10 +9,11 @@ import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper.EstadoRegistro;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 @Controller
-public abstract class SalvarAction<VO, F extends CrudForm> extends BaseModelAction<F> {
+public abstract class SalvarAction<C extends IEntidadeCampo,  VO, F extends CrudForm> extends BaseModelAction<F> {
 
 	private static final long serialVersionUID = 1949214415954508324L;
 	
@@ -46,7 +47,7 @@ public abstract class SalvarAction<VO, F extends CrudForm> extends BaseModelActi
 		clearErrorsAndMessages();
 
 		F model = getModel();
-		CrudHelper<VO, F> helper = getCrudHelper();
+		CrudHelper<C, VO, F> helper = getCrudHelper();
 		
 		LoginVo usuarioLogado = getUsuarioLogado();
 		
@@ -60,13 +61,14 @@ public abstract class SalvarAction<VO, F extends CrudForm> extends BaseModelActi
 		}
 	}
 	
-	protected abstract CrudHelper<VO, F> getCrudHelper();
+	protected abstract CrudHelper<C, VO, F> getCrudHelper();
 	
 	@Override
 	public String execute() {
 		try {
 			persistirDados();
 		} catch (Exception e) {
+			LOGGER.error("Falha ao persistir dados", e);
 			addActionError(e.getMessage());
 			if (getModel().getEstado() == EstadoCrud.INSERIR) {
 				getModel().setSubtitulo(getText(getCrudHelper().getChaveTituloIncluir()));

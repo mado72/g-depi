@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
@@ -33,7 +34,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  *            Tipo do Model deste formulário
  */
 @Controller
-public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends BaseModelAction<T> {
+public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroConsultarForm<C>> extends BaseModelAction<T> {
 
 	private static final long serialVersionUID = 935947361413242271L;
 
@@ -41,7 +42,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	
 	private final T model;
 	
-	protected abstract CrudHelper<?, ?> getFiltroHelper();
+	protected abstract CrudHelper<C, ?, ?> getFiltroHelper();
 	
 	@SuppressWarnings("unchecked")
 	public FiltroAction() {
@@ -64,6 +65,13 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	
 	public void validateConsultar() {
 		clearErrorsAndMessages();
+		for (CriterioConsultaVO<C> criterio : model.obterCriteriosConsulta()) {
+			validarCriterio(criterio);
+		}
+	}
+	
+	protected void validarCriterio(CriterioConsultaVO<C> criterio) {
+		LOGGER.warn("Sem validação do critério " + criterio);
 	}
 	
 	@Override
@@ -113,7 +121,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 			
 			T model = getModel();
 			
-			List<CriterioConsultaVO> criterios = model.obterCriteriosConsulta();
+			List<CriterioConsultaVO<C>> criterios = model.obterCriteriosConsulta();
 
 			return processarCriterios(criterios);
 		} catch (DEPIIntegrationException e) {
@@ -124,7 +132,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 		}
 	}
 
-	private String processarCriterios(List<CriterioConsultaVO> criterios) {
+	private String processarCriterios(List<CriterioConsultaVO<C>> criterios) {
 		try {
 			List<?> lista = getFiltroHelper().processarCriterios(criterios);
 			model.setColecaoDados(lista);
@@ -153,7 +161,7 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 		
 		model.setColecaoDados(null);
 		
-		List<CriterioConsultaVO> criterios = model.obterCriteriosConsulta();
+		List<CriterioConsultaVO<C>> criterios = model.obterCriteriosConsulta();
 		return processarCriterios(criterios);
 	}
 	
@@ -177,14 +185,13 @@ public abstract class FiltroAction<T extends FiltroConsultarForm<?>> extends Bas
 	private void prepararFiltro() {
 		LOGGER.info("Preparando contexto de filtro da consulta");
 		
-		if (model != null && model.getColecaoDados() != null) {
-			model.setColecaoDados(null);
-		}
-		
-		this.getModel().setColecaoDados(null);
-
-		if (this.getModel().getCriterios() != null) {
-			this.getModel().clearCriterios();
+		if (model != null) {
+			if (model.getColecaoDados() != null) {
+				model.setColecaoDados(null);
+			}
+			if (model.getCriterios() != null) {
+				model.clearCriterios();
+			}
 		}
 	}
 
