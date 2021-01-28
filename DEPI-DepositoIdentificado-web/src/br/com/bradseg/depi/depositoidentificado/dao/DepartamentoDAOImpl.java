@@ -61,11 +61,16 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	public void inserir(DepartamentoVO vo) {
 	
 		try {
-				
-			if (validarRegistroNaoExiste(vo)) {
+			
+			DepartamentoVO inativo = obterRegistroInativo(vo);
+			
+			if (inativo == null) {
+				LOGGER.info("Inserindo novo registro para a sigla {}", vo.getSiglaDepartamento());
 				queryInsert(vo);
 			}
 			else {
+				LOGGER.info("Reativando registro com a sigla {} para ativar e atualizar.", vo.getSiglaDepartamento());
+				vo.setCodigoDepartamento(inativo.getCodigoDepartamento());
 				queryAtivar(vo);
 			}
 	    	
@@ -81,7 +86,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	public void alterar(DepartamentoVO vo){
 	    	
 	   	try {
-	   		verificarRegistroExistente(vo);
+	   		validarRegistroInativo(vo);
 	        
 			Integer count = queryDepartamentoUpdate(vo);
 	
@@ -225,7 +230,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 				params = filtro.getMapParamFiltro();
 			} 
 			
-			return getJdbcTemplate() .query(query.toString(), params, new DepartamentoDataMapper());
+			return getJdbcTemplate().query(query.toString(), params, new DepartamentoDataMapper());
 			 
 	    } finally {
 	    	LOGGER.info("obterPorChave(DepartamentoVO vo) "); 
@@ -249,10 +254,19 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	    }
 	
 	}
-	private void verificarRegistroExistente(DepartamentoVO vo) {
+
+	/**
+	 * Valida se existe algum registro inativo para o departamento escolhido com
+	 * mesma sigla, porém com código diferente.
+	 * 
+	 * @param vo
+	 *            departamento
+	 */
+	private void validarRegistroInativo(DepartamentoVO vo) {
 		List<DepartamentoVO> departamentos = queryDepartamentoExists(vo);
 		  
 		if (!departamentos.isEmpty()) {
+			
 			for (DepartamentoVO depto: departamentos) {
 				
 				if (vo.getCodigoDepartamento() != depto.getCodigoDepartamento()
@@ -264,34 +278,42 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 									vo.getSiglaDepartamento()).toString());
 				}
 			}
+			
 		}
+		
 	}
 	
-    private boolean validarRegistroNaoExiste(DepartamentoVO vo) {
+    /**
+     * Obtém registro com a mesma sigla, porém inativo
+     * @param vo Contém a sigla a ser pesquisada
+     * @return O primeiro item encontrado
+     */
+    private DepartamentoVO obterRegistroInativo(DepartamentoVO vo) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
    
 		params.addValue(PARAM_WHR1, vo.getSiglaDepartamento());
 
-		List<DepartamentoVO> departamentoVO = getJdbcTemplate().query(
+		List<DepartamentoVO> lista = getJdbcTemplate().query(
 				QuerysDepi.DEPARTAMENTO_EXISTS, params, new DepartamentoDataMapper());
 		 
-		if (!departamentoVO.isEmpty()) {
+		if (!lista.isEmpty()) {
+			
+			for (DepartamentoVO departamentoVO : lista) {
 
-			int i = 0;
-			while (i < departamentoVO.size()) {
-				if (departamentoVO.get(i).getIndicadoRegistroAtivo()
-						.equals(ConstantesDEPI.INDICADOR_ATIVO)) {
+				// Valida se há registro ativo. 
+				if (departamentoVO.getIndicadoRegistroAtivo().equals(
+						ConstantesDEPI.INDICADOR_ATIVO)) {
 					throw new DEPIIntegrationException(
 							ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO2,
 							"Sigla", vo.getSiglaDepartamento());
 				}
-				++i;
+				
 			}
 			
-			return false;
+			return lista.get(0);
 		}
 		
-		return true;
+		return null;
 	}
 
     /**
