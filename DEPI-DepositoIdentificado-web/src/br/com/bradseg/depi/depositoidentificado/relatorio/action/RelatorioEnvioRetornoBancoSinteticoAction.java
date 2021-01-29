@@ -5,7 +5,7 @@ package br.com.bradseg.depi.depositoidentificado.relatorio.action;
 
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.depi.depositoidentificado.model.relatorio.EnvioRetornoBancoSinteticoVO;
+import br.com.bradseg.depi.depositoidentificado.relatorio.vo.EnvioRetornoBancoSinteticoVO;
 
 /**
  * 
