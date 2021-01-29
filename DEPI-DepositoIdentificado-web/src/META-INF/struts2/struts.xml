@@ -208,7 +208,7 @@
         
 	</package>
 
-	<package name="cadastroGrupoAcesso" namespace="/cadastro/grupoAcesso/consultar" extends="depi-default">
+	<package name="cadastroGrupoAcesso" namespace="/cadastro/grupo-acesso/consultar" extends="depi-default">
 	
 		<default-class-ref class="grupoAcessoConsultarAction"/>
 		
@@ -239,7 +239,7 @@
 
 	</package>
 	
-	<package name="cadastroGrupoAcessoEditar" namespace="/cadastro/grupoAcesso/editar" extends="depi-default">
+	<package name="cadastroGrupoAcessoEditar" namespace="/cadastro/grupo-acesso/editar" extends="depi-default">
 	
 		<default-class-ref class="grupoAcessoEditarAction"></default-class-ref>
 	
@@ -343,6 +343,78 @@
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
         </action>
+    </package>
+    
+    <!-- RELATORIOS -->
+    
+    <package name="relatorioEnvioRetornoBancoAnalitico" namespace="/relatorio/envio-retorno/analitico" extends="depi-default">
+   		<default-class-ref class="relatorioEnvioRetornoBancoAnaliticoAction" />
+    	<global-results>
+    		<result name="input">/WEB-INF/pages/pt_BR/relatorio/envioRetorno/analiticoFiltro.jsp</result>
+    		<result name="success">/WEB-INF/pages/pt_BR/relatorio/envioRetorno/analiticoRelatorio.jsp</result>
+    	</global-results>
+    	<action name="index" method="execute"/>
+    	<action name="*" method="*"/>
+    </package>
+    
+    <package name="relatorioEnvioRetornoBancoSintetico" namespace="/relatorio/envio-retorno/sintetico" extends="depi-default">
+   		<default-class-ref class="relatorioEnvioRetornoBancoSinteticoAction" />
+    	<global-results>
+    		<result name="input">/WEB-INF/pages/pt_BR/relatorio/envioRetorno/sinteticoFiltro.jsp</result>
+    		<result name="success">/WEB-INF/pages/pt_BR/relatorio/envioRetorno/sinteticoRelatorio.jsp</result>
+    	</global-results>
+    	<action name="index" method="execute"/>
+    	<action name="*" method="*"/>
+    </package>
+    
+    <package name="relatorioExtratoAnalitico" namespace="/relatorio/extrato/analitico" extends="depi-default">
+   		<default-class-ref class="relatorioExtratoBancoAnaliticoAction" />
+    	<global-results>
+    		<result name="input">/WEB-INF/pages/pt_BR/relatorio/extrato/analiticoFiltro.jsp</result>
+    		<result name="success">/WEB-INF/pages/pt_BR/relatorio/extrato/analiticoRelatorio.jsp</result>
+    	</global-results>
+    	<action name="index" method="execute"/>
+    	<action name="*" method="*"/>
+    </package>
+    
+    <package name="relatorioExtratoSintetico" namespace="/relatorio/extrato/sintetico" extends="depi-default">
+   		<default-class-ref class="relatorioExtratoBancoSinteticoAction" />
+    	<global-results>
+    		<result name="input">/WEB-INF/pages/pt_BR/relatorio/extrato/sinteticoFiltro.jsp</result>
+    		<result name="success">/WEB-INF/pages/pt_BR/relatorio/extrato/sinteticoRelatorio.jsp</result>
+    	</global-results>
+    	<action name="index" method="execute"/>
+    	<action name="*" method="*"/>
+    </package>
+    
+    <package name="relatorioManutencoesAnalitico" namespace="/relatorio/manutencoes/analitico" extends="depi-default">
+   		<default-class-ref class="relatorioManutencoesAnaliticoAction" />
+    	<global-results>
+    		<result name="input">/WEB-INF/pages/pt_BR/relatorio/manutencoes/analiticoFiltro.jsp</result>
+    		<result name="success">/WEB-INF/pages/pt_BR/relatorio/manutencoes/analiticoRelatorio.jsp</result>
+    	</global-results>
+    	<action name="index" method="execute"/>
+    	<action name="*" method="*"/>
+    </package>
+    
+    <package name="relatorioManutencoesSintetico" namespace="/relatorio/manutencoes/sintetico" extends="depi-default">
+   		<default-class-ref class="relatorioManutencoesSinteticoAction" />
+    	<global-results>
+    		<result name="input">/WEB-INF/pages/pt_BR/relatorio/manutencoes/sinteticoFiltro.jsp</result>
+    		<result name="success">/WEB-INF/pages/pt_BR/relatorio/manutencoes/sinteticoRelatorio.jsp</result>
+    	</global-results>
+    	<action name="index" method="execute"/>
+    	<action name="*" method="*"/>
+    </package>
+    
+    <package name="relatorioDadosComplementares" namespace="/relatorio/dados-complementares" extends="depi-default">
+   		<default-class-ref class="relatorioDadosComplementaresAction" />
+    	<global-results>
+    		<result name="input">/WEB-INF/pages/pt_BR/relatorio/dadosComplementares/filtro.jsp</result>
+    		<result name="success">/WEB-INF/pages/pt_BR/relatorio/dadosComplementares/relatorio.jsp</result>
+    	</global-results>
+    	<action name="index" method="execute"/>
+    	<action name="*" method="*"/>
     </package>
 	
 </struts>
