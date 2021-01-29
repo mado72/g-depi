@@ -206,6 +206,13 @@
         <action name="*" method="{1}">
         </action>
         
+        <action name="salvar" class="departamentoSalvarAction">
+			<interceptor-ref name="store">
+				<param name="operationMode">STORE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+        </action>
+        
 	</package>
 
 	<package name="cadastroGrupoAcesso" namespace="/cadastro/grupo-acesso/consultar" extends="depi-default">
