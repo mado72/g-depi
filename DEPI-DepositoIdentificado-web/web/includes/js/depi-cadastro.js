@@ -516,17 +516,27 @@ var fnReady = function ($) {
 	};
 	
 	$.paginacao.irPara = function(opcoes, pagina) {
+		if (pagina < 0 || pagina >= opcoes.pgs) {
+			return;
+		}
 		opcoes.corrente = pagina;
 		opcoes.idxInicial = opcoes.registros * pagina;
 		opcoes.idxFinal = opcoes.idxInicial + opcoes.registros - 1;
 
 		opcoes.jqTrs.hide();
-		var pgTrs = opcoes.jqTrs.slice(opcoes.idxInicial, opcoes.idxFinal);
+		var pgTrs = opcoes.jqTrs.slice(opcoes.idxInicial, opcoes.idxFinal + 1);
 		pgTrs.show();
 
 		var idxi = opcoes.idxInicial+1;
 		var idxf = Math.min(opcoes.idxFinal + 1, opcoes.jqTrs.length);
-
+		
+		var pagSel = $(opcoes.pagSeletor);
+		var ultPagina = pagina + 1 >= opcoes.pgs;
+		pagSel.find('.GoLast').toggleClass("disabled", ultPagina);
+		pagSel.find('.GoNext').toggleClass("disabled", ultPagina);
+		pagSel.find('.GoFirst').toggleClass("disabled", pagina < 1);
+		pagSel.find('.GoPrev').toggleClass("disabled", pagina < 1);
+		
 		opcoes.info.text(function(){
 			var txt = opcoes.pattern.replace(/:reg/, opcoes.jqTrs.length).replace(/:idxIni/, idxi).replace(/:idxFin/, idxf);
 			return txt;

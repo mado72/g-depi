@@ -97,7 +97,6 @@ public final class ConstantesDEPI {
 
 	public static final String ERRO_REGISTRO_DEP_COMP_JA_CADASTRADO = "msg.erro.departamentocompanhia.registrojacadastrado";
 	public static final String ERRO_PERMISAO_TABELA = "msg.erro.permisaoTabela";
-	public static final String ERRO_MOTIVO_DESC_BSCO_JA_CADASTRADA = "msg.erro.motivodeposito.descricao.jacadastrada";
 
 	/**
 	 * ConstantesDEPI Dao
@@ -237,15 +236,20 @@ public final class ConstantesDEPI {
 	public static final String MSG_INSERIR_EXITO = "msg.inserir.sucesso";
 	public static final String MSG_ALTERAR_EXITO = "msg.alterar.sucesso";
 	public static final String MSG_EXCLUIR_EXITO = "msg.excluir.sucesso";
-	
-	public static final String ERRO_MOTIVODEPOSITO_STATUSINATIVO = "msg.erro.motivodeposito.status.inativo";
-	public static final String ERRO_MOTIVODEPOSITO_NAOCADASTRADO = "msg.erro.motivodeposito.naocadastrado";
 
-	
+
 	public static final class ERRO_GERAL {
 		public static final String ERRORS_REQUIRED = "erros.required";
 		public static final String ERRORS_MAXLENGTH = "erros.maxlength";
 		public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
+	}
+	
+	public static final class ERRO_MOTIVO_DEPOSITO {
+		
+		public static final String STATUSINATIVO = "msg.erro.motivodeposito.status.inativo";
+		public static final String NAOCADASTRADO = "msg.erro.motivodeposito.naocadastrado";
+		public static final String DESC_BSCO_JA_CADASTRADA = "msg.erro.motivodeposito.descricao.jacadastrada";
+		
 	}
 	
 	public static final class ERRO_CRITERIO {
