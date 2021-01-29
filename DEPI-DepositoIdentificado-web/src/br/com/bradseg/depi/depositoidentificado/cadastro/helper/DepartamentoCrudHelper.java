@@ -88,8 +88,7 @@ public class DepartamentoCrudHelper implements
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(aux);
 		
-		List<DepartamentoVO> lista = facade.obterPorFiltro(filtro);
-		return lista;
+		return facade.obterPorFiltro(filtro);
 	}
 
 	// Métodos para o CRUD

@@ -43,8 +43,8 @@
 			<td style="width: 200px">
 			</td>
 			<td>
-				<a class="button" id="BtnPlus"><img src="<c:url value="${www3}padroes_web/intranet/imagens/plus.gif"/>"></a>
-				<a class="button" id="BtnMinus"><img src="<c:url value="${www3}padroes_web/intranet/imagens/minus.gif"/>"></a>
+				<a class="abtn" id="BtnPlus"><img src="<c:url value="${www3}padroes_web/intranet/imagens/plus.gif"/>"></a>
+				<a class="abtn" id="BtnMinus"><img src="<c:url value="${www3}padroes_web/intranet/imagens/minus.gif"/>"></a>
 			</td>
 		</tr>
 	</table>

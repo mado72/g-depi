@@ -39,7 +39,7 @@ public interface DepartamentoDAO {
 	 */
 	public void excluir(DepartamentoVO vo);
 
-	public Boolean isReferenciado(DepartamentoVO vo);
+	public boolean isReferenciado(DepartamentoVO vo);
 
 	public void excluir(List<DepartamentoVO> vos);
 
