@@ -358,8 +358,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		paramsUpd.addValue(PARAM_PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
 		paramsUpd.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
 		
-		Integer count = getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_UPDATE, paramsUpd);
-		return count;
+		return getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_UPDATE, paramsUpd);
 	}
 	
 	private boolean queryDepartamentoReferenciadoCompanhia(

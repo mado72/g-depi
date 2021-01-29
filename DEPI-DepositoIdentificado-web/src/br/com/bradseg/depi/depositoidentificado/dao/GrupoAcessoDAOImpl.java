@@ -3,7 +3,6 @@
  */
 package br.com.bradseg.depi.depositoidentificado.dao;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -79,12 +78,10 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 				complementoQuery = "";
 			}
         	
-			query = MessageFormat.format(query, complementoQuery);
+			query = query.replaceAll("%s", complementoQuery);
 			
-			List<GrupoAcessoVO> listGrupoAcessoVO = getJdbcTemplate().query(
-					query.toString(), params, new GrupoAcessoDataMapper());
-			
-			return listGrupoAcessoVO;
+			return getJdbcTemplate().query(query.toString(), params,
+					new GrupoAcessoDataMapper());
         } finally {
         	LOGGER.info("obterPorFiltro(CriterioFiltroUtil filtro)"); 
         }

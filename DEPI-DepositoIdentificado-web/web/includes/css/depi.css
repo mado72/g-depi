@@ -19,6 +19,10 @@ a.abtn {
 	margin: 2px;
 }
 
+a.abtn img {
+	height: 14px;
+}
+
 button.btn-img {
 	background-color: transparent;
 	border: 0;
@@ -89,8 +93,6 @@ button.btn-img {
 .tabela_botoes {
 	width: 95%;
 	height: 20px;
-	vertical-align: top !important;
-	border: 1px solid;
 }
 
 .Consulta .selecao {
@@ -134,3 +136,4 @@ button.btn-img {
 	margin-right: auto;
 	text-align: center;
 }
+

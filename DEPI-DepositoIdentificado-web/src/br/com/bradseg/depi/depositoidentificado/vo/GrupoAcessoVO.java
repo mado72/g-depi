@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+
 /**
  * Classe Anotada de Mapeamento com a tabela GRP_DEPTO_DEP.
  * @author Globalitu
@@ -191,7 +193,7 @@ public class GrupoAcessoVO implements Serializable{
 	 * @return o dataInclusao
 	 */
 	public Date getDataInclusao() {
-		return dataInclusao;
+		return BaseUtil.getDate(dataInclusao);
 	}
 
 	/**
@@ -199,7 +201,7 @@ public class GrupoAcessoVO implements Serializable{
 	 * @param dataInclusao valor dataInclusao a ser definido
 	 */
 	public void setDataInclusao(Date dataInclusao) {
-		this.dataInclusao = dataInclusao;
+		this.dataInclusao = BaseUtil.getDate(dataInclusao);
 	}
 
 	/**
@@ -207,7 +209,7 @@ public class GrupoAcessoVO implements Serializable{
 	 * @return o dataHoraAtualizacao
 	 */
 	public Date getDataHoraAtualizacao() {
-		return dataHoraAtualizacao;
+		return BaseUtil.getDate(dataHoraAtualizacao);
 	}
 
 	/**
@@ -215,7 +217,7 @@ public class GrupoAcessoVO implements Serializable{
 	 * @param dataHoraAtualizacao valor dataHoraAtualizacao a ser definido
 	 */
 	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
-		this.dataHoraAtualizacao = dataHoraAtualizacao;
+		this.dataHoraAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
 	}
 	
 }
