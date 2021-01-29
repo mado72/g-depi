@@ -1,7 +1,9 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 
 /**
@@ -30,6 +34,9 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     
 	@Autowired
 	private GrupoAcessoDAO grupoAcessoDAO;
+	
+	@Autowired
+	private CICSDepiDAO cicsDepiDAO;
 
     /**
      * alterar
@@ -174,16 +181,22 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
         List<GrupoAcessoVO> listaGrupoAcessoVO = new ArrayList<>();
         listaGrupoAcessoVO = grupoAcessoDAO.obterPorFiltro(filtro);
         
-//        for (GrupoAcessoVO vo : listaGrupoAcessoVO) {
-//        	vo.setCia(CICSBusinessDelegate.getInstance().obterCiaPorCodigo(vo.getCia().getCodigoCompanhia()));
-//		}
-/*        HashMap<> cacheCompanhia = new HashMap<>();
-        
+        Map<Integer, CompanhiaSeguradoraVO> mapCacheCompanhia = new HashMap<>();
         
         for (GrupoAcessoVO vo : listaGrupoAcessoVO) {
-        	throw new IntegrationException("inserir(GrupoAcessoVO grupo) -  FAAAAAALLLLTTTA IMPLEMENTAR");
-        }
-*/
+        	int codigoCompanhia = vo.getCia().getCodigoCompanhia();
+			CompanhiaSeguradoraVO ciaPorCodigo;
+			
+			if (mapCacheCompanhia.containsKey(codigoCompanhia)) {
+				ciaPorCodigo = mapCacheCompanhia.get(codigoCompanhia);
+			}
+			else {
+				ciaPorCodigo = cicsDepiDAO.obterCiaPorCodigo(codigoCompanhia);
+				mapCacheCompanhia.put(codigoCompanhia, ciaPorCodigo);
+			}
+			vo.setCia(ciaPorCodigo);
+		}
+
         return listaGrupoAcessoVO;
    }
 
