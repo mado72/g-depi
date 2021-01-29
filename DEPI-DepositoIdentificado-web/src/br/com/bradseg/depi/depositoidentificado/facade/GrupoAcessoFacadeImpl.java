@@ -173,13 +173,14 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
         // TraduzCriterioUtil.convert(filtro.getCriterios());
         List<GrupoAcessoVO> listaGrupoAcessoVO = new ArrayList<>();
         listaGrupoAcessoVO = grupoAcessoDAO.obterPorFiltro(filtro);
-/*
-        FIXME FALTA IMPLEMENTAR
-        for (GrupoAcessoVO acessoVO : listaGrupoAcessoVO) {
-            // acessoVO.setCia(CICSBusinessDelegate.getInstance().obterCiaPorCodigo(acessoVO.getCia().getCodigoCompanhia()));
-        	 throw new IntegrationException("inserir(GrupoAcessoVO grupo) -  FAAAAAALLLLTTTA IMPLEMENTAR");
+        
+/*        HashMap<> cacheCompanhia = new HashMap<>();
+        
+        
+        for (GrupoAcessoVO vo : listaGrupoAcessoVO) {
+        	throw new IntegrationException("inserir(GrupoAcessoVO grupo) -  FAAAAAALLLLTTTA IMPLEMENTAR");
         }
-*/        
+*/
         return listaGrupoAcessoVO;
    }
 
