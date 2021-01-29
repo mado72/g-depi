@@ -62,36 +62,41 @@ public class MotivoDepositoConsultarAction extends FiltroAction<MotivoDepositoCa
 		String valor = criterio.getValor();
 		
 		switch (campo) {
-		case DescricaoBasica: {
-			if (valor == null || valor.isEmpty()) {
-				addFieldError(CAMPO_DESCRICAO_BASICA, BaseUtil.getTextoFormatado(
-						ConstantesDEPI.ERRO_GERAL.ERRORS_REQUIRED,
-						LABEL_DESCRICAO_BASICA));
-			}
-			else if (valor.length() > 40){
-				addFieldError(CAMPO_DESCRICAO_BASICA, BaseUtil.getTextoFormatado(
-						ERRO_GERAL.ERRO_CAMPO_EXCESSO,
-						LABEL_DESCRICAO_BASICA, "40"));
-			}
+		case DescricaoBasica:
+			validaDescricaoBasica(valor);
 			break;
-		}
-		case DescricaoDetalhada: {
-			if (valor == null || valor.isEmpty()) {
-				addFieldError(CAMPO_DESCRICAO_DETALHADA, BaseUtil.getTextoFormatado(
-						ConstantesDEPI.ERRO_GERAL.ERRORS_REQUIRED,
-						LABEL_DESCRICAO_DETALHADA));
-			}
-			else if (valor.length() > 200){
-				addFieldError(CAMPO_DESCRICAO_DETALHADA, BaseUtil.getTextoFormatado(
-						ERRO_GERAL.ERRO_CAMPO_EXCESSO,
-						LABEL_DESCRICAO_DETALHADA, "200"));
-			}
+		case DescricaoDetalhada:
+			validaDescricaoDetalhada(valor);
 			
 			break;
-		}
-
 		default:
 			break;
+		}
+	}
+
+	private void validaDescricaoBasica(String valor) {
+		if (valor == null || valor.isEmpty()) {
+			addFieldError(CAMPO_DESCRICAO_BASICA, BaseUtil.getTextoFormatado(
+					ConstantesDEPI.ERRO_GERAL.ERRORS_REQUIRED,
+					LABEL_DESCRICAO_BASICA));
+		}
+		else if (valor.length() > 40){
+			addFieldError(CAMPO_DESCRICAO_BASICA, BaseUtil.getTextoFormatado(
+					ERRO_GERAL.ERRO_CAMPO_EXCESSO,
+					LABEL_DESCRICAO_BASICA, "40"));
+		}
+	}
+
+	private void validaDescricaoDetalhada(String valor) {
+		if (valor == null || valor.isEmpty()) {
+			addFieldError(CAMPO_DESCRICAO_DETALHADA, BaseUtil.getTextoFormatado(
+					ConstantesDEPI.ERRO_GERAL.ERRORS_REQUIRED,
+					LABEL_DESCRICAO_DETALHADA));
+		}
+		else if (valor.length() > 200){
+			addFieldError(CAMPO_DESCRICAO_DETALHADA, BaseUtil.getTextoFormatado(
+					ERRO_GERAL.ERRO_CAMPO_EXCESSO,
+					LABEL_DESCRICAO_DETALHADA, "200"));
 		}
 	}
 
