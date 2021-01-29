@@ -1,16 +1,13 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
-import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
@@ -144,30 +141,12 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 			if (lista == null || lista.isEmpty()) {
 				addActionError(getText(ConstantesDEPI.ERRO_SEMRESULTADO));
 			}
-		} catch (IntegrationException e) {
-			if (e.getCause() instanceof DataIntegrityViolationException) {
-				DataIntegrityViolationException dataE = (DataIntegrityViolationException) e
-						.getCause();
-				if (dataE.getCause() instanceof SQLDataException) {
-					SQLDataException sqlE = (SQLDataException) dataE.getCause();
-					if (sqlE.getSQLState().contains("22001")) {
-						LOGGER.error(
-								"Falha ao processar criterios de consulta. Parâmetro inválido. SQLSTATE=22001",
-								e);
-						throw new DEPIIntegrationException(sqlE,
-								"erro.SQLSTATE.22001");
-					}
-				}
-			}
-			
-			LOGGER.error("Falha ao processar criterios de consulta", e);
-			throw new DEPIIntegrationException(e);
-			
 		} catch (Exception e) {
 			LOGGER.error("Falha não tratada ao processar criterios de consulta", e);
 			getModel().setColecaoDados(Collections.emptyList());
 			addActionError(e.getMessage());
 		}
+		
 		return INPUT;
 	}
 	
