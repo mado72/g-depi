@@ -36,7 +36,7 @@
 				<td align="center" valign="middle" colspan="3">
 					<c:choose>
 						<c:when test="${detalhar}">
-							<s:a action="listar" namespace="/cadastro/motivoDeposito/consultar" class="button">
+							<s:a action="listar" namespace="/cadastro/motivoDeposito/consultar" class="abtn">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_voltar.gif"/>
 							</s:a>
  						</c:when>
@@ -44,7 +44,7 @@
 							<button class="btn-img" id="BtnSalvar" type="submit">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_salvar.gif"/>
 							</button>
-							<s:a action="listar" namespace="/cadastro/motivoDeposito/consultar" class="button">
+							<s:a action="listar" namespace="/cadastro/motivoDeposito/consultar" class="abtn">
 								<img src="${www3}/padroes_web/intranet/imagens/bt_cancelar.gif"/>
 							</s:a>
 						</c:otherwise>

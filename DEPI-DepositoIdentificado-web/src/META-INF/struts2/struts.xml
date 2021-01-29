@@ -183,17 +183,13 @@
 			    <param name="actionName">retornar</param>
 			    <param name="namespace">/cadastro/departamento/consultar</param>
 			</result>
-			<result name="voltar" type="redirectAction">
-			    <param name="actionName">listar</param>
-			    <param name="namespace">/cadastro/departamento/consultar</param>
-			</result>
-			<result name="voltar" type="redirectAction">
-			    <param name="actionName">listar</param>
-			    <param name="namespace">/cadastro/departamento/consultar</param>
-			</result>			
-		</global-results>
-		
-		<action name="novo" method="novo">
+            <result name="voltar" type="redirectAction">
+                <param name="actionName">listar</param>
+                <param name="namespace">/cadastro/departamento/consultar</param>
+            </result>            
+        </global-results>
+        
+		<action name="incluir" method="incluir">
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
 			<result name="input" type="redirectAction">input</result>
@@ -203,16 +199,22 @@
 			<result name="input" type="redirectAction">input</result>
 		</action>
         
-        <action name="*" method="{1}">
-        </action>
-        
-        <action name="salvar" class="departamentoSalvarAction">
+        <action name="excluir" method="excluir">
 			<interceptor-ref name="store">
 				<param name="operationMode">STORE</param>
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
         </action>
         
+        <action name="*" method="{1}">
+        </action>
+        
+        <action name="salvar" class="departamentoSalvarAction">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+        </action>        
 	</package>
 
 	<package name="cadastroGrupoAcesso" namespace="/cadastro/grupo-acesso/consultar" extends="depi-default">
