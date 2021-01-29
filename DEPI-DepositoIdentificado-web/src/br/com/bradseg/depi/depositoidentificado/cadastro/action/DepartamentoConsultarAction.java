@@ -61,35 +61,40 @@ public class DepartamentoConsultarAction extends FiltroAction<DepartamentoCampo,
 		String valor = criterio.getValor();
 
 		switch (campo) {
-		case Sigla: {
-			if (valor == null || valor.isEmpty()) {
-				addFieldError("sigla", BaseUtil.getTextoFormatado(
-						ConstantesDEPI.ERRO_GERAL.ERRORS_REQUIRED,
-						LABEL_GRID_DEPARTAMENTO_SIGLA_DEPARTAMENTO));
-			}
-			else if (valor.length() > 3){
-				addFieldError("sigla", BaseUtil.getTextoFormatado(
-						ERRO_GERAL.ERRO_CAMPO_EXCESSO,
-						LABEL_GRID_DEPARTAMENTO_SIGLA_DEPARTAMENTO, "3"));
-			}
+		case Sigla:
+			validaSigla(valor);
 			break;
-		}
-		case Nome: {
-			if (valor == null || valor.isEmpty()) {
-				addFieldError("nome", BaseUtil.getTextoFormatado(
-						ConstantesDEPI.ERRO_GERAL.ERRORS_REQUIRED,
-						LABEL_GRID_DEPARTAMENTO_NOME_DEPARTAMENTO));
-			}
-			else if (valor.length() > 40){
-				addFieldError("nome", BaseUtil.getTextoFormatado(
-						ERRO_GERAL.ERRO_CAMPO_EXCESSO,
-						LABEL_GRID_DEPARTAMENTO_NOME_DEPARTAMENTO, "40"));
-			}
+		case Nome:
+			validaNome(valor);
 			break;
-		}
-
 		default:
 			break;
+		}
+	}
+
+	private void validaSigla(String valor) {
+		if (valor == null || valor.isEmpty()) {
+			addFieldError("sigla", BaseUtil.getTextoFormatado(
+					ConstantesDEPI.ERRO_GERAL.ERRORS_REQUIRED,
+					LABEL_GRID_DEPARTAMENTO_SIGLA_DEPARTAMENTO));
+		}
+		else if (valor.length() > 3){
+			addFieldError("sigla", BaseUtil.getTextoFormatado(
+					ERRO_GERAL.ERRO_CAMPO_EXCESSO,
+					LABEL_GRID_DEPARTAMENTO_SIGLA_DEPARTAMENTO, "3"));
+		}
+	}
+
+	private void validaNome(String valor) {
+		if (valor == null || valor.isEmpty()) {
+			addFieldError("nome", BaseUtil.getTextoFormatado(
+					ConstantesDEPI.ERRO_GERAL.ERRORS_REQUIRED,
+					LABEL_GRID_DEPARTAMENTO_NOME_DEPARTAMENTO));
+		}
+		else if (valor.length() > 40){
+			addFieldError("nome", BaseUtil.getTextoFormatado(
+					ERRO_GERAL.ERRO_CAMPO_EXCESSO,
+					LABEL_GRID_DEPARTAMENTO_NOME_DEPARTAMENTO, "40"));
 		}
 	}
 
