@@ -84,7 +84,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 				MotivoDepositoVO motivoDepositoVO = motivoDepto.get(0);
 				if (motivoDepositoVO.getIndicadorAtivo().equals("S")) {
 					throw new DEPIBusinessException(
-							ConstantesDEPI.ERRO_MOTIVO_DEPOSITO.DESC_BSCO_JA_CADASTRADA,
+							ConstantesDEPI.MotivoDeposito.DESC_BSCO_JA_CADASTRADA,
 							vo.getDescricaoBasica());
 				}
 				vo.setCodigoMotivoDeposito(motivoDepositoVO.getCodigoMotivoDeposito());
@@ -114,7 +114,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 			MotivoDepositoVO motivoExistente = obterPorChave(vo); 
 
             if (motivoExistente.getIndicadorAtivo().equals("N")) {
-            	throw new DEPIBusinessException(ConstantesDEPI.ERRO_MOTIVO_DEPOSITO.STATUSINATIVO, vo.getDescricaoBasica());
+            	throw new DEPIBusinessException(ConstantesDEPI.MotivoDeposito.STATUSINATIVO, vo.getDescricaoBasica());
             }
             
 			queryUpdate(vo);
@@ -270,7 +270,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 
 			if (motivoDepto == null) {
 				throw new DEPIBusinessException(
-						ConstantesDEPI.ERRO_MOTIVO_DEPOSITO.NAOCADASTRADO,
+						ConstantesDEPI.MotivoDeposito.NAOCADASTRADO,
 						vo.getDescricaoBasica());
 			}
             
@@ -373,7 +373,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 			count = getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_UPDATE, paramsUpd);
 		} catch (DuplicateKeyException e) {
 			throw new DEPIBusinessException(e, 
-					ConstantesDEPI.ERRO_MOTIVO_DEPOSITO.DESC_BSCO_JA_CADASTRADA, vo.getDescricaoBasica());
+					ConstantesDEPI.MotivoDeposito.DESC_BSCO_JA_CADASTRADA, vo.getDescricaoBasica());
 		}
 	
 		if (count == 0) {

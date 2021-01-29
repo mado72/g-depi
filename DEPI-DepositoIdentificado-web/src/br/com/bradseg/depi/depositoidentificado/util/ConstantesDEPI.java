@@ -3,6 +3,11 @@ package br.com.bradseg.depi.depositoidentificado.util;
 /**
  * Classe com constantes do sistema.
  */
+/**
+ * 
+ * @author Marcelo Damasceno
+ *
+ */
 public final class ConstantesDEPI {
 
 	/**
@@ -238,13 +243,19 @@ public final class ConstantesDEPI {
 	public static final String MSG_EXCLUIR_EXITO = "msg.excluir.sucesso";
 
 
-	public static final class ERRO_GERAL {
+	/**
+	 * Constantes Gerais 
+	 */
+	public static final class Geral {
 		public static final String ERRORS_REQUIRED = "erros.required";
 		public static final String ERRORS_MAXLENGTH = "erros.maxlength";
 		public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
 	}
 	
-	public static final class ERRO_MOTIVO_DEPOSITO {
+	/**
+	 * Constantes para Motivo Deposito 
+	 */
+	public static final class MotivoDeposito {
 		
 		public static final String STATUSINATIVO = "msg.erro.motivodeposito.status.inativo";
 		public static final String NAOCADASTRADO = "msg.erro.motivodeposito.naocadastrado";
@@ -252,11 +263,10 @@ public final class ConstantesDEPI {
 		
 	}
 	
-	public static final class ERRO_CRITERIO {
-		public static final String ERRO_CRITERIO_INVALIDO = "msg.erro.criterio.invalido";
-	}
-	
-	public static final class ERRO_DEPARTAMENTO {
+	/**
+	 * Constantes para Departamento 
+	 */
+	public static final class Departamento {
 		public static final String ERRO_CADASTRADO_INATIVO = "msg.erro.departamento.inativo_cadastrado";
 	}
 

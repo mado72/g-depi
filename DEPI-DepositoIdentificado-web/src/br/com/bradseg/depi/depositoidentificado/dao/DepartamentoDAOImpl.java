@@ -99,7 +99,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	   			
 				if (existente.getIndicadoRegistroAtivo().equals(ConstantesDEPI.INDICADOR_INATIVO)) {
 					throw new DEPIIntegrationException(
-							ConstantesDEPI.ERRO_DEPARTAMENTO.ERRO_CADASTRADO_INATIVO,
+							ConstantesDEPI.Departamento.ERRO_CADASTRADO_INATIVO,
 							vo.getSiglaDepartamento());
 				}
 				
