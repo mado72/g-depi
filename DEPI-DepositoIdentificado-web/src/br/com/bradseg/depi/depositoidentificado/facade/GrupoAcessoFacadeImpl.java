@@ -174,9 +174,9 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
         List<GrupoAcessoVO> listaGrupoAcessoVO = new ArrayList<>();
         listaGrupoAcessoVO = grupoAcessoDAO.obterPorFiltro(filtro);
         
-        for (GrupoAcessoVO vo : listaGrupoAcessoVO) {
-        	vo.setCia(CICSBusinessDelegate.getInstance().obterCiaPorCodigo(vo.getCia().getCodigoCompanhia()));
-		}
+//        for (GrupoAcessoVO vo : listaGrupoAcessoVO) {
+//        	vo.setCia(CICSBusinessDelegate.getInstance().obterCiaPorCodigo(vo.getCia().getCodigoCompanhia()));
+//		}
 /*        HashMap<> cacheCompanhia = new HashMap<>();
         
         
