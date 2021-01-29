@@ -15,7 +15,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAOImpl;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
-import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.ERRO_GERAL;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
@@ -190,7 +190,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
             throw new IntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO + " - " + "Retira do Banco Ap�s Vencimento?");
         } else if (ConstantesDEPI.CODIGO_SIM.equals(vo.getCodigoBancoVencimento())) {
             if (BaseUtil.isGreater(vo.getNumeroDiasAposVencimento(), 99)) { // 3 meses
-                throw new IntegrationException(ERRO_GERAL.ERRO_CAMPO_EXCESSO + " - " + "Dias Ap�s Vencido: 2");
+                throw new IntegrationException(Geral.ERRO_CAMPO_EXCESSO + " - " + "Dias Ap�s Vencido: 2");
             } else if (BaseUtil.isNZB(vo.getNumeroDiasAposVencimento())) {
                 throw new IntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO + " - " + "Dias Ap�s Vencido");
             }
@@ -231,7 +231,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
         boolean b = !(BaseUtil.isNZB(vo.getOutrosDocumentosNecessarios()))
             && BaseUtil.isGreater(vo.getOutrosDocumentosNecessarios(), 200);
         if (b) {
-            throw new IntegrationException(ERRO_GERAL.ERRO_CAMPO_EXCESSO + " - " +  "Outros Documentos Necess�rios: 200");
+            throw new IntegrationException(Geral.ERRO_CAMPO_EXCESSO + " - " +  "Outros Documentos Necess�rios: 200");
         }
     }
 

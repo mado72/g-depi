@@ -14,7 +14,7 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarFor
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
-import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.ERRO_GERAL;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
 /**
@@ -76,12 +76,12 @@ public class MotivoDepositoConsultarAction extends FiltroAction<MotivoDepositoCa
 	private void validaDescricaoBasica(String valor) {
 		if (valor == null || valor.isEmpty()) {
 			addFieldError(CAMPO_DESCRICAO_BASICA, BaseUtil.getTextoFormatado(
-					ConstantesDEPI.ERRO_GERAL.ERRORS_REQUIRED,
+					ConstantesDEPI.Geral.ERRORS_REQUIRED,
 					LABEL_DESCRICAO_BASICA));
 		}
 		else if (valor.length() > 40){
 			addFieldError(CAMPO_DESCRICAO_BASICA, BaseUtil.getTextoFormatado(
-					ERRO_GERAL.ERRO_CAMPO_EXCESSO,
+					Geral.ERRO_CAMPO_EXCESSO,
 					LABEL_DESCRICAO_BASICA, "40"));
 		}
 	}
@@ -89,12 +89,12 @@ public class MotivoDepositoConsultarAction extends FiltroAction<MotivoDepositoCa
 	private void validaDescricaoDetalhada(String valor) {
 		if (valor == null || valor.isEmpty()) {
 			addFieldError(CAMPO_DESCRICAO_DETALHADA, BaseUtil.getTextoFormatado(
-					ConstantesDEPI.ERRO_GERAL.ERRORS_REQUIRED,
+					ConstantesDEPI.Geral.ERRORS_REQUIRED,
 					LABEL_DESCRICAO_DETALHADA));
 		}
 		else if (valor.length() > 200){
 			addFieldError(CAMPO_DESCRICAO_DETALHADA, BaseUtil.getTextoFormatado(
-					ERRO_GERAL.ERRO_CAMPO_EXCESSO,
+					Geral.ERRO_CAMPO_EXCESSO,
 					LABEL_DESCRICAO_DETALHADA, "200"));
 		}
 	}

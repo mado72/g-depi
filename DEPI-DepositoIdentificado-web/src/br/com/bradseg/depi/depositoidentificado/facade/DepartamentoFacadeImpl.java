@@ -17,7 +17,7 @@ import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
-import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.ERRO_GERAL;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
@@ -118,7 +118,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
             throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, CODIGO_RESPONSAVEL));
         }
         if (vo.getCodigoResponsavelUltimaAtualizacao() > 9999999) {
-            throw new IntegrationException(concatenarComHifen(ERRO_GERAL.ERRO_CAMPO_EXCESSO, CODIGO_RESPONSAVEL, "9999999"));
+            throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, CODIGO_RESPONSAVEL, "9999999"));
         }
     }
 
@@ -194,19 +194,19 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
 	        throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Sigla do Departamento"));
 	    }
 	    if (vo.getSiglaDepartamento().length() > ConstantesDEPI.MAX_SIZE_SIGLA_DEPARTAMENTO) {
-	        throw new IntegrationException(concatenarComHifen(ERRO_GERAL.ERRO_CAMPO_EXCESSO, "Sigla do Departamento", String.valueOf(ConstantesDEPI.MAX_SIZE_SIGLA_DEPARTAMENTO)));
+	        throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, "Sigla do Departamento", String.valueOf(ConstantesDEPI.MAX_SIZE_SIGLA_DEPARTAMENTO)));
 	    }
 	    if (BaseUtil.isNZB(vo.getNomeDepartamento())) {
 	        throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Nome do Departamento"));
 	    }
 	    if (vo.getNomeDepartamento().length() > ConstantesDEPI.MAX_SIZE_DEFAULT_NOME) {
-	        throw new IntegrationException(concatenarComHifen(ERRO_GERAL.ERRO_CAMPO_EXCESSO, "Nome do Departamento", String.valueOf(ConstantesDEPI.MAX_SIZE_DEFAULT_NOME)));
+	        throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, "Nome do Departamento", String.valueOf(ConstantesDEPI.MAX_SIZE_DEFAULT_NOME)));
 	    }
 	    if (vo.getCodigoResponsavelUltimaAtualizacao() == 0) {
 	        throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, CODIGO_RESPONSAVEL));
 	    }
 	    if (vo.getCodigoResponsavelUltimaAtualizacao() > ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO) {
-	        throw new IntegrationException(concatenarComHifen(ERRO_GERAL.ERRO_CAMPO_EXCESSO, CODIGO_RESPONSAVEL, String.valueOf(ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO)));
+	        throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, CODIGO_RESPONSAVEL, String.valueOf(ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO)));
 	    }
 	}
 
