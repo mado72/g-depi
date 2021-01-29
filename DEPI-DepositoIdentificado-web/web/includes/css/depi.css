@@ -12,7 +12,8 @@ pre.debug {
 	overflow-wrap: anywhere;
 }
 
-a.button {
+a.abtn {
+	vertical-align: top;
 	border: 0;
 	text-decoration: none;
 	margin: 2px;
@@ -87,6 +88,9 @@ button.btn-img {
 
 .tabela_botoes {
 	width: 95%;
+	height: 20px;
+	vertical-align: top !important;
+	border: 1px solid;
 }
 
 .Consulta .selecao {

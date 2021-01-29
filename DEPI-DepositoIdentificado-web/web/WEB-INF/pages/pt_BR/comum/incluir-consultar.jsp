@@ -8,10 +8,10 @@
 		<tr>
 			<td align="center">
 				<div class="tabela_botoes">
-				<s:if test="!colecaoDados || colecaoDados.isEmpty()"><c:url var="btnIncluirUrl" value="${param.namespaceEditar}/incluir.do"/>
-					<a class="button btnIncluir" id="BtnIncluirTopo" href="${btnIncluirUrl}/incluir.do"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></a>
+				<s:if test="!colecaoDados || colecaoDados.isEmpty()"><c:url var="btnIncluirUrl" value="${namespaceEditar}/incluir.do"/>
+					<a class="abtn btnIncluir" id="BtnIncluirTopo" href="${btnIncluirUrl}/incluir.do"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></a>
 				</s:if>
-					<a class="button btnConsultar" id="BtnConsultar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_consultar.jpg"/>"></a>
+					<a class="abtn btnConsultar" id="BtnConsultar" href="javascript:void(0)"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_consultar.jpg"/>"></a>
 				</div>
 			</td>
 		</tr>
