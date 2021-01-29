@@ -137,3 +137,11 @@ button.btn-img {
 	text-align: center;
 }
 
+.paginacao a {
+	cursor: pointer;
+}
+
+.paginacao a.disabled, .paginacao a.disabled:hover {
+	color: #aaaaaa;
+	cursor: default;
+}
