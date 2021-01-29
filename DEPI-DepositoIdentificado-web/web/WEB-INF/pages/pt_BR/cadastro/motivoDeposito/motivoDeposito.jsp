@@ -4,14 +4,12 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" 
 %>
-<c:set var="namespaceEditar">/cadastro/motivoDeposito/editar</c:set>
+<c:set var="namespaceEditar" scope="request">/cadastro/motivoDeposito/editar</c:set>
 <s:include value="/WEB-INF/pages/pt_BR/comum/filtro2dropbox.jsp">
 	<s:param name="scriptOff" value="true"/>
 </s:include>
 
-<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-consultar.jsp">
-	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
-</s:include>
+<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-consultar.jsp"/>
 
 <s:if test="colecaoDados && !colecaoDados.isEmpty()">
 <c:url value="${namespaceEditar}/alterar.do" var="actionForm"></c:url>
