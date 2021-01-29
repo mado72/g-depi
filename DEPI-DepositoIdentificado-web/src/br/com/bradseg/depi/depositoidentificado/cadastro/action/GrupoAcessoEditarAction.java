@@ -11,7 +11,8 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.form.GrupoAcessoEditarF
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.GrupoAcessoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
-import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudAction;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCampo;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 
 /**
@@ -21,14 +22,15 @@ import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
  */
 @Controller
 @Scope("session")
-public class GrupoAcessoEditarAction extends CrudAction<GrupoAcessoVO, GrupoAcessoEditarFormModel> {
+public class GrupoAcessoEditarAction
+		extends EditarFormAction<GrupoAcessoCampo, GrupoAcessoVO, GrupoAcessoEditarFormModel> {
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
 	private transient GrupoAcessoCrudHelper crudHelper;
 	
 	@Override
-	protected CrudHelper<GrupoAcessoVO, GrupoAcessoEditarFormModel> getCrudHelper() {
+	protected CrudHelper<GrupoAcessoCampo, GrupoAcessoVO, GrupoAcessoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
 			crudHelper = new GrupoAcessoCrudHelper();
 		}
