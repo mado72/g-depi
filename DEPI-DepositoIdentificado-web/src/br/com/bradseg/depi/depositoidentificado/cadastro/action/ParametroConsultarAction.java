@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
-import br.com.bradseg.depi.depositoidentificado.cadastro.helper.GrupoAcessoCrudHelper;
-import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
+import br.com.bradseg.depi.depositoidentificado.cadastro.helper.MotivoDepositoCrudHelper;
+import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -20,27 +20,27 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCamp
  */
 @Controller
 @Scope("session")
-public class GrupoAcessoConsultarAction extends FiltroAction<GrupoAcessoCampo, FiltroConsultarForm<GrupoAcessoCampo>> {
+public class ParametroConsultarAction extends FiltroAction<MotivoDepositoCampo, FiltroConsultarForm<MotivoDepositoCampo>> {
 
-	protected static final Logger LOGGER = LoggerFactory.getLogger(GrupoAcessoConsultarAction.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(ParametroConsultarAction.class);
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	private transient GrupoAcessoCrudHelper filtroHelper;
+	private transient MotivoDepositoCrudHelper filtroHelper;
 	
-	public GrupoAcessoConsultarAction() {
+	public ParametroConsultarAction() {
 		LOGGER.debug("Instancia de filtroHelper", filtroHelper);
 	}
 	
 	@Autowired
-	protected void setFacade(GrupoAcessoFacade facade) {
+	protected void setFacade(MotivoDepositoFacade facade) {
 		this.filtroHelper.setFacade(facade);
 	}
 
 	@Override
-	protected CrudHelper<GrupoAcessoCampo, ?, ?> getFiltroHelper() {
+	protected CrudHelper<MotivoDepositoCampo, ?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
-			filtroHelper = new GrupoAcessoCrudHelper();
+			filtroHelper = new MotivoDepositoCrudHelper();
 		}
 		return filtroHelper;
 	}
