@@ -4,11 +4,12 @@
 package br.com.bradseg.depi.depositoidentificado.cics.vo;
 
 import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.QUATRO;
+import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction.InOut;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction;
 import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsProgram;
 
 /**
@@ -21,134 +22,140 @@ public class GTAB1412VO implements Serializable {
 
 	private static final long serialVersionUID = -697466839831643647L;
 
-	@CicsField(order = 01, size = 4, pattern = QUATRO)
+	@CicsField(order = 1, size = 4, pattern = QUATRO, direction = InOut)
 	private String erroGSBS;
 
-	@CicsField(order = 2, size = 1)
+	@CicsField(order = 2, size = 1, direction = InOut)
 	private String tipoErroGSBS;
 
-	@CicsField(order = 3, size = 8, pattern = "00000000")
+	@CicsField(order = 3, size = 8, pattern = "00000000", direction = InOut)
 	private String sqlCodeGSBS;
 
-	@CicsField(order = 4, size = 3, pattern = "000")
+	@CicsField(order = 4, size = 7, pattern = "0000000", direction = InOut)
+	private String filler;
+
+	@CicsField(order = 5, size = 3, pattern = "000", direction = InOut)
 	private String codigoRetorno;
 
-	@CicsField(order = 5, size = 1)
+	@CicsField(order = 6, size = 1, direction = InOut)
 	private String sinalSqlCode;
 
-	@CicsField(order = 6, size = 4, pattern = QUATRO)
+	@CicsField(order = 7, size = 4, pattern = QUATRO, direction = InOut)
 	private String sqlCode;
 
-	@CicsField(order = 7, size = 4, pattern = QUATRO)
+	@CicsField(order = 8, size = 4, pattern = QUATRO, direction = InOut)
 	private String sqlErrML;
 
-	@CicsField(order = 8, size = 70)
+	@CicsField(order = 9, size = 70, direction = InOut)
 	private String sqlErrMC;
 
-	@CicsField(order = 9, size = 18)
+	@CicsField(order = 10, size = 18, direction = InOut)
 	private String tabelaErro;
 
-	@CicsField(order = 10, size = 1)
+	@CicsField(order = 11, size = 1, direction = InOut)
 	private String codigoExcluido;
 
-	@CicsField(order = 11, size = 1)
+	@CicsField(order = 12, size = 1, direction = InOut)
 	private String existe;
 
-	@CicsField(order = 12, size = 4, pattern = QUATRO)
+	@CicsField(order = 13, size = 4, pattern = QUATRO, direction = InOut)
 	private String ciaExterno;
 
-	@CicsField(order = 13, size = 4, pattern = QUATRO, direction=Direction.InOut)
+	@CicsField(order = 14, size = 4, pattern = QUATRO, direction = InOut)
 	private String ciaInterno;
 
-	@CicsField(order = 14, size = 18, pattern = "000000000000000000")
+	@CicsField(order = 15, size = 18, pattern = "000000000000000000")
 	private String codigoPessoa;
 
-	@CicsField(order = 15, size = 50)
+	@CicsField(order = 16, size = 50)
 	private String nome;
 
-	@CicsField(order = 16, size = 14, pattern = "00000000000000")
-	private String cnpj;
+	@CicsField(order = 18, size = 14, pattern = "00000000000000")
+	private long cnpj;
 
-	@CicsField(order = 17, size = 30)
+	@CicsField(order = 19, size = 1)
+	private String dv;
+
+	@CicsField(order = 20, size = 30)
 	private String nomeLogradouro;
 
-	@CicsField(order = 18, size = 20)
+	@CicsField(order = 21, size = 20)
 	private String complemento;
 
-	@CicsField(order = 19, size = 6)
+	@CicsField(order = 22, size = 6, pattern = "000000")
 	private String numeroEndereco;
 
-	@CicsField(order = 20, size = 20)
+	@CicsField(order = 23, size = 20)
 	private String bairro;
 
-	@CicsField(order = 21, size = 20)
+	@CicsField(order = 24, size = 20)
 	private String cidade;
 
-	@CicsField(order = 22, size = 8)
+	@CicsField(order = 25, size = 8, pattern = "00000000")
 	private String cep;
 
-	@CicsField(order = 23, size = 2)
+	@CicsField(order = 26, size = 2)
 	private String uf;
 
-	@CicsField(order = 24, size = 2)
-	private String dddFax;
-
-	@CicsField(order = 25, size = 10)
+	@CicsField(order = 27, size = 2, pattern = "00")
 	private String dddFone;
 
-	@CicsField(order = 26, size = 2)
+	@CicsField(order = 28, size = 10, pattern = "0000000000")
 	private String fone;
 
-	@CicsField(order = 27, size = 10)
+	@CicsField(order = 29, size = 2, pattern = "000")
+	private String dddFax;
+
+	@CicsField(order = 30, size = 10, pattern = "0000000000")
 	private String fax;
 
-	@CicsField(order = 28, size = 50)
+	@CicsField(order = 31, size = 50)
 	private String email;
 
-	@CicsField(order = 29, size = 7)
+	@CicsField(order = 32, size = 7, pattern = "0000000")
 	private String caixaPostal;
 
-	@CicsField(order = 30, size = 8)
+	@CicsField(order = 33, size = 8, pattern = "00000000")
 	private String cepCaixaPostal;
 
-	@CicsField(order = 31, size = 4)
+	@CicsField(order = 34, size = 4, pattern = QUATRO)
 	private String cdBancoCosseguroCia;
 
-	@CicsField(order = 32, size = 5)
+	@CicsField(order = 35, size = 5, pattern = "00000")
 	private String cdAgenciaCosseguroCia;
 
-	@CicsField(order = 33, size = 14)
+	@CicsField(order = 36, size = 14)
 	private String contaCosseguro;
 
-	@CicsField(order = 34, size = 20)
+	@CicsField(order = 37, size = 20)
 	private String sigla;
 
-	@CicsField(order = 35, size = 75)
+	@CicsField(order = 38, size = 75)
 	private String obs;
 
-	@CicsField(order = 36, size = 6)
+	@CicsField(order = 39, size = 6)
 	private String lei;
 
-	@CicsField(order = 37, size = 10)
-	private String dataprivateacaoLei;
+	@CicsField(order = 40, size = 10)
+	private String dataPublicacaoLei;
 
-	@CicsField(order = 38, size = 1)
+	@CicsField(order = 41, size = 1)
 	private String seGrupoBradesco;
 
-	@CicsField(order = 39, size = 5)
+	@CicsField(order = 42, size = 5)
 	private String cdProcFenaseg;
 
-	@CicsField(order = 40, size = 10)
+	@CicsField(order = 43, size = 10)
 	private String dtProgGrupoBradesco;
 
-	@CicsField(order = 41, size = 8)
+	@CicsField(order = 44, size = 8)
 	private String cdResponsavel;
 
-	@CicsField(order = 42, size = 26)
-	private String ultimaAtualizacaoCompleta;
+	@CicsField(order = 45, size = 26, pattern = "yyyy-MM-dd-kk.mm.ss.SSSSSS")
+	private Date ultimaAtualizacaoCompleta;
 
-	@CicsField(order = 43, size = 0)
-	private String ultimaAtualizacao;
+	@CicsField(order = 46, size = 10, pattern = "dd.MM.yyyy")
+	private Date ultimaAtualizacao;
 
 	/**
 	 * Retorna erroGSBS
@@ -196,6 +203,22 @@ public class GTAB1412VO implements Serializable {
 	 */
 	public void setSqlCodeGSBS(String sqlCodeGSBS) {
 		this.sqlCodeGSBS = sqlCodeGSBS;
+	}
+
+	/**
+	 * Retorna filler
+	 * @return o filler
+	 */
+	public String getFiller() {
+		return filler;
+	}
+
+	/**
+	 * Define filler
+	 * @param filler valor filler a ser definido
+	 */
+	public void setFiller(String filler) {
+		this.filler = filler;
 	}
 
 	/**
@@ -394,7 +417,7 @@ public class GTAB1412VO implements Serializable {
 	 * Retorna cnpj
 	 * @return o cnpj
 	 */
-	public String getCnpj() {
+	public long getCnpj() {
 		return cnpj;
 	}
 
@@ -402,8 +425,24 @@ public class GTAB1412VO implements Serializable {
 	 * Define cnpj
 	 * @param cnpj valor cnpj a ser definido
 	 */
-	public void setCnpj(String cnpj) {
+	public void setCnpj(long cnpj) {
 		this.cnpj = cnpj;
+	}
+
+	/**
+	 * Retorna dv
+	 * @return o dv
+	 */
+	public String getDv() {
+		return dv;
+	}
+
+	/**
+	 * Define dv
+	 * @param dv valor dv a ser definido
+	 */
+	public void setDv(String dv) {
+		this.dv = dv;
 	}
 
 	/**
@@ -519,22 +558,6 @@ public class GTAB1412VO implements Serializable {
 	}
 
 	/**
-	 * Retorna dddFax
-	 * @return o dddFax
-	 */
-	public String getDddFax() {
-		return dddFax;
-	}
-
-	/**
-	 * Define dddFax
-	 * @param dddFax valor dddFax a ser definido
-	 */
-	public void setDddFax(String dddFax) {
-		this.dddFax = dddFax;
-	}
-
-	/**
 	 * Retorna dddFone
 	 * @return o dddFone
 	 */
@@ -564,6 +587,22 @@ public class GTAB1412VO implements Serializable {
 	 */
 	public void setFone(String fone) {
 		this.fone = fone;
+	}
+
+	/**
+	 * Retorna dddFax
+	 * @return o dddFax
+	 */
+	public String getDddFax() {
+		return dddFax;
+	}
+
+	/**
+	 * Define dddFax
+	 * @param dddFax valor dddFax a ser definido
+	 */
+	public void setDddFax(String dddFax) {
+		this.dddFax = dddFax;
 	}
 
 	/**
@@ -727,19 +766,19 @@ public class GTAB1412VO implements Serializable {
 	}
 
 	/**
-	 * Retorna dataprivateacaoLei
-	 * @return o dataprivateacaoLei
+	 * Retorna dataPublicacaoLei
+	 * @return o dataPublicacaoLei
 	 */
-	public String getDataprivateacaoLei() {
-		return dataprivateacaoLei;
+	public String getDataPublicacaoLei() {
+		return dataPublicacaoLei;
 	}
 
 	/**
-	 * Define dataprivateacaoLei
-	 * @param dataprivateacaoLei valor dataprivateacaoLei a ser definido
+	 * Define dataPublicacaoLei
+	 * @param dataPublicacaoLei valor dataPublicacaoLei a ser definido
 	 */
-	public void setDataprivateacaoLei(String dataprivateacaoLei) {
-		this.dataprivateacaoLei = dataprivateacaoLei;
+	public void setDataPublicacaoLei(String dataPublicacaoLei) {
+		this.dataPublicacaoLei = dataPublicacaoLei;
 	}
 
 	/**
@@ -810,7 +849,7 @@ public class GTAB1412VO implements Serializable {
 	 * Retorna ultimaAtualizacaoCompleta
 	 * @return o ultimaAtualizacaoCompleta
 	 */
-	public String getUltimaAtualizacaoCompleta() {
+	public Date getUltimaAtualizacaoCompleta() {
 		return ultimaAtualizacaoCompleta;
 	}
 
@@ -818,7 +857,7 @@ public class GTAB1412VO implements Serializable {
 	 * Define ultimaAtualizacaoCompleta
 	 * @param ultimaAtualizacaoCompleta valor ultimaAtualizacaoCompleta a ser definido
 	 */
-	public void setUltimaAtualizacaoCompleta(String ultimaAtualizacaoCompleta) {
+	public void setUltimaAtualizacaoCompleta(Date ultimaAtualizacaoCompleta) {
 		this.ultimaAtualizacaoCompleta = ultimaAtualizacaoCompleta;
 	}
 
@@ -826,7 +865,7 @@ public class GTAB1412VO implements Serializable {
 	 * Retorna ultimaAtualizacao
 	 * @return o ultimaAtualizacao
 	 */
-	public String getUltimaAtualizacao() {
+	public Date getUltimaAtualizacao() {
 		return ultimaAtualizacao;
 	}
 
@@ -834,7 +873,7 @@ public class GTAB1412VO implements Serializable {
 	 * Define ultimaAtualizacao
 	 * @param ultimaAtualizacao valor ultimaAtualizacao a ser definido
 	 */
-	public void setUltimaAtualizacao(String ultimaAtualizacao) {
+	public void setUltimaAtualizacao(Date ultimaAtualizacao) {
 		this.ultimaAtualizacao = ultimaAtualizacao;
 	}
 

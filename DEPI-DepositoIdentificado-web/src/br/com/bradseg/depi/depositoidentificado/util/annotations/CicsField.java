@@ -25,13 +25,6 @@ public @interface CicsField {
 	public static enum Direction {
 		In, Out, InOut
 	}
-	
-	/**
-	 * Determina se o Filler é antes ou após o campo. 
-	 */
-	public static enum FillerSide {
-		PRE, POS;
-	}
 
 	/**
 	 * Define a ordem do campo para a mensagem do CICS
@@ -53,20 +46,7 @@ public @interface CicsField {
 
 	int size();
 	
-	/**
-	 * Retorna a constante para ser preenchida como campo FILLER do CICS. Quando
-	 * definido, usará {@link #fillerSide()} para definir se o filler vem antes
-	 * ou após o campo.
-	 * 
-	 * @return String constante do filler.
-	 */
-	String filler() default "";
-	
-	/**
-	 * Apenas usando quando o campo define um filler.
-	 * @return PRE antes do campo, POS depois do campo.
-	 */
-	FillerSide fillerSide() default FillerSide.POS;
+	CicsFiller filler() default @CicsFiller("");
 
 	String pattern() default "";
 

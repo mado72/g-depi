@@ -194,7 +194,9 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 				ciaPorCodigo = cicsDepiDAO.obterCiaPorCodigo(codigoCompanhia);
 				mapCacheCompanhia.put(codigoCompanhia, ciaPorCodigo);
 			}
-			vo.setCia(ciaPorCodigo);
+			if (ciaPorCodigo != null) {
+				vo.setCia(ciaPorCodigo);
+			}
 		}
 
         return listaGrupoAcessoVO;

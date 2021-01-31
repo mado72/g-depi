@@ -3,7 +3,7 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<c:set var="namespaceEditar">/cadastro/grupoAcesso/editar</c:set>
+<c:set var="namespaceEditar">/cadastro/grupo-acesso/editar</c:set>
 <s:include value="/WEB-INF/pages/pt_BR/comum/filtro2dropbox.jsp">
 	<s:param name="scriptOff" value="true"/>
 </s:include>
@@ -25,7 +25,7 @@
 			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
 		<th class="codigoGrupoAcesso">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
+			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
 				<s:param name="campo" value="codigoGrupoAcesso"/>
 			</s:url>
 			<s:a href="%{linkSort}">
@@ -33,7 +33,7 @@
 			</s:a>
 		</th>
 		<th class="nomeGrupoAcesso">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
+			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
 				<s:param name="campo" value="nome"/>
 			</s:url>
 			<s:a href="%{linkSort}">
@@ -41,7 +41,7 @@
 			</s:a>
 		</th>
 		<th class="codigoCompanhia">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
+			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
 				<s:param name="campo" value="cia.codigoCompanhia"/>
 			</s:url>
 			<s:a href="%{linkSort}">
@@ -49,7 +49,7 @@
 			</s:a>
 		</th>
 		<th class="descricaoCompanhia">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
+			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
 				<s:param name="campo" value="cia.descricaoCompanhia"/>
 			</s:url>
 			<s:a href="%{linkSort}">
@@ -57,7 +57,7 @@
 			</s:a>
 		</th>
 		<th class="codigoDepartamento">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
+			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
 				<s:param name="campo" value="depto.siglaDepartamento"/>
 			</s:url>
 			<s:a href="%{linkSort}">
@@ -65,7 +65,7 @@
 			</s:a>
 		</th>
 		<th class="nomeDepartamento">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
+			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
 				<s:param name="campo" value="depto.nomeDepartamento"/>
 			</s:url>
 			<s:a href="%{linkSort}">
@@ -73,7 +73,7 @@
 			</s:a>
 		</th>
 		<th class="responsavel">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
+			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
 				<s:param name="campo" value="responsavel"/>
 			</s:url>
 			<s:a href="%{linkSort}">
@@ -81,7 +81,7 @@
 			</s:a>
 		</th>
 		<th class="atualizacao">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
+			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
 				<s:param name="campo" value="atualizacao"/>
 			</s:url>
 			<s:a href="%{linkSort}">
@@ -97,7 +97,7 @@
 				<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoGrupoAcesso}"/>"/>
 			</td>
 			<td class="text-center">
-				<s:url action="exibir" namespace="/cadastro/grupoAcesso/editar" var="linkExibir">
+				<s:url action="exibir" namespace="/cadastro/grupo-acesso/editar" var="linkExibir">
 					<s:param name="codigo">${item.codigoGrupoAcesso}</s:param>
 				</s:url>
 				<s:a href="%{linkExibir}">
@@ -118,20 +118,6 @@
  	</tbody>
 </table>
 <div class="paginacao"></div>
-
-<br/>
-	<br/>
-	<table class="tabela_botoes">
-		<tr>
-			<td align="center">
-				<div id="tabela_botoes">
-					<s:a id="BtnIncluir2" class="button btnIncluir" action="incluir" namespace="/cadastro/grupoAcesso/editar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
-					<a class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
-					<a class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
-				</div>
-			</td>
-		</tr>
-	</table>
 
 <s:include value="/WEB-INF/pages/pt_BR/comum/incluir-alterar-excluir.jsp">
 	<s:param name="namespaceEditar" >${namespaceEditar}</s:param>
