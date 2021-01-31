@@ -63,14 +63,14 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 
     	
     	String query = QuerysDepi.GRUPOACESSO_OBTERPORFILTRONEW;
-    	final String complementoQuery;
+    	String complementoQuery;
 
         try {
 
         	MapSqlParameterSource params = null;
         	
 			if (!filtro.getCriterios().isEmpty()) {
-				complementoQuery = filtro.getClausaAndFiltro();
+				complementoQuery = new StringBuilder(" AND ").append(filtro.getClausaAndFiltro()).toString();
 				
 				params = filtro.getMapParamFiltro();
 			}
