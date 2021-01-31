@@ -41,7 +41,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     /**
      * alterar
      * @param grupo vo que ser� alterado
-     * @throws IntegrationException - Integra��o.
+     * @throws IntegrationException - Integração.
      */
     @Override
     public void alterar(GrupoAcessoVO grupo) throws IntegrationException {
@@ -160,7 +160,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      * obterPorChave
      * @param grupo - GrupoAcessoVO.
      * @return GrupoAcessoVO.
-     * @throws IntegrationException - Integra��o.
+     * @throws IntegrationException - Integração.
      */
     @Override
     public GrupoAcessoVO obterPorChave(GrupoAcessoVO grupo) throws IntegrationException {
@@ -173,7 +173,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      * Consulta usando filtro.
      * @param filtro - CriterioFiltroUtil.
      * @return List.
-     * @throws IntegrationException - Integra��o.
+     * @throws IntegrationException - Integração.
      */
     @Override
     public List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
@@ -205,7 +205,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     /**
      * obterTodos
      * @return - List<GrupoAcessoVO>.
-     * @throws IntegrationException - Integra��o.
+     * @throws IntegrationException - Integração.
      */
     @Override
     public List<GrupoAcessoVO> obterTodos() throws IntegrationException {

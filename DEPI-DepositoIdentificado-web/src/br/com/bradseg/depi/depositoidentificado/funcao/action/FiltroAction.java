@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
@@ -34,6 +35,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  *            Tipo do Model deste formulário
  */
 @Controller
+@Scope("request")
 public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroConsultarForm<C>> extends BaseModelAction<T> {
 
 	private static final long serialVersionUID = 935947361413242271L;

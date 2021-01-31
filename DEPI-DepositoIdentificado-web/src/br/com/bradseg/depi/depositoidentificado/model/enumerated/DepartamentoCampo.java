@@ -82,7 +82,7 @@ public enum DepartamentoCampo implements IEntidadeCampo {
      * Obter por nome.
      * @param nome Campo no banco.
      * @return DepartamentoCampo.
-     * @throws DEPIIntegrationException - Integra��o.
+     * @throws DEPIIntegrationException - Integração.
      */
     public static DepartamentoCampo obterPorNome(String nome) throws DEPIIntegrationException {
         for (DepartamentoCampo campo : DepartamentoCampo.values()) {

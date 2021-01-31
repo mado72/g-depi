@@ -6,7 +6,7 @@ package br.com.bradseg.depi.depositoidentificado.cics.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.ctg.programapi.support.gateway.CTGJavaGateway;
 import br.com.bradseg.depi.depositoidentificado.cics.vo.GTAB1412VO;
@@ -18,7 +18,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
  * 
  * @author Marcelo Damasceno
  */
-@Service
+@Repository
 public class CICSDepiDAOImpl implements CICSDepiDAO {
 	
 	@Autowired
