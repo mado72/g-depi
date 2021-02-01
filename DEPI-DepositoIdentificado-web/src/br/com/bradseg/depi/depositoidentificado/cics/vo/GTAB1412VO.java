@@ -9,6 +9,7 @@ import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsFiel
 import java.io.Serializable;
 import java.util.Date;
 
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField;
 import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsProgram;
 
@@ -850,7 +851,7 @@ public class GTAB1412VO implements Serializable {
 	 * @return o ultimaAtualizacaoCompleta
 	 */
 	public Date getUltimaAtualizacaoCompleta() {
-		return ultimaAtualizacaoCompleta;
+		return BaseUtil.getDate(ultimaAtualizacaoCompleta);
 	}
 
 	/**
@@ -858,7 +859,7 @@ public class GTAB1412VO implements Serializable {
 	 * @param ultimaAtualizacaoCompleta valor ultimaAtualizacaoCompleta a ser definido
 	 */
 	public void setUltimaAtualizacaoCompleta(Date ultimaAtualizacaoCompleta) {
-		this.ultimaAtualizacaoCompleta = ultimaAtualizacaoCompleta;
+		this.ultimaAtualizacaoCompleta = BaseUtil.getDate(ultimaAtualizacaoCompleta);
 	}
 
 	/**
@@ -866,7 +867,7 @@ public class GTAB1412VO implements Serializable {
 	 * @return o ultimaAtualizacao
 	 */
 	public Date getUltimaAtualizacao() {
-		return ultimaAtualizacao;
+		return BaseUtil.getDate(ultimaAtualizacao);
 	}
 
 	/**
@@ -874,7 +875,7 @@ public class GTAB1412VO implements Serializable {
 	 * @param ultimaAtualizacao valor ultimaAtualizacao a ser definido
 	 */
 	public void setUltimaAtualizacao(Date ultimaAtualizacao) {
-		this.ultimaAtualizacao = ultimaAtualizacao;
+		this.ultimaAtualizacao = BaseUtil.getDate(ultimaAtualizacao);
 	}
 
 }

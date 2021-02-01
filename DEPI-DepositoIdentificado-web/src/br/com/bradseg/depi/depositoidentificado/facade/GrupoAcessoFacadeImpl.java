@@ -40,13 +40,11 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 
     /**
      * alterar
-     * @param grupo vo que ser� alterado
+     * @param grupo vo que será alterado
      * @throws IntegrationException - Integração.
      */
     @Override
     public void alterar(GrupoAcessoVO grupo) throws IntegrationException {
-        // BaseUtil.validarParametro(grupo, "grupo - GrupoAcessoVO");
-        // BaseUtil.validarParametro(grupo.getCodigoGrupoAcesso(), "C�digo do Grupo de Acesso");
 
     	validarParametrosInclusao(grupo);
         try {
@@ -104,7 +102,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     /**
      * Inserir um novo Grupo de Acesso.
      * @param grupo - GrupoAcessoVO.
-     * @return int - C�digo grupo.
+     * @return int - Código grupo.
      * @throws IntegrationException - IntegrationException.
      */
     @Override
@@ -209,8 +207,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      */
     @Override
     public List<GrupoAcessoVO> obterTodos() throws IntegrationException {
-		return null;
- //        return grupoAcessoDAO.obterTodos();
+		return grupoAcessoDAO.obterPorFiltro(new FiltroUtil());
     }
 
     @Override

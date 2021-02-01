@@ -181,7 +181,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
 
     /**
      * m�todo que valida ias informa��es do vo
-     * @param vo - par�metros de dep�sito que ser�o validados
+     * @param vo - par�metros de dep�sito que seráo validados
      * @throws IntegrationException - trata erros
      */
     private void validaOperacao(ParametroDepositoVO vo) throws IntegrationException {
@@ -237,7 +237,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
 
     /**
      * m�todo que v�lida a chave
-     * @param vo - objeto que ser� validado
+     * @param vo - objeto que será validado
      * @throws IntegrationException - trata erros
      */
     private void validarChave(ParametroDepositoVO vo) throws IntegrationException {

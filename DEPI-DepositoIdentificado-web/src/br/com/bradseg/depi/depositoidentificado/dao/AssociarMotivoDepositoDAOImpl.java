@@ -90,7 +90,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 
     /**
      * método para inserir uma associa��o de motivo
-     * @param vo - objeto que ser� inserido
+     * @param vo - objeto que será inserido
      */
     @Override
     public void inserir(AssociarMotivoDepositoVO vo) {

@@ -1,11 +1,15 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
+import java.io.Serializable;
+
 /**
  * Classe para coletar as informações de login quando recebe um POST. 
  * @author Marcelo Damasceno
  */
-public class LoginPostVO {
+public class LoginPostVO implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	private String aplicacao;
 	
 	private String centroCusto;
