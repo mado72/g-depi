@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
-import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
@@ -119,9 +119,9 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
 	}
 
 	@Override
-	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(int codigoCia,int codigoDep, Double codigoUsuario, Tabelas e) {
+	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(int codigoCia,int codigoDep, int codigoUsuario, Tabelas e) {
 		
-		LOGGER.error("Inicio - obterComRestricaoDeGrupoAcesso(int codigoCia,int codigoDep, Double codigoUsuario, Tabelas e)"); 
+		LOGGER.error("Inicio - obterComRestricaoDeGrupoAcesso(int codigoCia,int codigoDep, int codigoUsuario, Tabelas e)"); 
 
 		return motivoDepositoDAO.obterComRestricaoDeGrupoAcesso(codigoCia, codigoDep, codigoUsuario, e);
 		

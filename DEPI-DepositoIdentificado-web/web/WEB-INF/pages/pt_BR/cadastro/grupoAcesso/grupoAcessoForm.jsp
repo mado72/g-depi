@@ -1,74 +1,85 @@
 <%@ page contentType="text/html; charset=UTF-8" %><%@ 
+	taglib prefix="depi" uri="/depi-tags" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<!--mensagem de erro de negocio-->
-<s:if test="hasActionMessages()">
-<span id="box_msg_erro">
-<br />
-
-<table class="tabela_verm" >
-<tr>
-	<td align="left" >
-	<ul><s:actionerror/></ul>
-	</td>
-</tr>
-</table>
-</span>
-</s:if>
-
-<s:form action="processar">
-<s:hidden name="codigo"/>
+<c:url value="/cadastro/grupo-acesso" var="namespaceBase" scope="request"/>
+<s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
+<s:form action="salvar">
+<input name="codigo" type="hidden" value="${codigo.isEmpty() ? '' : codigo }">
 	<table id="tabela_interna">
 	<caption>
 		<span class="obrigatorio"><s:text name="label.campos.obrigatorios" /></span>
 	</caption>
 	<thead>
 		<tr>
-			<th colspan="4"><s:text name="label.cadastro.departamento.tabela" /></th>
+			<th colspan="4"><s:text name="label.cadastro.grupoAcesso.tabela" /></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="td_label" ><s:text name="label.grid.departamento.siglaDepartamento" /><span class="obrigatorio">*</span></td>
-			<td colspan="3" >
-				<s:textfield tabindex="1" key="siglaDepartamento" styleClass="input" style="text-transform: uppercase;"  maxlength="20" size="26" disabled="detalhar"/>
+			<td class="td_label" ><s:text name="label.cadastro.grupoacesso.cia" /><span class="obrigatorio">*</span></td>
+			<td>
+				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.codigoCompanhia-->
+				<select name="cia.codigoCompanhia" class="dropbox companhia-codigo-dropbox"></select>
+			</td>
+			<td colspan="2">
+				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
+				<select class="dropbox companhia-nome-dropbox"></select>
 			</td>
 		</tr>
 		<tr>
-			<td class="td_label"><s:text name="label.grid.departamento.nomeDepartamento" /><span class="obrigatorio">*</span></td>
-			<td colspan="3">
-				<s:textarea key="model.nomeDepartamento" rows="5" tabindex="2" cols="70" style="text-transform: uppercase;" readonly="detalhar"/>
+			<td class="td_label" ><s:text name="label.cadastro.grupoacesso.departamento" /><span class="obrigatorio">*</span></td>
+			<td>
+				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.codigoCompanhia-->
+				<select name="depto.codigoDepartamento" class="dropbox departamento-codigo-dropbox"></select>
+			</td>
+			<td colspan="2">
+				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
+				<select class="dropbox departamento-nome-dropbox"></select>
 			</td>
 		</tr>
-	</tbody>
-	</table>
-	<table class="tabela_botoes">
-		<tbody>
-			<tr>
-				<td align="center" valign="middle" colspan="3">
-					<c:choose>
-						<c:when test="${detalhar}">
-							<button class="btn-img" type="submit" id="BtnVoltar" name="acao" value="voltar">
-								<img src="${www3}/padroes_web/intranet/imagens/bt_voltar.gif"/>
-							</button>
-						</c:when>
-						<c:otherwise>
-							<button class="btn-img" id="BtnSalvar" type="submit" name="acao" value="salvar">
-								<img src="${www3}/padroes_web/intranet/imagens/bt_salvar.gif"/>
-							</button>
-							<button class="btn-img" id="BtnCancelar" name="acao" value="cancelar">
-								<img src="${www3}/padroes_web/intranet/imagens/bt_cancelar.gif"/>
-							</button>
-						</c:otherwise>
-					</c:choose>
-				</td>
-			</tr>
+		<tr>
+			<td class="td_label"><s:text name="label.cadastro.grupoacesso.funcionario" /><span class="obrigatorio">*</span></td>
+			<td colspan="3">
+				<div class="btn-control">
+					<input type="checkbox" class="optionbutton checkTodos" disabled="${detalhar}" />
+					<s:text name="label.todos"/>
+					<img src="${www3}padroes_web/intranet/imagens/ic_sbox_consultar.gif" alt="Pesquisar">
+					<s:if test="detalhar">
+						<s:else>
+							<img src="${www3}padroes_web/intranet/imagens/ic_sbox_sair.gif" alt="Excluir"/>
+						</s:else>
+					</s:if>
+				</div>
+				<!-- TODO INCLUIR LISTA FUNCIONARIOS -->
+			</td>
+		</tr>
+		<tr>
+			<td class="td_label"><s:text name="label.cadastro.grupoacesso.nomeGrupo" /><span
+				class="obrigatorio">*</span></td>
+			<td width="30%"><s:textfield styleId="nomeGrupo"
+					property="nomeGrupoAcesso" maxlength="15" disabled="detalhar" /></td>
+			<td><s:text name="label.cadastro.grupoacesso.codigoGrupo" /><span
+				class="obrigatorio">*</span>&nbsp;</td>
+			<td align="left"><s:textfield styleId="codigoGrupo"
+					property="codigoGrupoAcesso" 
+					maxlength="9" size="9" disabled="detalhar" /></td>
+		</tr>
 		</tbody>
-		<tbody>
-			<tr>
-				<td align="center"><div id="box_loading"></div></td>
-			</tr>
-		</tbody>
 	</table>
+<s:include value="/WEB-INF/pages/pt_BR/comum/voltar-salvar-cancelar.jsp"/>
 </s:form>
+<depi:clearMessages actionErrors="true" fieldErrors="true" messages="true"/>
+<c:set var="scriptPage" scope="request">
+<c:out value="${scriptPage}" default="" escapeXml="false"/>
+<script>
+jQuery(document).ready(function($){
+<c:if test="${! detalhar}">
+	$.grupoacesso.prepararEditar({
+		urlCias : '<c:url value="/json/ciaListar.do"></c:url>',
+		urlDepto : '<c:url value="/json/ciaDepartamentos.do?codigoCia=%d"></c:url>'
+	});
+</c:if>
+}(jQuery));
+</script>
+</c:set>

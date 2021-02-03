@@ -124,7 +124,7 @@ public class GrupoAcessoCrudHelper implements
 	public void preencherFormularioEdicao(GrupoAcessoEditarFormModel model)
 			throws DEPIIntegrationException {
 		
-		int codigoGrupoAcesso = Integer.parseInt(model.getCodigoGrupoAcesso());
+		int codigoGrupoAcesso = Integer.parseInt(model.getCodigo());
 		GrupoAcessoVO instancia = obterPeloCodigo(codigoGrupoAcesso);
 		
 		CompanhiaSeguradoraVO companhia = instancia.getCia();
@@ -136,8 +136,7 @@ public class GrupoAcessoCrudHelper implements
 		}
 
 		model.setCodigoGrupoAcesso(String.valueOf(instancia.getCodigoGrupoAcesso()));
-		model.setCodCompanhia(String.valueOf(companhia.getCodigoCompanhia()));
-		model.setDescCompanhia(companhia.getDescricaoCompanhia());
+		model.setCodCompanhia(companhia.getCodigoCompanhia());
 		model.setCodDepartamento(String.valueOf(departamento.getCodigoDepartamento()));
 		model.setDescDepartamento(departamento.getNomeDepartamento());
 		model.setCodFuncionarios(codFuncionarios);
@@ -203,4 +202,24 @@ public class GrupoAcessoCrudHelper implements
 		return facade.obterPorChave(vo);
 	}
 
+	/**
+	 * Lista Companhias Seguradoras
+	 * @param codUsuario Código do usuário logado
+	 * @return Lista de Companhias Seguradoras
+	 */
+	public List<CompanhiaSeguradoraVO> obterCompanhias(Double codUsuario) {
+		return facade.obterCompanhias(codUsuario);
+	}
+
+	/**
+	 * Lista os departamentos da companhia
+	 * @param codigoCompanhia Código da companhia
+	 * @param codigoUsuario Código do usuário logado
+	 * @return Lista de departamentos
+	 */
+	public List<DepartamentoVO> obterDepartamentos(int codigoCompanhia,
+			double codigoUsuario) {
+		return facade.obterDepartamentos(codigoCompanhia, codigoUsuario);
+	}
+	
 }

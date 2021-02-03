@@ -21,8 +21,8 @@ import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.MotivoDepositoDataMapper;
-import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
@@ -191,16 +191,11 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
         return false;
     }
 
-	/**
-     * Obtém apenas os Motivos que estão associados a Parametros de Depósito.
-     * @param codigoCia - int.
-     * @param codigoDep - int.
-     * @param codigoUsuario - BigDecimal.
-     * @param e - Tabelas.
-     * @return List<MotivoDepositoVO>.
+    /* (non-Javadoc)
+     * @see br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO#obterComRestricaoDeGrupoAcesso(int, int, int, br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas)
      */
     @Override
-	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep,final Double codigoUsuario, final Tabelas e){
+	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep, final int codigoUsuario, final Tabelas e){
     	
     	LOGGER.error("obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep,final Double codigoUsuario, final Tabelas e)"); 
 
@@ -209,7 +204,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     	try {
 
 			MapSqlParameterSource params = new MapSqlParameterSource();   		
-            String msg = "";
+            final String msg;
 
             if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
             	query.append(QuerysDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO);

@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
-import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
@@ -161,7 +161,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
      * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#obterComRestricaoDeGrupoAcesso(int, java.lang.Double, br.com.bradseg.depi.depositoidentificado.enums.Tabelas)
      */
     @Override
-    public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e) throws IntegrationException {
+    public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoUsuario, Tabelas e) throws IntegrationException {
 		
 		LOGGER.error("Inicio - obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e)"); 
 

@@ -7,11 +7,19 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 /**
  * Classe Anotada de Mapeamento com a tabela DEP_IDTFD - Identificação de Depósito.
  * @author Globality
  */
 @XmlRootElement(name="DepositoVO")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="codigoDepositoIdentificado")
+@JsonIdentityReference(alwaysAsId=true)
 public class DepositoVO implements Serializable {
 
     private static final long serialVersionUID = -5700923805279204904L;
@@ -764,19 +772,19 @@ public class DepositoVO implements Serializable {
 	}
 
 	public Date getDataHoraAtualizacao() {
-		return (Date) dataHoraAtualizacao.clone();
+		return BaseUtil.getDate(dataHoraAtualizacao);
 	}
 
 	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
-		this.dataHoraAtualizacao = (Date) dataHoraAtualizacao.clone();
+		this.dataHoraAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
 	}
 
 	public Date getDataInclusao() {
-		return (Date) dataInclusao.clone();
+		return BaseUtil.getDate(dataInclusao);
 	}
 
 	public void setDataInclusao(Date dataInclusao) {
-		this.dataInclusao = (Date) dataInclusao.clone();
+		this.dataInclusao = BaseUtil.getDate(dataInclusao);
 	}
 	
 	

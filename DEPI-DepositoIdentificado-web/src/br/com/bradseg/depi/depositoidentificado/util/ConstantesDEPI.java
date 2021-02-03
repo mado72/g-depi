@@ -250,6 +250,7 @@ public final class ConstantesDEPI {
 		public static final String ERRORS_REQUIRED = "erros.required";
 		public static final String ERRORS_MAXLENGTH = "erros.maxlength";
 		public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
+		public static final String ERRO_USUARIO_LOGADO = "msg.erro.usuario.logado";
 	}
 	
 	/**

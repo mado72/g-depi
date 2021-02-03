@@ -15,11 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 
 /**
@@ -37,6 +41,12 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 	
 	@Autowired
 	private CICSDepiDAO cicsDepiDAO;
+	
+	@Autowired
+	private CompanhiaSeguradoraDAO ciaDAO;
+	
+	@Autowired
+	private DepartamentoDAO deptoDAO;
 
     /**
      * alterar
@@ -214,4 +224,29 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     public GrupoAcessoVO obterGrupoPorChave(GrupoAcessoVO grupo) throws IntegrationException{
         return grupoAcessoDAO.obterGrupoPorChave(grupo);
     }
+    
+    /* (non-Javadoc)
+     * @see br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade#obterCompanhias(java.lang.Integer)
+     */
+    @Override
+    public List<CompanhiaSeguradoraVO> obterCompanhias(Double codUsuario) {
+		List<CompanhiaSeguradoraVO> lista = ciaDAO
+				.obterComRestricaoDeGrupoAcesso(codUsuario);
+
+		for (CompanhiaSeguradoraVO vo : lista) {
+			CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(vo
+					.getCodigoCompanhia());
+			vo.setDescricaoCompanhia(cia.getDescricaoCompanhia());
+		}
+		
+		return lista;
+    }
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade#obterDepartamentos(java.lang.Integer)
+	 */
+	@Override
+	public List<DepartamentoVO> obterDepartamentos(Integer codCia, double codUsuario) {
+		return deptoDAO.obterComRestricaoDeGrupoAcesso(codCia, codUsuario, Tabelas.GRUPO_ACESSO);
+	}
 }

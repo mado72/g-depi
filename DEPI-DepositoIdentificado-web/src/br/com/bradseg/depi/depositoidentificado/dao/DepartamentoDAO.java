@@ -5,7 +5,7 @@ package br.com.bradseg.depi.depositoidentificado.dao;
 
 import java.util.List;
 
-import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
@@ -25,13 +25,13 @@ public interface DepartamentoDAO {
 	List<DepartamentoVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo);
 
 	/**
-     * Obter Departamentos por Usu�rio.
+     * Obter Departamentos por Usuário.
      * @param codigoCia - int.
-     * @param codigoUsuario - BigDecimal.
+     * @param codigoUsuario - int.
      * @param e - EQueryJoinForward. 
      * @return List<DepartamentoVO>.
      */
-	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e);
+	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, double codigoUsuario, Tabelas e);
 	//List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, BigDecimal codigoUsuario, Tabelas e);
 
 	/**

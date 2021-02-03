@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 /**
  * Representa o modelo do formulário para Grupo de Acesso 
@@ -19,11 +21,13 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 	
 	private String descDepartamento;
 	
-	private String codCompanhia;
-	
-	private String descCompanhia;
+	private int codCompanhia;
 	
 	private List<String> codFuncionarios = new ArrayList<>();
+	
+	private List<CompanhiaSeguradoraVO> cias = new ArrayList<>();
+	
+	private List<DepartamentoVO> deptos = new ArrayList<>();
 	
 	@Override
 	public boolean isDetalhar() {
@@ -35,8 +39,12 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 		codigoGrupoAcesso = "";
 		codDepartamento = "";
 		descDepartamento = "";
-		codCompanhia = "";
-		descCompanhia = "";
+		if (cias.isEmpty()) {
+			codCompanhia = -1;
+		}
+		else {
+			codCompanhia = cias.get(0).getCodigoCompanhia();
+		}
 		codFuncionarios.clear();
 	}
 
@@ -64,20 +72,12 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 		this.descDepartamento = descDepartamento;
 	}
 
-	public String getCodCompanhia() {
+	public int getCodCompanhia() {
 		return codCompanhia;
 	}
 
-	public void setCodCompanhia(String codCompanhia) {
+	public void setCodCompanhia(int codCompanhia) {
 		this.codCompanhia = codCompanhia;
-	}
-
-	public String getDescCompanhia() {
-		return descCompanhia;
-	}
-
-	public void setDescCompanhia(String descCompanhia) {
-		this.descCompanhia = descCompanhia;
 	}
 
 	public List<String> getCodFuncionarios() {
@@ -86,6 +86,38 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 
 	public void setCodFuncionarios(List<String> codFuncionarios) {
 		this.codFuncionarios = codFuncionarios;
+	}
+
+	/**
+	 * Retorna cias
+	 * @return o cias
+	 */
+	public List<CompanhiaSeguradoraVO> getCias() {
+		return cias;
+	}
+
+	/**
+	 * Define cias
+	 * @param cias valor cias a ser definido
+	 */
+	public void setCias(List<CompanhiaSeguradoraVO> cias) {
+		this.cias = cias;
+	}
+
+	/**
+	 * Retorna dptos
+	 * @return o dptos
+	 */
+	public List<DepartamentoVO> getDeptos() {
+		return deptos;
+	}
+
+	/**
+	 * Define dptos
+	 * @param dptos valor dptos a ser definido
+	 */
+	public void setDeptos(List<DepartamentoVO> dptos) {
+		this.deptos = dptos;
 	}
 	
 }
