@@ -4,5 +4,5 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<c:set var="namespaceEditar">/relatorio/envio-retorno/sintetico</c:set>
-Relatório: ${namespaceEditar}
+<c:set var="namespaceBase">/relatorio/envio-retorno/sintetico</c:set>
+Relatório: ${namespaceBase}

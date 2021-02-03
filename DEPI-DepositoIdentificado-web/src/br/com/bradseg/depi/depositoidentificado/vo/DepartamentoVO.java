@@ -10,11 +10,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * Classe Anotada de Mapeamento com a tabela DEPTO.
  * @author Globality
  */
 @XmlRootElement(name="DepartamentoVO")
+@JsonInclude(Include.NON_NULL)
 public class DepartamentoVO implements Serializable {
 
     private static final long serialVersionUID = -7156547889624154032L;

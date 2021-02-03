@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.GrupoAcessoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.GrupoAcessoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCampo;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 
 /**
@@ -55,6 +58,60 @@ public class GrupoAcessoEditarAction
 		}
 		
 		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#incluir()
+	 */
+	@Override
+	public String incluir() {
+		String retorno = super.incluir();
+		preencherListaCompanhia();
+		return retorno;
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#alterar()
+	 */
+	@Override
+	public String alterar() {
+		String retorno = super.alterar();
+		preencherListaCompanhia();
+		return retorno;
+	}
+
+	/**
+	 * 
+	 */
+	private void preencherListaCompanhia() {
+		LoginVo usuarioLogado = getUsuarioLogado();
+		Double codUsuario = Double.parseDouble(usuarioLogado.getId());
+		
+		GrupoAcessoEditarFormModel model = getModel();
+		List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias(codUsuario);
+		model.setCias(cias);
+		
+		if (! cias.isEmpty()) {
+			CompanhiaSeguradoraVO cia = cias.get(0);
+
+			model.setCodCompanhia(cia.getCodigoCompanhia());
+			listarDepartamentos();
+		}
+		else {
+			model.setDeptos(new ArrayList<DepartamentoVO>());
+		}
+	}
+
+	public void listarDepartamentos() {
+		LoginVo usuarioLogado = getUsuarioLogado();
+		Integer codUsuario = Integer.parseInt(usuarioLogado.getId());
+
+		GrupoAcessoEditarFormModel model = getModel();
+		
+		List<DepartamentoVO> deptos = crudHelper.obterDepartamentos(
+				model.getCodCompanhia(), codUsuario);
+		model.setDeptos(deptos);
 	}
 	
 }

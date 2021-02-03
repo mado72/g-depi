@@ -1,4 +1,4 @@
-package br.com.bradseg.depi.depositoidentificado.enums;
+package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
 /**
  * Classe responsável por representar dos tipos de relatórios gerados no Jasper Boleto/Recibo

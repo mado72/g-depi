@@ -1,4 +1,4 @@
-package br.com.bradseg.depi.depositoidentificado.enums;
+package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
 
 /**

@@ -8,8 +8,8 @@ import java.util.List;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 /**
- * Classe Anotada de Mapeamento com a tabela GRP_DEPTO_DEP.
- * @author Globalitu
+ * Classe que representa um Grupo de Acesso.
+ * @author Globality
  */
 //@Table(schema = ConstantesDEPI.SCHEMA_BANCO, table = "GRP_DEPTO_DEP")
 public class GrupoAcessoVO implements Serializable{

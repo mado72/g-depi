@@ -95,6 +95,24 @@ var fnReady = function ($) {
 	$.generico.verificarCheckbox = function(checkname, key) {
 		verificarBoxEdicao(checkname, MENSAGEM[key]);
 	};
+	
+	// dropboxCodDesc
+	// ---------------------------------------------------------------------
+	$.namespace( '$.dpcoddesc' );
+	$.dpcoddesc.combinar = function(opcoes) {
+		var dpcod = $(opcoes[0]),
+			dpdesc = $(opcoes[1]);
+		
+		dpcod.change(function(ev){
+			ev.stopPropagation();
+			dpdesc.val(dpcod.val());
+		});
+		
+		dpdesc.change(function(ev){
+			ev.stopPropagation();
+			dpcod.val(dpdesc.val());
+		});
+	}
 
 	// filtro
 	// ---------------------------------------------------------------------
@@ -471,6 +489,59 @@ var fnReady = function ($) {
 	    		&& submitForm('excluir', PAGE_CONTEXT + '/deposito/CadastrarDeposito.do'));
 	};
 
+	// grupoacesso
+	// ---------------------------------------------------------------------
+	$.namespace( '$.grupoacesso' );
+	$.grupoacesso.preencherCompanhias = function(cias) {
+		var codigos = $(), nomes = $();
+		$(cias).each(function(i,v){
+			codigos = codigos.add($('<option>', {text: v.codigoCompanhia, value: v.codigoCompanhia}));
+			nomes = nomes.add($("<option>", {value: v.codigoCompanhia, text: v.descricaoCompanhia}));
+		});
+		
+		$('.companhia-codigo-dropbox').append(codigos);
+		$('.companhia-nome-dropbox').append(nomes);
+	};
+	$.grupoacesso.preencherDepartamentos = function(deptos) {
+		var codigos = $(), nomes = $();
+		$(deptos).each(function(i,v){
+			codigos = codigos.add($('<option>', {text: v.siglaDepartamento, value: v.siglaDepartamento}));
+			nomes = nomes.add($("<option>", {value: v.siglaDepartamento, text: v.nomeDepartamento}));
+		});
+		
+		$('.departamento-codigo-dropbox').append(codigos);
+		$('.departamento-nome-dropbox').append(nomes);
+	};
+	$.grupoacesso.prepararEditar = function(opcoes) {
+		$.dpcoddesc.combinar(['.companhia-codigo-dropbox','.companhia-nome-dropbox']);
+		$.dpcoddesc.combinar(['.departamento-codigo-dropbox','.departamento-nome-dropbox']);
+		var urlDepto = opcoes.urlDepto;
+		
+		var carregarDepartamentos = function() {
+			$("#box_loading").show();
+			$('.departamento-codigo-dropbox').find("option").remove().end();
+			$('.departamento-nome-dropbox').find("option").remove().end();
+			
+			var v = $('.companhia-codigo-dropbox').val();
+			var url = urlDepto.replace('%d', v);
+			$.ajax({
+				url : url,
+				type : "GET",
+				dataType : "json",
+				success : function(data) {
+					$.grupoacesso.preencherDepartamentos(data.response);
+					$("#box_loading").hide();
+				},
+				error : function(data) {
+					$("#box_loading").hide();
+					alert(data.erro);
+				}
+			});
+		};
+		
+		$('.companhia-codigo-dropbox').change(carregarDepartamentos);
+		$('.companhia-nome-dropbox').change(carregarDepartamentos);
+	};
 
 	// paginacao
 	// ---------------------------------------------------------------------

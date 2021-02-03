@@ -1,4 +1,4 @@
-package br.com.bradseg.depi.depositoidentificado.enums;
+package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
 /**
  * Classe responsável por representar o Layout do DG_REF
