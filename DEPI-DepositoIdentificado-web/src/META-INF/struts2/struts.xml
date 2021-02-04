@@ -150,6 +150,17 @@
         </action>
     </package>
 
+	
+	<package name="jsonService" namespace="/json" extends="depi-default">
+		<default-class-ref class="jsonServiceAction"/>
+		
+		<global-results>
+			<result name="success" type="json"/>
+		</global-results>
+		
+		<action name="*" method="{1}" />
+	</package>
+
 	<package name="cadastroDepartamento" namespace="/cadastro/departamento/consultar" extends="depi-default">
 	
 		<default-class-ref class="departamentoConsultarAction"/>

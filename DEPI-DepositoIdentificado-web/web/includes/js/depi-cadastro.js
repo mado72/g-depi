@@ -645,6 +645,17 @@ var fnReady = function ($) {
 			window.close();
 		});
 	};
+	
+	$.funcionario.removerSelecionados = function(opcoes) {
+		var chks = $("#AcaoForm input[name='codigo']:checked"), codigos = [];
+		chks.each(function(i,c){
+			codigos.push($(c).val());
+		});
+		chks.remove();
+		$(codigos).each(function(i,c){
+			$("#AcaoForm input[name='codFuncionarios'][value='"+c+"']").remove();
+		});
+	};
 
 	// paginacao
 	// ---------------------------------------------------------------------
