@@ -5,10 +5,11 @@
 	</decorator>
 
 	<decorator name="componente" page="componente.jsp">
-		<!-- <pattern>*filtro.do</pattern> -->
+		<pattern>/filtro/*.do</pattern>
 	</decorator>
 
 	<excludes>
+		<pattern>*json.do</pattern>
 		<pattern>*pdf.do</pattern>
 		<pattern>*excel.do</pattern>
 	</excludes>

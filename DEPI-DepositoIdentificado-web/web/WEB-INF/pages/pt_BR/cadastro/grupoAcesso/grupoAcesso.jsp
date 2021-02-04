@@ -14,7 +14,7 @@
 <c:url value="${namespaceBase}/alterar.do" var="actionForm"></c:url>
 
 <form action="${actionForm}" id="AcaoForm" method="post">
-<table id="tabela_interna" class="GrupoAcesso Consulta">
+<table id="tabela_interna" class="sortable GrupoAcesso Consulta">
 	<thead>
 		<tr>
 		<th class="selecao">
@@ -23,68 +23,28 @@
 			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
 		<th class="codigoGrupoAcesso">
-			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
-				<s:param name="campo" value="codigoGrupoAcesso"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.codigoGrupoAcesso"/>
-			</s:a>
+			<s:text name="label.grid.grupoAcesso.codigoGrupoAcesso"/>
 		</th>
 		<th class="nomeGrupoAcesso">
-			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
-				<s:param name="campo" value="nome"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.nomeGrupoAcesso"/>
-			</s:a>
+			<s:text name="label.grid.grupoAcesso.nomeGrupoAcesso"/>
 		</th>
 		<th class="codigoCompanhia">
-			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
-				<s:param name="campo" value="cia.codigoCompanhia"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.departamentocompanhia.codigoCompanhia"/>
-			</s:a>
+			<s:text name="label.grid.departamentocompanhia.codigoCompanhia"/>
 		</th>
 		<th class="descricaoCompanhia">
-			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
-				<s:param name="campo" value="cia.descricaoCompanhia"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.departamentocompanhia.descricaoCompanhia"/>
-			</s:a>
+			<s:text name="label.grid.departamentocompanhia.descricaoCompanhia"/>
 		</th>
 		<th class="codigoDepartamento">
-			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
-				<s:param name="campo" value="depto.siglaDepartamento"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.siglaDepartamento"/>
-			</s:a>
+			<s:text name="label.grid.grupoAcesso.siglaDepartamento"/>
 		</th>
 		<th class="nomeDepartamento">
-			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
-				<s:param name="campo" value="depto.nomeDepartamento"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.nomeDepartamento"/>
-			</s:a>
+			<s:text name="label.grid.grupoAcesso.nomeDepartamento"/>
 		</th>
 		<th class="responsavel">
-			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
-				<s:param name="campo" value="responsavel"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.responsavelAtualizacao"/>
-			</s:a>
+			<s:text name="label.grid.grupoAcesso.responsavelAtualizacao"/>
 		</th>
 		<th class="atualizacao">
-			<s:url action="ordenar" namespace="/consulta/grupo-acesso" var="linkSort">
-				<s:param name="campo" value="atualizacao"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.dataHoraAtualizacao"/>
-			</s:a>
+			<s:text name="label.grid.grupoAcesso.dataHoraAtualizacao"/>
 		</th>
 		</tr>
 	</thead>

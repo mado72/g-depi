@@ -94,6 +94,10 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>sitemesh</filter-name>
+		<url-pattern>/filtro/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
 		<url-pattern>/relatorio/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>

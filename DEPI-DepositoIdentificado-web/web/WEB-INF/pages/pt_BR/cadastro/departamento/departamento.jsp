@@ -15,7 +15,7 @@
 <c:url value="${namespaceBase}/alterar.do" var="actionForm"></c:url>
 
 <form action="${actionForm}" id="AcaoForm" method="post">
-<table id="tabela_interna" class="Departamento Consulta">
+<table id="tabela_interna" class="sortable Departamento Consulta">
 	<thead>
 		<tr>
 		<th class="selecao">
@@ -24,36 +24,16 @@
 			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
 		<th class="sigla">
-			<s:url action="ordenar" namespace="/consulta/departamento" var="linkSort">
-				<s:param name="campo" value="sigla"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.departamento.siglaDepartamento"/>
-			</s:a>
+			<s:text name="label.grid.departamento.siglaDepartamento"/>
 		</th>
 		<th class="nome">
-			<s:url action="ordenar" namespace="/consulta/departamento" var="linkSort">
-				<s:param name="campo" value="nome"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.departamento.nomeDepartamento"/>
-			</s:a>
+			<s:text name="label.grid.departamento.nomeDepartamento"/>
 		</th>
 		<th class="responsavel">
-			<s:url action="ordenar" namespace="/consulta/departamento" var="linkSort">
-				<s:param name="campo" value="responsavel"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.departamento.responsavelAtualizacao"/>
-			</s:a>
+			<s:text name="label.grid.departamento.responsavelAtualizacao"/>
 		</th>
 		<th class="atualizacao">
-			<s:url action="ordenar" namespace="/consulta/departamento" var="linkSort">
-				<s:param name="campo" value="atualizacao"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.departamento.dataHoraAtualizacao"/>
-			</s:a>
+			<s:text name="label.grid.departamento.dataHoraAtualizacao"/>
 		</th>
 		</tr>
 	</thead>

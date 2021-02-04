@@ -12,6 +12,18 @@ pre.debug {
 	overflow-wrap: anywhere;
 }
 
+.w-100 {
+	width: 100% !important;
+}
+
+.center {
+	text-align: center !important;
+}
+
+.tab {
+	margin-right: 10px;
+}
+
 a.abtn {
 	vertical-align: top;
 	border: 0;
@@ -28,6 +40,11 @@ button.btn-img {
 	border: 0;
 	padding: 0;
 	margin-right: 2px;
+}
+
+.lt-ie9 button.btn-img {
+	position: relative;
+	top: -1px;
 }
 
 #depi-breadcrumb {
@@ -132,9 +149,8 @@ button.btn-img {
 }
 
 .paginacao {
-	margin-left: auto;
-	margin-right: auto;
 	text-align: center;
+	margin: 4px auto 12px auto;
 }
 
 .paginacao a {
@@ -144,4 +160,16 @@ button.btn-img {
 .paginacao a.disabled, .paginacao a.disabled:hover {
 	color: #aaaaaa;
 	cursor: default;
+}
+
+.sortable th {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.GoPage:after {
+	content: ','
+}
+.GoPage:last-of-type:after {
+	content: ''
 }

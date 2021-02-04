@@ -850,7 +850,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 		if (!filtro.getCriterios().isEmpty()) {
 			// Solicitação do IC - Bradesco
 			final String string = "{0}";
-			query.replace(query.indexOf(string), query.indexOf(string) + 3, filtro.getClausaAndFiltro());
+			query.replace(query.indexOf(string), query.indexOf(string) + 3, filtro.getClausulasParciais());
 		}
 		return filtro.getMapParamFiltro();
 	}

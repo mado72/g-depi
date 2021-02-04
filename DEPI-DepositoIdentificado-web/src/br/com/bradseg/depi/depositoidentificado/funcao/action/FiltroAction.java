@@ -121,7 +121,7 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 		try {
 			model.setColecaoDados(new ArrayList<>());
 			
-			T model = getModel();
+//			T model = getModel();
 			
 			List<CriterioConsultaVO<C>> criterios = model.obterCriteriosConsulta();
 

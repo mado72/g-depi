@@ -67,6 +67,56 @@ if (! Array.prototype.find) {
 	  return undefined;
   };
 }
+if (!Array.prototype.sort) {
+	Array.prototype.sort = function(compareFn) {
+	    log("Inside our Array.sort implementation :)")
+	    return mergeSort(this)
+	    // Split the array into halves and merge them recursively 
+	    function mergeSort(arr) {
+	        if (arr.length === 1) {
+	            // return once we hit an array with a single item
+	            return arr
+	        }
+	        var middle = Math.floor(arr.length / 2) // get the middle item of the array rounded down
+	        var left = arr.slice(0, middle) // items on the left side
+	        var right = arr.slice(middle) // items on the right side
+	        return merge(
+	            mergeSort(left),
+	            mergeSort(right)
+	        )
+	    }
+	    // compare the arrays item by item and return the concatenated result
+	    function merge(left, right) {
+	        var result = []
+	        var indexLeft = 0
+	        var indexRight = 0
+	        while (indexLeft < left.length && indexRight < right.length) {
+	            //compareFn ? compareFn =()=> left[indexLeft] < right[indexRight] : compareFn
+	            var _left = left[indexLeft]
+	            var _right = right[indexRight]
+	            if (compareFn)
+	                compareFn = composeCompareFn(compareFn(left, right));
+	            compareFn = function(l, r) { return l < r; }
+	            if (compareFn(_left, _right)) {
+	                result.push(left[indexLeft])
+	                indexLeft++
+	            } else {
+	                result.push(right[indexRight])
+	                indexRight++
+	            }
+	        }
+	        return result.concat(left.slice(indexLeft)).concat(right.slice(indexRight))
+	    }
+	    function composeCompareFn(compareResult) {
+	        if (Math.sign(compareResult) < 0)
+	            return false
+	        if (Math.sign(compareResult) > 0)
+	            return true
+	        if (compareResult == 0)
+	            return false
+	    }
+	};
+}
 if (typeof String.prototype.trim !== 'function') {
 	String.prototype.trim = function() {
 		return this.replace(/^\s+|\s+$/g, '');
@@ -542,6 +592,59 @@ var fnReady = function ($) {
 		$('.companhia-codigo-dropbox').change(carregarDepartamentos);
 		$('.companhia-nome-dropbox').change(carregarDepartamentos);
 	};
+	
+	// popupFuncionario
+	// ---------------------------------------------------------------------
+	$.namespace( '$.popupFuncionario' );
+	$.popupFuncionario.prepararOpener = function(opcoes) {
+		$(opcoes.btn).click(function(){
+			window.open(opcoes.url, 'SelFuncionarios', "height=550,width=800,resizable=no");
+		});
+	};
+	
+	// funcionario
+	// ---------------------------------------------------------------------
+	// definition
+	$.namespace( '$.funcionario' );
+	
+	$.funcionario.prepararFormulario = function(opcoes) {
+		var target = $(window.opener.$(opcoes.dest)),
+			table = $(window.opener.$(opcoes.table)),
+			source = $(opcoes.origem),
+			rows = $();
+			
+		
+		source.submit(function(ev){
+			var checked = source.find('input[name="codigo"]:checked'), elements = [];
+			ev.stopPropagation();
+			checked.each(function(i,item){
+				var row = $($(item).parents("tr")[0]),
+					cols = $(),
+					newRow = $("<tr>"),
+					tds = row.find("td");
+				
+				tds.slice(0,3).each(function(j,td){
+					var col = $("<td>");
+					col.html($(td).html());
+					if (j == 0 || j == 1) {
+						$(col).addClass("center");
+					}
+					cols = cols.add(col);
+				});
+				newRow.append(cols);
+				
+				rows = rows.add(newRow);
+				elements.push("<input type='hidden' name='codFuncionarios' value="+$(item).val()+">");
+			});
+			var jDvCodigos = $(window.opener.$("#dvCodigos"));
+			var dvCodigos = jDvCodigos.html();
+			dvCodigos += elements.join("");
+			jDvCodigos.html(dvCodigos);
+			table.append(rows);
+			target.submit();
+			window.close();
+		});
+	};
 
 	// paginacao
 	// ---------------------------------------------------------------------
@@ -567,12 +670,14 @@ var fnReady = function ($) {
 		opcoes.pgs =  Math.floor(opcoes.jqTrs.length / opcoes.registros) + 1;
 
 		var pages = [];
-		for (var i = 1; i <= opcoes.pgs; i++) {
+		pages.push("<span class='Continue Before'>...</span>");
+		for (var i = 1; i < opcoes.pgs; i++) {
 			var epg = "<a class='GoPage' page='"+(i-1)+"'>"+i+"</a>";
 			pages.push(epg);
 		}
+		pages.push("<span class='Continue After'>...</span>");
 
-		pagSel.find('.nav_pages').append($(pages.join(',')));
+		pagSel.find('.nav_pages').append($(pages.join('')));
 		pagSel.find('.GoPage').click(function(ev){
 			var page = parseInt($(this).attr("page"));
 			$.paginacao.irPara(opcoes, page);
@@ -582,6 +687,7 @@ var fnReady = function ($) {
 		pagSel.find('.GoPrev').click(function(){$.paginacao.goPrev(opcoes)});
 		pagSel.find('.GoNext').click(function(){$.paginacao.goNext(opcoes)});
 		pagSel.find('.GoLast').click(function(){$.paginacao.goLast(opcoes)});
+		pagSel.find('.Continue').hide();
 
 		$.paginacao.goFirst(opcoes);
 	};
@@ -612,6 +718,17 @@ var fnReady = function ($) {
 			var txt = opcoes.pattern.replace(/:reg/, opcoes.jqTrs.length).replace(/:idxIni/, idxi).replace(/:idxFin/, idxf);
 			return txt;
 		});
+		
+		if (opcoes.pgs > 10) {
+			var gos = pagSel.find('.nav_pages .GoPage');
+			gos.hide();
+			var start = Math.max(0, pagina - 5);
+			var finish = Math.min(opcoes.pgs, start + 10);
+			gos.slice(start, finish).show();
+			pagSel.find('.Continue.Before').toggle(start > 1);
+			pagSel.find('.Continue.After').toggle(finish < opcoes.pgs - 1);
+		}
+		
 	};
 
 	$.paginacao.goFirst = function(opcoes) {
@@ -629,6 +746,37 @@ var fnReady = function ($) {
 	$.paginacao.goLast = function(opcoes) {
 		$.paginacao.irPara(opcoes, opcoes.pgs - 1 );
 	};
+	
+	$(".sortable th").click(function(ev) {
+		ev.stopPropagation();
+		var th = $(this),
+			thIndex = th.index(),
+			table = th.parents('table')[0];
+		
+		if (thIndex == 0) {
+			return;
+		}
+		
+		table = $(table);
+		
+		table.find('td').filter(function(){
+			
+			return $(this).index() === thIndex;
+			
+		}).sort(function(a, b){
+			
+			if( $.text([a]) == $.text([b]) )
+				return 0;
+			
+			return $.text([a]) > $.text([b]) ?
+					1 : -1;
+			
+		}, function(){
+			return this.parentNode; 
+			
+		});
+
+	});
 };
 
 jQuery(document).ready(fnReady(jQuery));

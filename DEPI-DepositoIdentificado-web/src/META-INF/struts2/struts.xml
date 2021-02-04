@@ -63,6 +63,16 @@
 		</action> -->
 		
 	</package>
+	
+	<package name="jsonService" namespace="/json" extends="depi-default">
+		<default-class-ref class="jsonServiceAction"/>
+		
+		<global-results>
+			<result name="success" type="json"/>
+		</global-results>
+		
+		<action name="*" method="{1}" />
+	</package>
 
 	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito/consultar" extends="depi-default">
 	
@@ -139,17 +149,6 @@
 			<interceptor-ref name="applicationStack" />
         </action>
     </package>
-
-	
-	<package name="jsonService" namespace="/json" extends="depi-default">
-		<default-class-ref class="jsonServiceAction"/>
-		
-		<global-results>
-			<result name="success" type="json"/>
-		</global-results>
-		
-		<action name="*" method="{1}" />
-	</package>
 
 	<package name="cadastroDepartamento" namespace="/cadastro/departamento/consultar" extends="depi-default">
 	
@@ -364,7 +363,33 @@
 			<interceptor-ref name="applicationStack" />
         </action>
     </package>
-    
+
+	<package name="filtroUsuario" namespace="/filtro/funcionario/consultar" extends="depi-default">
+	
+		<default-class-ref class="funcionarioConsultarAction"/>
+		
+		<global-results>
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/filtro/funcionario.jsp</param>
+			</result>
+			<result name="input" type="redirectAction">listar</result>
+		</global-results>
+
+		<action name="index">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+		
+		<action name="listar" method="listar">
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/filtro/funcionario.jsp</param>
+			</result>
+		</action>
+        
+		<action name="*" method="{1}"/>
+
+	</package>
+	
     <!-- RELATORIOS -->
     
     <package name="relatorioEnvioRetornoBancoAnalitico" namespace="/relatorio/envio-retorno/analitico" extends="depi-default">

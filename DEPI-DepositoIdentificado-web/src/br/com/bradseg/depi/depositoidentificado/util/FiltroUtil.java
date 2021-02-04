@@ -341,10 +341,10 @@ public class FiltroUtil {
 	 * 
 	 * @return Cláusula where.
 	 */
-	public String getClausaWhereFiltro () {
+	public String getClausulaWhereFiltro () {
 		
 		StringBuilder where = new StringBuilder(" WHERE ")
-			.append(getClausaAndFiltro());
+			.append(getClausulasParciais());
 		
 	    return where.toString();
 	}
@@ -355,17 +355,34 @@ public class FiltroUtil {
 	 * 
 	 * @return String contendo os critérios de consulta.
 	 */
-	public String getClausaAndFiltro () {
+	public String getClausulasParciais () {
+	    return getClausulasParciais(" AND ", false);
+	}
+	
+	/**
+	 * Método utilitário para montar as cláusulas parciais da query. É util para
+	 * ser utilizado quando os critérios da consulta já possuam uma cláusula
+	 * WHERE inicial.
+	 * 
+	 * @param operador
+	 *            Operador que une as partes: AND, OR. Deve adicionar os espaços
+	 *            necessários " AND " ou " OR "
+	 * @param acrescentaNoInicio
+	 *            Quando verdadeiro acrescenta o operador no início do resultado
+	 *            desta função
+	 * @return Cláusula de consulta baseada nos critérios estabelecidos.
+	 */
+	public String getClausulasParciais(String operador, boolean acrescentaNoInicio) {
 		StringBuilder clausulas = new StringBuilder();
 		
 		for (CriterioConsultaVO<?> item : criterios) {
-			if (clausulas.length() > 0) {
-				clausulas.append(" AND ");
+			if (acrescentaNoInicio || clausulas.length() > 0) {
+				clausulas.append(operador);
 			}
 			clausulas.append(item.getClausula());
 		}
-	    
-	    return clausulas.toString();
+		
+		return clausulas.toString();
 	}
 	
 	/**

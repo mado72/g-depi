@@ -13,6 +13,14 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCru
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
+/**
+ * Superclasse das ações de salvar entidades
+ * @author Marcelo Damasceno
+ *
+ * @param <C> {@link IEntidadeCampo} de referência
+ * @param <VO> VO manipulado por esta classe
+ * @param <F> Implementação de {@link CrudForm}
+ */
 @Controller
 @Scope("request")
 public abstract class SalvarAction<C extends IEntidadeCampo,  VO, F extends CrudForm> extends BaseModelAction<F> {

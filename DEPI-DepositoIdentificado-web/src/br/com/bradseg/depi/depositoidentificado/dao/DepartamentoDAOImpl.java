@@ -246,7 +246,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	         * Parametros.
 	         */
 			if (!filtro.getCriterios().isEmpty()) {
-				query.append(filtro.getClausaWhereFiltro());
+				query.append(filtro.getClausulaWhereFiltro());
 				params = filtro.getMapParamFiltro();
 			} 
 			

@@ -33,13 +33,12 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 	private static final String WHR1 = "whr1";
 
 	private static final String WHR2 = "whr2";
-
+	
+	/** A Constante LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(GrupoAcessoDAOImpl.class);
 
 	@Autowired
 	private UsuarioDAO usuarioDAO;
-
-	/** A Constante LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(GrupoAcessoDAOImpl.class);
 	
 	/** A(O) data source. */
 	@Autowired
@@ -70,7 +69,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
         	MapSqlParameterSource params = null;
         	
 			if (!filtro.getCriterios().isEmpty()) {
-				complementoQuery = new StringBuilder(" AND ").append(filtro.getClausaAndFiltro()).toString();
+				complementoQuery = new StringBuilder(" AND ").append(filtro.getClausulasParciais()).toString();
 				
 				params = filtro.getMapParamFiltro();
 			}

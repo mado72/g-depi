@@ -11,7 +11,7 @@
 
 <s:form action="acao.do" namespace="/cadastro/parametro/editar" id="AcaoForm">
 
-<table id="tabela_interna" class="Parametro Consulta">
+<table id="tabela_interna" class="sortable Parametro Consulta">
 	<thead>
 		<tr>
 		<th class="selecao">
@@ -20,28 +20,13 @@
 			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
 		<th class="descricao">
-			<s:url action="ordenar" namespace="/consulta/parametro" var="linkSort">
-				<s:param name="campo" value="descricao"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.parametro.descricaoMotivoDeposito"/>
-			</s:a>
+			<s:text name="label.grid.parametro.descricaoMotivoDeposito"/>
 		</th>
 		<th class="responsavel">
-			<s:url action="ordenar" namespace="/consulta/parametro" var="linkSort">
-				<s:param name="campo" value="responsavel"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.parametro.responsavelAtualizacao"/>
-			</s:a>
+			<s:text name="label.grid.parametro.responsavelAtualizacao"/>
 		</th>
 		<th class="atualizacao">
-			<s:url action="ordenar" namespace="/consulta/parametro" var="linkSort">
-				<s:param name="campo" value="atualizacao"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.departamento.dataHoraAtualizacao"/>
-			</s:a>
+			<s:text name="label.grid.departamento.dataHoraAtualizacao"/>
 		</th>
 		</tr>
 	</thead>

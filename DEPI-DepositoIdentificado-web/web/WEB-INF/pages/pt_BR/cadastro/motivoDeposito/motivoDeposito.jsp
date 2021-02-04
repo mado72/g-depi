@@ -15,7 +15,7 @@
 <c:url value="${namespaceBase}/alterar.do" var="actionForm"></c:url>
 
 <form action="${actionForm}" id="AcaoForm" method="post">
-<table id="tabela_interna" class="MotivoDeposito Consulta">
+<table id="tabela_interna" class="sortable MotivoDeposito Consulta">
 	<thead>
 		<tr>
 		<th class="selecao">
@@ -24,28 +24,13 @@
 			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
 		<th class="descricao">
-			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">
-				<s:param name="campo" value="descricao"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.motivodeposito.descricaoMotivoDeposito"/>
-			</s:a>
+			<s:text name="label.grid.motivodeposito.descricaoMotivoDeposito"/>
 		</th>
 		<th class="responsavel">
-			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">
-				<s:param name="campo" value="responsavel"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.motivodeposito.responsavelAtualizacao"/>
-			</s:a>
+			<s:text name="label.grid.motivodeposito.responsavelAtualizacao"/>
 		</th>
 		<th class="atualizacao">
-			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">
-				<s:param name="campo" value="atualizacao"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.departamento.dataHoraAtualizacao"/>
-			</s:a>
+			<s:text name="label.grid.departamento.dataHoraAtualizacao"/>
 		</th>
 		</tr>
 	</thead>
