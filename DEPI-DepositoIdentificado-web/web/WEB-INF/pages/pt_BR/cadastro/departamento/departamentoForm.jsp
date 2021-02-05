@@ -3,6 +3,7 @@
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<c:url scope="request" var="namespaceBase" value="/cadastro/departamento"></c:url>
 <s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
 <s:form action="salvar">
 <input name="codigo" type="hidden" value="${codigo.isEmpty() ? '' : codigo }">

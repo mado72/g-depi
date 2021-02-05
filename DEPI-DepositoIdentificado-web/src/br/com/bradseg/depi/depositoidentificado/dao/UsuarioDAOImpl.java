@@ -16,7 +16,9 @@ import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.UsuarioDataMapper;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
@@ -28,10 +30,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 @Repository
 public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 
-	/**
-	 * 
-	 */
 	private static final String PARAM_USRGRP = "usrgrp";
+	private static final String PARAM_PRM1 = "prm1";
 
 
 	/** A Constante LOGGER. */
@@ -108,6 +108,47 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 		} catch(Exception e){
 			LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
 			throw new DEPIIntegrationException(e);
+		}
+		finally {
+			LOGGER.debug("Realizada consulta por filtro");
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.dao.UsuarioDAO#obterPorCodigo(java.lang.Integer)
+	 */
+	@Override
+	public UsuarioVO obterPorCodigo(Integer codigoUsuario) {
+		
+		LOGGER.debug("Iniciando a consulta por filtro");
+
+		
+		try {
+			final String query = QuerysDepi.USUARIOS_OBTERPORCODIGO;
+			
+			/**
+			 * Parametros.
+			 */
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue(PARAM_PRM1, codigoUsuario);
+			
+			UsuarioVO usuario;
+			try {
+				usuario = getJdbcTemplate().queryForObject(query.toString(), params,
+						new UsuarioDataMapper());
+			} catch(DataAccessException e){
+				LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
+				throw new DEPIIntegrationException(e);
+			} catch(Exception e){
+				LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
+				throw new DEPIIntegrationException(e);
+			}
+			
+			if (usuario == null) {
+				throw new DEPIBusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+			}
+			
+			return usuario;
 		}
 		finally {
 			LOGGER.debug("Realizada consulta por filtro");

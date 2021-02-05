@@ -30,6 +30,7 @@
 <c:url value="${namespaceBase}/selecionar.do" var="actionForm"></c:url>
 
 <form action="${actionForm}" id="AcaoForm" method="post">
+<c:set var="funcionarios" value="${colecaoDados}" scope="request"/>
 <s:include value="/WEB-INF/pages/pt_BR/filtro/tblFuncionario.jsp"/>
 <div class="paginacao"></div>
 <div class="center">

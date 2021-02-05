@@ -31,7 +31,7 @@ public class GrupoAcessoVO implements Serializable{
 	 */
 	private CompanhiaSeguradoraVO cia = new CompanhiaSeguradoraVO();
 	
-	private List<UsuarioVO> usuarios = new ArrayList<UsuarioVO>();
+	private List<UsuarioVO> funcionarios = new ArrayList<UsuarioVO>();
 	
 	/**
 	 * Codigo Responsavel Ultima Atualizacao.
@@ -74,16 +74,16 @@ public class GrupoAcessoVO implements Serializable{
      * Retorna o valor do atributo usuarios.
      * @return o valor do atributo usuarios
      */
-	public List<UsuarioVO> getUsuarios() {
-		return usuarios;
+	public List<UsuarioVO> getFuncionarios() {
+		return funcionarios;
 	}
 
 	/**
      * Especifica o valor do atributo usuarios.
      * @param usuarios - List<UsuarioVO> do usuarios a ser configurado.
      */
-	public void setUsuarios(List<UsuarioVO> usuarios) {
-		this.usuarios = usuarios;
+	public void setFuncionarios(List<UsuarioVO> usuarios) {
+		this.funcionarios = usuarios;
 	}
 
 	/**

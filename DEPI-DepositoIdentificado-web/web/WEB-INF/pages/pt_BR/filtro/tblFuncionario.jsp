@@ -8,7 +8,7 @@
 		<tr>
 <c:choose>
 <c:when test="${!matriculaNome}">
-		<th class="selecao center" style="width:10%">
+		<th class="selecao center" style="width:5%">
 			<s:text name="label.todos"/>
 			<br/>
 			<input type="checkbox" class="optionbutton checkTodos" />
@@ -27,15 +27,15 @@
 		</th>
 </c:when>
 <c:otherwise>
-		<th class="selecao center" style="width:15%">
+		<th class="selecao center" style="width:5%">
 			<s:text name="label.todos"/>
 			<br/>
-			<input type="checkbox" class="optionbutton checkTodos" />
+			<input type="checkbox" class="optionbutton checkTodos" ${chkDisabled}/>
 		</th>
 		<th class="codigoUsuario center" style="width:25%">
 			<s:text name="label.grid.usuario.codigoUsuario"/>
 		</th>
-		<th class="nome" style="width:60%">
+		<th class="nome" style="width:70%">
 			<s:text name="label.grid.usuario.nomeUsuario"/>
 		</th>
 </c:otherwise>
@@ -43,12 +43,12 @@
 		</tr>
 	</thead>
 	<tbody class="lista">
- 	<s:iterator value="colecaoDados" var="item" status="status">
+	<c:forEach varStatus="status" var="item" items="${funcionarios}">
 		<tr>
 <c:choose>
 <c:when test="${!matriculaNome}">
 		<td class="selecao center">
-			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoUsuario}"/>"/>
+			<input type="checkbox" class="optionbutton" name="codFuncionarios" value="<c:out value="${item.codigoUsuario}"/>"/>
 		</td>
 		<td class="center">
 			${item.codigoUsuario}
@@ -59,7 +59,7 @@
 </c:when>
 <c:otherwise>
 		<td class="selecao center">
-			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoUsuario}"/>"/>
+			<input type="checkbox" class="optionbutton" name="codFuncionarios" value="<c:out value="${item.codigoUsuario}"/>" ${chkDisabled}/>
 		</td>
 		<td class="center">
 			${item.codigoUsuario}
@@ -68,6 +68,6 @@
 </c:otherwise>
 </c:choose>
 		</tr>
-	</s:iterator>
+	</c:forEach>
  	</tbody>
 </table>

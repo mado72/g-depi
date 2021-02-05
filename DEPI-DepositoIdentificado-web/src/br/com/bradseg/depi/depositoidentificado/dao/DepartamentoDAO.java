@@ -35,6 +35,17 @@ public interface DepartamentoDAO {
 	//List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, BigDecimal codigoUsuario, Tabelas e);
 
 	/**
+	 * Obter um departamento
+	 * @param codigoCia Companhia
+	 * @param usuarioLogadoId Usuário
+	 * @param grupoAcesso Tabela de restrição do Grupo Acesso
+	 * @param siglaDepto Sigla do Departamento
+	 * @return Departamento
+	 */
+	DepartamentoVO obterComRestricaoDeGrupoAcesso(int codigoCia,
+			int usuarioLogadoId, Tabelas grupoAcesso, String siglaDepto);
+
+	/**
 	 * Excluir Departamentos. 
 	 */
 	public void excluir(DepartamentoVO vo);
@@ -52,6 +63,9 @@ public interface DepartamentoDAO {
 	public List<DepartamentoVO> obterTodos();
 
 	public List<DepartamentoVO>  obterPorFiltro(FiltroUtil filtro);
+
+	DepartamentoVO obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo,
+			DepartamentoVO deptoVO);
 
 
 }

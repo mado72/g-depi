@@ -9,7 +9,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
 /** 
  * A(O) UsuarioDAO.
- * @param UsuarioDAO
  */
 public interface UsuarioDAO {
 	
@@ -26,6 +25,12 @@ public interface UsuarioDAO {
 	 * @return Lista dos registros encontrados
 	 */
 	List<UsuarioVO> obterPorFiltro(FiltroUtil filtro);
-    	
 
+	/**
+	 * Busca Funcionário pelo seu código
+	 * @param codigoUsuario Código
+	 * @return Usuário
+	 */
+	UsuarioVO obterPorCodigo(Integer codigoUsuario);
+    	
 }

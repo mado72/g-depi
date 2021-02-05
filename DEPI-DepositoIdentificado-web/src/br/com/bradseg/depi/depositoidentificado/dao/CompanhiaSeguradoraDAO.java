@@ -20,6 +20,15 @@ public interface CompanhiaSeguradoraDAO {
 	 * @return Lista de companhias
 	 */
 	List<CompanhiaSeguradoraVO> obterComRestricaoDeGrupoAcesso(
-			double codUsuario);
+			int codUsuario);
+
+	/**
+	 * Obtém a companhia com restrição de acesso ao usuário logado
+	 * @param usuarioLogadoId Código do usuário logado
+	 * @param codCompanhia Código da companhia
+	 * @return Instância
+	 */
+	CompanhiaSeguradoraVO obterComRestricaoDeGrupoAcesso(int usuarioLogadoId,
+			int codCompanhia);
 
 }

@@ -87,6 +87,7 @@ public final class ConstantesDEPI {
 	/**
 	 * Erros.
 	 */
+	public static final String ERRO_CAMPO_REQUERIDO = "errors.required"; 
 	public static final String ERRO_INTERNO = "msg.erro.interno";
 	public static final String ERRO_SEMRESULTADO = "errors.semresultado";
 	public static final String ERRO_REGISTRO_DUPLICADO = "msg.erro.registroduplicado";
@@ -269,6 +270,11 @@ public final class ConstantesDEPI {
 	 */
 	public static final class Departamento {
 		public static final String ERRO_CADASTRADO_INATIVO = "msg.erro.departamento.inativo_cadastrado";
+	}
+	
+	public static final class GrupoAcesso {
+		public static final String LABEL_DEPARTAMENTO = "label.cadastro.grupoacesso.departamento";
+		public static final String LABEL_FUNCIONARIO = "label.cadastro.grupoacesso.funcionario";
 	}
 
 }

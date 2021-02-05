@@ -156,9 +156,12 @@
 		
 		<global-results>
 			<result name="success" type="json"/>
+			<result name="input" type="json"/>
 		</global-results>
 		
 		<action name="*" method="{1}" />
+		
+		<action name="grupoAcesso/desalocarFuncionarios" method="desalocarFuncionarios" class="grupoAcessoEditarAction" />
 	</package>
 
 	<package name="cadastroDepartamento" namespace="/cadastro/departamento/consultar" extends="depi-default">
@@ -255,6 +258,10 @@
 		</action>
 		
 		<action name="listar" method="listar">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcesso.jsp</param>
 			</result>
@@ -279,15 +286,11 @@
 			</result>
 			<result name="success" type="redirectAction">
 			    <param name="actionName">retornar</param>
-			    <param name="namespace">/cadastro/grupoAcesso/consultar</param>
+			    <param name="namespace">/cadastro/grupo-acesso/consultar</param>
 			</result>
 			<result name="voltar" type="redirectAction">
 			    <param name="actionName">listar</param>
-			    <param name="namespace">/cadastro/grupoAcesso/consultar</param>
-			</result>
-			<result name="voltar" type="redirectAction">
-			    <param name="actionName">listar</param>
-			    <param name="namespace">/cadastro/grupoAcesso/consultar</param>
+			    <param name="namespace">/cadastro/grupo-acesso/consultar</param>
 			</result>
 		</global-results>
 		
@@ -306,13 +309,29 @@
                 <param name="operationMode">STORE</param>
             </interceptor-ref>
             <interceptor-ref name="applicationStack" />
-        </action>        
+			<result name="input" type="redirectAction">input</result>
+        </action>
+        
+        <action name="excluir" method="excluir">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">
+				<param name="namespace">/cadastro/grupo-acesso/consultar</param>
+				<param name="actionName">listar</param>
+			</result>
+        </action>
         
         <action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
         </action>
         
 	</package>
-
+	
 	<package name="cadastroParametroConsultar" namespace="/cadastro/parametro/consultar" extends="depi-default">
 	
 		<default-class-ref class="parametroConsultarAction"/>
@@ -379,6 +398,7 @@
 				<param name="operationMode">STORE</param>
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">input</result>
         </action>
     </package>
 

@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
@@ -796,6 +798,42 @@ public final class BaseUtil {
     	}
     	
     	return (Date) d.clone();
+    }
+    
+    public static <T> List<T> obterItensSemIntersecao(List<T> listaAlteravel, Collection<T> itensAComparar, Funcao<T, ?> extrator) {
+    	ArrayList<T> copia = new ArrayList<>(listaAlteravel);
+    	
+    	HashSet<Object> codigos = new HashSet<>();
+    	for (T t : itensAComparar) {
+			Object v = extrator.apply(t);
+			codigos.add(v);
+		}
+    	
+    	for (Iterator<T> iterator = copia.iterator(); iterator.hasNext();) {
+    		Object c = extrator.apply(iterator.next());
+			if (codigos.contains(c)) {
+				iterator.remove();
+			}
+		}
+    	return copia;
+    }
+    
+    public static <T> List<T> obterItensComIntersecao(List<T> listaAlteravel, Collection<T> itensAComparar, Funcao<T, ?> extrator) {
+    	ArrayList<T> copia = new ArrayList<>(listaAlteravel);
+    	
+    	HashSet<Object> codigos = new HashSet<>();
+    	for (T t : itensAComparar) {
+    		Object v = extrator.apply(t);
+    		codigos.add(v);
+    	}
+    	
+    	for (Iterator<T> iterator = copia.iterator(); iterator.hasNext();) {
+    		Object c = extrator.apply(iterator.next());
+    		if (! codigos.contains(c)) {
+    			iterator.remove();
+    		}
+    	}
+    	return copia;
     }
 
 }

@@ -3,7 +3,6 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- incluir-alterar-excluir namespaceBase = ${namespaceBase} -->
-<c:choose><c:when test="${namespaceBase != ''}">
 <div class="botoes_editar">
 	<table class="tabela_botoes">
 		<tr>
@@ -17,4 +16,4 @@
 		</tr>
 	</table>
 </div>
-</c:when><c:otherwise><span style="background-color:red">namespaceBase=${namespaceBase}</span></c:otherwise></c:choose>
+<c:if test="${empty namespaceBase}"><span style="background-color:red">namespaceBase=${namespaceBase}</span></c:if>

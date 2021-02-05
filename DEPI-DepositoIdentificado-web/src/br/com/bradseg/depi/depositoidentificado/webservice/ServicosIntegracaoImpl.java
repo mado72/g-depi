@@ -26,6 +26,7 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 //import com.fasterxml.jackson.databind.JsonNode;
@@ -191,9 +192,7 @@ public class ServicosIntegracaoImpl {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<DepartamentoVO> obterCiaDepartamentos(int codigoCia, @Context ServletRequest request) {
-		LoginVo loginVO = getUsuarioLogado(request);
-		
-		List<DepartamentoVO> lista = grupoAcessoFacade.obterDepartamentos(codigoCia, Double.parseDouble(loginVO.getId()));
+		List<DepartamentoVO> lista = grupoAcessoFacade.obterDepartamentos(new CompanhiaSeguradoraVO(codigoCia));
 		return lista;		
 	}
 	

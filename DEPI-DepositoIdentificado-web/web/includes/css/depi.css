@@ -173,3 +173,49 @@ button.btn-img {
 .GoPage:last-of-type:after {
 	content: ''
 }
+
+.pointer {
+	cursor: pointer;
+}
+
+
+.btn.disabled {
+	opacity: 0.5;
+	cursor: auto;
+}
+
+#tabela_interna .Funcionario {
+    background-color: white;
+    border: 0;
+    margin: 0px auto 10px;
+    width: 99%;
+}
+
+button#BtnSalvar {
+    position: relative;
+    top: -1px;
+}
+
+.tblFuncionarios {
+    max-height: 251px;
+    overflow: auto;
+}
+
+.mt2 {
+	margin-top: 2px;
+}
+.mt3 {
+	margin-top: 3px;
+}
+.mt4 {
+	margin-top: 4px;
+}
+.ml2 {
+	margin-left: 2px;
+}
+.ml3 {
+	margin-left: 3px;
+}
+.ml4 {
+	margin-left: 4px;
+}

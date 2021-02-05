@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
 /**
  * Representa o modelo do formulário para Grupo de Acesso 
@@ -17,17 +18,21 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 
 	private String codigoGrupoAcesso;
 	
-	private String codDepartamento;
+	private String siglaDepartamento;
 	
-	private String descDepartamento;
+	private String codCompanhia;
 	
-	private int codCompanhia;
+	private String nomeGrupoAcesso;
 	
 	private List<String> codFuncionarios = new ArrayList<>();
+	
+	private List<UsuarioVO> funcionarios = new ArrayList<>();
 	
 	private List<CompanhiaSeguradoraVO> cias = new ArrayList<>();
 	
 	private List<DepartamentoVO> deptos = new ArrayList<>();
+	
+	private Object json;
 	
 	@Override
 	public boolean isDetalhar() {
@@ -36,56 +41,14 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 
 	@Override
 	public void limparDados() {
+		setCodigo("");
 		codigoGrupoAcesso = "";
-		codDepartamento = "";
-		descDepartamento = "";
-		if (cias.isEmpty()) {
-			codCompanhia = -1;
-		}
-		else {
-			codCompanhia = cias.get(0).getCodigoCompanhia();
-		}
+		siglaDepartamento = "";
+
+		codCompanhia = null;
 		codFuncionarios.clear();
-	}
-
-	public String getCodigoGrupoAcesso() {
-		return codigoGrupoAcesso;
-	}
-
-	public void setCodigoGrupoAcesso(String codigoGrupoAcesso) {
-		this.codigoGrupoAcesso = codigoGrupoAcesso;
-	}
-
-	public String getCodDepartamento() {
-		return codDepartamento;
-	}
-
-	public void setCodDepartamento(String codDepartamento) {
-		this.codDepartamento = codDepartamento;
-	}
-
-	public String getDescDepartamento() {
-		return descDepartamento;
-	}
-
-	public void setDescDepartamento(String descDepartamento) {
-		this.descDepartamento = descDepartamento;
-	}
-
-	public int getCodCompanhia() {
-		return codCompanhia;
-	}
-
-	public void setCodCompanhia(int codCompanhia) {
-		this.codCompanhia = codCompanhia;
-	}
-
-	public List<String> getCodFuncionarios() {
-		return codFuncionarios;
-	}
-
-	public void setCodFuncionarios(List<String> codFuncionarios) {
-		this.codFuncionarios = codFuncionarios;
+		deptos = null;
+		cias = null;
 	}
 
 	/**
@@ -118,6 +81,118 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 	 */
 	public void setDeptos(List<DepartamentoVO> dptos) {
 		this.deptos = dptos;
+	}
+
+	/**
+	 * Retorna codigoGrupoAcesso
+	 * @return o codigoGrupoAcesso
+	 */
+	public String getCodigoGrupoAcesso() {
+		return codigoGrupoAcesso;
+	}
+
+	/**
+	 * Define codigoGrupoAcesso
+	 * @param codigoGrupoAcesso valor codigoGrupoAcesso a ser definido
+	 */
+	public void setCodigoGrupoAcesso(String codigoGrupoAcesso) {
+		this.codigoGrupoAcesso = codigoGrupoAcesso;
+	}
+
+	/**
+	 * Retorna siglaDepartamento
+	 * @return o siglaDepartamento
+	 */
+	public String getSiglaDepartamento() {
+		return siglaDepartamento;
+	}
+
+	/**
+	 * Define siglaDepartamento
+	 * @param siglaDepartamento valor siglaDepartamento a ser definido
+	 */
+	public void setSiglaDepartamento(String siglaDepartamento) {
+		this.siglaDepartamento = siglaDepartamento;
+	}
+
+	/**
+	 * Retorna codCompanhia
+	 * @return o codCompanhia
+	 */
+	public String getCodCompanhia() {
+		return codCompanhia;
+	}
+
+	/**
+	 * Define codCompanhia
+	 * @param codCompanhia valor codCompanhia a ser definido
+	 */
+	public void setCodCompanhia(String codCompanhia) {
+		this.codCompanhia = codCompanhia;
+	}
+	
+	/**
+	 * Retorna funcionarios
+	 * @return o funcionarios
+	 */
+	public List<UsuarioVO> getFuncionarios() {
+		return funcionarios;
+	}
+	
+	/**
+	 * Define funcionarios
+	 * @param funcionarios valor funcionarios a ser definido
+	 */
+	public void setFuncionarios(List<UsuarioVO> funcionarios) {
+		this.funcionarios = funcionarios;
+	}
+	
+	/**
+	 * Retorna nomeGrupoAcesso
+	 * @return o nomeGrupoAcesso
+	 */
+	public String getNomeGrupoAcesso() {
+		return nomeGrupoAcesso;
+	}
+	
+	/**
+	 * Define nomeGrupoAcesso
+	 * @param nomeGrupoAcesso valor nomeGrupoAcesso a ser definido
+	 */
+	public void setNomeGrupoAcesso(String nomeGrupoAcesso) {
+		this.nomeGrupoAcesso = nomeGrupoAcesso;
+	}
+
+	/**
+	 * Retorna codFuncionarios
+	 * @return o codFuncionarios
+	 */
+	public List<String> getCodFuncionarios() {
+		return codFuncionarios;
+	}
+
+	/**
+	 * Define codFuncionarios
+	 * @param codFuncionarios valor codFuncionarios a ser definido
+	 */
+	public void setCodFuncionarios(List<String> codFuncionarios) {
+		this.codFuncionarios = codFuncionarios;
+	}
+	
+	/**
+	 * Retorna json com o resultado da operação Ajax
+	 * @return o json
+	 */
+	public Object getJson() {
+		return json;
+	}
+	
+	/**
+	 * Define json com o resultado Ajax
+	 * @param json valor json a ser definido
+	 */
+	public void setJson(Object json) {
+		this.json = json;
 	}
 	
 }

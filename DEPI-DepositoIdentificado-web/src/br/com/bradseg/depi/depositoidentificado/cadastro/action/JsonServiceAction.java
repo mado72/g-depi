@@ -67,7 +67,7 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 			LoginVo usuarioLogado = getUsuarioLogado();
 			
 			List<CompanhiaSeguradoraVO> cias = facade
-					.obterCompanhias(new Double(usuarioLogado.getId()));
+					.obterCompanhias(new Integer(usuarioLogado.getId()));
 			
 			model.setResponse(cias);
 		} catch (Exception e) {
@@ -89,13 +89,11 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 	
 	public String ciaDepartamentos() {
 		try {
-			LoginVo usuarioLogado = getUsuarioLogado();
-
 			int codigoCia = Integer.parseInt(model.getCodigoCia());
+			CompanhiaSeguradoraVO ciaVO = new CompanhiaSeguradoraVO(codigoCia);
 		
 			List<DepartamentoVO> deptos = new ArrayList<>();
-			deptos = facade.obterDepartamentos(codigoCia,
-					Double.parseDouble(usuarioLogado.getId()));
+			deptos = facade.obterDepartamentos(ciaVO);
 			
 			for (DepartamentoVO vo : deptos) {
 				vo.setDeposito(null);

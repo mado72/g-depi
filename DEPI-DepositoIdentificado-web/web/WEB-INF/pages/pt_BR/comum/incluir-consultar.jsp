@@ -22,5 +22,4 @@
 		</tr>
 	</table>
 </div>
-
-
+<c:if test="${empty namespaceBase}"><span style="background-color:red">namespaceBase=${namespaceBase}</span></c:if>

@@ -25,6 +25,14 @@ public class UsuarioVO implements Serializable {
 	public UsuarioVO() {
 		super();
 	}
+	
+	/**
+	 * Construtor para definir codigoUsuario
+	 * @param codigoUsuario Código do usuário
+	 */
+	public UsuarioVO(int codigoUsuario) {
+		this.codigoUsuario = codigoUsuario;
+	}
 
 	/**
 	 * Código de usuario.

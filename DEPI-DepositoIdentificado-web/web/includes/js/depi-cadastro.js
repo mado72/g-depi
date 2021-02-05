@@ -591,6 +591,29 @@ var fnReady = function ($) {
 		
 		$('.companhia-codigo-dropbox').change(carregarDepartamentos);
 		$('.companhia-nome-dropbox').change(carregarDepartamentos);
+		
+		$('.btnRemover').click(function(ev){
+			ev.stopPropagation();
+		
+			var checked = $('input[type="checkbox"][name="codFuncionarios"]:checked');
+			var values = [];
+			$(checked).each(function(i,v){values.push($(v).val())});
+			if (values.length) {
+				checked.closest('tr').remove();
+				$(values).each(function(i,v){
+					$('input[type="checkbox"][value="'+v+'"]').remove();
+				});
+			}
+			else {
+				alert('Selecione os registros para excluí-los.')
+			}
+		});
+
+		$("#AcaoForm").submit(function(){
+			$("input:disabled").prop("disabled", false);
+			$("select:disabled").prop("disabled", false);
+			$("input[type='checkbox']").prop("checked", true);
+		})
 	};
 	
 	// popupFuncionario
@@ -615,7 +638,7 @@ var fnReady = function ($) {
 			
 		
 		source.submit(function(ev){
-			var checked = source.find('input[name="codigo"]:checked'), elements = [];
+			var checked = source.find('input[name="codFuncionarios"]:checked'), elements = [];
 			ev.stopPropagation();
 			checked.each(function(i,item){
 				var row = $($(item).parents("tr")[0]),
@@ -634,14 +657,14 @@ var fnReady = function ($) {
 				newRow.append(cols);
 				
 				rows = rows.add(newRow);
-				elements.push("<input type='hidden' name='codFuncionarios' value="+$(item).val()+">");
+//				elements.push("<input type='hidden' name='codFuncionarios' value="+$(item).val()+">");
 			});
-			var jDvCodigos = $(window.opener.$("#dvCodigos"));
-			var dvCodigos = jDvCodigos.html();
-			dvCodigos += elements.join("");
-			jDvCodigos.html(dvCodigos);
+//			var jDvCodigos = $(window.opener.$("#dvCodigos"));
+//			var dvCodigos = jDvCodigos.html();
+//			dvCodigos += elements.join("");
+//			jDvCodigos.html(dvCodigos);
 			table.append(rows);
-			target.submit();
+//			target.submit();
 			window.close();
 		});
 	};
@@ -678,11 +701,11 @@ var fnReady = function ($) {
 		pagSel.append(ctrls);
 		
 		opcoes.info = pagSel.find(".paginacao_info");
-		opcoes.pgs =  Math.floor(opcoes.jqTrs.length / opcoes.registros) + 1;
+		opcoes.pgs =  Math.floor((opcoes.jqTrs.length - 1)/ opcoes.registros) + 1;
 
 		var pages = [];
 		pages.push("<span class='Continue Before'>...</span>");
-		for (var i = 1; i < opcoes.pgs; i++) {
+		for (var i = 1; i <= opcoes.pgs; i++) {
 			var epg = "<a class='GoPage' page='"+(i-1)+"'>"+i+"</a>";
 			pages.push(epg);
 		}

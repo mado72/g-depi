@@ -65,7 +65,8 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	
 	public void validateExcluir() {
 		LOGGER.debug("Validando excluir. Tem erros: {}", hasErrors());
-		// não limpa mensagens de erro 
+		clearActionErrors();
+		// não limpa mensagens de erro de campo 
 	}
 	
 	/**
@@ -130,10 +131,16 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 		String[] codigos = request.getParameterValues("codigo");
 		List<VO> listaVO = mapearListaVO(codigos);
 		
-		getCrudHelper().excluirRegistros(listaVO);
-		addActionMessage(getText(ConstantesDEPI.MSG_EXCLUIR_EXITO));
-		
-		return SUCCESS;
+		try {
+			getCrudHelper().excluirRegistros(listaVO);
+			addActionMessage(getText(ConstantesDEPI.MSG_EXCLUIR_EXITO));
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			LOGGER.error("Erro ao excluir registros", e);
+			return INPUT;
+		}
 	}
 	
 	/**
