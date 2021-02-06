@@ -343,11 +343,11 @@ var fnReady = function ($) {
 
 		if (criterios.length > 0) {
 			criterios.each(function(idx, opt) {
-				elements = elements.add($('<input>', { type:"text", name: "criteriosInformados" , value: $(opt).val()}));
+				elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: $(opt).val()}));
 			});
 		}
 		else {
-			elements = elements.add($('<input>', { type:"text", name: "criteriosInformados" , value: null}));
+			elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: null}));
 		}
 		
 		$("#box_loading").show();
@@ -668,121 +668,7 @@ var fnReady = function ($) {
 		
 		$(opcoes.btn).click(function(){
 			$("#box_loading").show();
-			// $.funcionario.prepararFormulario({dest: "#AcaoForm", table: ".Funcionario", origem: "#AcaoForm"});
-			var popup = window.open(opcoes.url, 'SelFuncionarios', "height=550,width=800,resizable=no"),
-				table = $('.Funcionario'),
-				errorTry = -1,
-				tries = 0;
-				timer = null;
-				
-			var config = function() {
-				if (timer) {
-					clearInterval(timer);
-					timer = null;
-				}
-				
-				// tratamento para evitar SCRIPT70 no IE. jquery não tem permissão para acessar DOM do popup.
-				var form;
-				try {
-					form = $(popup.window.document).find("#AcaoForm");
-				}
-				catch (e) {
-					console.error(e);
-					alert(e.message);
-					throw(e);
-				}
-				
-				if (form.length < 1) {
-					if (++tries < 5) {
-						setTimeout(function() { config(); }, 500);
-					}
-					return;
-				}
-				
-				$("#box_loading").hide();
-
-				var filtro = $(popup.window.document).find("#FiltroForm");
-				filtro.css("background-color", "yellow");
-				
-				var processaEnvioFuncionarios = function(ev) {
-					ev.preventDefault();
-					var checked = form.find('input[name="codFuncionarios"]:checked'),
-						rows = $();
-					
-					checked.each(function(i,item){
-						var row = $($(item).parents("tr")[0]),
-							cols = $(),
-							newRow = $("<tr>"),
-							tds = row.find("td");
-						
-						tds.slice(0,3).each(function(j,td){
-							var col = $("<td>");
-							col.html($(td).html());
-							if (j == 0 || j == 1) {
-								$(col).addClass("center");
-							}
-							cols = cols.add(col);
-						});
-						newRow.append(cols);
-						
-						rows = rows.add(newRow);
-					});
-					
-					table.append(rows);
-					setTimeout(function(){
-						popup.window.close();
-					}, 250);
-					return false;
-				};
-				
-				var processaConsultarFuncionarios = function(ev) {
-					$.filtro.prepararConsultar(ev, filtro, filtro.find("#Lista"));
-					
-					setTimeout(function() {
-						var url = filtro.attr("action").replace(/\/\w+.do$/, "/json.do");
-						var data = getFormData(filtro);
-						
-						$.ajax({
-							url : url,
-							type : "POST",
-							data: data,
-							dataType : "json",
-							success : function(data) {
-								console.log(data);
-							},
-							error : function(data) {
-								
-							}
-						});
-					}, 150);
-					return false;
-				};
-				
-				form.submit(function(ev) {
-					return processaEnvioFuncionarios(ev);
-				});
-				
-				var btnSelecionar = $(popup.window.document).find("#BtnSelecionar");
-				btnSelecionar.click(function(ev) {
-					return processaEnvioFuncionarios(ev);
-				});
-				
-				filtro.submit(function(ev){
-					ev.preventDefault();
-					ev.stopImmediatePropagation();
-					processaConsultarFuncionarios(ev);
-				});
-				
-				var btnConsultar = $(popup.window.document);
-				btnConsultar.find("#BtnConsultar").click(function(ev) {
-					ev.preventDefault();
-					ev.stopImmediatePropagation();
-					processaConsultarFuncionarios(ev);
-				});
-				btnConsultar.css("background-color", "red");
-			};
-			
-			config();
+			window.open(opcoes.url, 'SelFuncionarios', "height=550,width=800,resizable=no");
 		});
 	};
 	
