@@ -36,6 +36,8 @@ public class FuncionarioConsultarAction extends FiltroAction<FuncionarioCampo, F
 
 	private transient FuncionarioCrudHelper filtroHelper;
 	
+	private String action;
+	
 	@Override
 	protected CrudHelper<FuncionarioCampo, ?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
@@ -88,6 +90,22 @@ public class FuncionarioConsultarAction extends FiltroAction<FuncionarioCampo, F
 					Geral.ERRO_CAMPO_EXCESSO,
 					LABEL_GRID_USUARIO_NOME, "40"));
 		}
+	}
+	
+	/**
+	 * Retorna action
+	 * @return o action
+	 */
+	public String getAction() {
+		return action;
+	}
+	
+	/**
+	 * Define action
+	 * @param action valor action a ser definido
+	 */
+	public void setAction(String action) {
+		this.action = action;
 	}
 
 }

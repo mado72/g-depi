@@ -23,6 +23,7 @@
 			<result name="error">
 			    <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
 			</result>
+			<result name="json" type="json"></result>
 		</global-results>
 		
 	</package>
@@ -294,7 +295,7 @@
 			</result>
 		</global-results>
 		
-		<action name="novo" method="novo">
+		<action name="incluir" method="incluir">
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
 			<result name="input" type="redirectAction">input</result>
@@ -407,10 +408,9 @@
 		<default-class-ref class="funcionarioConsultarAction"/>
 		
 		<global-results>
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/filtro/funcionario.jsp</param>
-			</result>
-			<result name="input" type="redirectAction">listar</result>
+			<result name="success">/WEB-INF/pages/pt_BR/filtro/funcionario.jsp</result>
+			<result name="input">/WEB-INF/pages/pt_BR/filtro/funcionario.jsp</result>
+			<!-- <result name="input" type="redirectAction">listar</result> -->
 		</global-results>
 
 		<action name="index">
@@ -418,12 +418,6 @@
 			<interceptor-ref name="applicationStack"/>
 		</action>
 		
-		<action name="listar" method="listar">
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/filtro/funcionario.jsp</param>
-			</result>
-		</action>
-        
 		<action name="*" method="{1}"/>
 
 	</package>

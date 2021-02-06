@@ -43,6 +43,8 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	
 	protected abstract CrudHelper<C, ?, ?> getFiltroHelper();
 	
+	private boolean consultado;
+	
 	@SuppressWarnings("unchecked")
 	public FiltroAction() {
 		this.model = (T) getFiltroHelper().criarFiltroModel();
@@ -67,6 +69,10 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 		for (CriterioConsultaVO<C> criterio : model.obterCriteriosConsulta()) {
 			validarCriterio(criterio);
 		}
+	}
+	
+	public void validateJson() {
+		validateConsultar();
 	}
 	
 	protected void validarCriterio(CriterioConsultaVO<C> criterio) {
@@ -133,6 +139,7 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 
 	private String processarCriterios(List<CriterioConsultaVO<C>> criterios) {
 		
+		consultado = true;
 		try {
 			List<?> lista = getFiltroHelper().processarCriterios(criterios);
 			model.setColecaoDados(lista);
@@ -195,6 +202,21 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 				model.clearCriterios();
 			}
 		}
+		
+		consultado = false;
+	}
+	
+	/**
+	 * Retorna consultado
+	 * @return true se consultado
+	 */
+	public boolean isConsultado() {
+		return consultado;
+	}
+	
+	
+	public String json() {
+		return "json";
 	}
 
 }

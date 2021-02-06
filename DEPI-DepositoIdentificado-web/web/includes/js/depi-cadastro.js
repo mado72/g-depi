@@ -129,6 +129,17 @@ console.log("depi-cadastro.js");
 
 var fnReady = function ($) {
 
+	function getFormData($form){
+	    var unindexed_array = $form.serializeArray();
+	    var indexed_array = {};
+
+	    $.map(unindexed_array, function(n, i){
+	        indexed_array[n['name']] = n['value'];
+	    });
+
+	    return indexed_array;
+	}
+	
 	$.namespace = function() {
 	    var a=arguments, o=null, i, j, d;
 	    for (i=0; i<a.length; i=i+1) {
@@ -193,7 +204,7 @@ var fnReady = function ($) {
 			jqSecundario = jqForm.find("#DropboxSecundario"),
 			jqValor = jqForm.find("#ValorFiltro"),
 			jqRecipiente = jqForm.find("#Lista"),
-			btnConsultar = $("#BtnConsultar"),
+			btnIncluir = $(".btnIncluir"),
 			btnPlus = jqForm.find("#BtnPlus"),
 			btnMinus = jqForm.find("#BtnMinus");
 		
@@ -237,6 +248,7 @@ var fnReady = function ($) {
 			});
 
 		btnPlus.click(function(ev){
+			ev.preventDefault();
 			var optPrincipal = jqPrincipal.find("option:selected");
 			var optSecundario = jqSecundario.find("option:selected");
 			
@@ -263,43 +275,29 @@ var fnReady = function ($) {
 			jqPrincipal.prop("selectedIndex", 0);
 			jqPrincipal.change();
 			jqSecundario.prop("selectedIndex", 0);
+			return false;
 		});
 
 		btnMinus.click(function(ev) {
-			var opt = jqRecipiente
-				.find('option:selected');
+			ev.preventDefault();
+			var opt = jqRecipiente.find('option:selected');
 
 			dados.recipiente.splice(opt.index());
 			opt.remove();
+			return false;
 		});
 
-		btnConsultar.click(function(ev) {
-			var elements = $();
-
-			var criterios = jqRecipiente.find("option");
-			if (criterios.length == 0) {
-				if (! window.confirm(MENSAGEM["msg.confirmacao.consulta"])) {
-					ev.stopPropagation();
-					return;
-				};
-			}
-
-			if (criterios.length > 0) {
-				criterios.each(function(idx, opt) {
-					elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: $(opt).val()}));
-				});
-			}
-			else {
-				elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: null}));
-			}
-			
+		$("#BtnConsultar").click(function(ev) {
+			ev.preventDefault();
+			$.filtro.prepararConsultar(ev, jqForm, jqRecipiente);
+			$(this).closest("form").submit();
+		});
+		
+		btnIncluir.click(function() {
 			$("#box_loading").show();
-			
-			jqForm.append(elements);
-
-			jqForm.submit();
-
-			jqForm.find("input:hidden").remove().end();
+			setTimeout(function(){
+				window.location.href = btnIncluir.attr('href');
+			}, 250);
 		});
 
 		// Definir valores iniciais
@@ -330,6 +328,31 @@ var fnReady = function ($) {
 		jqPrincipal.change();
 
 		jqRecipiente.val(null);
+	};
+	
+	$.filtro.prepararConsultar = function(ev, jqForm, jqRecipiente) {
+		var elements = $();
+
+		var criterios = jqRecipiente.find("option");
+		if (criterios.length == 0) {
+			if (! window.confirm(MENSAGEM["msg.confirmacao.consulta"])) {
+				ev.stopPropagation();
+				return;
+			};
+		}
+
+		if (criterios.length > 0) {
+			criterios.each(function(idx, opt) {
+				elements = elements.add($('<input>', { type:"text", name: "criteriosInformados" , value: $(opt).val()}));
+			});
+		}
+		else {
+			elements = elements.add($('<input>', { type:"text", name: "criteriosInformados" , value: null}));
+		}
+		
+		$("#box_loading").show();
+		
+		jqForm.append(elements);
 	};
 
 	$.filtro.adicionarCriterio = function(jqRecipiente, item) {
@@ -372,6 +395,10 @@ var fnReady = function ($) {
 			btnAlterar = jqForm.find("#BtnAlterar");
 		
 		btnExcluir.click(function(ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+			
+			$("#box_loading").show();
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length == 0) {
 				alert(MENSAGEM['msg.selecao.exclusao']);
@@ -384,6 +411,10 @@ var fnReady = function ($) {
 		});
 		
 		btnAlterar.click(function(ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+			
+			$("#box_loading").show();
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length != 1) {
 				alert(MENSAGEM["msg.selecao.edicao"]);
@@ -622,32 +653,45 @@ var fnReady = function ($) {
 		});
 
 		$("#AcaoForm").submit(function(){
+			console.log("#AcaoForm.submit");
 			$("input:disabled").prop("disabled", false);
 			$("select:disabled").prop("disabled", false);
 			$("input[type='checkbox']").prop("checked", true);
-		})
+		});
 	};
 	
 	// popupFuncionario
 	// ---------------------------------------------------------------------
 	$.namespace( '$.popupFuncionario' );
 	$.popupFuncionario.prepararOpener = function(opcoes) {
+		window.name = "_opener";
 		
 		$(opcoes.btn).click(function(){
+			$("#box_loading").show();
 			// $.funcionario.prepararFormulario({dest: "#AcaoForm", table: ".Funcionario", origem: "#AcaoForm"});
 			var popup = window.open(opcoes.url, 'SelFuncionarios', "height=550,width=800,resizable=no"),
-				pDoc = $(popup.window.document),
 				table = $('.Funcionario'),
+				errorTry = -1,
 				tries = 0;
 				timer = null;
-
+				
 			var config = function() {
 				if (timer) {
 					clearInterval(timer);
 					timer = null;
 				}
 				
-				var form = pDoc.find("#AcaoForm");
+				// tratamento para evitar SCRIPT70 no IE. jquery não tem permissão para acessar DOM do popup.
+				var form;
+				try {
+					form = $(popup.window.document).find("#AcaoForm");
+				}
+				catch (e) {
+					console.error(e);
+					alert(e.message);
+					throw(e);
+				}
+				
 				if (form.length < 1) {
 					if (++tries < 5) {
 						setTimeout(function() { config(); }, 500);
@@ -655,8 +699,13 @@ var fnReady = function ($) {
 					return;
 				}
 				
-				form.submit(function(ev) {
-					ev.stopPropagation();
+				$("#box_loading").hide();
+
+				var filtro = $(popup.window.document).find("#FiltroForm");
+				filtro.css("background-color", "yellow");
+				
+				var processaEnvioFuncionarios = function(ev) {
+					ev.preventDefault();
 					var checked = form.find('input[name="codFuncionarios"]:checked'),
 						rows = $();
 					
@@ -680,10 +729,57 @@ var fnReady = function ($) {
 					});
 					
 					table.append(rows);
-					popup.window.close();
+					setTimeout(function(){
+						popup.window.close();
+					}, 250);
+					return false;
+				};
+				
+				var processaConsultarFuncionarios = function(ev) {
+					$.filtro.prepararConsultar(ev, filtro, filtro.find("#Lista"));
+					
+					setTimeout(function() {
+						var url = filtro.attr("action").replace(/\/\w+.do$/, "/json.do");
+						var data = getFormData(filtro);
+						
+						$.ajax({
+							url : url,
+							type : "POST",
+							data: data,
+							dataType : "json",
+							success : function(data) {
+								console.log(data);
+							},
+							error : function(data) {
+								
+							}
+						});
+					}, 150);
+					return false;
+				};
+				
+				form.submit(function(ev) {
+					return processaEnvioFuncionarios(ev);
 				});
 				
+				var btnSelecionar = $(popup.window.document).find("#BtnSelecionar");
+				btnSelecionar.click(function(ev) {
+					return processaEnvioFuncionarios(ev);
+				});
 				
+				filtro.submit(function(ev){
+					ev.preventDefault();
+					ev.stopImmediatePropagation();
+					processaConsultarFuncionarios(ev);
+				});
+				
+				var btnConsultar = $(popup.window.document);
+				btnConsultar.find("#BtnConsultar").click(function(ev) {
+					ev.preventDefault();
+					ev.stopImmediatePropagation();
+					processaConsultarFuncionarios(ev);
+				});
+				btnConsultar.css("background-color", "red");
 			};
 			
 			config();
@@ -696,6 +792,13 @@ var fnReady = function ($) {
 	$.namespace( '$.funcionario' );
 	
 	$.funcionario.prepararFormulario = function(opcoes) {
+		$("#AcaoForm").submit(function(ev){
+			console.log("Falhou jquery para evitar submit");
+			
+			setTimeout(function(){
+				window.close();
+			}, 500);
+		});
 	};
 	
 	// paginacao

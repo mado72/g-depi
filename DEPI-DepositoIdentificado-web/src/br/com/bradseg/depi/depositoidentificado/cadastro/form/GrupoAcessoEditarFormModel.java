@@ -1,7 +1,10 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.form;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import org.springframework.util.CollectionUtils;
 
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
@@ -44,11 +47,21 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 		setCodigo("");
 		codigoGrupoAcesso = "";
 		siglaDepartamento = "";
-
 		codCompanhia = null;
-		codFuncionarios.clear();
-		deptos = null;
-		cias = null;
+		json = null;
+
+		if (codFuncionarios != null) {
+			codFuncionarios.clear();
+		}
+		if (deptos != null) {
+			deptos.clear();
+		}
+		if (cias != null) {
+			cias.clear();
+		}
+		if (funcionarios != null) {
+			funcionarios.clear();
+		}
 	}
 
 	/**
@@ -169,6 +182,22 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 	 */
 	public List<String> getCodFuncionarios() {
 		return codFuncionarios;
+	}
+	
+	/**
+	 * Método utilitário para retornar os códigos dos funcionários como inteiros
+	 * @return Lista de códigos
+	 */
+	public List<Integer> getCodFuncionariosInt() {
+		if (CollectionUtils.isEmpty(getCodFuncionarios())) {
+			return Collections.emptyList();
+		}
+		
+		ArrayList<Integer> list = new ArrayList<>(getCodFuncionarios().size());
+		for (String cod : codFuncionarios) {
+			list.add(new Integer(cod));
+		}
+		return list;
 	}
 
 	/**

@@ -9,9 +9,9 @@
 			<td align="center">
 				<div class="tabela_botoes">
 				<s:if test="!colecaoDados || colecaoDados.isEmpty()"><c:url var="btnIncluirUrl" value="${namespaceBase}/incluir.do"/>
-					<a class="abtn btnIncluir" id="BtnIncluirTopo" href="${btnIncluirUrl}"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.gif"/>"></a>
+					<button class="abtn btnIncluir" id="BtnIncluirTopo" style="width:70px" href="${btnIncluirUrl}"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.gif"/>"></button>
 				</s:if>
-					<a class="abtn btnConsultar" id="BtnConsultar" href="javascript:void(0)"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_consultar.gif"/>"></a>
+					<button class="abtn btnConsultar" id="BtnConsultar" style="width:70px"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_consultar.gif"/>"></button>
 				</div>
 			</td>
 		</tr>

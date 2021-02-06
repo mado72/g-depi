@@ -8,8 +8,6 @@
 	<s:param name="scriptOff" value="true"/>
 </s:include>
 
-<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-consultar.jsp"></s:include>
-
 <s:if test="colecaoDados && !colecaoDados.isEmpty()">
 <c:url value="${namespaceBase}/alterar.do" var="actionForm"></c:url>
 

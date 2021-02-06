@@ -24,15 +24,19 @@ pre.debug {
 	margin-right: 10px;
 }
 
-a.abtn {
+a.abtn, button.abtn {
+	text-decoration: none;
+	background-color: transparent;
 	vertical-align: top;
 	border: 0;
-	text-decoration: none;
 	margin: 2px;
+	padding: 0;
+	width: 70px;
 }
 
-a.abtn img {
-	height: 14px;
+a.abtn.abtn-xs, button.abtn.abtn-xs, .abtn-xs {
+	height: 18px;
+	width: 18px;
 }
 
 button.btn-img {
