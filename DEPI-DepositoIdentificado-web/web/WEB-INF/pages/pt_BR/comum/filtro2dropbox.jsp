@@ -36,7 +36,7 @@
 				<s:text name="label.filtro.valor"/>
 			</td>
 			<td>
-				<INPUT id="Valor" tabIndex=3 style="WIDTH: 150px; TEXT-TRANSFORM: uppercase" maxLength=50 size=40>
+				<INPUT id="ValorFiltro" tabIndex=3 style="WIDTH: 150px; TEXT-TRANSFORM: uppercase" maxLength=50 size=40>
 			</td>
 		</tr>
 		<tr>
@@ -63,6 +63,8 @@ jQuery(document).ready(function($){
 		principal[idx] = {
 			texto: item.entidade.descricao,
 			valor: item.entidade.campo,
+			tipo: item.entidade.tipo,
+			tam: item.entidade.s,
 			sublista: operacoes
 		};
 	});

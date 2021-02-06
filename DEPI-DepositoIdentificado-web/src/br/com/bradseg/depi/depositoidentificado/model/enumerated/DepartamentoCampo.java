@@ -16,7 +16,7 @@ public enum DepartamentoCampo implements IEntidadeCampo {
     /**
      * Código
      */
-    Codigo(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, TipoCampo.NUM, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    Codigo(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, TipoCampo.NUM, 3),
     /**
      * Sigla
      */
@@ -24,7 +24,7 @@ public enum DepartamentoCampo implements IEntidadeCampo {
     /**
      * Nome
      */
-    Nome("IDEPTO_DEP_IDTFD", TipoCampo.ALFA_OBRIG, ConstantesDEPI.SIZE_NAO_DEFINIDO), 
+    Nome("IDEPTO_DEP_IDTFD", TipoCampo.ALFA_OBRIG, 40), 
     
     /**
      * Ativo 

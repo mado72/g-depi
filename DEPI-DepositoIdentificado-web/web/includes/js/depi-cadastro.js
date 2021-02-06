@@ -39,12 +39,14 @@ if (oldIE) {
 		};		
 	}
 }
-(function (con) {
-	con.log = con.profile = con.profileEnd = con.timeStamp = con.trace =
-		con.debug = con.info = con.warn = con.error = con.dir = con.dirxml =
-		con.group = con.groupCollapsed = con.groupEnd = con.time = con.timeEnd =
-		con.assert = con.count = con.clear = function(){};
-})(window.console = window.console || {});
+if (!window.console) {
+	(function (con) {
+		con.log = con.profile = con.profileEnd = con.timeStamp = con.trace =
+			con.debug = con.info = con.warn = con.error = con.dir = con.dirxml =
+				con.group = con.groupCollapsed = con.groupEnd = con.time = con.timeEnd =
+					con.assert = con.count = con.clear = function(){};
+	})(window.console = window.console || {});
+}
 if (! Array.prototype.find) {
 	Array.prototype.find = function(predicate) {
 		  if (this === null) {
@@ -162,7 +164,7 @@ var fnReady = function ($) {
 			ev.stopPropagation();
 			dpcod.val(dpdesc.val());
 		});
-	}
+	};
 
 	// filtro
 	// ---------------------------------------------------------------------
@@ -189,14 +191,13 @@ var fnReady = function ($) {
 
 		var jqPrincipal = jqForm.find("#DropboxPrincipal"),
 			jqSecundario = jqForm.find("#DropboxSecundario"),
-			jqValor = jqForm.find("#Valor"),
+			jqValor = jqForm.find("#ValorFiltro"),
 			jqRecipiente = jqForm.find("#Lista"),
 			btnConsultar = $("#BtnConsultar"),
 			btnPlus = jqForm.find("#BtnPlus"),
 			btnMinus = jqForm.find("#BtnMinus");
-
-		jqPrincipal
-			.change(function(ev){
+		
+		jqPrincipal.change(function(ev){
 				var opt = jqPrincipal.find("option:selected");
 				
 				jqSecundario
@@ -231,8 +232,7 @@ var fnReady = function ($) {
 				};
 			});
 		
-		jqValor
-			.keypress(function(ev){
+		jqValor.on("input keydown keyup mousedown mouseup select", function(ev){
 				$.filtro.arrumarValor(jqPrincipal, jqSecundario, jqValor, jqRecipiente);
 			});
 
@@ -304,8 +304,7 @@ var fnReady = function ($) {
 
 		// Definir valores iniciais
 		$(dados.principal).each(function(idx, item) {
-			var opt = jqPrincipal.append($('<option>', {text: item.texto, value: item.valor}));
-			opt.data("sublista", item.sublista);
+			jqPrincipal.append($('<option>', {text: item.texto, value: item.valor, t: item.tipo, s: item.tam}));
 		});
 
 		if (dados.recipiente) {
@@ -340,12 +339,25 @@ var fnReady = function ($) {
 
 	$.filtro.arrumarValor = function(jqPrincipal, jqSecundario, jqValor, jqRecipiente) {
 		var opt = jqPrincipal.find("option:selected");
+		
+		var validacao = {
+				t: opt.attr("t"),
+				s: parseInt(opt.attr("s")) || -1
+		};
+		
+		var value = jqValor.val();
 
-		if (opt.val() === "NUM") {
-			jqValor.val(jqValor.val().replace(/D+//g));
+		if (validacao.t === "NUM") {
+			value = value.replace(/\D+/g, '');
 		} else {
-			jqValor.val(jqValor.val().toLocaleUpperCase());
+			value = value.toLocaleUpperCase();
 		}
+		
+		if (validacao.s > -1 && value.length > validacao.s) {
+			value = value.substring(0, validacao.s);
+		}
+		
+		jqValor.val(value);
 	};
 
 	// consulta
