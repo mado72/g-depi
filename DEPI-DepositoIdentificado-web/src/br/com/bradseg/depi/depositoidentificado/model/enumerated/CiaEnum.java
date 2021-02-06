@@ -21,7 +21,7 @@ public enum CiaEnum {
 	private String   numeroEndereco;
 	private String   imagemRelatorio;
 	/**
-	 * Construtor padr�o
+	 * Construtor padrão
 	 * @param codigoInt - codigoInt 
 	 * @param codigoExt - codigoExt
 	 */

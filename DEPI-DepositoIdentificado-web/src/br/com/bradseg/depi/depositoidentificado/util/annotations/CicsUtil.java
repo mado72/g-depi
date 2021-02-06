@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +44,11 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 @Service
 public class CicsUtil {
 	
+	/**
+	 * Armazena as definições do book CICS 
+	 *
+	 * @param <T> Classe que contém as definições do book
+	 */
 	public static final class Program<T> extends CTGProgramImpl {
 		
 		private transient final Class<T> programType;
@@ -101,11 +107,12 @@ public class CicsUtil {
 		
 	}
 	
-	private static class OrderedField implements Comparable<OrderedField> {
+	/**
+	 * Classe privada usada para mapear os campos marcados com tags {@link CicsField}  
+	 */
+	private static class OrderedField {
 		
 		private final Class<?> type;
-		
-//		private final Field javaField;
 		
 		private final CicsField cicsField;
 		
@@ -127,14 +134,6 @@ public class CicsUtil {
 			this.type = pd.getPropertyType();
 			this.getter = pd.getReadMethod();
 			this.setter = pd.getWriteMethod();
-		}
-		
-		/* (non-Javadoc)
-		 * @see java.lang.Comparable#compareTo(java.lang.Object)
-		 */
-		@Override
-		public int compareTo(OrderedField o) {
-			return cicsField.order() - o.cicsField.order();
 		}
 		
 		/**
@@ -170,31 +169,40 @@ public class CicsUtil {
 	 * 
 	 * @param javaGateway
 	 *            Gateway para acessar o CICS
-	 * @param classePrograma
+	 * @param book
 	 *            Classe com anotações que informam como realizar a chamada
 	 * @return Programa instanciado.
 	 * @see CicsProgram
 	 * @see CicsField
+	 * @param <T> Classe que representa o book da comunicação.
 	 */
 	public <T> Program<T> construir(CTGJavaGateway javaGateway,
-			Class<T> classePrograma) {
-		CicsProgram programAnnotation = classePrograma.getAnnotation(
+			Class<T> book) {
+		CicsProgram programAnnotation = book.getAnnotation(
 				CicsProgram.class);
 		
 		BeanInfo beanInfo;
 		try {
-			beanInfo = Introspector.getBeanInfo(classePrograma);
+			beanInfo = Introspector.getBeanInfo(book);
 		} catch (IntrospectionException e) {
 			throw new DEPIIntegrationException(e);
 		}
 		
 		Map<String, Field> mapPropField = new HashMap<>();
-		for (Field field : classePrograma.getDeclaredFields()) {
+		for (Field field : book.getDeclaredFields()) {
 			mapPropField.put(field.getName(), field);
 		}
 		
-		Set<OrderedField> commonFieldIn = new TreeSet<>();
-		Set<OrderedField> commonFieldOut = new TreeSet<>();
+		Comparator<OrderedField> comparator = new Comparator<CicsUtil.OrderedField>() {
+			
+			@Override
+			public int compare(OrderedField o1, OrderedField o2) {
+				return o1.cicsField.order() - o2.cicsField.order();
+			}
+		};
+		
+		Set<OrderedField> commonFieldIn = new TreeSet<>(comparator);
+		Set<OrderedField> commonFieldOut = new TreeSet<>(comparator);
 		
 		for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors()) {
 			Field javaField = mapPropField.get(pd.getName());
@@ -223,7 +231,7 @@ public class CicsUtil {
 				programAnnotation.programName(), 
 				programAnnotation.transactionName(), 
 				programAnnotation.commLength(), 
-				classePrograma,
+				book,
 				Collections.unmodifiableSet(commonFieldIn),
 				Collections.unmodifiableSet(commonFieldOut));
 		
@@ -239,6 +247,7 @@ public class CicsUtil {
 	 * @param input
 	 *            Dados de entrada para a execução do programa
 	 * @return Lista com dados retornados do CICS
+	 * @param <T> Tipo do BOOK a ser utilizado na execução.
 	 */
 	public <T> List<T> execute(Program<T> program, T input) {
 		prepareInputData(program, input);

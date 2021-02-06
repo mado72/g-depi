@@ -3,11 +3,6 @@ package br.com.bradseg.depi.depositoidentificado.util;
 /**
  * Classe com constantes do sistema.
  */
-/**
- * 
- * @author Marcelo Damasceno
- *
- */
 public final class ConstantesDEPI {
 
 	/**
@@ -272,6 +267,9 @@ public final class ConstantesDEPI {
 		public static final String ERRO_CADASTRADO_INATIVO = "msg.erro.departamento.inativo_cadastrado";
 	}
 	
+	/**
+	 * Constantes gerais para Grupo Acesso 
+	 */
 	public static final class GrupoAcesso {
 		public static final String LABEL_DEPARTAMENTO = "label.cadastro.grupoacesso.departamento";
 		public static final String LABEL_FUNCIONARIO = "label.cadastro.grupoacesso.funcionario";

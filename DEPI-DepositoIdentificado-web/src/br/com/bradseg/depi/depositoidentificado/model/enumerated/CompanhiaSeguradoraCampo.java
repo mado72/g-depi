@@ -17,9 +17,9 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
     CodigoCompanhia(ConstantesDEPI.TABELA_CIA_ID, "Código Companhia", TipoCampo.NUM, false, ConstantesDEPI.SIZE_NAO_DEFINIDO),
 
     /**
-     * Descri��o Companhia.
+     * Descrição Companhia.
      */
-    DescricaoCompanhia(ConstantesDEPI.TABELA_CIA_NOME, "Descri��o Companhia", TipoCampo.ALFA_OBRIG, true,
+    DescricaoCompanhia(ConstantesDEPI.TABELA_CIA_NOME, "Descrição Companhia", TipoCampo.ALFA_OBRIG, true,
         ConstantesDEPI.SIZE_NAO_DEFINIDO);
 
     private String nome;

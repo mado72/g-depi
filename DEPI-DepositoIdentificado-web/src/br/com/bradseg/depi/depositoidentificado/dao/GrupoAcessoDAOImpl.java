@@ -3,7 +3,6 @@
  */
 package br.com.bradseg.depi.depositoidentificado.dao;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -36,19 +35,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 @Repository
 public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 	
-	/**
-	 * 
-	 */
 	private static final String PRM1 = "prm1";
 
-	/**
-	 * 
-	 */
 	private static final String PRM2 = "prm2";
 
-	/**
-	 * 
-	 */
 	private static final String PRM3 = "prm3";
 
 	private static final String WHR1 = "whr1";
@@ -100,7 +90,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
         	
 			query = query.replaceAll("%s", complementoQuery);
 			
-			return getJdbcTemplate().query(query.toString(), params,
+			return getJdbcTemplate().query(query, params,
 					new GrupoAcessoDataMapper());
         } finally {
         	LOGGER.info("obterPorFiltro(CriterioFiltroUtil filtro)"); 
@@ -171,8 +161,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     }
 
     /**
-     * Atualizar grupo de acesso. Obt�m os usu�rios. Para cada usu�rio obtido, verificar se o mesmo existe na nova lista. Para cada
-     * usu�rio obtivo, inclui ou exclui de acordo com a exist�ncia na nova lista de usu�rios. | *
+     * Atualizar grupo de acesso. Obt�m os usuários. Para cada usuário obtido, verificar se o mesmo existe na nova lista. Para cada
+     * usuário obtivo, inclui ou exclui de acordo com a exist�ncia na nova lista de usuários. | *
      * @param vo - GrupoAcessoVO.
      */
     @Override
@@ -287,25 +277,12 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     
         try {
 	        /**
-	         * Alterar Desaloca usu�rios na altera��o, pois a lista de usu�rios n�o � enviada.
+	         * Alterar Desaloca usuários na alteração, pois a lista de usuários não � enviada.
 	         */
 	        alterar(grupo); 
         } finally {
     	  LOGGER.info("desalocarUsuarios(GrupoAcessoVO grupo)");
         } 
-    }
-    
-    /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO#desalocarUsuarios(br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO, java.util.Collection)
-     */
-    @Override
-    public void desalocarUsuarios(GrupoAcessoVO vo,
-    		Collection<UsuarioVO> usuarios) {
-
-    	for (UsuarioVO usuarioVO : usuarios) {
-			queryDesalocar(vo, usuarioVO);
-		}
-    	
     }
 
     /**
@@ -317,7 +294,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     	try {
         
             /**
-             * Desalocar Usu�rios.
+             * Desalocar Usuários.
              */
             desalocarUsuarios(grupo);
             

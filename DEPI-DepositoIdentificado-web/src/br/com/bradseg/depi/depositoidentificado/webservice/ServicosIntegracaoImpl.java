@@ -192,22 +192,20 @@ public class ServicosIntegracaoImpl {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<DepartamentoVO> obterCiaDepartamentos(int codigoCia, @Context ServletRequest request) {
-		List<DepartamentoVO> lista = grupoAcessoFacade.obterDepartamentos(new CompanhiaSeguradoraVO(codigoCia));
-		return lista;		
+		return grupoAcessoFacade.obterDepartamentos(new CompanhiaSeguradoraVO(codigoCia));
 	}
 	
 	protected LoginVo getUsuarioLogado(ServletRequest request) {
 
-		// FIXME retirar este log da publicação final
-		LOGGER.error("Tentando recuperar o usuário logado usando LoginUtils.getLoginObject(this.request)");
+		LOGGER.debug("Tentando recuperar o usuário logado usando LoginUtils.getLoginObject(this.request)");
 		LoginVo loginVO = LoginUtils.getLoginObject(request);
-		LOGGER.error("Usuário logado {}", loginVO);
+		LOGGER.debug("Usuário logado {}", loginVO);
 		
         if (BaseUtil.isNZB(loginVO) || BaseUtil.isNZB(loginVO.getId())) {
         	LOGGER.error("Não encontrou usuário logado");
             throw new IntegrationException(BaseUtil.getTexto(ConstantesDEPI.Geral.ERRO_USUARIO_LOGADO));
         }
-        LOGGER.error("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
+        LOGGER.info("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		
 		return loginVO;
 

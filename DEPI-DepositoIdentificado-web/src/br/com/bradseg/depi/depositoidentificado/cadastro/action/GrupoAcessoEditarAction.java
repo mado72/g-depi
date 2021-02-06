@@ -1,15 +1,12 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 
-import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.GrupoAcessoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.GrupoAcessoCrudHelper;
@@ -19,7 +16,6 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCamp
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
-import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -88,11 +84,8 @@ public class GrupoAcessoEditarAction
 	 * 
 	 */
 	private void preencherListaCompanhia() {
-		LoginVo usuarioLogado = getUsuarioLogado();
-		int codUsuario = Integer.parseInt(usuarioLogado.getId());
-		
 		GrupoAcessoEditarFormModel model = getModel();
-		List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias(codUsuario);
+		List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias();
 		model.setCias(cias);
 		
 		if (! cias.isEmpty()) {
@@ -114,34 +107,6 @@ public class GrupoAcessoEditarAction
 		List<DepartamentoVO> deptos = crudHelper
 				.obterDepartamentos(new CompanhiaSeguradoraVO(codCompanhia));
 		model.setDeptos(deptos);
-	}
-	
-	
-	public void validateDesalocarFuncionario() {
-		List<String> codFuncionarios = getModel().getCodFuncionarios();
-		if (CollectionUtils.isEmpty(codFuncionarios)) {
-			addFieldError("codFuncionario", getText("msg.erro.grupoAcesso.semFuncionarios"));
-			getModel().setJson(getFieldErrors());
-		}
-	}
-	
-	public String desalocarFuncionario() {
-		List<String> codFuncionarios = getModel().getCodFuncionarios();
-		ArrayList<UsuarioVO> usuarios = new ArrayList<UsuarioVO>();
-		
-		for (String codFuncionario : codFuncionarios) {
-			usuarios.add(new UsuarioVO(Integer.parseInt(codFuncionario)));
-		}
-		
-		GrupoAcessoVO vo = new GrupoAcessoVO(Integer.parseInt(getModel().getCodigoGrupoAcesso()));
-		
-		LoginVo usuarioLogado = getUsuarioLogado();
-		vo.setCodigoResponsavelUltimaAtualizacao(new Integer(usuarioLogado.getId()));
-		((GrupoAcessoCrudHelper)getCrudHelper()).desalocarFuncionarios(vo, usuarios);
-		
-		getModel().setJson(Collections.singletonMap("msg", "ok"));
-		
-		return SUCCESS;
 	}
 	
 }

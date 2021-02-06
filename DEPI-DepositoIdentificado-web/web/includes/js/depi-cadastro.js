@@ -620,8 +620,61 @@ var fnReady = function ($) {
 	// ---------------------------------------------------------------------
 	$.namespace( '$.popupFuncionario' );
 	$.popupFuncionario.prepararOpener = function(opcoes) {
+		
 		$(opcoes.btn).click(function(){
-			window.open(opcoes.url, 'SelFuncionarios', "height=550,width=800,resizable=no");
+			// $.funcionario.prepararFormulario({dest: "#AcaoForm", table: ".Funcionario", origem: "#AcaoForm"});
+			var popup = window.open(opcoes.url, 'SelFuncionarios', "height=550,width=800,resizable=no"),
+				pDoc = $(popup.window.document),
+				table = $('.Funcionario'),
+				tries = 0;
+				timer = null;
+
+			var config = function() {
+				if (timer) {
+					clearInterval(timer);
+					timer = null;
+				}
+				
+				var form = pDoc.find("#AcaoForm");
+				if (form.length < 1) {
+					if (++tries < 5) {
+						setTimeout(function() { config(); }, 500);
+					}
+					return;
+				}
+				
+				form.submit(function(ev) {
+					ev.stopPropagation();
+					var checked = form.find('input[name="codFuncionarios"]:checked'),
+						rows = $();
+					
+					checked.each(function(i,item){
+						var row = $($(item).parents("tr")[0]),
+							cols = $(),
+							newRow = $("<tr>"),
+							tds = row.find("td");
+						
+						tds.slice(0,3).each(function(j,td){
+							var col = $("<td>");
+							col.html($(td).html());
+							if (j == 0 || j == 1) {
+								$(col).addClass("center");
+							}
+							cols = cols.add(col);
+						});
+						newRow.append(cols);
+						
+						rows = rows.add(newRow);
+					});
+					
+					table.append(rows);
+					popup.window.close();
+				});
+				
+				
+			};
+			
+			config();
 		});
 	};
 	
@@ -631,55 +684,8 @@ var fnReady = function ($) {
 	$.namespace( '$.funcionario' );
 	
 	$.funcionario.prepararFormulario = function(opcoes) {
-		var target = $(window.opener.$(opcoes.dest)),
-			table = $(window.opener.$(opcoes.table)),
-			source = $(opcoes.origem),
-			rows = $();
-			
-		
-		source.submit(function(ev){
-			var checked = source.find('input[name="codFuncionarios"]:checked'), elements = [];
-			ev.stopPropagation();
-			checked.each(function(i,item){
-				var row = $($(item).parents("tr")[0]),
-					cols = $(),
-					newRow = $("<tr>"),
-					tds = row.find("td");
-				
-				tds.slice(0,3).each(function(j,td){
-					var col = $("<td>");
-					col.html($(td).html());
-					if (j == 0 || j == 1) {
-						$(col).addClass("center");
-					}
-					cols = cols.add(col);
-				});
-				newRow.append(cols);
-				
-				rows = rows.add(newRow);
-//				elements.push("<input type='hidden' name='codFuncionarios' value="+$(item).val()+">");
-			});
-//			var jDvCodigos = $(window.opener.$("#dvCodigos"));
-//			var dvCodigos = jDvCodigos.html();
-//			dvCodigos += elements.join("");
-//			jDvCodigos.html(dvCodigos);
-			table.append(rows);
-//			target.submit();
-			window.close();
-		});
 	};
 	
-	$.funcionario.removerSelecionados = function(opcoes) {
-		var chks = $("#AcaoForm input[name='codigo']:checked"), codigos = [];
-		chks.each(function(i,c){
-			codigos.push($(c).val());
-		});
-		chks.remove();
-		$(codigos).each(function(i,c){
-			$("#AcaoForm input[name='codFuncionarios'][value='"+c+"']").remove();
-		});
-	};
-
 	// paginacao
 	// ---------------------------------------------------------------------
 	// definition

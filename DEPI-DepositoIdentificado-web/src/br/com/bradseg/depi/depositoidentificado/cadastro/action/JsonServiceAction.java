@@ -3,9 +3,6 @@
  */
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -50,11 +46,6 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 		HashMap<String, Object> error = new HashMap<>();
 		error.put("erro", e.getMessage());
 		
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		e.printStackTrace(pw);
-		error.put("stackstrace", sw.toString());
-		
 		model.setErro(error);
 	}
 
@@ -64,10 +55,8 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 	
 	public String ciaListar() {
 		try {
-			LoginVo usuarioLogado = getUsuarioLogado();
-			
 			List<CompanhiaSeguradoraVO> cias = facade
-					.obterCompanhias(new Integer(usuarioLogado.getId()));
+					.obterCompanhias();
 			
 			model.setResponse(cias);
 		} catch (Exception e) {
@@ -92,8 +81,7 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 			int codigoCia = Integer.parseInt(model.getCodigoCia());
 			CompanhiaSeguradoraVO ciaVO = new CompanhiaSeguradoraVO(codigoCia);
 		
-			List<DepartamentoVO> deptos = new ArrayList<>();
-			deptos = facade.obterDepartamentos(ciaVO);
+			List<DepartamentoVO> deptos = facade.obterDepartamentos(ciaVO);
 			
 			for (DepartamentoVO vo : deptos) {
 				vo.setDeposito(null);

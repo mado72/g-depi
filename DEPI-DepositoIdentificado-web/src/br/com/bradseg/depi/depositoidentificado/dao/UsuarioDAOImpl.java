@@ -10,7 +10,6 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
@@ -42,10 +41,6 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 	@Autowired
 	private DataSource dataSource;
 	
-//	/** A(O) map sql parameter source. */
-//	private MapSqlParameterSource mapSqlParameterSource;
-	
-
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.bsad.framework.core.jdbc.JdbcDao#getDataSource()
 	 */
@@ -68,9 +63,6 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 			params.addValue(PARAM_USRGRP, vo.getCodigoGrupoAcesso());
 			return getJdbcTemplate().query(QuerysDepi.USUARIOS_OBTERPORGRUPOACESSO, params, new UsuarioDataMapper());
 			
-		} catch(DataAccessException e){
-			LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
-			throw new DEPIIntegrationException(e);
 		} catch(Exception e){
 			LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
 			throw new DEPIIntegrationException(e);
@@ -102,11 +94,8 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 			return getJdbcTemplate().query(query.toString(), params,
 					new UsuarioDataMapper());
 
-		} catch(DataAccessException e){
-			LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
-			throw new DEPIIntegrationException(e);
 		} catch(Exception e){
-			LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
+			LOGGER.error("UsuarioDAOImpl - obterPorFiltro", e);
 			throw new DEPIIntegrationException(e);
 		}
 		finally {
@@ -124,8 +113,6 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 
 		
 		try {
-			final String query = QuerysDepi.USUARIOS_OBTERPORCODIGO;
-			
 			/**
 			 * Parametros.
 			 */
@@ -134,11 +121,8 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 			
 			UsuarioVO usuario;
 			try {
-				usuario = getJdbcTemplate().queryForObject(query.toString(), params,
+				usuario = getJdbcTemplate().queryForObject(QuerysDepi.USUARIOS_OBTERPORCODIGO, params,
 						new UsuarioDataMapper());
-			} catch(DataAccessException e){
-				LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
-				throw new DEPIIntegrationException(e);
 			} catch(Exception e){
 				LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
 				throw new DEPIIntegrationException(e);

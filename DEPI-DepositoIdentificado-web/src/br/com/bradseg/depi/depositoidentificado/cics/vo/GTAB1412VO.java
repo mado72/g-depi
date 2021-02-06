@@ -14,9 +14,8 @@ import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField;
 import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsProgram;
 
 /**
- * 
+ * Classe que representa o book para o GTAB1412. 
  * @author Marcelo Damasceno
- * 
  */
 @CicsProgram(programName = "GTAB0032", transactionName = "GT50", commLength = 602)
 public class GTAB1412VO implements Serializable {

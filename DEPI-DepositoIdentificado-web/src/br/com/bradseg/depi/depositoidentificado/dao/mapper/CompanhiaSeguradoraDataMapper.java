@@ -11,8 +11,8 @@ import org.springframework.jdbc.core.RowMapper;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 
 /**
- * 
- * @author Marcelo Damasceno
+ * Faz o mapeamento para CompanhiaSeguradoraVO. Apenas recupera
+ * o código da companhia, já que nome é acessível apenas pelo CICS. 
  *
  */
 public class CompanhiaSeguradoraDataMapper implements

@@ -15,6 +15,7 @@ import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsUtil.Progra
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 
 /**
+ * Repositório que reúne operações ao CICS.
  * 
  * @author Marcelo Damasceno
  */

@@ -46,8 +46,6 @@ public @interface CicsField {
 
 	int size();
 	
-	CicsFiller filler() default @CicsFiller("");
-
 	String pattern() default "";
 
 	/**

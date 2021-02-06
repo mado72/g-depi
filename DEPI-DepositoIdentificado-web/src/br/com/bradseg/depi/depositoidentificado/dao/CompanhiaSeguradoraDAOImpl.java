@@ -42,6 +42,19 @@ public class CompanhiaSeguradoraDAOImpl extends JdbcDao implements
 	public DataSource getDataSource() {
 		return datasource;
 	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO#obterCias()
+	 */
+	@Override
+	public List<CompanhiaSeguradoraVO> obterCias() {
+		List<CompanhiaSeguradoraVO> cias = getJdbcTemplate().query(
+				QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERCIAS,
+				new MapSqlParameterSource(),
+				new CompanhiaSeguradoraDataMapper());
+		return cias;
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO#obterComRestricaoDeGrupoAcesso(java.lang.Integer)

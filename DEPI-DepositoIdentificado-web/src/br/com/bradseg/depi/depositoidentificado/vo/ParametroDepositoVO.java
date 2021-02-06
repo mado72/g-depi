@@ -159,12 +159,12 @@ public class ParametroDepositoVO implements Serializable {
     private String descricaoDeposito;
 
     /**
-     * Descri��o b�sica do motivo.
+     * Descrição b�sica do motivo.
      */
     private String descricaoBasicaMotivo;
 
     /**
-     * Descri��o detalhada do motivo.
+     * Descrição detalhada do motivo.
      */
     private String descricaoDetalhadaMotivo;
   

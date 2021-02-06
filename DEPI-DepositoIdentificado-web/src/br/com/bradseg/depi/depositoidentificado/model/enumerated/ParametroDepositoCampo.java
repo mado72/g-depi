@@ -35,7 +35,7 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
      */
     MotivoDescricaoBasica(MotivoDepositoCampo.DescricaoBasica),
     /**
-     * Descri��o Detalhada do Motivo
+     * Descrição Detalhada do Motivo
      */
     MotivoDescricaoDetalhada(MotivoDepositoCampo.DescricaoDetalhada);
     

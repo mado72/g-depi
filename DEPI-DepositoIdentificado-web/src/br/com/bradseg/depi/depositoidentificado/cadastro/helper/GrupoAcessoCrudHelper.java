@@ -248,11 +248,10 @@ public class GrupoAcessoCrudHelper implements
 
 	/**
 	 * Lista Companhias Seguradoras
-	 * @param codUsuario Código do usuário logado
 	 * @return Lista de Companhias Seguradoras
 	 */
-	public List<CompanhiaSeguradoraVO> obterCompanhias(int codUsuario) {
-		return facade.obterCompanhias(codUsuario);
+	public List<CompanhiaSeguradoraVO> obterCompanhias() {
+		return facade.obterCompanhias();
 	}
 
 	/**
@@ -262,16 +261,6 @@ public class GrupoAcessoCrudHelper implements
 	 */
 	public List<DepartamentoVO> obterDepartamentos(CompanhiaSeguradoraVO vo) {
 		return facade.obterDepartamentos(vo);
-	}
-
-	/**
-	 * Desaloca lista de usuários
-	 * @param vo Grupo Acesso
-	 * @param usuarios Lista de usuários
-	 */
-	public void desalocarFuncionarios(GrupoAcessoVO vo,
-			ArrayList<UsuarioVO> usuarios) {
-		facade.desalocarFuncionarios(vo, usuarios);
 	}
 	
 }

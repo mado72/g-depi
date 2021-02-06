@@ -12,38 +12,36 @@
 	</caption>
 	<thead>
 		<tr>
-			<th colspan="4"><s:text name="label.cadastro.grupoAcesso.tabela" /></th>
+			<th colspan="4"><s:text name="label.cadastro.grupoacesso.tabela" /></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="td_label" ><s:text name="label.cadastro.grupoacesso.cia" /><span class="obrigatorio">*</span>
+			<td class="td_label" width="8%" ><s:text name="label.cadastro.grupoacesso.cia" /><span class="obrigatorio">*</span>
 			</td>
-			<td>
+			<td width="10%">
 				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.codigoCompanhia-->
 				<s:select list="cias" value="codCompanhia" listValue="codigoCompanhia" 
 					listKey="codigoCompanhia" cssClass="dropbox w-100 companhia-codigo-dropbox" name="codCompanhia"
 					disabled="%{codigoGrupoAcesso gt 0}"/>
 			</td>
-			<td colspan="2">
+			<td colspan="2" width="82%">
 				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
 				<s:select list="cias" value="codCompanhia" listValue="descricaoCompanhia" listKey="codigoCompanhia" 
-				cssClass="dropbox w-100 companhia-nome-dropbox" disabled="%{codigoGrupoAcesso gt 0}"/>
+					cssClass="dropbox w-100 companhia-nome-dropbox" disabled="%{codigoGrupoAcesso gt 0}"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label" ><s:text name="label.cadastro.grupoacesso.departamento" /><span class="obrigatorio">*</span></td>
 			<td>
 				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.codigoCompanhia-->
-				<select name="siglaDepartamento" class="dropbox w-100 departamento-codigo-dropbox" disabled="%{codigoGrupoAcesso gt 0}">
-					<s:iterator var="depto" value="deptos"><option>${depto.siglaDepartamento}</option></s:iterator>
-				</select>
+				<s:select list="deptos" value="siglaDepartamento" listValue="siglaDepartamento" listKey="siglaDepartamento" 
+					cssClass="dropbox w-100 departamento-codigo-dropbox" disabled="%{codigoGrupoAcesso gt 0}"/>
 			</td>
 			<td colspan="2">
 				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
-				<select class="dropbox w-100 departamento-nome-dropbox" disabled="%{codigoGrupoAcesso gt 0}">
-					<s:iterator var="depto" value="deptos"><option value="${depto.siglaDepartamento}">${depto.nomeDepartamento}</option></s:iterator>
-				</select>
+				<s:select list="deptos" value="nomeDepartamento" listValue="nomeDepartamento" listKey="siglaDepartamento" 
+					cssClass="dropbox w-100 departamento-nome-dropbox" disabled="%{codigoGrupoAcesso gt 0}"/>
 			</td>
 		</tr>
 		<tr>

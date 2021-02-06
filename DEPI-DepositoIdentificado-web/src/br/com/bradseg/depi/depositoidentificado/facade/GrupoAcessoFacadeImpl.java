@@ -31,7 +31,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
 /**
- * Bean implementation class for Enterprise Bean: GrupoAcessoSessionFacade
+ * Implementação de {@link GrupoAcessoFacade}
  */
 @Service
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
@@ -206,9 +206,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
      */
     @Override
     public List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
-        // TraduzCriterioUtil.convert(filtro.getCriterios());
-        List<GrupoAcessoVO> listaGrupoAcessoVO = new ArrayList<>();
-        listaGrupoAcessoVO = grupoAcessoDAO.obterPorFiltro(filtro);
+        List<GrupoAcessoVO> listaGrupoAcessoVO = grupoAcessoDAO.obterPorFiltro(filtro);
         
         Map<Integer, CompanhiaSeguradoraVO> mapCacheCompanhia = new HashMap<>();
         
@@ -242,11 +240,11 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     }
     
     /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade#obterCompanhias(java.lang.Integer)
+     * @see br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade#obterCompanhias()
      */
     @Override
-    public List<CompanhiaSeguradoraVO> obterCompanhias(int codUsuario) {
-		List<CompanhiaSeguradoraVO> lista = ciaDAO.obterComRestricaoDeGrupoAcesso(codUsuario);
+    public List<CompanhiaSeguradoraVO> obterCompanhias() {
+		List<CompanhiaSeguradoraVO> lista = ciaDAO.obterCias();
 
 		for (CompanhiaSeguradoraVO vo : lista) {
 			CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(vo
@@ -295,14 +293,5 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 			usuarios.add(usuario);
 		}
 		return usuarios;
-	}
-	
-	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade#desalocarFuncionarios(br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO, java.util.ArrayList)
-	 */
-	@Override
-	public void desalocarFuncionarios(GrupoAcessoVO vo,
-			ArrayList<UsuarioVO> usuarios) {
-		grupoAcessoDAO.desalocarUsuarios(vo, usuarios);
 	}
 }

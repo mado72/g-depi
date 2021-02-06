@@ -1,6 +1,5 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
@@ -10,6 +9,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
+/**
+ * Interface que define os métodos necessários para o cadastro de grupo acesso. 
+ * @author Marcelo Damasceno
+ */
 public interface GrupoAcessoFacade {
 
 	List<GrupoAcessoVO> obterTodos() throws IntegrationException;
@@ -33,13 +36,11 @@ public interface GrupoAcessoFacade {
 	List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException;
 
 	/**
-	 * Obtém as companhias disponíveis para o cadastro de Grupo de Acesso
+	 * Obtém as companhias disponíveis na base
 	 * 
-	 * @param codUsuario
-	 *            Código do usuário logado
 	 * @return Lista de Companhias
 	 */
-	List<CompanhiaSeguradoraVO> obterCompanhias(int codUsuario);
+	List<CompanhiaSeguradoraVO> obterCompanhias();
 
 	/**
 	 * Obtém os departamentos disponíveis para o cadastro de Grupo de Acesso
@@ -71,12 +72,5 @@ public interface GrupoAcessoFacade {
 	 * @return lista
 	 */
 	List<UsuarioVO> obterUsuarios(List<Integer> codFuncionarios);
-
-	/**
-	 * Desaloca lista de usuários
-	 * @param vo Grupo Acesso
-	 * @param usuarios Lista de usuários
-	 */
-	void desalocarFuncionarios(GrupoAcessoVO vo, ArrayList<UsuarioVO> usuarios);
 
 }

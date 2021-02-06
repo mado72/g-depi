@@ -132,7 +132,7 @@ public class GrupoAcessoVO implements Serializable{
 	}
 
 	/**
-     * Método que retornar� o codigo do grupo usu�rio formatado.
+     * Método que retornar� o codigo do grupo usuário formatado.
      * @return String.
      */
 	public String getCodigoFormatado() {

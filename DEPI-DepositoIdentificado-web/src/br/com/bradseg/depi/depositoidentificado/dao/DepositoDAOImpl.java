@@ -34,7 +34,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 @Repository
 public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 	
-    private static final String MSG_NENHUM_REGISTRO_AFETADO = "A atualiza��o n�o afetou nenhum registro.";
+    private static final String MSG_NENHUM_REGISTRO_AFETADO = "A atualiza��o não afetou nenhum registro.";
 
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoDAOImpl.class);
@@ -84,7 +84,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      */
     @Override
     public void inserir(DepositoVO vo) {
-        throw new IntegrationException("O método inserir n�o foi implementado.");
+        throw new IntegrationException("O método inserir não foi implementado.");
     }
 
     /**
@@ -182,7 +182,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      */
     @Override
     public void alterar(DepositoVO vo)  {
-        throw new IntegrationException("O método inserir n�o foi implementado.");
+        throw new IntegrationException("O método inserir não foi implementado.");
     }
 
     /**
@@ -319,7 +319,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
             Integer count = getJdbcTemplate().update(query.toString(), params);
 
             if (count == 0) {
-            	throw  new BusinessException(ConstantesDEPI.MSG_CUSTOMIZADA + " - A exclus�o n�o afetou nenhum registro.");
+            	throw  new BusinessException(ConstantesDEPI.MSG_CUSTOMIZADA + " - A exclus�o não afetou nenhum registro.");
             }
 
         } finally {
@@ -353,44 +353,12 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     }
 
     /**
-     * Registrar Log
-     * @param log - LogDepositoVO
-     * @return Generated Key - long
-     */
-    private long registrarLog(LogDepositoVO log) {
-        
-    	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_LOGS_INSERT);
-
-    	try {
-    		
-	        	MapSqlParameterSource params = new MapSqlParameterSource();
-
-/* FIXME Código comentado porque estava dando erro de compilação ao acessar métodos da LogDepositoVO
-	
-	        	params.addValue("prm1", log.getCodigo() );
-	        	params.addValue("prm2", log.getFieldName());
-	        	params.addValue("prm3", log.getValorAntigo());
-	        	params.addValue("prm4", log.getValorNovo());
-	        	params.addValue("prm5", log.getUsuarioAntigo());
-	        	params.addValue("prm6", log.getUsuarioNovo());
-*/	            		
-	            GeneratedKeyHolder key = new GeneratedKeyHolder();
-	            
-	            Integer count = getJdbcTemplate().update(query.toString(), params, key);
-	
-	            return key.getKey().longValue();
-
-        } finally {
-        	LOGGER.info("registrarLog(LogDepositoVO log)");
-        }
-    }    
-
-    /**
 	 * Update Log
 	 * 
 	 * @param dep -DepositoVO
 	 * @return Generated Key - long
 	 */
+	@Override
 	public long updateLog(DepositoVO dep) {
 
     	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_UPDATELOGS);
@@ -404,7 +372,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 	        	
 	            GeneratedKeyHolder key = new GeneratedKeyHolder();
 	            
-	            Integer count = getJdbcTemplate().update(query.toString(), params, key);
+	            getJdbcTemplate().update(query.toString(), params, key);
 	
 	            return key.getKey().longValue();
 			
@@ -456,7 +424,8 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      * @throws IntegrationException - trata erro de neg�cio
      * @return DepositoVO
      */
-    public DepositoVO obterPorMotivo(MotivoDepositoVO vo)  {
+    @Override
+	public DepositoVO obterPorMotivo(MotivoDepositoVO vo)  {
 /*    	beginMethod(LOGGER, "obterPorMotivo(MotivoDepositoVO vo)");
         DataSource ds;
         Connection conn = null;
@@ -504,7 +473,8 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      * @param vo - DepartamentoVO vo
      * @return DepositoVO
      */
-    public DepositoVO obterPorDepartamento(DepartamentoVO vo)  {
+    @Override
+	public DepositoVO obterPorDepartamento(DepartamentoVO vo)  {
     	/* beginMethod(LOGGER, "obterPorDepartamento(DepartamentoVO vo)");
         DataSource ds;
         Connection conn = null;
@@ -553,7 +523,8 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      * @throws IntegrationException - trata erro de neg�cio
      * @return DepositoVO
      */
-    public DepositoVO obterPorContaCorrente(ContaCorrenteAutorizadaVO vo)  {
+    @Override
+	public DepositoVO obterPorContaCorrente(ContaCorrenteAutorizadaVO vo)  {
 		return null;
    /* 	beginMethod(LOGGER, "obterPorContaCorrente(ContaCorrenteAutorizadaVO vo)");
         DataSource ds;
@@ -598,52 +569,8 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
         return null; */
     }
 
-    /**
-     * @param oldObj - Object
-     * @param newObj - Object
-     * @param actionName - Stromg
-     * @param logs - List<LogBase>
-     */
-    private void extractModifiedValues(final Object oldObj, final Object newObj, final String actionName, final List<LogDepositoVO> logs)  {
-/*    	beginMethod(LOGGER, "extractModifiedValues(final Object oldObj, final Object newObj, final String actionName, final List<LogDepositoVO> logs)");
-    	try {
-	        List<FieldMetadata> fmds = BaseUtil.extractModifiedFields(oldObj, newObj);
-	        for (FieldMetadata fmd : fmds) {
-	            Field field = ReflectionUtil.getFieldByName(newObj.getClass(), fmd.getAttributeName());
-	            if (field.isAnnotationPresent(ConsiderLog.class)) {
-	                for (String action : field.getAnnotation(ConsiderLog.class).action()) {
-	                    if (actionName.equals(action)) {
-	                    	LogDepositoVO log = new LogDepositoVO();
-	                        log.setFieldName(fmd.getFieldName());
-	
-	                        Object oldValue = ReflectionUtil.getValue(oldObj, fmd.getAttributeName());
-	                        Object newValue = ReflectionUtil.getValue(newObj, fmd.getAttributeName());
-	
-	                        if (!ReflectionUtil.isAssignableFromPrimitiveOrWrapperType(field)) {
-	                            extractModifiedValues(oldValue, newValue, actionName, logs);
-	                        } else {
-	                            if (oldValue == null) {
-	                                log.setValorAntigo("");
-	                            } else {
-	                                log.setValorAntigo(oldValue.toString());
-	                            }
-	                            if (newValue == null) {
-	                                log.setValorNovo("");
-	                            } else {
-	                                log.setValorNovo(newValue.toString());
-	                            }
-	                            logs.add(log);
-	                        }
-	                    }
-	                }
-	            }
-	        }
-    	} finally {
-        	endMethod(LOGGER, "extractModifiedValues(final Object oldObj, final Object newObj, final String actionName, final List<LogDepositoVO> logs)");
-    	} */
-    }
-
-    public long obterSituacaoDeposito(DepositoVO deposito)  {
+    @Override
+	public long obterSituacaoDeposito(DepositoVO deposito)  {
 		return 0;
     /*	beginMethod(LOGGER, "obterSituacaoDeposito(DepositoVO deposito)");
         DataSource ds;
@@ -683,7 +610,8 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
         return situacaoDeposito; */
     }
 
-    public boolean verificarLancamentoDeposito(DepositoVO deposito){
+    @Override
+	public boolean verificarLancamentoDeposito(DepositoVO deposito){
 		return false;
 /*    	beginMethod(LOGGER, "verificarLancamentoDeposito(DepositoVO deposito)");
         DataSource ds;
@@ -723,7 +651,8 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
     }
 
-    public boolean verificarEnvioArquivoTransferencia(DepositoVO deposito)  {
+    @Override
+	public boolean verificarEnvioArquivoTransferencia(DepositoVO deposito)  {
 		return false;
 /*    	beginMethod(LOGGER, "verificarEnvioArquivoTransferencia(DepositoVO deposito)");
         DataSource ds;
@@ -764,7 +693,8 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
    
     }
 
-    public DepositoVO obterDepositoPorChave(DepositoVO deposito)  {
+    @Override
+	public DepositoVO obterDepositoPorChave(DepositoVO deposito)  {
 		
      	/* beginMethod(LOGGER, "obterDepositoPorChave(DepositoVO deposito)");
         DataSource ds;

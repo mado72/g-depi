@@ -15,9 +15,8 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 /**
  * Superclasse para Actions que processam formulários de edição
  * 
- * @author Marcelo Damasceno
- *
- * @param <VO> Tipo que é manipulado pelo CRUD
+ * @param <C> Tipo da entidade manipulada pelo CRUD
+ * @param <VO> Tipo do Bean manipulado pelo CRUD para utilizar nas camadas de persistência
  * @param <F> Tipo do Model utilizado por esta Action.
  */
 @Controller

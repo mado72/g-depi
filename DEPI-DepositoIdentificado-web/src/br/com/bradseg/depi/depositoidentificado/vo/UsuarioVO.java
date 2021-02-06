@@ -9,11 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Classe Anotada de Mapeamento com a tabela USUAR.
  * @author Globality
  */
-/**
- * 
- * @author Marcelo Damasceno
- * 
- */
 @XmlRootElement(name = "Usuario")
 public class UsuarioVO implements Serializable {
 
@@ -112,9 +107,8 @@ public class UsuarioVO implements Serializable {
 	}
 
 	/**
-	 * Define indicadorRegistroAtivo.
-	 * 
-	 * @param indicadorRegistroAtivo
+	 * Define indicadorRegistroAtivo
+	 * @param indicadorRegistroAtivo valor indicadorRegistroAtivo a ser definido
 	 */
 	public void setIndicadorRegistroAtivo(String indicadorRegistroAtivo) {
 		this.indicadorRegistroAtivo = indicadorRegistroAtivo;

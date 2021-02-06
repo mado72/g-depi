@@ -31,4 +31,10 @@ public interface CompanhiaSeguradoraDAO {
 	CompanhiaSeguradoraVO obterComRestricaoDeGrupoAcesso(int usuarioLogadoId,
 			int codCompanhia);
 
+	/**
+	 * Obtém lista de companhias
+	 * @return Lista
+	 */
+	List<CompanhiaSeguradoraVO> obterCias();
+
 }

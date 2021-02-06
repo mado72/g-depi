@@ -28,9 +28,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  * filtro já editados anteriormente</li>
  * </ul>
  * 
- * 
- * @author Marcelo Damasceno
- * 
  * @param <T>
  *            Tipo do Model deste formulário
  */

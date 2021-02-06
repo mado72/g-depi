@@ -162,7 +162,7 @@ function removeExcesso(obj, tamanho) {
 	return (strOriginal.lenght > strLimitada.lenght); //cancela evento; 
 }
 function setFocusOnLoad(elementsId) {
-	if (elementsId == undefined) {alert('parametro elementsId n�o fornecido.');}
+	if (elementsId == undefined) {alert('parametro elementsId não fornecido.');}
 	for (var i = 0; i < elementsId.length; i++) {
 		var el = document.getElementById(elementsId[i])
 		if (el != undefined) {
@@ -186,7 +186,7 @@ function setFocusAll(els) {
 					break;
 					return true;
 				}  catch (e) {
-					//O elemento n�o pode receber foco. Ignorado.
+					//O elemento não pode receber foco. Ignorado.
 				}
 			}
 		}
@@ -194,7 +194,7 @@ function setFocusAll(els) {
 	return false;
 }
 function setFocusOnLoad2(elementId) {
-	if (elementId == undefined) {alert('parametro elementId n�o fornecido.');}
+	if (elementId == undefined) {alert('parametro elementId não fornecido.');}
 	var el = document.getElementById(elementId)
 	if (el != undefined) {
 		el.focus();
@@ -473,12 +473,12 @@ function configuraObjetos()  {
 				}
 				var re1 = new RegExp('');
 		   		//onkeypress 
-		   		//Substituir (value.replace) e return (cancelamento) depois do onkeypress e antes do onkeyup n�o funciona.
+		   		//Substituir (value.replace) e return (cancelamento) depois do onkeypress e antes do onkeyup não funciona.
 				if (el.type=="text") {		   		
 					if (el.onkeypress == undefined) {
 						el.onkeypress = function() {return limitarCharReservados(event);};
 					} else {
-						//Entende o aspecto do controle e define a��es padr�o para os eventos.
+						//Entende o aspecto do controle e define a��es padrão para os eventos.
 						re1 = new RegExp(/formatarCPFCNPJ/);
 						if (re1.test(new String(el.onkeypress))) {
 							if (el.onkeyup == undefined) {
@@ -539,7 +539,7 @@ function configuraObjetos()  {
 				el.tabindex = i + 1;
 				
 			} else {
-				//Se n�o � objeto edit�vel, remova a configura��o de tabindex.
+				//Se não � objeto edit�vel, remova a configuração de tabindex.
 				el.tabindex = -1;
 			}
 		}
@@ -865,7 +865,7 @@ function excluiExcesso (campo, length) {
 function checkGridTodos(checkAll, checkName) {
 	if (checkName != undefined &&  checkAll != undefined) {
 		var checks = checkAll.form.elements[checkName];
-		//if (checks == undefined) {alert(checkName + ' n�o foi encontrado pelo getById!');}
+		//if (checks == undefined) {alert(checkName + ' não foi encontrado pelo getById!');}
 		if (checks.length != undefined) {
 			for (i = 0; i < checks.length; i++) {
 				checks[i].checked = checkAll.checked;
