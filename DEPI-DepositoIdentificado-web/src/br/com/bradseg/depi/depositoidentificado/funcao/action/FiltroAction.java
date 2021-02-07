@@ -28,6 +28,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  * filtro já editados anteriormente</li>
  * </ul>
  * 
+ * @param <C>
+ *            Tipo do Campo manipulado pelo filtro
  * @param <T>
  *            Tipo do Model deste formulário
  */

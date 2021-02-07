@@ -78,6 +78,21 @@ public class CompanhiaSeguradoraDAOImpl extends JdbcDao implements
 	 * @see br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO#obterComRestricaoDeGrupoAcesso(int, int)
 	 */
 	@Override
+	public CompanhiaSeguradoraVO obterPorChave(CompanhiaSeguradoraVO vo) {
+		
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		params.addValue(WHR1, vo.getCodigoCompanhia());
+		
+		return getJdbcTemplate().queryForObject(
+				QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERCIA_PORCHAVE, params,
+				new CompanhiaSeguradoraDataMapper());
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO#obterComRestricaoDeGrupoAcesso(int, int)
+	 */
+	@Override
 	public CompanhiaSeguradoraVO obterComRestricaoDeGrupoAcesso(
 			int codUsuario, int codCompanhia) {
 		

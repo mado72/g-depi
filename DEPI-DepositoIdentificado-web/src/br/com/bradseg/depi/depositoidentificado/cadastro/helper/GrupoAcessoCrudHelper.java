@@ -219,14 +219,14 @@ public class GrupoAcessoCrudHelper implements
 		if (novo) {
 			instancia = new GrupoAcessoVO();
 			instancia.setDataInclusao(new Date());
-			preencherCompanhia(instancia, usuarioId, codCompanhia);
+			preencherCompanhia(instancia, codCompanhia);
 			preencherDepartamento(instancia, new CompanhiaSeguradoraVO(codCompanhia), siglaDepto);
 		}
 		else {
 			instancia = obterPeloCodigo(Integer.parseInt(model.getCodigo()));
 			
 			if (instancia.getCia().getCodigoCompanhia() != codCompanhia) {
-				preencherCompanhia(instancia, usuarioId, codCompanhia);
+				preencherCompanhia(instancia, codCompanhia);
 			}
 			
 			if (! instancia.getDepto().getSiglaDepartamento().equals(siglaDepto)) {
@@ -264,9 +264,8 @@ public class GrupoAcessoCrudHelper implements
 		return facade.obterUsuarios(codFuncionarios);
 	}
 
-	private void preencherCompanhia(GrupoAcessoVO instancia,
-			final int usuarioId, int codCompanhia) {
-		CompanhiaSeguradoraVO cia = facade.obterCompanhia(usuarioId, codCompanhia);
+	private void preencherCompanhia(GrupoAcessoVO instancia, int codCompanhia) {
+		CompanhiaSeguradoraVO cia = facade.obterCompanhia(new CompanhiaSeguradoraVO(codCompanhia));
 		instancia.setCia(cia);
 	}
 

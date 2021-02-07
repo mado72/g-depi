@@ -37,4 +37,13 @@ public interface CompanhiaSeguradoraDAO {
 	 */
 	List<CompanhiaSeguradoraVO> obterCias();
 
+	/**
+	 * Obtém a companhia pelo seu código
+	 * 
+	 * @param vo
+	 *            Possui o código da companhia
+	 * @return Companhia encontrada.
+	 */
+	CompanhiaSeguradoraVO obterPorChave(CompanhiaSeguradoraVO vo);
+
 }
