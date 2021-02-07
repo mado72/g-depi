@@ -1,4 +1,4 @@
-package br.com.bradseg.depi.depositoidentificado.model.cadastro;
+package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
 import java.io.Serializable;
 import java.util.List;

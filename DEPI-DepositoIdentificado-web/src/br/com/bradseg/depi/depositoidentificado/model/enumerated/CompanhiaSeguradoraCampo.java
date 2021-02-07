@@ -77,14 +77,6 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
     }
 
     /**
-     * Retorna valores da combo de consulta.
-     * @return DepartamentoCampo[].
-     */
-    public static DepartamentoCompanhiaCampo[] valuesForCriteria() {
-        return DepartamentoCompanhiaCampo.values();
-    }
-
-    /**
      * Obter por nome
      * @param nome Campo no banco
      * @return DepartamentoCompanhiaCampo

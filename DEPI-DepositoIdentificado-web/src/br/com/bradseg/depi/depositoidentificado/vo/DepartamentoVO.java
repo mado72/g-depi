@@ -29,6 +29,14 @@ public class DepartamentoVO implements Serializable {
     public DepartamentoVO() {
     	super();
     }
+    
+    /**
+     * Constutor
+     * @param codigoDepartamento - int
+     */
+    public DepartamentoVO(int codigoDepartamento) {
+    	this.setCodigoDepartamento(codigoDepartamento);
+    }
 
     /**
      * Construtor.
@@ -36,14 +44,14 @@ public class DepartamentoVO implements Serializable {
      * @param nomeDepartamento - String.
      * @param siglaDepartamento - String.
      */
-    public DepartamentoVO(Integer codigoDepartamento, String nomeDepartamento, String siglaDepartamento) {
+    public DepartamentoVO(int codigoDepartamento, String nomeDepartamento, String siglaDepartamento) {
         this.setCodigoDepartamento(codigoDepartamento);
         this.setNomeDepartamento(nomeDepartamento);
         this.setSiglaDepartamento(siglaDepartamento);
     }
 
     /**
-     * Código seq�encial de departamento.
+     * Código sequencial de departamento.
      */
     private int codigoDepartamento;
 

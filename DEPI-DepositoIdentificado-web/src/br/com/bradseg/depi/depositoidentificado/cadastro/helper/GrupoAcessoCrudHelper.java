@@ -94,13 +94,11 @@ public class GrupoAcessoCrudHelper implements
 			List<CriterioConsultaVO<GrupoAcessoCampo>> criterios) {
 		
 		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);
-		// TODO Verificar o critério de deleção lógica.
 		
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(aux);
 
-		List<GrupoAcessoVO> retorno = facade.obterPorFiltro(filtro);
-		return retorno;
+		return facade.obterPorFiltro(filtro);
 	}
 	
 	// Métodos para atender ao CRUD
