@@ -23,12 +23,14 @@
 	<logger name="com.opensymphony" level="INFO" />
 	<logger name="org.springframework" level="INFO" />
 	<logger name="br.com.bradseg.bsad.framework" level="INFO" />
+
 <!--
+	FIXME Deve estar comentado ao fazer commit.
+ -->	
 	<logger name="com.opensymphony.xwork2.interceptor" level="DEBUG" />
 	<logger name="com.opensymphony.xwork2.validator" level="DEBUG" />
 	<logger name="br.com.bradseg.depi.depositoidentificado" level="DEBUG" />
-	FIXME Deve estar comentado ao fazer commit.
- -->	
+	
 	<root level="ERROR">
 		<appender-ref ref="FILE" />
 	</root>

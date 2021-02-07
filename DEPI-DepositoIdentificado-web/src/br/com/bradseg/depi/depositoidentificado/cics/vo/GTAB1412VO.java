@@ -151,7 +151,7 @@ public class GTAB1412VO implements Serializable {
 	@CicsField(order = 44, size = 8)
 	private String cdResponsavel;
 
-	@CicsField(order = 45, size = 26, pattern = "yyyy-MM-dd-kk.mm.ss.SSSSSS")
+	@CicsField(order = 45, size = 26, pattern = "yyyy-MM-dd-HH'.'mm'.'ss.SSSSSS")
 	private Date ultimaAtualizacaoCompleta;
 
 	@CicsField(order = 46, size = 10, pattern = "dd.MM.yyyy")

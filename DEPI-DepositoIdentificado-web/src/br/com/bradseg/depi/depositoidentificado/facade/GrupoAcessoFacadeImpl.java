@@ -261,12 +261,11 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 	}
 	
 	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade#obterCompanhia(int, int)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade#obterCompanhia(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO)
 	 */
 	@Override
-	public CompanhiaSeguradoraVO obterCompanhia(int usuarioLogadoId,
-			int codCompanhia) {
-		return ciaDAO.obterComRestricaoDeGrupoAcesso(usuarioLogadoId, codCompanhia);
+	public CompanhiaSeguradoraVO obterCompanhia(CompanhiaSeguradoraVO vo) {
+		return ciaDAO.obterPorChave(vo);
 	}
 	
 	/* (non-Javadoc)

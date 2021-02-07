@@ -79,6 +79,11 @@ public class GrupoAcessoEditarAction
 		preencherListaCompanhia();
 		return retorno;
 	}
+	
+	public String selecionar() {
+		crudHelper.preencherFuncionarios(getModel());
+		return INPUT;
+	}
 
 	/**
 	 * 

@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+
+import org.springframework.util.CollectionUtils;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.GrupoAcessoEditarFormModel;
@@ -148,6 +151,48 @@ public class GrupoAcessoCrudHelper implements
 		
 		model.setDeptos(Collections.singletonList(instancia.getDepto()));
 	}
+	
+	/**
+	 * Acrescenta à lista de funcionários aqueles que estão no código 
+	 * @param model Dados do formulário
+	 */
+	public void preencherFuncionarios(GrupoAcessoEditarFormModel model) {
+		
+		if (CollectionUtils.isEmpty(model.getCodFuncionarios())) {
+			return;
+		}
+		
+		ArrayList<Integer> codFuncionarios = new ArrayList<>(model.getCodFuncionariosInt());
+		
+		// pega os funcionários já registrados no model, garantindo manipular lista variável
+		List<UsuarioVO> funcionarios = model.getFuncionarios();
+		if (funcionarios == null) {
+			funcionarios = new ArrayList<>();
+		}
+		else {
+			funcionarios = new ArrayList<>(funcionarios);
+		}
+		
+		// mapeia os funcionários por seu código
+		LinkedHashMap<Integer, UsuarioVO> mapCodFuncionario = new LinkedHashMap<>();
+		for (UsuarioVO usuarioVO : funcionarios) {
+			Integer codigoUsuario = usuarioVO.getCodigoUsuario();
+			mapCodFuncionario.put(codigoUsuario, usuarioVO);
+			// remove da lista aqueles que já foram recuperados
+			codFuncionarios.remove(codigoUsuario);
+		}
+		
+		if (! codFuncionarios.isEmpty()) {
+			// recupera apenas os funcionários que não foram recuperados
+			List<UsuarioVO> usuarios = facade.obterUsuarios(codFuncionarios);
+			funcionarios.addAll(usuarios);
+			
+			model.setFuncionarios(funcionarios);
+			
+			// limpa os registros para evitar duplo caregamento.
+			model.getCodFuncionarios().clear();
+		}
+	}
 
 	private GrupoAcessoVO obterPeloCodigo(int codigo) {
 		GrupoAcessoVO vo = new GrupoAcessoVO();
@@ -174,14 +219,14 @@ public class GrupoAcessoCrudHelper implements
 		if (novo) {
 			instancia = new GrupoAcessoVO();
 			instancia.setDataInclusao(new Date());
-			preencherCompanhia(instancia, usuarioId, codCompanhia);
+			preencherCompanhia(instancia, codCompanhia);
 			preencherDepartamento(instancia, new CompanhiaSeguradoraVO(codCompanhia), siglaDepto);
 		}
 		else {
 			instancia = obterPeloCodigo(Integer.parseInt(model.getCodigo()));
 			
 			if (instancia.getCia().getCodigoCompanhia() != codCompanhia) {
-				preencherCompanhia(instancia, usuarioId, codCompanhia);
+				preencherCompanhia(instancia, codCompanhia);
 			}
 			
 			if (! instancia.getDepto().getSiglaDepartamento().equals(siglaDepto)) {
@@ -219,9 +264,8 @@ public class GrupoAcessoCrudHelper implements
 		return facade.obterUsuarios(codFuncionarios);
 	}
 
-	private void preencherCompanhia(GrupoAcessoVO instancia,
-			final int usuarioId, int codCompanhia) {
-		CompanhiaSeguradoraVO cia = facade.obterCompanhia(usuarioId, codCompanhia);
+	private void preencherCompanhia(GrupoAcessoVO instancia, int codCompanhia) {
+		CompanhiaSeguradoraVO cia = facade.obterCompanhia(new CompanhiaSeguradoraVO(codCompanhia));
 		instancia.setCia(cia);
 	}
 

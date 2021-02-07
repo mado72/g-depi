@@ -39,12 +39,14 @@ if (oldIE) {
 		};		
 	}
 }
-(function (con) {
-	con.log = con.profile = con.profileEnd = con.timeStamp = con.trace =
-		con.debug = con.info = con.warn = con.error = con.dir = con.dirxml =
-		con.group = con.groupCollapsed = con.groupEnd = con.time = con.timeEnd =
-		con.assert = con.count = con.clear = function(){};
-})(window.console = window.console || {});
+if (!window.console) {
+	(function (con) {
+		con.log = con.profile = con.profileEnd = con.timeStamp = con.trace =
+			con.debug = con.info = con.warn = con.error = con.dir = con.dirxml =
+				con.group = con.groupCollapsed = con.groupEnd = con.time = con.timeEnd =
+					con.assert = con.count = con.clear = function(){};
+	})(window.console = window.console || {});
+}
 if (! Array.prototype.find) {
 	Array.prototype.find = function(predicate) {
 		  if (this === null) {
@@ -127,6 +129,17 @@ console.log("depi-cadastro.js");
 
 var fnReady = function ($) {
 
+	function getFormData($form){
+	    var unindexed_array = $form.serializeArray();
+	    var indexed_array = {};
+
+	    $.map(unindexed_array, function(n, i){
+	        indexed_array[n['name']] = n['value'];
+	    });
+
+	    return indexed_array;
+	}
+	
 	$.namespace = function() {
 	    var a=arguments, o=null, i, j, d;
 	    for (i=0; i<a.length; i=i+1) {
@@ -162,7 +175,7 @@ var fnReady = function ($) {
 			ev.stopPropagation();
 			dpcod.val(dpdesc.val());
 		});
-	}
+	};
 
 	// filtro
 	// ---------------------------------------------------------------------
@@ -189,14 +202,13 @@ var fnReady = function ($) {
 
 		var jqPrincipal = jqForm.find("#DropboxPrincipal"),
 			jqSecundario = jqForm.find("#DropboxSecundario"),
-			jqValor = jqForm.find("#Valor"),
+			jqValor = jqForm.find("#ValorFiltro"),
 			jqRecipiente = jqForm.find("#Lista"),
-			btnConsultar = $("#BtnConsultar"),
+			btnIncluir = $(".btnIncluir"),
 			btnPlus = jqForm.find("#BtnPlus"),
 			btnMinus = jqForm.find("#BtnMinus");
-
-		jqPrincipal
-			.change(function(ev){
+		
+		jqPrincipal.change(function(ev){
 				var opt = jqPrincipal.find("option:selected");
 				
 				jqSecundario
@@ -231,12 +243,12 @@ var fnReady = function ($) {
 				};
 			});
 		
-		jqValor
-			.keypress(function(ev){
+		jqValor.on("input keydown keyup mousedown mouseup select", function(ev){
 				$.filtro.arrumarValor(jqPrincipal, jqSecundario, jqValor, jqRecipiente);
 			});
 
 		btnPlus.click(function(ev){
+			ev.preventDefault();
 			var optPrincipal = jqPrincipal.find("option:selected");
 			var optSecundario = jqSecundario.find("option:selected");
 			
@@ -263,49 +275,34 @@ var fnReady = function ($) {
 			jqPrincipal.prop("selectedIndex", 0);
 			jqPrincipal.change();
 			jqSecundario.prop("selectedIndex", 0);
+			return false;
 		});
 
 		btnMinus.click(function(ev) {
-			var opt = jqRecipiente
-				.find('option:selected');
+			ev.preventDefault();
+			var opt = jqRecipiente.find('option:selected');
 
 			dados.recipiente.splice(opt.index());
 			opt.remove();
+			return false;
 		});
 
-		btnConsultar.click(function(ev) {
-			var elements = $();
-
-			var criterios = jqRecipiente.find("option");
-			if (criterios.length == 0) {
-				if (! window.confirm(MENSAGEM["msg.confirmacao.consulta"])) {
-					ev.stopPropagation();
-					return;
-				};
-			}
-
-			if (criterios.length > 0) {
-				criterios.each(function(idx, opt) {
-					elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: $(opt).val()}));
-				});
-			}
-			else {
-				elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: null}));
-			}
-			
+		$("#BtnConsultar").click(function(ev) {
+			ev.preventDefault();
+			$.filtro.prepararConsultar(ev, jqForm, jqRecipiente);
+			$(this).closest("form").submit();
+		});
+		
+		btnIncluir.click(function() {
 			$("#box_loading").show();
-			
-			jqForm.append(elements);
-
-			jqForm.submit();
-
-			jqForm.find("input:hidden").remove().end();
+			setTimeout(function(){
+				window.location.href = btnIncluir.attr('href');
+			}, 250);
 		});
 
 		// Definir valores iniciais
 		$(dados.principal).each(function(idx, item) {
-			var opt = jqPrincipal.append($('<option>', {text: item.texto, value: item.valor}));
-			opt.data("sublista", item.sublista);
+			jqPrincipal.append($('<option>', {text: item.texto, value: item.valor, t: item.tipo, s: item.tam}));
 		});
 
 		if (dados.recipiente) {
@@ -332,6 +329,31 @@ var fnReady = function ($) {
 
 		jqRecipiente.val(null);
 	};
+	
+	$.filtro.prepararConsultar = function(ev, jqForm, jqRecipiente) {
+		var elements = $();
+
+		var criterios = jqRecipiente.find("option");
+		if (criterios.length == 0) {
+			if (! window.confirm(MENSAGEM["msg.confirmacao.consulta"])) {
+				ev.stopPropagation();
+				return;
+			};
+		}
+
+		if (criterios.length > 0) {
+			criterios.each(function(idx, opt) {
+				elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: $(opt).val()}));
+			});
+		}
+		else {
+			elements = elements.add($('<input>', { type:"hidden", name: "criteriosInformados" , value: null}));
+		}
+		
+		$("#box_loading").show();
+		
+		jqForm.append(elements);
+	};
 
 	$.filtro.adicionarCriterio = function(jqRecipiente, item) {
 		var opt = jqRecipiente.append($('<option>', {text: item.texto, value: item.prop}));
@@ -340,12 +362,25 @@ var fnReady = function ($) {
 
 	$.filtro.arrumarValor = function(jqPrincipal, jqSecundario, jqValor, jqRecipiente) {
 		var opt = jqPrincipal.find("option:selected");
+		
+		var validacao = {
+				t: opt.attr("t"),
+				s: parseInt(opt.attr("s")) || -1
+		};
+		
+		var value = jqValor.val();
 
-		if (opt.val() === "NUM") {
-			jqValor.val(jqValor.val().replace(/D+//g));
+		if (validacao.t === "NUM") {
+			value = value.replace(/\D+/g, '');
 		} else {
-			jqValor.val(jqValor.val().toLocaleUpperCase());
+			value = value.toLocaleUpperCase();
 		}
+		
+		if (validacao.s > -1 && value.length > validacao.s) {
+			value = value.substring(0, validacao.s);
+		}
+		
+		jqValor.val(value);
 	};
 
 	// consulta
@@ -360,6 +395,10 @@ var fnReady = function ($) {
 			btnAlterar = jqForm.find("#BtnAlterar");
 		
 		btnExcluir.click(function(ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+			
+			$("#box_loading").show();
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length == 0) {
 				alert(MENSAGEM['msg.selecao.exclusao']);
@@ -372,6 +411,10 @@ var fnReady = function ($) {
 		});
 		
 		btnAlterar.click(function(ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+			
+			$("#box_loading").show();
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length != 1) {
 				alert(MENSAGEM["msg.selecao.edicao"]);
@@ -610,71 +653,22 @@ var fnReady = function ($) {
 		});
 
 		$("#AcaoForm").submit(function(){
+			console.log("#AcaoForm.submit");
 			$("input:disabled").prop("disabled", false);
 			$("select:disabled").prop("disabled", false);
 			$("input[type='checkbox']").prop("checked", true);
-		})
+		});
 	};
 	
 	// popupFuncionario
 	// ---------------------------------------------------------------------
 	$.namespace( '$.popupFuncionario' );
 	$.popupFuncionario.prepararOpener = function(opcoes) {
+		window.name = "_opener";
 		
 		$(opcoes.btn).click(function(){
-			// $.funcionario.prepararFormulario({dest: "#AcaoForm", table: ".Funcionario", origem: "#AcaoForm"});
-			var popup = window.open(opcoes.url, 'SelFuncionarios', "height=550,width=800,resizable=no"),
-				pDoc = $(popup.window.document),
-				table = $('.Funcionario'),
-				tries = 0;
-				timer = null;
-
-			var config = function() {
-				if (timer) {
-					clearInterval(timer);
-					timer = null;
-				}
-				
-				var form = pDoc.find("#AcaoForm");
-				if (form.length < 1) {
-					if (++tries < 5) {
-						setTimeout(function() { config(); }, 500);
-					}
-					return;
-				}
-				
-				form.submit(function(ev) {
-					ev.stopPropagation();
-					var checked = form.find('input[name="codFuncionarios"]:checked'),
-						rows = $();
-					
-					checked.each(function(i,item){
-						var row = $($(item).parents("tr")[0]),
-							cols = $(),
-							newRow = $("<tr>"),
-							tds = row.find("td");
-						
-						tds.slice(0,3).each(function(j,td){
-							var col = $("<td>");
-							col.html($(td).html());
-							if (j == 0 || j == 1) {
-								$(col).addClass("center");
-							}
-							cols = cols.add(col);
-						});
-						newRow.append(cols);
-						
-						rows = rows.add(newRow);
-					});
-					
-					table.append(rows);
-					popup.window.close();
-				});
-				
-				
-			};
-			
-			config();
+			$("#box_loading").show();
+			window.open(opcoes.url, 'SelFuncionarios', "height=550,width=800,resizable=no");
 		});
 	};
 	
@@ -684,6 +678,13 @@ var fnReady = function ($) {
 	$.namespace( '$.funcionario' );
 	
 	$.funcionario.prepararFormulario = function(opcoes) {
+		$("#AcaoForm").submit(function(ev){
+			console.log("Falhou jquery para evitar submit");
+			
+			setTimeout(function(){
+				window.close();
+			}, 500);
+		});
 	};
 	
 	// paginacao

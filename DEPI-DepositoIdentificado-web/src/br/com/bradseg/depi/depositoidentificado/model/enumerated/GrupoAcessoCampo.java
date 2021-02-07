@@ -15,8 +15,7 @@ public enum GrupoAcessoCampo implements IEntidadeCampo {
 	/**
 	 * Grupo Acesso Campo.
 	 */
-	Codigo(ConstantesDEPI.TABELA_GRUPO_ID, TipoCampo.NUM, false,
-			ConstantesDEPI.SIZE_NAO_DEFINIDO),
+	Codigo(ConstantesDEPI.TABELA_GRUPO_ID, TipoCampo.NUM, false, 4),
 
 	/**
 	 * Código Cia.

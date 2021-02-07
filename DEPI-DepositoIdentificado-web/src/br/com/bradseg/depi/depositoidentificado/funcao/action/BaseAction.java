@@ -66,6 +66,10 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
+		if (LOGGER.isInfoEnabled()) {
+			StringBuilder msg = new StringBuilder("@@@ DEPI Requisitado ").append(request.getRequestURL());
+			LOGGER.info(msg.toString());
+		}
 		this.request = request;
 	}
 

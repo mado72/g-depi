@@ -52,11 +52,10 @@ public interface GrupoAcessoFacade {
 
 	/**
 	 * Obtém dados da companhia
-	 * @param usuarioLogadoId código do usuário logado 
-	 * @param codCompanhia Código da companhia
+	 * @param vo Companhia
 	 * @return Dados da companhia
 	 */
-	CompanhiaSeguradoraVO obterCompanhia(int usuarioLogadoId, int codCompanhia);
+	CompanhiaSeguradoraVO obterCompanhia(CompanhiaSeguradoraVO vo);
 
 	/**
 	 * Obtém dados do Departamento
