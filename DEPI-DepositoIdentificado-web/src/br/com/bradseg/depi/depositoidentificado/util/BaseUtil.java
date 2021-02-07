@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.MessageFormat;
@@ -18,6 +19,8 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.beanutils.BeanUtils;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -836,4 +839,8 @@ public final class BaseUtil {
     	return copia;
     }
 
+    public final static Object copyProperties(Object newObject,Object oldObject ) throws IllegalAccessException, InvocationTargetException{  	 
+    	BeanUtils.copyProperties(newObject, oldObject);
+    	return newObject;
+   }
 }
