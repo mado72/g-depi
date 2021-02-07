@@ -242,7 +242,7 @@
         </action>        
 	</package>
 
-	<package name="cadastroDeptoCia" namespace="/cadastro/deptocia/consultar" extends="depi-default">
+	<package name="cadastroDeptoCia" namespace="/cadastro/departamento-companhia/consultar" extends="depi-default">
 	
 		<default-class-ref class="departamentoCompanhiaConsultarAction"/>
 		
@@ -273,7 +273,7 @@
 
 	</package>
 	
-	<package name="cadastroDeptoCiaEditar" namespace="/cadastro/deptocia/editar" extends="depi-default">
+	<package name="cadastroDeptoCiaEditar" namespace="/cadastro/departamento-companhia/editar" extends="depi-default">
 	
 		<default-class-ref class="departamentoCompanhiaEditarAction"></default-class-ref>
 	

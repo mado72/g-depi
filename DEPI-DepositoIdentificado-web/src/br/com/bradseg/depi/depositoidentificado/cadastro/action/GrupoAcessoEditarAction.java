@@ -13,6 +13,8 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.helper.GrupoAcessoCrudH
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCampo;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
@@ -69,6 +71,20 @@ public class GrupoAcessoEditarAction
 		return retorno;
 	}
 	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#validateAlterar()
+	 */
+	@Override
+	public void validateAlterar() {
+		super.validateAlterar();
+		
+		String codigo = getModel().getCodigo();
+		if (codigo == null || codigo.isEmpty()) {
+			addFieldError("codigo", BaseUtil.getTextoFormatado(
+					ConstantesDEPI.Geral.ERRORS_REQUIRED,
+					BaseUtil.getTexto(ConstantesDEPI.Geral.ERRO_CODIGO_INVALIDO)));
+		}
+	}
 	
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#alterar()
@@ -76,12 +92,13 @@ public class GrupoAcessoEditarAction
 	@Override
 	public String alterar() {
 		String retorno = super.alterar();
-		preencherListaCompanhia();
+		crudHelper.preencherFuncionarios(getModel());
 		return retorno;
 	}
 	
 	public String selecionar() {
 		crudHelper.preencherFuncionarios(getModel());
+		listarDepartamentos();
 		return INPUT;
 	}
 

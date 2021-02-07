@@ -15,6 +15,7 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepartamentoCompanhiaCampo;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -43,14 +44,20 @@ public class DepartamentoCompanhiaEditarAction extends EditarFormAction<Departam
 	}
 
 	@Override
-	protected List<DepartamentoCompanhiaVO> mapearListaVO(String[] codigos) {
+	protected List<DepartamentoCompanhiaVO> mapearListaVO(String[] codigosCompostos) {
         List<DepartamentoCompanhiaVO> lista = new ArrayList<>();
         
-        for (String codigo: codigos) {
+        for (String item: codigosCompostos) {
+        	String[] codigos = item.split(";");
+        	
         	DepartamentoCompanhiaVO vo = new DepartamentoCompanhiaVO();
-            vo.setCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(codigo)));
+            vo.setCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(codigos[0])));
             
-            vo = crudHelper.obterPorChave(vo);
+            if (codigos.length == 2) {
+            	vo.setDepartamento(new DepartamentoVO(Integer.parseInt(codigos[1])));
+            }
+            
+            // vo = crudHelper.obterPorChave(vo);
             lista.add(vo);
         }
         

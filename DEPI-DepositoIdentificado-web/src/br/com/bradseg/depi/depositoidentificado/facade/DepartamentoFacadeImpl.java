@@ -97,7 +97,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
             }
         }
         if (sb.length() > 0) {
-			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA, sb.toString(),
+			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO, sb.toString(),
 							"Associação Departamentos x Companhia");
         }
     }

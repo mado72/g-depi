@@ -12,6 +12,7 @@ import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCampo;
+import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -43,6 +44,17 @@ public class GrupoAcessoConsultarAction extends FiltroAction<GrupoAcessoCampo, F
 			filtroHelper = new GrupoAcessoCrudHelper();
 		}
 		return filtroHelper;
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction#validarCriterio(br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO)
+	 */
+	@Override
+	protected void validarCriterio(CriterioConsultaVO<GrupoAcessoCampo> criterio) {
+		GrupoAcessoCampo campo = criterio.getCampo();
+		String valor = criterio.getValor();
+
+		validarValor(valor, campo);
 	}
 
 }

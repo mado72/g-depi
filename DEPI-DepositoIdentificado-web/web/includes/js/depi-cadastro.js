@@ -668,7 +668,11 @@ var fnReady = function ($) {
 		
 		$(opcoes.btn).click(function(){
 			$("#box_loading").show();
-			window.open(opcoes.url, 'SelFuncionarios', "height=550,width=800,resizable=no");
+			var form = $("#AcaoForm");
+			var data = getFormData(form);
+			var url = opcoes.url + '&codCompanhia=' + data.codCompanhia + '&siglaDepartamento=' + data.siglaDepartamento;
+			console.log("data:", data);
+			window.open(url, 'SelFuncionarios', "height=550,width=800,resizable=no");
 		});
 	};
 	

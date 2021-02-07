@@ -6,6 +6,8 @@ package br.com.bradseg.depi.depositoidentificado.dao;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 
 /**
@@ -52,4 +54,13 @@ public interface GrupoAcessoDAO {
      * @param grupo - GrupoAcessoVO.
      */
 	Boolean isReferenciado(GrupoAcessoVO grupo);
+
+	/**
+	 * @param companhia
+	 * @param departamentoVO
+	 * @return
+	 */
+	boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
+			DepartamentoVO departamentoVO);
+
 }

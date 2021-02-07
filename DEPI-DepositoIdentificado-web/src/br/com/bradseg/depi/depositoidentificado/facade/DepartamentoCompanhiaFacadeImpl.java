@@ -1,7 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
-import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.concatenarComHifen;
-
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,14 +12,17 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
-import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoCompanhiaDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
-import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 /**
@@ -27,146 +30,150 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
  */
 @Service
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-public class DepartamentoCompanhiaFacadeImpl implements DepartamentoFacade {
+public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFacade {
 
-    private static final String CODIGO_RESPONSAVEL = "Código do Responsável";
-    
-	/** A Constante LOGGER. */
+    /** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoCompanhiaFacadeImpl.class);
 
 	@Autowired
-	private DepartamentoDAO departamentoDAO;
-
-    /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#obterPorChave(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO)
-     */
-    @Override
-    public DepartamentoVO obterPorChave(DepartamentoVO vo) throws IntegrationException {
-        return departamentoDAO.obterPorChave(vo);
-    }
+	private DepartamentoCompanhiaDAO deptoCiaDAO;
+	
+	@Autowired
+	private ParametroDepositoDAO parametroDepositoDAO;
+	
+	@Autowired
+	private GrupoAcessoDAO grupoAcessoDAO;
+	
+	@Autowired
+	private MotivoDepositoDAO motivoDepositoDAO;
 
 	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#alterar(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoCompanhiaFacade#persistir(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO)
 	 */
 	@Override
-    public void alterar(DepartamentoVO vo) throws IntegrationException {
-		
-    	LOGGER.error("Inicio - alterar(DepartamentoVO vo)"); 
+	public void persistir(DepartamentoCompanhiaVO vo) {
+    	LOGGER.error("Inicio - persistir(DepartamentoCompanhiaVO vo)"); 
 
-    	validarAlterar(vo);
-    	validaChave(vo);
+    	validarIntegridadeBean(vo);
     	
-    	departamentoDAO.obterPorChave(vo);
-    	departamentoDAO.alterar(vo);
+		DepartamentoCompanhiaVO persistido = deptoCiaDAO
+				.obterPorCompanhiaSeguradora(vo.getCompanhia());
+		
+		if (persistido != null) {
+			
+		}
+    	deptoCiaDAO.persistir(vo);
 
     	LOGGER.error("Fim - alterar(DepartamentoVO vo)"); 
-    	
     }
 	
-	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#excluir(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO)
-	 */
 	@Override
-	public void excluir(DepartamentoVO vo) throws IntegrationException {
-		
-		LOGGER.error("Fim - excluir(DepartamentoVO vo)"); 
-
-		departamentoDAO.excluir(vo);
+	public void excluir(DepartamentoCompanhiaVO vo) throws IntegrationException {
 		
 		LOGGER.error("Fim - excluir(DepartamentoVO vo)");
 		
+		verificarReferenciadoParametrosDeposito(vo);
+		verificarReferenciadoGrupoAcesso(vo);
+		verificarReferenciadoMotivoDeposito(vo);
+
+		deptoCiaDAO.excluir(vo);
+		
+		LOGGER.error("Fim - excluir(DepartamentoVO vo)");
+		
+	}
+
+	private void verificarReferenciadoParametrosDeposito(
+			DepartamentoCompanhiaVO vo) {
+		List<String> referenciados = new ArrayList<>();
+		for (DepartamentoVO departamentoVO : vo.getDeptos()) {
+			if (parametroDepositoDAO.associacaoReferenciada(vo.getCompanhia(), departamentoVO)) {
+				referenciados.add(departamentoVO.getSiglaDepartamento());
+			}
+		}
+		
+		if (! referenciados.isEmpty()) {
+			String codCompanhia = String.valueOf(vo.getCompanhia().getCodigoCompanhia());
+			throw new DEPIIntegrationException(
+					ConstantesDEPI.DepartamentoCompanhia.ERRO_PARAMETRODEPOSITO_REFERENCIADO,
+					codCompanhia, gerarListaMensagem(referenciados));
+		}
+	}
+	
+	private void verificarReferenciadoGrupoAcesso(
+			DepartamentoCompanhiaVO vo) {
+		List<String> referenciados = new ArrayList<>();
+		for (DepartamentoVO departamentoVO : vo.getDeptos()) {
+			if (grupoAcessoDAO.associacaoReferenciada(vo.getCompanhia(), departamentoVO)) {
+				referenciados.add(departamentoVO.getSiglaDepartamento());
+			}
+		}
+		
+		if (! referenciados.isEmpty()) {
+			String codCompanhia = String.valueOf(vo.getCompanhia().getCodigoCompanhia());
+			throw new DEPIIntegrationException(
+					ConstantesDEPI.DepartamentoCompanhia.ERRO_GRUPODEPARTAMENTO_REFERENCIADO,
+					codCompanhia, gerarListaMensagem(referenciados));
+		}
+	}
+	
+	private void verificarReferenciadoMotivoDeposito(
+			DepartamentoCompanhiaVO vo) {
+		List<String> referenciados = new ArrayList<>();
+		for (DepartamentoVO departamentoVO : vo.getDeptos()) {
+			if (motivoDepositoDAO.associacaoReferenciada(vo.getCompanhia(), departamentoVO)) {
+				referenciados.add(departamentoVO.getSiglaDepartamento());
+			}
+		}
+		
+		if (! referenciados.isEmpty()) {
+			String codCompanhia = String.valueOf(vo.getCompanhia().getCodigoCompanhia());
+			throw new DEPIIntegrationException(
+					ConstantesDEPI.DepartamentoCompanhia.ERRO_GRUPODEPARTAMENTO_REFERENCIADO,
+					codCompanhia, gerarListaMensagem(referenciados));
+		}
+	}
+	
+	private String gerarListaMensagem(Collection<?> itens) {
+		StringBuilder msg = new StringBuilder();
+		for (Object item : itens) {
+			if (msg.length() > 0) {
+				msg.append("; ");
+			}
+			msg.append(item);
+		}
+		return msg.toString();
 	}
 
     /* (non-Javadoc)
      * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#excluir(java.util.List)
      */
     @Override
-    public void excluir(List<DepartamentoVO> vos) throws IntegrationException {
-        StringBuilder sb = new StringBuilder();
+    public void excluir(List<DepartamentoCompanhiaVO> ciaVOList) throws IntegrationException {
+        StringBuilder msg = new StringBuilder();
 
-        for (DepartamentoVO vo : vos) {
-            validarExcluir(vo);
-            
-            if (departamentoDAO.isReferenciado(vo)) {
-                if (sb.length() > 0) {
-                    sb.append("; ");
-                }
-                sb.append(" Departamento: ").append(departamentoDAO.obterPorChave(vo).getSiglaDepartamento());
-            } else {
-            	departamentoDAO.excluir(vo);
-            }
+        for (DepartamentoCompanhiaVO item : ciaVOList) {
+        	
+        	try {
+        		excluir(item);
+        	} catch (DEPIBusinessException e) {
+        		msg.append("<li>").append(e.getMessage()).append("</li>");
+        	}
+        	
         }
-        if (sb.length() > 0) {
-			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA, sb.toString(),
-							"Associação Departamentos x Companhia");
+        if (msg.length() > 0) {
+			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_DEPENDENCIAS, msg.toString());
         }
-    }
-
-    private void validarAlterar(DepartamentoVO vo) throws IntegrationException {
-        
-    	validarInserir(vo);
-    	
-    }
-
-    /**
-     * Validar o VO de exclusão
-     * @param vo VO de Departamento
-     * @throws IntegrationException Exceção de aplicação
-     */
-    private void validarExcluir(DepartamentoVO vo) throws IntegrationException {
-        if (BaseUtil.isNZB(vo.getCodigoResponsavelUltimaAtualizacao())) {
-            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, CODIGO_RESPONSAVEL));
-        }
-        if (vo.getCodigoResponsavelUltimaAtualizacao() > 9999999) {
-            throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, CODIGO_RESPONSAVEL, "9999999"));
-        }
-    }
-
-    /**
-     * Inserir Departamento
-     * @param vo VO de Departamento
-     * @throws IntegrationException Exceção de aplicação
-     */
-    @Override
-    public void inserir(DepartamentoVO vo) throws IntegrationException {
-        validarInserir(vo);
-
-        departamentoDAO.inserir(vo);
-
     }
 
     /* (non-Javadoc)
      * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#obterPorFiltro(br.com.bradseg.depi.depositoidentificado.util.FiltroUtil)
      */
     @Override    
-    public List<DepartamentoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
+    public List<DepartamentoCompanhiaVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
 		
     	LOGGER.error("Inicio - obterPorFiltro(FiltroUtil filtro)");
     	
-        return departamentoDAO.obterPorFiltro(filtro);
-    }
-
-    /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#obterTodos()
-     */
-    @Override
-    public List<DepartamentoVO> obterTodos() throws IntegrationException {
-		
-    	LOGGER.error("Inicio - obterTodos()");
-    	
-        return departamentoDAO.obterTodos();
-    }
-
-    /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#obterComRestricaoDeGrupoAcesso(int, java.lang.Double, br.com.bradseg.depi.depositoidentificado.enums.Tabelas)
-     */
-    @Override
-    public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoUsuario, Tabelas e) throws IntegrationException {
-		
-		LOGGER.error("Inicio - obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e)"); 
-
-    	return departamentoDAO.obterComRestricaoDeGrupoAcesso(codigoCia,codigoUsuario, e);
-    	
+        return deptoCiaDAO.obterPorFiltro(filtro);
     }
 
     /**
@@ -176,55 +183,23 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoFacade {
      * @throws IntegrationException trata exceção
      */
     @Override
-    public List<DepartamentoVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) throws IntegrationException {
+    public DepartamentoCompanhiaVO obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) throws IntegrationException {
     	
-    	LOGGER.error("Inicio - obterPorCompanhiaSeguradora(int codigoCia, Double codigoUsuario, Tabelas e)"); 
-
-    	return departamentoDAO.obterPorCompanhiaSeguradora(vo);
+		return deptoCiaDAO.obterPorCompanhiaSeguradora(vo);
     }
-
-	/**
-	 * Validar o VO de inserção
-	 * @param vo VO de Departamento
-	 * @throws IntegrationException Exceção de aplicação
-	 */
-	private void validarInserir(DepartamentoVO vo) throws IntegrationException {
-		
-	    if (BaseUtil.isNZB(vo.getSiglaDepartamento())) {
-	        throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Sigla do Departamento"));
-	    }
-	    if (vo.getSiglaDepartamento().length() > ConstantesDEPI.MAX_SIZE_SIGLA_DEPARTAMENTO) {
-	        throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, "Sigla do Departamento", String.valueOf(ConstantesDEPI.MAX_SIZE_SIGLA_DEPARTAMENTO)));
-	    }
-	    if (BaseUtil.isNZB(vo.getNomeDepartamento())) {
-	        throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Nome do Departamento"));
-	    }
-	    if (vo.getNomeDepartamento().length() > ConstantesDEPI.MAX_SIZE_DEFAULT_NOME) {
-	        throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, "Nome do Departamento", String.valueOf(ConstantesDEPI.MAX_SIZE_DEFAULT_NOME)));
-	    }
-	    if (vo.getCodigoResponsavelUltimaAtualizacao() == 0) {
-	        throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, CODIGO_RESPONSAVEL));
-	    }
-	    if (vo.getCodigoResponsavelUltimaAtualizacao() > ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO) {
-	        throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, CODIGO_RESPONSAVEL, String.valueOf(ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO)));
-	    }
-	}
 
     /**
-     * método que válida a chave primária
-     * @param vo - objeto que será validado
-     * @throws IntegrationException - trata erros
+     * Validar integridade das informações do VO.
+     * @param depCia - DepartamentoCompanhiaVO.
+     * @throws DEPIIntegrationException - DEPIIntegrationException.
      */
-    private void validaChave(DepartamentoVO vo) throws IntegrationException {
-    	
-    	LOGGER.error("Inicio - validaResponsavel(MotivoDepositoVO vo)"); 
-    	
-        if (vo.getCodigoDepartamento() == 0) {
-			throw new DEPIIntegrationException(
-					ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO,
-					"Código do Departamento");
-        }
+    public void validarIntegridadeBean(DepartamentoCompanhiaVO depCia) throws DEPIIntegrationException {
+        BaseUtil.assertTrueThrowException(BaseUtil.isNZB(depCia.getDeptos()),
+            ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Departamentos");
+        BaseUtil.assertTrueThrowException(BaseUtil.isNZB(depCia.getCompanhia().getCodigoCompanhia()),
+            ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Companhia Seguradora");
+        BaseUtil.assertTrueThrowException(BaseUtil.isNZB(depCia.getCodigoResponsavelUltimaAtualizacao()),
+            ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, ConstantesDEPI.Geral.ERRO_USUARIO_OBRIGATORIO);
     }
-
     
 }

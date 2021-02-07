@@ -7,6 +7,8 @@ import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
@@ -40,5 +42,13 @@ public interface MotivoDepositoDAO{
 	public List<MotivoDepositoVO> obterTodos();
 
 	void excluirLista(List<MotivoDepositoVO> listvo);
+
+	/**
+	 * @param companhia
+	 * @param departamentoVO
+	 * @return
+	 */
+	boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
+			DepartamentoVO departamentoVO);
 
 }

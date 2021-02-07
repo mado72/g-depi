@@ -26,9 +26,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 public class DepartamentoCompanhiaSalvarAction extends
 		SalvarAction<DepartamentoCompanhiaCampo, DepartamentoCompanhiaVO, DepartamentoCompanhiaEditarFormModel> {
 	
-	/**
-	 * 
-	 */
 	private static final String LABEL_CADASTRO_DEPARTAMENTOCOMPANHIA_DEPARTAMENTO = "label.cadastro.departamentocompanhia.departamento";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoCompanhiaSalvarAction.class);

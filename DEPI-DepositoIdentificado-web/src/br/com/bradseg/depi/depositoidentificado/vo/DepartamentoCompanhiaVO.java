@@ -21,7 +21,7 @@ public class DepartamentoCompanhiaVO implements Serializable {
 	private CompanhiaSeguradoraVO companhia = new CompanhiaSeguradoraVO();
 	
 	/**
-	 * Lista de departamentos associados
+	 * Lista de departamentos associados. Utilizado na edição e na consulta de uma companhia.
 	 */
 	private List<DepartamentoVO> deptos = new ArrayList<>();
 	
@@ -52,6 +52,18 @@ public class DepartamentoCompanhiaVO implements Serializable {
 	public DepartamentoCompanhiaVO() {
 		super();
 	}
+	
+	/**
+	 * Retorna um código composto que representa a relação Depto x Cia
+	 * @return Código composto
+	 */
+	public String getCodigoComposto() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getCompanhia().getCodigoCompanhia())
+				.append(";")
+				.append(getDepartamento().getCodigoDepartamento());
+		return sb.toString();
+	}
 
 	/**
 	 * Retorna companhia
@@ -67,6 +79,27 @@ public class DepartamentoCompanhiaVO implements Serializable {
 	 */
 	public void setCompanhia(CompanhiaSeguradoraVO companhia) {
 		this.companhia = companhia;
+	}
+	
+	/**
+	 * Retorna departamento
+	 * @return o departamento
+	 */
+	public DepartamentoVO getDepartamento() {
+		if (deptos == null || deptos.size() != 1) {
+			return null;
+		}
+		
+		return deptos.get(0);
+	}
+	
+	/**
+	 * Define departamento
+	 * @param departamento valor departamento a ser definido
+	 */
+	public void setDepartamento(DepartamentoVO departamento) {
+		deptos = new ArrayList<>();
+		deptos.add(departamento);
 	}
 
 	/**

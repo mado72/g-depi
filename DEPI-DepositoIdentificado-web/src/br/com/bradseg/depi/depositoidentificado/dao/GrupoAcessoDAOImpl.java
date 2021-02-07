@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -25,6 +26,9 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.vo.CodigoIndicativoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
@@ -229,7 +233,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 		List<String> indAtivo = getJdbcTemplate().queryForList(QuerysDepi.ALOCACAO_EXISTSUSUARIO, paramsAlocar, String.class) ; 
    
 		if (!indAtivo.isEmpty()) {
-		    if (ConstantesDEPI.INDICADOR_INATIVO.toString().equals(indAtivo.get(0))) {
+		    if (ConstantesDEPI.INDICADOR_INATIVO.equals(indAtivo.get(0))) {
 				queryRealocar(vo, usr);
 		    }
 		} else {
@@ -357,7 +361,29 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
         } finally {
         	LOGGER.info("obterGrupoPorChave(GrupoAcessoVO grupo)"); 
         }
-        
+    }
+    
+    /* (non-Javadoc)
+     * @see br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO#associacaoReferenciada(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO)
+     */
+    @Override
+    public boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
+    		DepartamentoVO departamentoVO) {
+    	
+    	MapSqlParameterSource params = new MapSqlParameterSource();
+    	params.addValue(WHR1, departamentoVO.getCodigoDepartamento());
+    	params.addValue(WHR2, companhia.getCodigoCompanhia());
+    	
+		try {
+			CodigoIndicativoVO vo = getJdbcTemplate().queryForObject(
+					QuerysDepi.GRUPOACESSO_EXISTS, params,
+					new GrupoAcessoDataMapper.CodigoIndicativo());
+			
+			return vo.getIndicativo().equals(ConstantesDEPI.INDICADOR_ATIVO);
+			
+		} catch (EmptyResultDataAccessException e) {
+			return false;
+		}
     }
 
 }

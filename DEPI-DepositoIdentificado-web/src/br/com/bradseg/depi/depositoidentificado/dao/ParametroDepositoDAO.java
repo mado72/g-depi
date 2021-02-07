@@ -3,6 +3,8 @@ package br.com.bradseg.depi.depositoidentificado.dao;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
@@ -53,5 +55,13 @@ public interface ParametroDepositoDAO  {
 	void excluir(ParametroDepositoVO vo);
 
 	ParametroDepositoVO obterPorChave(ParametroDepositoVO parametro);
+
+	/**
+	 * @param companhia
+	 * @param departamentoVO
+	 * @return
+	 */
+	boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
+			DepartamentoVO departamentoVO);
 
 }

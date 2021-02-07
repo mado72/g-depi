@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.message.Message;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 
 /**
  * Classe Utilitária
@@ -834,6 +835,12 @@ public final class BaseUtil {
     		}
     	}
     	return copia;
+    }
+    
+    public static String getTexto(Class<? extends IEntidadeCampo> entidade, String campo) {
+    	String simpleName = entidade.getSimpleName();
+    	StringBuilder sb = new StringBuilder("enum.").append(simpleName).append('.').append(campo);
+    	return getTexto(sb.toString());
     }
 
 }

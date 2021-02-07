@@ -38,6 +38,10 @@ public class FuncionarioConsultarAction extends FiltroAction<FuncionarioCampo, F
 	
 	private String action;
 	
+	private String codCompanhia;
+	
+	private String siglaDepartamento;
+	
 	@Override
 	protected CrudHelper<FuncionarioCampo, ?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
@@ -108,4 +112,35 @@ public class FuncionarioConsultarAction extends FiltroAction<FuncionarioCampo, F
 		this.action = action;
 	}
 
+	/**
+	 * Retorna codCompanhia
+	 * @return o codCompanhia
+	 */
+	public String getCodCompanhia() {
+		return codCompanhia;
+	}
+	
+	/**
+	 * Define codCompanhia
+	 * @param codCompanhia valor codCompanhia a ser definido
+	 */
+	public void setCodCompanhia(String codCompanhia) {
+		this.codCompanhia = codCompanhia;
+	}
+	
+	/**
+	 * Retorna siglaDepartamento
+	 * @return o siglaDepartamento
+	 */
+	public String getSiglaDepartamento() {
+		return siglaDepartamento;
+	}
+	
+	/**
+	 * Define siglaDepartamento
+	 * @param siglaDepartamento valor siglaDepartamento a ser definido
+	 */
+	public void setSiglaDepartamento(String siglaDepartamento) {
+		this.siglaDepartamento = siglaDepartamento;
+	}
 }

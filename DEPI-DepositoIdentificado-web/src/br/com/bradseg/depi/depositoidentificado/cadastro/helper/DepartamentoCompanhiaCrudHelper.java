@@ -166,6 +166,7 @@ public class DepartamentoCompanhiaCrudHelper implements
 	@Override
 	public void excluirRegistros(List<DepartamentoCompanhiaVO> voList)
 			throws DEPIIntegrationException {
+		
 		facade.excluir(voList);
 	}
 

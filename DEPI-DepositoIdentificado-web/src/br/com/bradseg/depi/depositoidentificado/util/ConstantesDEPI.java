@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.util;
 
+
 /**
  * Classe com constantes do sistema.
  */
@@ -186,7 +187,8 @@ public final class ConstantesDEPI {
 	public static final String ERRO_DEPARTAMENTO_DESCRICAO_NAOENCONTRADA = "msg.erro.departamento.descricao.naoencontrada";
 	public static final String ERRO_DEPARTAMENTO_REGISTROCOMDEPENDENCIA = "msg.erro.departamento.registrocomdependencia";
 	public static final String ERRO_MOTIVODEPOSITO_REGISTROCOMDEPENDENCIA = "msg.erro.motivodeposito.registrocomdependencia";
-	public static final String ERRO_DEPENDENCIA = "msg.erro.registrocomdependencia";
+	public static final String ERRO_DEPENDENCIAS = "msg.erro.dependencias";
+	public static final String ERRO_DEPENDENCIA_MODULO = "msg.erro.registrocomdependencia";
 	public static final String ERRO_PARAMETRODEPOSITO_REGISTROCOMDEPENDENCIA = "msg.erro.parametrodeposito.registrocomdependencia";
 	public static final String ERRO_GRUPOACESSO_REGISTROCOMDEPENDENCIA = "msg.erro.grupoacesso.registrocomdependencia";
 
@@ -243,10 +245,12 @@ public final class ConstantesDEPI {
 	 * Constantes Gerais 
 	 */
 	public static final class Geral {
-		public static final String ERRORS_REQUIRED = "erros.required";
-		public static final String ERRORS_MAXLENGTH = "erros.maxlength";
+		public static final String ERRORS_REQUIRED = "errors.required";
+		public static final String ERRORS_MAXLENGTH = "errors.maxlength";
 		public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
 		public static final String ERRO_USUARIO_LOGADO = "msg.erro.usuario.logado";
+		public static final String ERRO_USUARIO_OBRIGATORIO = "msg.erro.usuario.obrigatorio";
+		public static final String ERRO_CODIGO_INVALIDO = "msg.erro.codigo.invalido";
 	}
 	
 	/**
@@ -265,6 +269,13 @@ public final class ConstantesDEPI {
 	 */
 	public static final class Departamento {
 		public static final String ERRO_CADASTRADO_INATIVO = "msg.erro.departamento.inativo_cadastrado";
+	}
+	
+	public static final class DepartamentoCompanhia {
+		public static final String ERRO_PARAMETRODEPOSITO_REFERENCIADO = "msg.erro.departamentocompanhia.parametro";
+		public static final String ERRO_GRUPODEPARTAMENTO_REFERENCIADO = "msg.erro.grupodepartamento.parametro";
+		public static final String ERRO_MOTIVODEPOSITO_REFERENCIADO = "msg.erro.motivodeposito.parametro";
+		public static final String ERRO_NAOCONCLUIDO = "msg.erro.departamentocompanhia.naoconcluido";
 	}
 	
 	/**

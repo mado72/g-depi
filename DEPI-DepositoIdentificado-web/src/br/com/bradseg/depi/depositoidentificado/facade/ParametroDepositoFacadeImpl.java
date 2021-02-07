@@ -96,7 +96,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
             }
         }
         if (sb.length() > 0) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA + " - " + sb.toString() + " - " +  "Associa��o de Motivos");
+            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO + " - " + sb.toString() + " - " +  "Associa��o de Motivos");
         }
     }
 

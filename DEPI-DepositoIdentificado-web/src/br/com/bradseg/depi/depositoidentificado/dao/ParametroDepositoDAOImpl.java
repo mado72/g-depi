@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.mapper.ParametroDepositosDat
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
@@ -504,7 +506,29 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
     		return retorno.get(0);        	
         }
 
-        
+    }
+    
+    /* (non-Javadoc)
+     * @see br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO#associacaoReferenciada(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO)
+     */
+    @Override
+    public boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
+    		DepartamentoVO departamentoVO) {
+    	MapSqlParameterSource params = new MapSqlParameterSource();
+    	
+    	params.addValue(PARAM_WHR1, departamentoVO.getCodigoDepartamento());
+    	params.addValue(PARAM_WHR2, companhia.getCodigoCompanhia());
+    	
+    	try {
+			
+			getJdbcTemplate().queryForObject(
+					QuerysDepi.PARAMETRODEPOSITO_REFERENCIADO_DEPTO_CIA,
+					params, Integer.class);
+			return true;
+			
+		} catch (EmptyResultDataAccessException e) {
+			return false;
+		}
     }
 
 }

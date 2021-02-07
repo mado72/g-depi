@@ -39,10 +39,19 @@ public interface DepartamentoCompanhiaFacade {
 	public void persistir(DepartamentoCompanhiaVO vo) throws IntegrationException;
 
 	/**
-	 * Exclui todas as associações
-	 * @param vos Lista de associações
+	 * Exclui associações entre companhia e os departamentos associados
+	 * @param vo Companhia que possui as associações
 	 * @throws IntegrationException
 	 */
-	public void excluir(List<DepartamentoCompanhiaVO> vos) throws IntegrationException;
+	void excluir(DepartamentoCompanhiaVO vo) throws IntegrationException;
+
+	/**
+	 * Exclui todas as associações
+	 * @param ciaVOList Lista de associações
+	 * @throws IntegrationException
+	 * @throws IntegrationException
+	 */
+	void excluir(List<DepartamentoCompanhiaVO> ciaVOList)
+			throws IntegrationException;
 
 }

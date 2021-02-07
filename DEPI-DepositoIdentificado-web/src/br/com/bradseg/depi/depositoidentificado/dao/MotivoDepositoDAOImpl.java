@@ -26,6 +26,8 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
@@ -160,7 +162,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
             }
         }
         if (codsMotivos.length() > 0) {
-            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_DEPENDENCIA, codsMotivos.toString(), "Parâmetros de Depósito"));
+            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO, codsMotivos.toString(), "Parâmetros de Depósito"));
         }
         
     }
@@ -413,6 +415,16 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 				QuerysDepi.MOTIVODEPOSITO_REFERENCIADO_PARAMETRODEPOSITO,
 				params);
 		return count;
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO#associacaoReferenciada(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO)
+	 */
+	@Override
+	public boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
+			DepartamentoVO departamentoVO) {
+		// FIXME FALTA IMPLEMENTAR
+		return false;
 	}
 	
 }
