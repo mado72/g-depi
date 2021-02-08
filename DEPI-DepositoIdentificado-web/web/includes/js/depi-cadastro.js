@@ -139,7 +139,18 @@ var fnReady = function ($) {
 
 	    return indexed_array;
 	}
-	
+
+	function checkTodos() {
+		var checkTodos = $(".checkTodos");
+		checkTodos.change(function(ev){
+			var form = checkTodos.closest("form");
+			var items = form.find("input[type='checkbox']");
+			var checked = checkTodos.prop("checked");
+			items.prop("checked", checked);
+		});
+	};
+
+
 	$.namespace = function() {
 	    var a=arguments, o=null, i, j, d;
 	    for (i=0; i<a.length; i=i+1) {
@@ -426,14 +437,15 @@ var fnReady = function ($) {
 			}
 		});
 
-		jqForm.find(".checkTodos").click(function(){
-			jqForm.find(".checkTodos")
-				.parents("table:first")
-				.find("input:checkbox")
-				.prop("checked", $(".checkTodos").prop("checked"));
-		});
+		checkTodos();
+//		jqForm.find(".checkTodos").click(function(){
+//			jqForm.find(".checkTodos")
+//				.parents("table:first")
+//				.find("input:checkbox")
+//				.prop("checked", $(".checkTodos").prop("checked"));
+//		});
 	};
-
+	
 	$.obterMarcados = function(jqForm) {
 		var marcados = jqForm.find(".checkTodos")
 			.parents("table:first")
@@ -606,6 +618,7 @@ var fnReady = function ($) {
 		$('.departamento-nome-dropbox').append(nomes);
 	};
 	$.grupoacesso.prepararEditar = function(opcoes) {
+		checkTodos();
 		$.dpcoddesc.combinar(['.companhia-codigo-dropbox','.companhia-nome-dropbox']);
 		$.dpcoddesc.combinar(['.departamento-codigo-dropbox','.departamento-nome-dropbox']);
 		var urlDepto = opcoes.urlDepto;
@@ -674,8 +687,27 @@ var fnReady = function ($) {
 			window.open(url, 'SelFuncionarios', "height=550,width=800,resizable=no");
 			
 			var action = $("#AcaoForm").attr("action").replace(/\/\w+.do/, "/refrescar.do");
-			$("#AcaoForm").attr("action", action);
-			$("#AcaoForm").submit();			
+//			$("#AcaoForm").attr("action", action);
+//			$("#AcaoForm").submit();
+			var codFuncionarios=$("#AcaoForm").find("input[name='codFuncionarios']");
+			codFuncionarios.prop("checked", true);
+			var data = getFormData($("#AcaoForm"));
+			codFuncionarios.prop("checked", false);
+			data.codCompanhia = codCompanhia;
+			data.siglaDepartamento = siglaDepartamento;
+			
+			$.ajax({
+				url : action,
+				type : "POST",
+				dataType : "json",
+				data: data,
+				success : function(data) {
+					console.log(data);
+				},
+				error : function(data) {
+					console.error(data);
+				}
+			});
 		});
 	};
 	

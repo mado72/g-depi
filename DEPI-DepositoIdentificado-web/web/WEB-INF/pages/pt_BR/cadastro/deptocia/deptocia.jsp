@@ -12,7 +12,7 @@
 <c:url value="${namespaceBase}/alterar.do" var="actionForm"></c:url>
 
 <form action="${actionForm}" id="AcaoForm" method="post">
-<table id="tabela_interna" class="sortable GrupoAcesso Consulta">
+<table id="tabela_interna" class="sortable DepartamentoCompanhia Consulta">
 	<thead>
 		<tr>
 		<th class="selecao">
@@ -20,29 +20,23 @@
 			<br/>
 			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
-		<th class="codigoGrupoAcesso">
-			<s:text name="label.grid.grupoAcesso.codigoGrupoAcesso"/>
-		</th>
-		<th class="nomeGrupoAcesso">
-			<s:text name="label.grid.grupoAcesso.nomeGrupoAcesso"/>
-		</th>
-		<th class="codigoCompanhia">
+		<th>
 			<s:text name="label.grid.departamentocompanhia.codigoCompanhia"/>
 		</th>
-		<th class="descricaoCompanhia">
+		<th>
 			<s:text name="label.grid.departamentocompanhia.descricaoCompanhia"/>
 		</th>
-		<th class="codigoDepartamento">
-			<s:text name="label.grid.grupoAcesso.siglaDepartamento"/>
+		<th>
+			<s:text name="label.grid.departamentocompanhia.siglaDepartamento"/>
 		</th>
-		<th class="nomeDepartamento">
-			<s:text name="label.grid.grupoAcesso.nomeDepartamento"/>
+		<th>
+			<s:text name="label.grid.departamentocompanhia.nomeDepartamento"/>
 		</th>
-		<th class="responsavel">
-			<s:text name="label.grid.grupoAcesso.responsavelAtualizacao"/>
+		<th>
+			<s:text name="label.grid.departamentocompanhia.codResplUltAtualizacao"/>
 		</th>
-		<th class="atualizacao">
-			<s:text name="label.grid.grupoAcesso.dataHoraAtualizacao"/>
+		<th>
+			<s:text name="label.grid.departamentocompanhia.dataHoraAtualizacao"/>
 		</th>
 		</tr>
 	</thead>
@@ -50,21 +44,19 @@
  	<s:iterator value="colecaoDados" var="item" status="status">
 		<tr>
 			<td class="text-center">
-				<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoGrupoAcesso}"/>"/>
+				<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoComposto}"/>"/>
 			</td>
 			<td class="text-center">
 				<s:url action="exibir" namespace="/cadastro/grupo-acesso/editar" var="linkExibir">
-					<s:param name="codigo">${item.codigoGrupoAcesso}</s:param>
+					<s:param name="codigo">${item.codigoComposto}</s:param>
 				</s:url>
 				<s:a href="%{linkExibir}">
-					${item.codigoGrupoAcesso}
+					${item.companhia.codigoCompanhia}
 				</s:a>
 			</td>
-			<td class="text-center">${item.nomeGrupoAcesso}</td>
-			<td class="text-center">${item.cia.codigoCompanhia}</td>
-			<td>${item.cia.descricaoCompanhia}</td>
-			<td class="text-center">${item.depto.siglaDepartamento}</td>
-			<td>${item.depto.nomeDepartamento}</td>
+			<td>${item.companhia.descricaoCompanhia}</td>
+			<td class="text-center">${item.departamento.siglaDepartamento}</td>
+			<td>${item.departamento.nomeDepartamento}</td>
 			<td class="text-center">${item.codigoResponsavelUltimaAtualizacao}</td>
 			<td class="text-center">
 				<fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.dataHoraAtualizacao}"/>
@@ -85,7 +77,7 @@ jQuery(document).ready(function($){
 	$.consulta.prepararFormulario("#AcaoForm");
 	<s:if test="colecaoDados">
 	$.paginacao.paginar({
-		tblSeletor: ".GrupoAcesso",
+		tblSeletor: ".DepartamentoCompanhia",
 		pagSeletor: ".paginacao",
 		registros: 7,
 		pattern: ":reg itens encontrados, mostrando :idxIni até :idxFin."

@@ -30,6 +30,8 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
      * Código Cia.
      */
     CodigoCompanhia(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, CompanhiaSeguradoraCampo.CodigoCompanhia);
+    
+    private final static List<DepartamentoCompanhiaCampo> CRITERIAS = Arrays.asList(Sigla, NomeDepartamento, CodigoCompanhia);
 
     private String nome;
 
@@ -127,6 +129,6 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
      * @return AssociacaoDeptoCiaCampo.
      */
     public static List<DepartamentoCompanhiaCampo> valuesForCriteria() {
-        return Arrays.asList(values());
+        return CRITERIAS;
     }
 }

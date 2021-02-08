@@ -76,22 +76,20 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
         try {
         	MapSqlParameterSource params = null;
         	
-        	final String complemento;
+        	final StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTOCOMPANHIA_SELECT_DEPTO_CIA_CLAUSULA_ATIVO);
 
 	        /**
 	         * Parametros.
 	         */
 			if (!filtro.getCriterios().isEmpty()) {
-				complemento = filtro.getClausulasParciais(" AND ", true);
+				String complemento = filtro.getClausulasParciais(" AND ", true);
+				query.append(complemento);
 				params = filtro.getMapParamFiltro();
 			}
-			else {
-				complemento = "";
-			}
 			
-			String query = QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERPORFILTRO.replaceAll("%s", complemento);
+			query.append(QuerysDepi.DEPARTAMENTOCOMPANHIA_ORDERBY_DHORA_ULT_ATULZ_DESC);
 
-			return getJdbcTemplate().query(query, params,
+			return getJdbcTemplate().query(query.toString(), params,
 					new DepartamentoCompanhiaDataMapper());
         } finally {
         	LOGGER.info("obterPorFiltro(CriterioFiltroUtil filtro)"); 

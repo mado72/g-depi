@@ -2,6 +2,7 @@ package br.com.bradseg.depi.depositoidentificado.facade;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoCompanhiaDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
@@ -35,6 +37,9 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
     /** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoCompanhiaFacadeImpl.class);
 
+	@Autowired
+	private CICSDepiDAO cicsDepiDAO;
+	
 	@Autowired
 	private DepartamentoCompanhiaDAO deptoCiaDAO;
 	
@@ -174,7 +179,23 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
 		
     	LOGGER.error("Inicio - obterPorFiltro(FiltroUtil filtro)");
     	
-        return deptoCiaDAO.obterPorFiltro(filtro);
+        List<DepartamentoCompanhiaVO> lista = deptoCiaDAO.obterPorFiltro(filtro);
+        
+        HashMap<Integer, String> cache = new HashMap<>();
+        
+        for (DepartamentoCompanhiaVO vo : lista) {
+			int codigoCompanhia = vo.getCompanhia().getCodigoCompanhia();
+			
+			if (! cache.containsKey(codigoCompanhia)) {
+				CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(codigoCompanhia);
+				cache.put(codigoCompanhia, cia.getDescricaoCompanhia());
+			}
+			
+			String descricaoCompanhia = cache.get(codigoCompanhia);
+			vo.getCompanhia().setDescricaoCompanhia(descricaoCompanhia);
+		}
+        
+		return lista;
     }
 
     /**

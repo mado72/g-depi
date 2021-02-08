@@ -117,7 +117,7 @@ public class GrupoAcessoEditarAction
 			}
 		}
 
-		return INPUT;
+		return "json";
 	}
 
 	/**
