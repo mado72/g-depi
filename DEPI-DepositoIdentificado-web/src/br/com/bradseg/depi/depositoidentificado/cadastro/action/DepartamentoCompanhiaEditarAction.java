@@ -1,6 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,22 @@ public class DepartamentoCompanhiaEditarAction extends EditarFormAction<Departam
         }
         
         return lista;
+	}
+	
+	public String refrescar() {
+		DepartamentoCompanhiaEditarFormModel model = getModel();
+		
+		List<String> siglaDepartamentos = model.getSiglaDepartamentos();
+		List<DepartamentoVO> deptos = model.getDeptos();
+		
+		for (Iterator<DepartamentoVO> iter = deptos.iterator(); iter.hasNext(); ) {
+			DepartamentoVO vo = iter.next();
+			if (! siglaDepartamentos.contains(vo.getSiglaDepartamento())) {
+				iter.remove();
+			}
+		}
+
+		return "json";
 	}
 
 }

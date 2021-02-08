@@ -52,9 +52,9 @@ public class DepartamentoCompanhiaSalvarAction extends
 	 */
 	@Override
 	public void validate() {
-		if (CollectionUtils.isEmpty(getModel().getCodDepartamentos())) {
+		if (CollectionUtils.isEmpty(getModel().getSiglaDepartamentos())) {
 			addFieldError(
-					"codDepartmentos",
+					"siglaDepartmentos",
 					getText(ConstantesDEPI.ERRO_CAMPO_REQUERIDO,
 							new String[]{ getText(LABEL_CADASTRO_DEPARTAMENTOCOMPANHIA_DEPARTAMENTO)}));
 		}

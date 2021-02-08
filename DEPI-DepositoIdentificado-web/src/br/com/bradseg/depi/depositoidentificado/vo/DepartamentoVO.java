@@ -37,6 +37,14 @@ public class DepartamentoVO implements Serializable {
     public DepartamentoVO(int codigoDepartamento) {
     	this.setCodigoDepartamento(codigoDepartamento);
     }
+    
+    /**
+     * Constutor
+     * @param siglaDepartamento - String
+     */
+    public DepartamentoVO(String siglaDepartamento) {
+    	this.setSiglaDepartamento(siglaDepartamento);
+    }
 
     /**
      * Construtor.
