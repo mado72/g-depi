@@ -117,22 +117,40 @@ public class DepartamentoCompanhiaCrudHelper implements
 	@Override
 	public void preencherFormularioEdicao(DepartamentoCompanhiaEditarFormModel model)
 			throws DEPIIntegrationException {
+		// TODO obter cias
+		List<DepartamentoCompanhiaVO> items = obterPeloCodigo(model.getCodigo());
 		
-		DepartamentoCompanhiaVO instancia = obterPeloCodigo(model.getCodigo());
-		model.setCias(Collections.singletonList(instancia.getCompanhia()));
-		model.setDeptos(new ArrayList<>(instancia.getDeptos()));
+		DepartamentoCompanhiaVO instancia = items.get(0);
 		
-		List<Integer> codDepartamentos = new ArrayList<>(instancia.getDeptos().size());
-		for (DepartamentoVO depto : instancia.getDeptos()) {
-			codDepartamentos.add(depto.getCodigoDepartamento());
+		List<DepartamentoVO> deptos = new ArrayList<>(items.size());
+		
+		List<String> siglaDepartamentos = new ArrayList<>(items.size());
+		
+		for (DepartamentoCompanhiaVO vo : items) {
+			DepartamentoVO depto = vo.getDepartamento();
+			deptos.add(depto);
+			siglaDepartamentos.add(depto.getSiglaDepartamento());
 		}
-		model.setCodDepartamentos(codDepartamentos);
+		
+		model.setCias(Collections.singletonList(instancia.getCompanhia()));
+		model.setDeptos(new ArrayList<>(deptos));
+		model.setSiglaDepartamentos(siglaDepartamentos);
 	}
 
-	private DepartamentoCompanhiaVO obterPeloCodigo(String codigoDeptoCia) {
-		int codigoCompanhia = Integer.parseInt(codigoDeptoCia);
+	private List<DepartamentoCompanhiaVO> obterPeloCodigo(String codigoDeptoCia) {
+		
+		String[] codigo = codigoDeptoCia.split(";");
+		int codigoCompanhia = Integer.parseInt(codigo[0]);
 		
 		return facade.obterPorCompanhiaSeguradora(new CompanhiaSeguradoraVO(codigoCompanhia));
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper#obterPorChave(java.lang.Object)
+	 */
+	@Override
+	public DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo) {
+		return null;
 	}
 
 	@Override
@@ -141,21 +159,19 @@ public class DepartamentoCompanhiaCrudHelper implements
 		
 		String codigo = model.getCodigo();
 		boolean novo = model.getEstado() == EstadoCrud.INSERIR;
-		DepartamentoCompanhiaVO instancia = new DepartamentoCompanhiaVO();
 		
-		int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
-		instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
-		instancia.setCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(codigo)));
+		int codUsuario = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
 		
-		List<Integer> codDepartamentos = model.getCodDepartamentos();
-		ArrayList<DepartamentoVO> deptos = new ArrayList<>(codDepartamentos.size());
+		List<String> siglaDepartamentos = model.getSiglaDepartamentos();
+		ArrayList<DepartamentoVO> deptos = new ArrayList<>(siglaDepartamentos.size());
 		
-		for (Integer codDepto : codDepartamentos) {
-			deptos.add(new DepartamentoVO(codDepto));
+		for (String sigla : siglaDepartamentos) {
+			deptos.add(new DepartamentoVO());
 		}
-		instancia.setDeptos(deptos);
 		
-		facade.persistir(instancia);
+		CompanhiaSeguradoraVO cia = new CompanhiaSeguradoraVO(Integer.parseInt(codigo));
+		
+		facade.persistir(cia, deptos, codUsuario);
 		
 		if (novo) {
 			return EstadoRegistro.NOVO;
@@ -168,11 +184,6 @@ public class DepartamentoCompanhiaCrudHelper implements
 			throws DEPIIntegrationException {
 		
 		facade.excluir(voList);
-	}
-
-	@Override
-	public DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo) {
-		return facade.obterPorCompanhiaSeguradora(vo.getCompanhia());
 	}
 
 }

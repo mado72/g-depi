@@ -3,7 +3,7 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<c:set var="namespaceBase" scope="request">/cadastro/grupo-acesso/editar</c:set>
+<c:set var="namespaceBase" scope="request">/cadastro/departamento-companhia/editar</c:set>
 <s:include value="/WEB-INF/pages/pt_BR/comum/filtro2dropbox.jsp">
 	<s:param name="scriptOff" value="true"/>
 </s:include>
@@ -47,7 +47,7 @@
 				<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoComposto}"/>"/>
 			</td>
 			<td class="text-center">
-				<s:url action="exibir" namespace="/cadastro/grupo-acesso/editar" var="linkExibir">
+				<s:url action="exibir" namespace="/cadastro/departamento-companhia/editar" var="linkExibir">
 					<s:param name="codigo">${item.codigoComposto}</s:param>
 				</s:url>
 				<s:a href="%{linkExibir}">

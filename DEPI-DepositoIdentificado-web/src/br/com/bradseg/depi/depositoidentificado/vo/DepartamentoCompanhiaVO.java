@@ -4,9 +4,7 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
@@ -23,9 +21,9 @@ public class DepartamentoCompanhiaVO implements Serializable {
 	private CompanhiaSeguradoraVO companhia = new CompanhiaSeguradoraVO();
 	
 	/**
-	 * Lista de departamentos associados. Utilizado na edição e na consulta de uma companhia.
+	 * Departamentos associado.
 	 */
-	private List<DepartamentoVO> deptos = new ArrayList<>();
+	private DepartamentoVO departamento = new DepartamentoVO();
 	
 	/**
 	 * Código Responsável Ultima Atualização.
@@ -82,17 +80,13 @@ public class DepartamentoCompanhiaVO implements Serializable {
 	public void setCompanhia(CompanhiaSeguradoraVO companhia) {
 		this.companhia = companhia;
 	}
-	
+
 	/**
 	 * Retorna departamento
 	 * @return o departamento
 	 */
 	public DepartamentoVO getDepartamento() {
-		if (deptos == null || deptos.size() != 1) {
-			return null;
-		}
-		
-		return deptos.get(0);
+		return departamento;
 	}
 	
 	/**
@@ -100,24 +94,7 @@ public class DepartamentoCompanhiaVO implements Serializable {
 	 * @param departamento valor departamento a ser definido
 	 */
 	public void setDepartamento(DepartamentoVO departamento) {
-		deptos = new ArrayList<>();
-		deptos.add(departamento);
-	}
-
-	/**
-	 * Retorna deptos
-	 * @return o deptos
-	 */
-	public List<DepartamentoVO> getDeptos() {
-		return deptos;
-	}
-
-	/**
-	 * Define deptos
-	 * @param deptos valor deptos a ser definido
-	 */
-	public void setDeptos(List<DepartamentoVO> deptos) {
-		this.deptos = deptos;
+		this.departamento = departamento;
 	}
 
 	/**

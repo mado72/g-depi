@@ -8,6 +8,7 @@ import java.util.List;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 /**
  * Interface de GrupoAcessoDAO
@@ -22,15 +23,17 @@ public interface DepartamentoCompanhiaDAO {
 	/**
 	 * obtém DepartamentoCompanhiaVO
 	 * @param companhia contem o código da companhia
-	 * @return DepartamentoCompanhiaVO
+	 * @return Lista de DepartamentoCompanhiaVO
 	 */
-	DepartamentoCompanhiaVO obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO companhia);
+	List<DepartamentoCompanhiaVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO companhia);
 
 	/**
 	 * Persiste associações Companhia x Departamentos
-	 * @param vo Contém as associações
+	 * @param cia Companhia
+	 * @param associacoes Lista de departamentos da associação
+	 * @param codUsuario Código do usuário responsável
 	 */
-	void persistir(DepartamentoCompanhiaVO vo);
+	void persistir(CompanhiaSeguradoraVO cia, List<DepartamentoVO> associacoes, int codUsuario);
 
 	/**
 	 * Exclui associações da companhia com os departamentos. Para cada par é
@@ -49,4 +52,11 @@ public interface DepartamentoCompanhiaDAO {
 	 * @return Lista de Companhia x Departamento. 
 	 */
 	List<DepartamentoCompanhiaVO> obterPorFiltro(FiltroUtil filtro);
+
+	/**
+	 * Obtém uma instância da associação cia x depto
+	 * @param vo A associação
+	 * @return Dados da associação
+	 */
+	DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo);
 }

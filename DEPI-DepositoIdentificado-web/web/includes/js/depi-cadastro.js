@@ -673,6 +673,95 @@ var fnReady = function ($) {
 		});
 	};
 	
+	// deptoCia
+	// ---------------------------------------------------------------------
+	$.namespace( '$.deptoCia' );
+	$.deptoCia.preencherCompanhias = function(cias) {
+		var codigos = $(), nomes = $();
+		$(cias).each(function(i,v){
+			codigos = codigos.add($('<option>', {text: v.codigoCompanhia, value: v.codigoCompanhia}));
+			nomes = nomes.add($("<option>", {value: v.codigoCompanhia, text: v.descricaoCompanhia}));
+		});
+		
+		$('.companhia-codigo-dropbox').append(codigos);
+		$('.companhia-nome-dropbox').append(nomes);
+	};
+	$.deptoCia.prepararEditar = function(opcoes) {
+		checkTodos();
+		$.dpcoddesc.combinar(['.companhia-codigo-dropbox','.companhia-nome-dropbox']);
+		
+		$('.btnRemover').click(function(ev){
+			ev.stopPropagation();
+			
+			var checked = $('input[type="checkbox"][name="siglaDepartamentos"]:checked');
+			var values = [];
+			$(checked).each(function(i,v){values.push($(v).val())});
+			if (values.length) {
+				checked.closest('tr').remove();
+				$(values).each(function(i,v){
+					$('input[type="checkbox"][value="'+v+'"]').remove();
+				});
+			}
+			else {
+				alert('Selecione os registros para excluí-los.')
+			}
+		});
+		
+		$("#AcaoForm").submit(function(){
+			console.log("#AcaoForm.submit");
+			$("input:disabled").prop("disabled", false);
+			$("select:disabled").prop("disabled", false);
+			$("input[type='checkbox']").prop("checked", true);
+		});
+	};
+	
+	// popupDepto
+	// ---------------------------------------------------------------------
+	$.namespace( '$.popupDepto' );
+	$.popupDepto.prepararOpener = function(opcoes) {
+		window.name = "_opener";
+		
+		$(opcoes.btn).click(function(){
+			$("#box_loading").show();
+			var codCompanhia = $("#AcaoForm_codCompanhia").val();
+			var url = opcoes.url + '&codCompanhia=' + codCompanhia;
+			window.open(url, 'SelDeptos', "height=550,width=800,resizable=no");
+			
+			var action = $("#AcaoForm").attr("action").replace(/\/\w+.do/, "/refrescar.do");
+			var codDeptos=$("#AcaoForm").find("input[name='siglaDepartamentos']");
+			codDeptos.prop("checked", true);
+			var data = getFormData($("#AcaoForm"));
+			codDeptos.prop("checked", false);
+			data.codCompanhia = codCompanhia;
+			
+			$.ajax({
+				url : action,
+				type : "POST",
+				dataType : "json",
+				data: data,
+				success : function(data) {
+					console.log(data);
+				},
+				error : function(data) {
+					console.error(data);
+				}
+			});
+		});
+	};
+	
+	// deptoCia
+	// ---------------------------------------------------------------------
+	// definition
+	$.namespace( '$.deptoCia' );
+	
+	$.deptoCia.prepararFormulario = function(opcoes) {
+		$("#AcaoForm").submit(function(ev){
+			setTimeout(function(){
+				window.close();
+			}, 500);
+		});
+	};
+	
 	// popupFuncionario
 	// ---------------------------------------------------------------------
 	$.namespace( '$.popupFuncionario' );
@@ -690,7 +779,7 @@ var fnReady = function ($) {
 //			$("#AcaoForm").attr("action", action);
 //			$("#AcaoForm").submit();
 			var codFuncionarios=$("#AcaoForm").find("input[name='codFuncionarios']");
-			codFuncionarios.prop("checked", true);
+			codDeptos.prop("checked", true);
 			var data = getFormData($("#AcaoForm"));
 			codFuncionarios.prop("checked", false);
 			data.codCompanhia = codCompanhia;

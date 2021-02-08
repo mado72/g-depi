@@ -279,6 +279,7 @@ public final class ConstantesDEPI {
 		public static final String ERRO_GRUPODEPARTAMENTO_REFERENCIADO = "msg.erro.grupodepartamento.parametro";
 		public static final String ERRO_MOTIVODEPOSITO_REFERENCIADO = "msg.erro.motivodeposito.parametro";
 		public static final String ERRO_NAOCONCLUIDO = "msg.erro.departamentocompanhia.naoconcluido";
+		public static final String ERRO_DEPENDENCIA = "msg.erro.departamentocompanhia.dependencia";
 	}
 	
 	/**

@@ -95,56 +95,79 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
         	LOGGER.info("obterPorFiltro(CriterioFiltroUtil filtro)"); 
         }
     }
-    
+
     /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.dao.DepartamentoCompanhiaDAO#persistir(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO)
+	 * @see br.com.bradseg.depi.depositoidentificado.dao.DepartamentoCompanhiaDAO#obterPorCompanhiaSeguradora(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO)
+	 */
+	@Override
+	public List<DepartamentoCompanhiaVO> obterPorCompanhiaSeguradora(
+			CompanhiaSeguradoraVO cia) {
+		
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue(WHR1, cia.getCodigoCompanhia());
+		
+		return getJdbcTemplate().query(
+				QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERPORCIA, params,
+				new DepartamentoCompanhiaDataMapper());
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.dao.DepartamentoCompanhiaDAO#obterPorChave(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO)
+	 */
+	@Override
+	public DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo) {
+		return null;
+	}
+
+	/* (non-Javadoc)
+     * @see br.com.bradseg.depi.depositoidentificado.dao.DepartamentoCompanhiaDAO#persistir(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, java.util.List, int)
      */
     @Override
-    public void persistir(DepartamentoCompanhiaVO vo) {
+    public void persistir(CompanhiaSeguradoraVO cia,
+    		List<DepartamentoVO> associacoes, int codUsuario) {
     	
     	final Funcao<DepartamentoVO, Integer> extrairCodigo = new Funcao<DepartamentoVO, Integer>() {
-			@Override
-			public Integer apply(DepartamentoVO source) {
-				return source.getCodigoDepartamento();
-			}
-		};
+    		@Override
+    		public Integer apply(DepartamentoVO source) {
+    			return source.getCodigoDepartamento();
+    		}
+    	};
     	
     	MapSqlParameterSource params = new MapSqlParameterSource();
-    	params.addValue(WHR1, vo.getCompanhia().getCodigoCompanhia());
+    	params.addValue(WHR1, cia.getCodigoCompanhia());
     	
-		List<DepartamentoVO> deptosPersistidos = getJdbcTemplate()
-				.query(QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERDEPARTAMENTOS_PORCOMPANHIA,
-						params, new DepartamentoDataMapper());
-		
-		List<DepartamentoVO> paraRemover = BaseUtil.obterItensSemIntersecao(
-				deptosPersistidos, vo.getDeptos(), extrairCodigo);
-		List<DepartamentoVO> paraSalvar = BaseUtil.obterItensSemIntersecao(
-				vo.getDeptos(), deptosPersistidos, extrairCodigo);
+    	List<DepartamentoVO> deptosPersistidos = getJdbcTemplate()
+    			.query(QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERDEPARTAMENTOS_PORCOMPANHIA,
+    					params, new DepartamentoDataMapper());
+    	
+    	List<DepartamentoVO> paraRemover = BaseUtil.obterItensSemIntersecao(
+    			deptosPersistidos, associacoes, extrairCodigo);
+    	List<DepartamentoVO> paraSalvar = BaseUtil.obterItensSemIntersecao(
+    			associacoes, deptosPersistidos, extrairCodigo);
 
 		for (DepartamentoVO departamentoVO : paraRemover) {
-			queryDesalocar(vo, departamentoVO);
+			queryDesalocar(cia, departamentoVO, codUsuario);
 		}
 		
     	for (DepartamentoVO departamentoVO : paraSalvar) {
-			queryAlocarOuRealocar(vo, departamentoVO);
+			queryAlocarOuRealocar(cia, departamentoVO, codUsuario);
 		}
     }
 	
 	/**
 	 * Desativa registro da associação depto x cia
-	 * @param vo Contém dados da cia
-	 * @param departamentoVO Depto
+	 * @param cia Companhia
+	 * @param departamentoVO Departamento
+	 * @param codUsuario Responsável
 	 */
-	private void queryDesalocar(DepartamentoCompanhiaVO vo,
-			DepartamentoVO departamentoVO) {
+	private void queryDesalocar(CompanhiaSeguradoraVO cia,
+			DepartamentoVO departamentoVO, Integer codUsuario) {
 		
-		CompanhiaSeguradoraVO cia = vo.getCompanhia();
-
 		int codigoCompanhia = cia.getCodigoCompanhia();
 		int codigoDepartamento = departamentoVO.getCodigoDepartamento();
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue(PRM1, vo.getCodigoResponsavelUltimaAtualizacao());
+		params.addValue(PRM1, codUsuario);
 		params.addValue(WHR1, codigoDepartamento);
 		params.addValue(WHR2, codigoCompanhia);
 		
@@ -162,37 +185,38 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 
 	/**
 	 * Ativa ou cria associação Depto x Cia
-	 * @param vo Dados da Companhia
-	 * @param departamentoVO Depto
+	 * @param cia Companhia
+	 * @param departamentoVO Departamento
+	 * @param codUsuario Responsável
 	 */
-	private void queryAlocarOuRealocar(DepartamentoCompanhiaVO vo,
-			DepartamentoVO departamentoVO) {
+	private void queryAlocarOuRealocar(CompanhiaSeguradoraVO cia,
+			DepartamentoVO departamentoVO, Integer codUsuario) {
 		
-		String indAtivo = queryObterStatusAtivo(vo, departamentoVO);
+		String indAtivo = queryObterStatusAtivo(cia, departamentoVO);
 		
 		if (indAtivo != null) {
 			if (ConstantesDEPI.INDICADOR_INATIVO.equals(indAtivo)) {
-				queryAtivar(vo, departamentoVO);
+				queryAtivar(cia, departamentoVO, codUsuario);
 			}
 		}
 		else {
-			queryInserir(vo, departamentoVO);
+			queryInserir(cia, departamentoVO, codUsuario);
 		}
 		
 	}
 
 	/**
 	 * Obtém o indicativo da associação Depto x Cia se está ativo ou inativo ou nulo.
-	 * @param vo Cia
+	 * @param cia Cia
 	 * @param departamentoVO Depto
 	 * @return S = Ativo, N = Inativo, null quando não existe.
 	 */
-	private String queryObterStatusAtivo(DepartamentoCompanhiaVO vo,
+	private String queryObterStatusAtivo(CompanhiaSeguradoraVO cia,
 			DepartamentoVO departamentoVO) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		
 		params.addValue(WHR1, departamentoVO.getCodigoDepartamento());
-		params.addValue(WHR2, vo.getCompanhia().getCodigoCompanhia());
+		params.addValue(WHR2, cia.getCodigoCompanhia());
 		
 		try {
 			String indicativo = getJdbcTemplate().queryForObject(
@@ -205,19 +229,20 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 
 	/**
 	 * Ativa associação Depto x Cia
-	 * @param vo Cia
+	 * @param cia Cia
 	 * @param departamentoVO Depto
+	 * @param codUsuario Responsável
 	 */
-	private void queryAtivar(DepartamentoCompanhiaVO vo,
-			DepartamentoVO departamentoVO) {
+	private void queryAtivar(CompanhiaSeguradoraVO cia,
+			DepartamentoVO departamentoVO, Integer codUsuario) {
 		
-		int codigoCompanhia = vo.getCompanhia().getCodigoCompanhia();
+		int codigoCompanhia = cia.getCodigoCompanhia();
 		int codigoDepartamento = departamentoVO.getCodigoDepartamento();
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue(WHR1, codigoDepartamento);
 		params.addValue(WHR2, codigoCompanhia);
-		params.addValue(PRM1, vo.getCodigoResponsavelUltimaAtualizacao());
+		params.addValue(PRM1, codUsuario);
 
 		int count = getJdbcTemplate().update(QuerysDepi.DEPARTAMENTOCOMPANHIA_ATIVAR, params);
 		if (count == 0) {
@@ -231,19 +256,20 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 
 	/**
 	 * Insere nova associação Depto x Cia
-	 * @param vo Cia
+	 * @param cia Cia
 	 * @param departamentoVO Depto
+	 * @param codUsuario Responsável
 	 */
-	private void queryInserir(DepartamentoCompanhiaVO vo,
-			DepartamentoVO departamentoVO) {
+	private void queryInserir(CompanhiaSeguradoraVO cia,
+			DepartamentoVO departamentoVO, Integer codUsuario) {
 		
-		int codigoCompanhia = vo.getCompanhia().getCodigoCompanhia();
+		int codigoCompanhia = cia.getCodigoCompanhia();
 		int codigoDepartamento = departamentoVO.getCodigoDepartamento();
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue(PRM1, codigoDepartamento);
 		params.addValue(PRM2, codigoCompanhia);
-		params.addValue(PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
+		params.addValue(PRM3, codUsuario);
 		
 		int count = getJdbcTemplate().update(QuerysDepi.DEPARTAMENTOCOMPANHIA_INSERT, params);
 		if (count == 0) {
@@ -281,37 +307,7 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.dao.DepartamentoCompanhiaDAO#obterPorCompanhiaSeguradoa(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO)
-	 */
 	@Override
-	public DepartamentoCompanhiaVO obterPorCompanhiaSeguradora(
-			CompanhiaSeguradoraVO cia) {
-		
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue(WHR1, cia.getCodigoCompanhia());
-		
-		List<DepartamentoCompanhiaVO> lista = getJdbcTemplate().query(
-				QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERPORCIA, params,
-				new DepartamentoCompanhiaDataMapper());
-		
-		if (lista.isEmpty()) {
-			return null;
-		}
-		
-		// Agrupa os departamentos em uma única instância da associação
-		
-		DepartamentoCompanhiaVO depCia = lista.remove(0);
-		List<DepartamentoVO> deptos = depCia.getDeptos();
-		
-		for (DepartamentoCompanhiaVO vo : lista) {
-			deptos.addAll(vo.getDeptos());
-		}
-		
-		return depCia;
-	}
-
-    @Override
     public synchronized Boolean isReferenciado(DepartamentoCompanhiaVO grupo) {
 
     	try {

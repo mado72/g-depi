@@ -85,7 +85,7 @@ public class CompanhiaSeguradoraDAOImpl extends JdbcDao implements
 		params.addValue(WHR1, vo.getCodigoCompanhia());
 		
 		return getJdbcTemplate().queryForObject(
-				QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERCIA_PORCHAVE, params,
+				QuerysDepi.CIA_OBTERCIA_PORCHAVE, params,
 				new CompanhiaSeguradoraDataMapper());
 	}
 	

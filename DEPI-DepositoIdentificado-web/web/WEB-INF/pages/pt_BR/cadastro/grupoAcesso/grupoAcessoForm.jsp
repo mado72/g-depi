@@ -85,13 +85,13 @@
 <depi:clearMessages actionErrors="true" fieldErrors="true" messages="true"/>
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>
-<script>
-jQuery(document).ready(function($){
 <c:if test="${! detalhar}">
 	<c:url value="/cadastro/grupo-acesso/editar/selecionar.do" var="urlSelecionar"/>
 	<c:url value="/filtro/funcionario/consultar/index.do" var="urlFuncionario">
 		<c:param name="action">${urlSelecionar}</c:param>
 	</c:url>
+<script>
+jQuery(document).ready(function($){
 	$.grupoacesso.prepararEditar({
 		urlCias : '<c:url value="/json/ciaListar.do"></c:url>',
 		urlDepto : '<c:url value="/json/ciaDepartamentos.do?codigoCia=%d"></c:url>'
@@ -101,8 +101,7 @@ jQuery(document).ready(function($){
 		btn: ".btnPesquisar",
 		url: '${urlFuncionario}'
 	});
-</c:if>
 }(jQuery));
-
 </script>
+</c:if>
 </c:set>

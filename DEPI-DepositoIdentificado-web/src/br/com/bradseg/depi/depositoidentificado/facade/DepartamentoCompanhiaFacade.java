@@ -6,6 +6,7 @@ import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
 /** 
  * DepartamentoCompanhiaFacade.
@@ -13,12 +14,22 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 public interface DepartamentoCompanhiaFacade {
 
 	/**
-	 * Obtém pelo código da companhia seguradora
-	 * @param vo contém o código
-	 * @return instância do banco
+	 * Obtém lista de associações entre a companhia e os departamentos pelo
+	 * código da companhia seguradora
+	 * 
+	 * @param vo
+	 *            contém o código
+	 * @return lista de associações
 	 * @throws IntegrationException
 	 */
-	public DepartamentoCompanhiaVO obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) throws IntegrationException;
+	public List<DepartamentoCompanhiaVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) throws IntegrationException;
+
+	/**
+	 * Obtém uma instância da associação cia x depto
+	 * @param vo A associação
+	 * @return Dados da associação
+	 */
+	public DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo);
 
 	/**
 	 * Processa filtro
@@ -32,11 +43,12 @@ public interface DepartamentoCompanhiaFacade {
 	/**
 	 * Persiste uma ou várias associações de DepartamentoCompanhiaVO. Verifica se algum(uns)
 	 * departamento(s) deixou(ram) de participar da associação para desalocá-lo(s)
-	 * 
-	 * @param vo Contém a companhia e a relação de Departamentos
-	 * @throws IntegrationException
+	 * @param cia Companhia
+	 * @param deptos Lista de departamentos
+	 * @param codUsuario Responsável
 	 */
-	public void persistir(DepartamentoCompanhiaVO vo) throws IntegrationException;
+	void persistir(CompanhiaSeguradoraVO cia, List<DepartamentoVO> deptos,
+			Integer codUsuario);
 
 	/**
 	 * Exclui associações entre companhia e os departamentos associados
