@@ -304,7 +304,9 @@ var fnReady = function ($) {
 			$(this).closest("form").submit();
 		});
 		
-		btnIncluir.click(function() {
+		btnIncluir.click(function(ev) {
+			ev.preventDefault();
+			ev.stopImmediatePropagation();
 			$("#box_loading").show();
 			setTimeout(function(){
 				window.location.href = btnIncluir.attr('href');
@@ -609,6 +611,8 @@ var fnReady = function ($) {
 	};
 	$.grupoacesso.preencherDepartamentos = function(deptos) {
 		var codigos = $(), nomes = $();
+		$('.departamento-codigo-dropbox').find("option").remove();
+		$('.departamento-nome-dropbox').find("option").remove();
 		$(deptos).each(function(i,v){
 			codigos = codigos.add($('<option>', {text: v.siglaDepartamento, value: v.siglaDepartamento}));
 			nomes = nomes.add($("<option>", {value: v.siglaDepartamento, text: v.nomeDepartamento}));
@@ -779,7 +783,7 @@ var fnReady = function ($) {
 //			$("#AcaoForm").attr("action", action);
 //			$("#AcaoForm").submit();
 			var codFuncionarios=$("#AcaoForm").find("input[name='codFuncionarios']");
-			codDeptos.prop("checked", true);
+			codFuncionarios.prop("checked", true);
 			var data = getFormData($("#AcaoForm"));
 			codFuncionarios.prop("checked", false);
 			data.codCompanhia = codCompanhia;

@@ -116,6 +116,11 @@ public class GrupoAcessoEditarAction
 				iter.remove();
 			}
 		}
+		
+		List<DepartamentoVO> deptos = model.getDeptos();
+		for (DepartamentoVO vo : deptos) {
+			vo.setDeposito(null);
+		}
 
 		return "json";
 	}
