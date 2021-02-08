@@ -668,11 +668,14 @@ var fnReady = function ($) {
 		
 		$(opcoes.btn).click(function(){
 			$("#box_loading").show();
-			var form = $("#AcaoForm");
-			var data = getFormData(form);
-			var url = opcoes.url + '&codCompanhia=' + data.codCompanhia + '&siglaDepartamento=' + data.siglaDepartamento;
-			console.log("data:", data);
+			var codCompanhia = $("#AcaoForm_codCompanhia").val();
+			var siglaDepartamento = $("#AcaoForm_siglaDepartamento").val();
+			var url = opcoes.url + '&codCompanhia=' + codCompanhia + '&siglaDepartamento=' + siglaDepartamento;
 			window.open(url, 'SelFuncionarios', "height=550,width=800,resizable=no");
+			
+			var action = $("#AcaoForm").attr("action").replace(/\/\w+.do/, "/refrescar.do");
+			$("#AcaoForm").attr("action", action);
+			$("#AcaoForm").submit();			
 		});
 	};
 	
@@ -683,8 +686,6 @@ var fnReady = function ($) {
 	
 	$.funcionario.prepararFormulario = function(opcoes) {
 		$("#AcaoForm").submit(function(ev){
-			console.log("Falhou jquery para evitar submit");
-			
 			setTimeout(function(){
 				window.close();
 			}, 500);

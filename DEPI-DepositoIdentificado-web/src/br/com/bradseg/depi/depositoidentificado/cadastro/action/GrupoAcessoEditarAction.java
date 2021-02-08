@@ -1,6 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -93,12 +95,28 @@ public class GrupoAcessoEditarAction
 	public String alterar() {
 		String retorno = super.alterar();
 		crudHelper.preencherFuncionarios(getModel());
+		crudHelper.preencherFormularioEdicao(getModel());
 		return retorno;
 	}
 	
 	public String selecionar() {
-		crudHelper.preencherFuncionarios(getModel());
 		listarDepartamentos();
+		crudHelper.preencherFuncionarios(getModel());
+		return INPUT;
+	}
+	
+	public String refrescar() {
+		GrupoAcessoEditarFormModel model = getModel();
+		List<Integer> codFuncionariosInt = model.getCodFuncionariosInt();
+		List<UsuarioVO> funcionarios = model.getFuncionarios();
+		
+		for (Iterator<UsuarioVO> iter = funcionarios.iterator(); iter.hasNext(); ) {
+			UsuarioVO vo = iter.next();
+			if (! codFuncionariosInt.contains(vo.getCodigoUsuario())) {
+				iter.remove();
+			}
+		}
+
 		return INPUT;
 	}
 
