@@ -498,7 +498,55 @@
 
 	</package>
 	
-    <!-- RELATORIOS -->
+	
+	<package name="relatorioConsultar" namespace="/relatorio" extends="depi-default">
+	
+		<default-class-ref class="consultarRelatorioAction"/>
+		
+		<global-results>
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/relatorio/consultarRelatorio.jsp</param>
+			</result>
+			<result name="input" type="redirectAction">consultar</result>
+		</global-results>
+
+		<action name="index">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+        
+		<action name="*" method="{1}"/>
+		<action name="consultarRelatorio" method="consultar">
+			<result name="input">
+			   <param name="location">/WEB-INF/pages/pt_BR/relatorio/consultarRelatorio.jsp</param>
+			</result>
+		</action>
+		 <!-- 
+	    	<result name="cartaAceiteRestricaoMassificadoColetivo.pdf" type="report">  
+	        		<param name="location">cartaAceiteRestricaoMassificadoColetivo.jrxml</param>  
+	        		<param name="dataSource">beanCartas</param>  
+	       			<param name="format">PDF</param>  
+	       			<param name="documentName">Carta_Aceite_Restrição_Massificado_Coletivo</param>
+			   </result>
+		 -->
+		<action name="gerarRelatorio"  method="gerarRelatorio">
+	        <result name="success" type="report">  
+	       		<param name="location">relManutencoesAnalitico.jrxml</param>  
+	       		<param name="dataSource">beans</param>  
+	      			<param name="format">PDF</param>  
+	      			<param name="documentName">Relatorio_Envio</param>
+		    </result> 
+		   		    
+			<result name="error">
+			      <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+		    </result>
+		    
+	   	</action>
+	   			
+	</package>
+	
+	
+    <!-- RELATORIOS 
     
     <package name="relatorioEnvioRetornoBancoAnalitico" namespace="/relatorio/envio-retorno/analitico" extends="depi-default">
    		<default-class-ref class="relatorioEnvioRetornoBancoAnaliticoAction" />
@@ -568,6 +616,7 @@
     	</global-results>
     	<action name="index" method="execute"/>
     	<action name="*" method="*"/>
-    </package>
+    </package> -->
+    
 	
 </struts>
