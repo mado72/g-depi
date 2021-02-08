@@ -9,6 +9,10 @@
 		<listener-class>br.com.bradseg.bsad.framework.web.spring.DefaultContextLoaderListener</listener-class>
 	</listener>
 
+ 	<listener>
+        <listener-class>br.com.bradseg.depi.depositoidentificado.listeners.UrlListener</listener-class>
+    </listener>
+
 	<!--
             FILTROS DE SEGURANCA
 		Exemplo de utilizacao de filtros de seguranca.
