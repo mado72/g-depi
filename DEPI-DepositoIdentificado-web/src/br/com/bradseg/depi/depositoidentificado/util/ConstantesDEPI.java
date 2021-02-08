@@ -274,5 +274,17 @@ public final class ConstantesDEPI {
 		public static final String LABEL_DEPARTAMENTO = "label.cadastro.grupoacesso.departamento";
 		public static final String LABEL_FUNCIONARIO = "label.cadastro.grupoacesso.funcionario";
 	}
+	
+	
+	public static final String MIME_TYPE_PDF = "application/pdf";
+	public static final String MIME_TYPE_HTML = "text/html";
+	public static final String MIME_TYPE_DOC = "application/msword";
+	public static final String MIME_TYPE_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+	public static final String MIME_TYPE_XLS = "application/excel";
+	public static final String MIME_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+	public static final String MIME_TYPE_JPEG = "image/jpeg";
+	public static final String MIME_TYPE_GIF = "image/gif";
+	public static final String MIME_TYPE_PNG = "image/png";
+	public static final String MIME_TYPE_BMP = "image/bmp";
 
 }
