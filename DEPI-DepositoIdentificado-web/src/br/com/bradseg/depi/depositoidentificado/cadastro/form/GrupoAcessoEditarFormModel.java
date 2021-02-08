@@ -50,18 +50,9 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 		codCompanhia = null;
 		json = null;
 
-		if (codFuncionarios != null) {
-			codFuncionarios.clear();
-		}
-		if (deptos != null) {
-			deptos.clear();
-		}
-		if (cias != null) {
-			cias.clear();
-		}
-		if (funcionarios != null) {
-			funcionarios.clear();
-		}
+		setCodFuncionarios(new ArrayList<String>());
+		setDeptos(new ArrayList<DepartamentoVO>());
+		setFuncionarios(new ArrayList<UsuarioVO>());
 	}
 
 	/**
