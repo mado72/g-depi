@@ -56,9 +56,14 @@ public interface GrupoAcessoDAO {
 	Boolean isReferenciado(GrupoAcessoVO grupo);
 
 	/**
+	 * Verifica se a associação depto x companhia possui referência por um grupo
+	 * de acesso.
+	 * 
 	 * @param companhia
+	 *            Companhia
 	 * @param departamentoVO
-	 * @return
+	 *            Departamento
+	 * @return true quando há referência.
 	 */
 	boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
 			DepartamentoVO departamentoVO);

@@ -44,9 +44,13 @@ public interface MotivoDepositoDAO{
 	void excluirLista(List<MotivoDepositoVO> listvo);
 
 	/**
+	 * Verifica se a associação depto x companhia possui referência por um motivo deposito.
+	 * 
 	 * @param companhia
+	 *            Companhia
 	 * @param departamentoVO
-	 * @return
+	 *            Departamento
+	 * @return true quando há referência.
 	 */
 	boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
 			DepartamentoVO departamentoVO);

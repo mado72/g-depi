@@ -55,13 +55,14 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
     	LOGGER.error("Inicio - persistir(DepartamentoCompanhiaVO vo)"); 
 
     	validarIntegridadeBean(vo);
-    	
-		DepartamentoCompanhiaVO persistido = deptoCiaDAO
-				.obterPorCompanhiaSeguradora(vo.getCompanhia());
-		
-		if (persistido != null) {
-			
-		}
+
+//    	FIXME Verificar se este código é necessário
+//		DepartamentoCompanhiaVO persistido = deptoCiaDAO
+//				.obterPorCompanhiaSeguradora(vo.getCompanhia());
+//		
+//		if (persistido != null) {
+//			
+//		}
     	deptoCiaDAO.persistir(vo);
 
     	LOGGER.error("Fim - alterar(DepartamentoVO vo)"); 

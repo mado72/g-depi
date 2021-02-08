@@ -271,6 +271,9 @@ public final class ConstantesDEPI {
 		public static final String ERRO_CADASTRADO_INATIVO = "msg.erro.departamento.inativo_cadastrado";
 	}
 	
+	/**
+	 * Constantes para Departamento Companhia. 
+	 */
 	public static final class DepartamentoCompanhia {
 		public static final String ERRO_PARAMETRODEPOSITO_REFERENCIADO = "msg.erro.departamentocompanhia.parametro";
 		public static final String ERRO_GRUPODEPARTAMENTO_REFERENCIADO = "msg.erro.grupodepartamento.parametro";
