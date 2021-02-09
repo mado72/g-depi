@@ -65,6 +65,11 @@ public class DepartamentoCompanhiaEditarAction extends EditarFormAction<Departam
         return lista;
 	}
 	
+	public String selecionar() {
+		crudHelper.preencherDepartamentos(getModel());
+		return INPUT;
+	}
+	
 	public String refrescar() {
 		DepartamentoCompanhiaEditarFormModel model = getModel();
 		

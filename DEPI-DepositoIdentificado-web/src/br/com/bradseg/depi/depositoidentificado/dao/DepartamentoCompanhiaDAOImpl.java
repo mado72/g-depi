@@ -126,10 +126,10 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
     public void persistir(CompanhiaSeguradoraVO cia,
     		List<DepartamentoVO> associacoes, int codUsuario) {
     	
-    	final Funcao<DepartamentoVO, Integer> extrairCodigo = new Funcao<DepartamentoVO, Integer>() {
+    	final Funcao<DepartamentoVO, String> extrairCodigo = new Funcao<DepartamentoVO, String>() {
     		@Override
-    		public Integer apply(DepartamentoVO source) {
-    			return source.getCodigoDepartamento();
+    		public String apply(DepartamentoVO source) {
+    			return source.getSiglaDepartamento();
     		}
     	};
     	

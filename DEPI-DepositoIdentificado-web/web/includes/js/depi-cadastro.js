@@ -124,6 +124,11 @@ if (typeof String.prototype.trim !== 'function') {
 		return this.replace(/^\s+|\s+$/g, '');
 	};
 }
+if (!Array.isArray) {
+	Array.isArray = function(arg) {
+		return Object.prototype.toString.call(arg) === '[object Array]';
+	};
+}
 
 console.log("depi-cadastro.js");
 
@@ -134,7 +139,17 @@ var fnReady = function ($) {
 	    var indexed_array = {};
 
 	    $.map(unindexed_array, function(n, i){
-	        indexed_array[n['name']] = n['value'];
+	    	var value = n['value'];
+			var name = n['name'];
+			if (indexed_array[name] === undefined) {
+	    		indexed_array[name] = value;
+	    	}
+	    	else {
+	    		if (typeof indexed_array[name] === 'string') {
+	    			indexed_array[name] = [indexed_array[name]];
+	    		}
+	    		indexed_array[name].push(value);
+	    	}
 	    });
 
 	    return indexed_array;
@@ -411,11 +426,11 @@ var fnReady = function ($) {
 			ev.preventDefault();
 			ev.stopPropagation();
 			
-			$("#box_loading").show();
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length == 0) {
 				alert(MENSAGEM['msg.selecao.exclusao']);
 			} else if (confirm(MENSAGEM['msg.confirmacao.exclusao'])) {
+				$("#box_loading").show();
 				var action = jqForm.attr("action");
 				action = action.replace(/\/\w+.do/, "/excluir.do");
 				jqForm.attr("action", action);
@@ -570,7 +585,7 @@ var fnReady = function ($) {
 
 	$.motivoDeposito.prorrogar = function() {
 	    return ($.generico.verificarCheckbox('codigoAutorizador', 'msg.selecao.edicao') 
-	    		&& validarCheckCobs() /* && verificarBoxEdicaoRegras() */
+	    		&& validarCheckCobs()
 	    		&& submitForm('prorrogar', PAGE_CONTEXT + '/deposito/CadastrarDeposito.do'));
 	};
 
@@ -610,16 +625,20 @@ var fnReady = function ($) {
 		$('.companhia-nome-dropbox').append(nomes);
 	};
 	$.grupoacesso.preencherDepartamentos = function(deptos) {
-		var codigos = $(), nomes = $();
-		$('.departamento-codigo-dropbox').find("option").remove();
-		$('.departamento-nome-dropbox').find("option").remove();
+		var codigos = $(), nomes = $(), codDeptoCombo=$('.departamento-codigo-dropbox'), nomDeptoCombo=$('.departamento-nome-dropbox');
+		codDeptoCombo.find("option").remove();
+		nomDeptoCombo.find("option").remove();
 		$(deptos).each(function(i,v){
 			codigos = codigos.add($('<option>', {text: v.siglaDepartamento, value: v.siglaDepartamento}));
 			nomes = nomes.add($("<option>", {value: v.siglaDepartamento, text: v.nomeDepartamento}));
 		});
 		
-		$('.departamento-codigo-dropbox').append(codigos);
-		$('.departamento-nome-dropbox').append(nomes);
+		codDeptoCombo.append(codigos);
+		nomDeptoCombo.append(nomes);
+		
+		// IE 7 tem um bug que faz diminuir a largura da combo, quando altera os options. Código abaixo é para forçar a remodelagem da combo.
+		codDeptoCombo.toggle("w-100", false).toggle("w-100", true);
+		nomDeptoCombo.toggle("w-100", false).toggle("w-100", true);
 	};
 	$.grupoacesso.prepararEditar = function(opcoes) {
 		checkTodos();
@@ -627,13 +646,20 @@ var fnReady = function ($) {
 		$.dpcoddesc.combinar(['.departamento-codigo-dropbox','.departamento-nome-dropbox']);
 		var urlDepto = opcoes.urlDepto;
 		
+		var codCiaDropbox=$('.companhia-codigo-dropbox'), nomCiaDropbox=$('.companhia-nome-dropbox');
+		
+		/**
+		 * Função para carregar departamentos em função da escolha da cia
+		 */
 		var carregarDepartamentos = function() {
 			$("#box_loading").show();
+			// remvove as opções anteriores
 			$('.departamento-codigo-dropbox').find("option").remove().end();
 			$('.departamento-nome-dropbox').find("option").remove().end();
 			
-			var v = $('.companhia-codigo-dropbox').val();
+			var v = codCiaDropbox.val();
 			var url = urlDepto.replace('%d', v);
+			// Consulta Ajax para obter deptos da cia
 			$.ajax({
 				url : url,
 				type : "GET",
@@ -649,15 +675,15 @@ var fnReady = function ($) {
 			});
 		};
 		
-		$('.companhia-codigo-dropbox').change(carregarDepartamentos);
-		$('.companhia-nome-dropbox').change(carregarDepartamentos);
+		codCiaDropbox.change(carregarDepartamentos);
+		nomCiaDropbox.change(carregarDepartamentos);
 		
 		$('.btnRemover').click(function(ev){
 			ev.stopPropagation();
 		
 			var checked = $('input[type="checkbox"][name="codFuncionarios"]:checked');
 			var values = [];
-			$(checked).each(function(i,v){values.push($(v).val())});
+			$(checked).each(function(i,v){values.push($(v).val());});
 			if (values.length) {
 				checked.closest('tr').remove();
 				$(values).each(function(i,v){
@@ -665,7 +691,7 @@ var fnReady = function ($) {
 				});
 			}
 			else {
-				alert('Selecione os registros para excluí-los.')
+				alert(MENSAGEM["msg.selecao.exclusao"]);
 			}
 		});
 
@@ -699,7 +725,7 @@ var fnReady = function ($) {
 			
 			var checked = $('input[type="checkbox"][name="siglaDepartamentos"]:checked');
 			var values = [];
-			$(checked).each(function(i,v){values.push($(v).val())});
+			$(checked).each(function(i,v){values.push($(v).val());});
 			if (values.length) {
 				checked.closest('tr').remove();
 				$(values).each(function(i,v){
@@ -707,7 +733,7 @@ var fnReady = function ($) {
 				});
 			}
 			else {
-				alert('Selecione os registros para excluí-los.')
+				alert(MENSAGEM["msg.selecao.exclusao"]);
 			}
 		});
 		
@@ -743,6 +769,7 @@ var fnReady = function ($) {
 				type : "POST",
 				dataType : "json",
 				data: data,
+				traditional: true,
 				success : function(data) {
 					console.log(data);
 				},
@@ -794,6 +821,7 @@ var fnReady = function ($) {
 				type : "POST",
 				dataType : "json",
 				data: data,
+				traditional: true,
 				success : function(data) {
 					console.log(data);
 				},
@@ -854,10 +882,10 @@ var fnReady = function ($) {
 			$.paginacao.irPara(opcoes, page);
 		});
 
-		pagSel.find('.GoFirst').click(function(){$.paginacao.goFirst(opcoes)});
-		pagSel.find('.GoPrev').click(function(){$.paginacao.goPrev(opcoes)});
-		pagSel.find('.GoNext').click(function(){$.paginacao.goNext(opcoes)});
-		pagSel.find('.GoLast').click(function(){$.paginacao.goLast(opcoes)});
+		pagSel.find('.GoFirst').click(function(){$.paginacao.goFirst(opcoes);});
+		pagSel.find('.GoPrev').click(function(){$.paginacao.goPrev(opcoes);});
+		pagSel.find('.GoNext').click(function(){$.paginacao.goNext(opcoes);});
+		pagSel.find('.GoLast').click(function(){$.paginacao.goLast(opcoes);});
 		pagSel.find('.Continue').hide();
 
 		$.paginacao.goFirst(opcoes);

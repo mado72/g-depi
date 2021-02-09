@@ -1,6 +1,8 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoCompanhiaDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
@@ -48,6 +51,9 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
 	private DepartamentoCompanhiaDAO deptoCiaDAO;
 	
 	@Autowired
+	private DepartamentoDAO departamentoDAO;
+	
+	@Autowired
 	private ParametroDepositoDAO parametroDepositoDAO;
 	
 	@Autowired
@@ -63,6 +69,28 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
 	public void persistir(CompanhiaSeguradoraVO cia, List<DepartamentoVO> deptos, Integer codUsuario) {
     	LOGGER.error("Inicio - persistir(DepartamentoCompanhiaVO vo)"); 
 
+    	// Obtém as instâncias de Departamento que estão sem código (apenas siglas)
+    	
+    	List<String> siglas = new ArrayList<>();
+    	
+    	// Se não possui código, guarda a sigla para consultar base de dados e remove a instância de Departamento da lista
+    	
+    	for (Iterator<DepartamentoVO> iter = deptos.iterator(); iter.hasNext(); ) {
+    		DepartamentoVO vo = iter.next();
+			if (vo.getCodigoDepartamento() < 1) {
+				iter.remove();
+				siglas.add(vo.getSiglaDepartamento());
+			}
+		}
+    	
+    	if (! siglas.isEmpty()) {
+    		
+    		// Com a lista de siglas, recupera as instâncias de departamento para adicionar novamente à lista de deptos.
+    		List<DepartamentoVO> deptosBase = departamentoDAO.obterDeListaSiglas(siglas);
+    		deptos.addAll(deptosBase);
+    		
+    	}
+    	
     	deptoCiaDAO.persistir(cia, deptos, codUsuario);
 
     	LOGGER.error("Fim - alterar(DepartamentoVO vo)"); 
@@ -206,4 +234,11 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
             ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, ConstantesDEPI.Geral.ERRO_USUARIO_OBRIGATORIO);
     }
     
+    /* (non-Javadoc)
+     * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoCompanhiaFacade#obterDepartamentos(java.util.ArrayList)
+     */
+    @Override
+    public List<DepartamentoVO> obterDepartamentos(ArrayList<String> siglas) {
+    	return departamentoDAO.obterDeListaSiglas(siglas);
+    }
 }

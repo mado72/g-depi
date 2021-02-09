@@ -188,7 +188,7 @@ button.btn-img {
 	cursor: auto;
 }
 
-#tabela_interna .Funcionario {
+.tblFuncionario table, .tblDepartamento table {
     background-color: white;
     border: 0;
     margin: 0px auto 10px;

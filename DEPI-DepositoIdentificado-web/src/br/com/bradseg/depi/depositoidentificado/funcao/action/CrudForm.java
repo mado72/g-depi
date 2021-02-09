@@ -29,6 +29,10 @@ public abstract class CrudForm implements Serializable {
 		return this.estado == EstadoCrud.EXIBIR;
 	}
 	
+	public boolean isDesabiltarChave() {
+		return this.estado != EstadoCrud.INSERIR;
+	}
+	
 	/**
 	 * Retorna Estado
 	 * @return estado corrente

@@ -497,6 +497,24 @@
 		<action name="*" method="{1}"/>
 
 	</package>
+
+	<package name="filtroDeptoCia" namespace="/filtro/departamento-companhia/consultar" extends="depi-default">
+	
+		<default-class-ref class="departamentoConsultarAction" />
+		
+		<global-results>
+			<result name="success">/WEB-INF/pages/pt_BR/filtro/departamento.jsp</result>
+			<result name="input">/WEB-INF/pages/pt_BR/filtro/departamento.jsp</result>
+		</global-results>
+
+		<action name="index">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+		
+		<action name="*" method="{1}"/>
+
+	</package>
 	
     <!-- RELATORIOS -->
     

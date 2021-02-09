@@ -3,7 +3,7 @@
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<table id="tabela_interna" class="sortable Funcionario Consulta">
+<table id="tabela_interna" class="sortable Departamento Consulta">
 	<thead>
 		<tr>
 		<th class="selecao center" style="width:5%">
@@ -15,7 +15,7 @@
 			<s:text name="label.grid.departamento.siglaDepartamento"/>
 		</th>
 		<th class="nome" style="width:70%">
-			<s:text name="label.grid.departamento.descricaoDepartamento"/>
+			<s:text name="label.grid.departamentocompanhia.nomeDepartamento"/>
 		</th>
 		</tr>
 	</thead>

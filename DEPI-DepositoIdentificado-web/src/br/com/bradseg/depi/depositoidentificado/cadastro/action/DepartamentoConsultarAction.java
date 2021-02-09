@@ -26,9 +26,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 @Scope("session")
 public class DepartamentoConsultarAction extends FiltroAction<DepartamentoCampo, FiltroConsultarForm<DepartamentoCampo>> {
 
-	/**
-	 * 
-	 */
 	private static final String LABEL_GRID_DEPARTAMENTO_SIGLA_DEPARTAMENTO = "%enum.DepartamentoCampo.Sigla%";
 
 	private static final String LABEL_GRID_DEPARTAMENTO_NOME_DEPARTAMENTO = "%enum.DepartamentoCampo.Nome%";
@@ -38,6 +35,8 @@ public class DepartamentoConsultarAction extends FiltroAction<DepartamentoCampo,
 	private static final long serialVersionUID = -7675543657126275320L;
 	
 	private transient DepartamentoCrudHelper filtroHelper;
+	
+	private String action;
 	
 	@Override
 	protected CrudHelper<DepartamentoCampo, ?, ?> getFiltroHelper() {
@@ -96,6 +95,22 @@ public class DepartamentoConsultarAction extends FiltroAction<DepartamentoCampo,
 					Geral.ERRO_CAMPO_EXCESSO,
 					LABEL_GRID_DEPARTAMENTO_NOME_DEPARTAMENTO, "40"));
 		}
+	}
+	
+	/**
+	 * Retorna action
+	 * @return o action
+	 */
+	public String getAction() {
+		return action;
+	}
+	
+	/**
+	 * Define action
+	 * @param action valor action a ser definido
+	 */
+	public void setAction(String action) {
+		this.action = action;
 	}
 
 }

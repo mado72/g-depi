@@ -3,7 +3,10 @@ package br.com.bradseg.depi.depositoidentificado.cadastro.helper;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+
+import org.springframework.util.CollectionUtils;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoCompanhiaEditarFormModel;
@@ -157,7 +160,7 @@ public class DepartamentoCompanhiaCrudHelper implements
 	public EstadoRegistro persistirDados(DepartamentoCompanhiaEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 		
-		String codigo = model.getCodigo();
+		String[] codigos = model.getCodigo().split(";");
 		boolean novo = model.getEstado() == EstadoCrud.INSERIR;
 		
 		int codUsuario = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
@@ -166,10 +169,10 @@ public class DepartamentoCompanhiaCrudHelper implements
 		ArrayList<DepartamentoVO> deptos = new ArrayList<>(siglaDepartamentos.size());
 		
 		for (String sigla : siglaDepartamentos) {
-			deptos.add(new DepartamentoVO());
+			deptos.add(new DepartamentoVO(sigla));
 		}
 		
-		CompanhiaSeguradoraVO cia = new CompanhiaSeguradoraVO(Integer.parseInt(codigo));
+		CompanhiaSeguradoraVO cia = new CompanhiaSeguradoraVO(Integer.parseInt(codigos[0]));
 		
 		facade.persistir(cia, deptos, codUsuario);
 		
@@ -184,6 +187,49 @@ public class DepartamentoCompanhiaCrudHelper implements
 			throws DEPIIntegrationException {
 		
 		facade.excluir(voList);
+	}
+
+	/**
+	 * Acrescenta à lista de departamentos aqueles que estão no código 
+	 * @param model Dados do formulário
+	 */
+	public void preencherDepartamentos(
+			DepartamentoCompanhiaEditarFormModel model) {
+		
+		if (CollectionUtils.isEmpty(model.getSiglaDepartamentos())) {
+			return;
+		}
+		
+		ArrayList<String> siglas = new ArrayList<>(model.getSiglaDepartamentos());
+		
+		// pega os departamentos já registrados no model, garantindo manipular lista variável
+		List<DepartamentoVO> deptos = model.getDeptos();
+		if (deptos == null) {
+			deptos = new ArrayList<>();
+		}
+		else {
+			deptos = new ArrayList<>(deptos);
+		}
+		
+		// mapeia os funcionários por seu código
+		LinkedHashMap<String, DepartamentoVO> mapSigla = new LinkedHashMap<>();
+		for (DepartamentoVO vo: deptos) {
+			String sigla = vo.getSiglaDepartamento();
+			mapSigla.put(sigla, vo);
+			// remove da lista aqueles que já foram recuperados
+			siglas.remove(sigla);
+		}
+		
+		if (! siglas.isEmpty()) {
+			// recupera apenas os departamentos que não foram recuperados
+			List<DepartamentoVO> lista = facade.obterDepartamentos(siglas);
+			deptos.addAll(lista);
+			
+			model.setDeptos(deptos);
+			
+			// limpa os registros para evitar duplo caregamento.
+			model.getSiglaDepartamentos().clear();
+		}
 	}
 
 }
