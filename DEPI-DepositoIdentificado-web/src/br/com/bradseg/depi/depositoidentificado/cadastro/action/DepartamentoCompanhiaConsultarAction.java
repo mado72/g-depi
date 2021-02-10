@@ -57,7 +57,7 @@ public class DepartamentoCompanhiaConsultarAction extends FiltroAction<Departame
 	}
 	
 	/**
-	 * Sobreescreve o método para forçar a consulta com os critérios já registrados.
+	 * Sobrescreve o método para forçar a consulta com os critérios já registrados.
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction#validateRefrescar()
 	 */
 	@Override
@@ -67,7 +67,7 @@ public class DepartamentoCompanhiaConsultarAction extends FiltroAction<Departame
 	}
 	
 	/**
-	 * Sobreecreve método para impedir que se limpe as mensagens.
+	 * Sobrescreve método para impedir que se limpe as mensagens.
 	 * @return success
 	 */
 	@Override
