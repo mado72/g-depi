@@ -28,7 +28,8 @@ public interface DepartamentoCompanhiaDAO {
 	List<DepartamentoCompanhiaVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO companhia);
 
 	/**
-	 * Persiste associações Companhia x Departamentos
+	 * Persiste associações Companhia x Departamentos. Este DAO não faz exclusões dos departamentos
+	 * que já foram inseridos anteriormente e não participam da lista de associações atuais.
 	 * @param cia Companhia
 	 * @param associacoes Lista de departamentos da associação
 	 * @param codUsuario Código do usuário responsável

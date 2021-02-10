@@ -1,6 +1,5 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
@@ -72,6 +71,12 @@ public interface DepartamentoCompanhiaFacade {
 	 * @param siglas Siglas
 	 * @return Lista
 	 */
-	public List<DepartamentoVO> obterDepartamentos(ArrayList<String> siglas);
+	public List<DepartamentoVO> obterDepartamentos(List<String> siglas);
+
+	/**
+	 * Obter lista de companhias
+	 * @return lista
+	 */
+	public List<CompanhiaSeguradoraVO> obterCompanhias();
 
 }

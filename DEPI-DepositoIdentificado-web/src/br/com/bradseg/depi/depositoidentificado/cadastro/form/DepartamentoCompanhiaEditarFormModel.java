@@ -19,6 +19,8 @@ public class DepartamentoCompanhiaEditarFormModel extends CrudForm {
 	private List<DepartamentoVO> deptos = new ArrayList<>();
 	
 	private List<String> siglaDepartamentos = new ArrayList<>();
+	
+	private String codCompanhia;
 
 	@Override
 	public void limparDados() {
@@ -80,6 +82,22 @@ public class DepartamentoCompanhiaEditarFormModel extends CrudForm {
 	 */
 	public void setSiglaDepartamentos(List<String> siglaDepartamentos) {
 		this.siglaDepartamentos = siglaDepartamentos;
+	}
+	
+	/**
+	 * Retorna codCompanhia
+	 * @return o codCompanhia
+	 */
+	public String getCodCompanhia() {
+		return codCompanhia;
+	}
+	
+	/**
+	 * Define codCompanhia
+	 * @param codCompanhia valor codCompanhia a ser definido
+	 */
+	public void setCodCompanhia(String codCompanhia) {
+		this.codCompanhia = codCompanhia;
 	}
 	
 }

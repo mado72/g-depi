@@ -6,6 +6,7 @@
 <s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
 <s:form action="salvar" id="AcaoForm">
 <input name="codigo" type="hidden" value="${codigo.isEmpty() ? '' : codigo }">
+<input name="estado" type="hidden" value="${estado}">
 	<table id="tabela_interna">
 	<caption>
 		<span class="obrigatorio"><s:text name="label.campos.obrigatorios" /></span>

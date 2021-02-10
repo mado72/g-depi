@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoCompanhiaEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepartamentoCompanhiaCrudHelper;
@@ -46,19 +47,23 @@ public class DepartamentoCompanhiaEditarAction extends EditarFormAction<Departam
 
 	@Override
 	protected List<DepartamentoCompanhiaVO> mapearListaVO(String[] codigosCompostos) {
+		
+		LoginVo usuarioLogado = getUsuarioLogado();
+		Integer codUsuario = new Integer(usuarioLogado.getId());
+		
         List<DepartamentoCompanhiaVO> lista = new ArrayList<>();
         
         for (String item: codigosCompostos) {
         	String[] codigos = item.split(";");
         	
         	DepartamentoCompanhiaVO vo = new DepartamentoCompanhiaVO();
+        	vo.setCodigoResponsavelUltimaAtualizacao(codUsuario);
             vo.setCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(codigos[0])));
             
             if (codigos.length == 2) {
             	vo.setDepartamento(new DepartamentoVO(Integer.parseInt(codigos[1])));
             }
             
-            // vo = crudHelper.obterPorChave(vo);
             lista.add(vo);
         }
         
@@ -84,6 +89,19 @@ public class DepartamentoCompanhiaEditarAction extends EditarFormAction<Departam
 		}
 
 		return "json";
+	}
+	
+	@Override
+	public String incluir() {
+		String retorno = super.incluir();
+		preencherListaCompanhia();
+		return retorno;
+	}
+
+	private void preencherListaCompanhia() {
+		DepartamentoCompanhiaEditarFormModel model = getModel();
+		List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias();
+		model.setCias(cias);		
 	}
 
 }

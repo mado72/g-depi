@@ -66,7 +66,7 @@
  	</tbody>
 </table>
 <div class="paginacao"></div>
-
+<c:set var="ocultarAlterar" value="true" scope="request"/>
 <s:include value="/WEB-INF/pages/pt_BR/comum/incluir-alterar-excluir.jsp"></s:include>
 </form>
 <br/>

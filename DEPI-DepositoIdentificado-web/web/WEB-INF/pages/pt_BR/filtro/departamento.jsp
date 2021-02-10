@@ -34,8 +34,6 @@
 
 <div ${AcaoFormStyle}>
 <form action="${action}" id="AcaoForm" method="post" target="_opener">
-<input type="hidden" name="codCompanhia" value="${codCompanhia}"/>
-<input type="hidden" name="siglaDepartamento" value="${siglaDepartamento}"/>
 <c:set var="deptos" value="${colecaoDados}" scope="request"/>
 <s:include value="/WEB-INF/pages/pt_BR/filtro/tblDepartamento.jsp"/>
 <div class="paginacao"></div>

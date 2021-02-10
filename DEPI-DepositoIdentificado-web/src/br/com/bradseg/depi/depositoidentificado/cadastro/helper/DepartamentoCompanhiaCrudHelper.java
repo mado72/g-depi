@@ -160,9 +160,6 @@ public class DepartamentoCompanhiaCrudHelper implements
 	public EstadoRegistro persistirDados(DepartamentoCompanhiaEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 		
-		String[] codigos = model.getCodigo().split(";");
-		boolean novo = model.getEstado() == EstadoCrud.INSERIR;
-		
 		int codUsuario = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
 		
 		List<String> siglaDepartamentos = model.getSiglaDepartamentos();
@@ -171,8 +168,17 @@ public class DepartamentoCompanhiaCrudHelper implements
 		for (String sigla : siglaDepartamentos) {
 			deptos.add(new DepartamentoVO(sigla));
 		}
-		
-		CompanhiaSeguradoraVO cia = new CompanhiaSeguradoraVO(Integer.parseInt(codigos[0]));
+
+		boolean novo = model.getEstado() == EstadoCrud.INSERIR;
+
+		final CompanhiaSeguradoraVO cia;
+		if (model.getCodCompanhia() != null && ! model.getCodCompanhia().isEmpty()) {
+			cia = new CompanhiaSeguradoraVO(Integer.parseInt(model.getCodCompanhia()));
+		}
+		else {
+			String[] codigos = model.getCodigo().split(";");
+			cia = new CompanhiaSeguradoraVO(Integer.parseInt(codigos[0]));
+		}
 		
 		facade.persistir(cia, deptos, codUsuario);
 		
@@ -230,6 +236,14 @@ public class DepartamentoCompanhiaCrudHelper implements
 			// limpa os registros para evitar duplo caregamento.
 			model.getSiglaDepartamentos().clear();
 		}
+	}
+
+	/**
+	 * Obtém lista de companhias 
+	 * @return Lista
+	 */
+	public List<CompanhiaSeguradoraVO> obterCompanhias() {
+		return facade.obterCompanhias();
 	}
 
 }

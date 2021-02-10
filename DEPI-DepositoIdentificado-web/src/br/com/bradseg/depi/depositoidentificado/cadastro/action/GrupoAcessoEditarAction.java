@@ -125,9 +125,6 @@ public class GrupoAcessoEditarAction
 		return "json";
 	}
 
-	/**
-	 * 
-	 */
 	private void preencherListaCompanhia() {
 		GrupoAcessoEditarFormModel model = getModel();
 		List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias();

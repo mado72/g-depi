@@ -26,7 +26,6 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
-import br.com.bradseg.depi.depositoidentificado.vo.CodigoIndicativoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
@@ -375,11 +374,10 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     	params.addValue(WHR2, companhia.getCodigoCompanhia());
     	
 		try {
-			CodigoIndicativoVO vo = getJdbcTemplate().queryForObject(
-					QuerysDepi.GRUPOACESSO_EXISTS, params,
-					new GrupoAcessoDataMapper.CodigoIndicativo());
+			Boolean exists = getJdbcTemplate().queryForObject(
+					QuerysDepi.GRUPOACESSO_EXISTS, params, Boolean.class);
 			
-			return vo.getIndicativo().equals(ConstantesDEPI.INDICADOR_ATIVO);
+			return exists;
 			
 		} catch (EmptyResultDataAccessException e) {
 			return false;

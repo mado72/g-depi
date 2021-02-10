@@ -364,6 +364,7 @@ var fnReady = function ($) {
 		var criterios = jqRecipiente.find("option");
 		if (criterios.length == 0) {
 			if (! window.confirm(MENSAGEM["msg.confirmacao.consulta"])) {
+				ev.preventDefault();
 				ev.stopPropagation();
 				return;
 			};
@@ -637,8 +638,8 @@ var fnReady = function ($) {
 		nomDeptoCombo.append(nomes);
 		
 		// IE 7 tem um bug que faz diminuir a largura da combo, quando altera os options. Código abaixo é para forçar a remodelagem da combo.
-		codDeptoCombo.toggle("w-100", false).toggle("w-100", true);
-		nomDeptoCombo.toggle("w-100", false).toggle("w-100", true);
+		codDeptoCombo.toggleClass("w-100", false).toggleClass("w-100", true);
+		nomDeptoCombo.toggleClass("w-100", false).toggleClass("w-100", true);
 	};
 	$.grupoacesso.prepararEditar = function(opcoes) {
 		checkTodos();

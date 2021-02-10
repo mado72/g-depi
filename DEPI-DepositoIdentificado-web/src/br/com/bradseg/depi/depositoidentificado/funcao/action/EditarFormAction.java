@@ -90,7 +90,6 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	public String incluir() {
 		LOGGER.debug("Preparando formulário para inclusão de um novo registro");
 
-		this.model.limparDados();
 		this.model.setEstado(EstadoCrud.INSERIR);
 		this.model.setSubtitulo(getText(getCrudHelper().getChaveTituloIncluir()));
 		
@@ -138,7 +137,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 		} catch (Exception e) {
 			addActionError(e.getMessage());
 			LOGGER.error("Erro ao excluir registros", e);
-			return INPUT;
+			return SUCCESS;
 		}
 	}
 	
