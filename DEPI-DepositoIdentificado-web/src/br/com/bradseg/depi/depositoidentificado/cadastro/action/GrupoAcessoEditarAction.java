@@ -116,13 +116,15 @@ public class GrupoAcessoEditarAction
 				iter.remove();
 			}
 		}
+		
+		List<DepartamentoVO> deptos = model.getDeptos();
+		for (DepartamentoVO vo : deptos) {
+			vo.setDeposito(null);
+		}
 
 		return "json";
 	}
 
-	/**
-	 * 
-	 */
 	private void preencherListaCompanhia() {
 		GrupoAcessoEditarFormModel model = getModel();
 		List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias();

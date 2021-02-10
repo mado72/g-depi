@@ -126,10 +126,10 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
     public void persistir(CompanhiaSeguradoraVO cia,
     		List<DepartamentoVO> associacoes, int codUsuario) {
     	
-    	final Funcao<DepartamentoVO, Integer> extrairCodigo = new Funcao<DepartamentoVO, Integer>() {
+    	final Funcao<DepartamentoVO, String> extrairCodigo = new Funcao<DepartamentoVO, String>() {
     		@Override
-    		public Integer apply(DepartamentoVO source) {
-    			return source.getCodigoDepartamento();
+    		public String apply(DepartamentoVO source) {
+    			return source.getSiglaDepartamento();
     		}
     	};
     	
@@ -139,50 +139,15 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
     	List<DepartamentoVO> deptosPersistidos = getJdbcTemplate()
     			.query(QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERDEPARTAMENTOS_PORCOMPANHIA,
     					params, new DepartamentoDataMapper());
-    	
-    	List<DepartamentoVO> paraRemover = BaseUtil.obterItensSemIntersecao(
-    			deptosPersistidos, associacoes, extrairCodigo);
+
     	List<DepartamentoVO> paraSalvar = BaseUtil.obterItensSemIntersecao(
     			associacoes, deptosPersistidos, extrairCodigo);
 
-		for (DepartamentoVO departamentoVO : paraRemover) {
-			queryDesalocar(cia, departamentoVO, codUsuario);
-		}
-		
     	for (DepartamentoVO departamentoVO : paraSalvar) {
 			queryAlocarOuRealocar(cia, departamentoVO, codUsuario);
 		}
     }
 	
-	/**
-	 * Desativa registro da associação depto x cia
-	 * @param cia Companhia
-	 * @param departamentoVO Departamento
-	 * @param codUsuario Responsável
-	 */
-	private void queryDesalocar(CompanhiaSeguradoraVO cia,
-			DepartamentoVO departamentoVO, Integer codUsuario) {
-		
-		int codigoCompanhia = cia.getCodigoCompanhia();
-		int codigoDepartamento = departamentoVO.getCodigoDepartamento();
-
-		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue(PRM1, codUsuario);
-		params.addValue(WHR1, codigoDepartamento);
-		params.addValue(WHR2, codigoCompanhia);
-		
-		int count = getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_INATIVAR,
-				params);
-		
-		if (count == 0) {
-			throw new DEPIIntegrationException(
-					ConstantesDEPI.DepartamentoCompanhia.ERRO_NAOCONCLUIDO,
-					"excluir",
-					String.valueOf(codigoDepartamento),
-					String.valueOf(codigoCompanhia));
-		}
-	}
-
 	/**
 	 * Ativa ou cria associação Depto x Cia
 	 * @param cia Companhia

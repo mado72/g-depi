@@ -40,7 +40,7 @@
 			</td>
 			<td colspan="2">
 				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
-				<s:select list="deptos" value="nomeDepartamento" listValue="nomeDepartamento" listKey="siglaDepartamento" 
+				<s:select list="deptos" value="siglaDepartamento" listValue="nomeDepartamento" listKey="siglaDepartamento" 
 					cssClass="dropbox w-100 departamento-nome-dropbox" disabled="%{codigoGrupoAcesso gt 0}"/>
 			</td>
 		</tr>

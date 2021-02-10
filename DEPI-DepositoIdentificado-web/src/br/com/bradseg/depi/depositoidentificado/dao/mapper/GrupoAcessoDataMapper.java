@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import br.com.bradseg.depi.depositoidentificado.vo.CodigoIndicativoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
@@ -37,29 +36,6 @@ public class GrupoAcessoDataMapper implements RowMapper<GrupoAcessoVO> {
         grupoAcessoVO.setDataHoraAtualizacao(rs.getTimestamp("DHORA_ULT_ATULZ"));
 
 		return grupoAcessoVO;
-	}
-	
-	/**
-	 * Mapeia o resultado de uma query que recupera apenas o código e o
-	 * indicativo do Grupo.
-	 */
-	public static class CodigoIndicativo implements RowMapper<CodigoIndicativoVO> {
-
-		/* (non-Javadoc)
-		 * @see org.springframework.jdbc.core.RowMapper#mapRow(java.sql.ResultSet, int)
-		 */
-		@Override
-		public CodigoIndicativoVO mapRow(ResultSet rs, int rowNum)
-				throws SQLException {
-			
-			CodigoIndicativoVO vo = new CodigoIndicativoVO();
-			
-			vo.setCodigo(rs.getInt("CGRP_DEPTO_DEP"));
-			vo.setIndicativo(rs.getString("CIND_REG_ATIVO"));
-			
-			return vo;
-		}
-		
 	}
 
 }

@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -88,6 +89,7 @@ public class DepartamentoVO implements Serializable {
 	 */
     private Date ultimaAtualizacao;
     
+    @JsonIgnore
     private DepositoVO deposito;
     
     /**

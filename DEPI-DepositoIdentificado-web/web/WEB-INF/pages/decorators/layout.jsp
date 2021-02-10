@@ -58,7 +58,7 @@
 					<tbody>
 						<tr>
 							<td><ul><s:iterator value="actionMessages">
-								<li><s:property /></li>
+								<li><s:property escapeHtml="false"/></li>
 							</s:iterator></ul></td>
 						</tr>
 					</tbody>
@@ -71,7 +71,7 @@
 					<tbody>
 						<tr>
 							<td><ul><s:iterator value="fieldErrors">
-								<li><s:property value="value[0]" /></li>
+								<li><s:property escapeHtml="false" value="value[0]" /></li>
 							</s:iterator></ul></td>
 						</tr>
 					</tbody>
@@ -83,7 +83,7 @@
 				<table class="tabela_verm" id="msgErros">
 					<tbody>
 						<tr>
-							<td><ul><s:actionerror/></ul></td>
+							<td><ul><s:actionerror escape="false"/></ul></td>
 						</tr>
 					</tbody>
 				</table>

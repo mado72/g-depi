@@ -414,6 +414,17 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		
 		return null;
 	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO#obterDeListaSiglas(java.util.List)
+	 */
+	@Override
+	public List<DepartamentoVO> obterDeListaSiglas(List<String> siglas) {
+		MapSqlParameterSource params = new MapSqlParameterSource(PARAM_WHR1, siglas);
+		
+		return getJdbcTemplate().query(QuerysDepi.DEPARTAMENTO_OBTERPORSIGLAS,
+				params, new DepartamentoDataMapper());
+	}
 
     private void queryAtivar(DepartamentoVO vo) {
 		MapSqlParameterSource paramsIns = new MapSqlParameterSource();

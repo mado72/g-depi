@@ -67,5 +67,11 @@ public interface DepartamentoDAO {
 	DepartamentoVO obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo,
 			DepartamentoVO deptoVO);
 
+	/**
+	 * Busca os departamentos que correspondem a uma lista de siglas
+	 * @param siglas Lista de Siglas
+	 * @return Lista de departamentos
+	 */
+	List<DepartamentoVO> obterDeListaSiglas(List<String> siglas);
 
 }

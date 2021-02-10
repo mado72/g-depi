@@ -2,10 +2,11 @@
 	taglib prefix="depi" uri="/depi-tags" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:url value="/cadastro/grupo-acesso" var="namespaceBase" scope="request"/>
+<c:url value="/cadastro/departamento-companhia" var="namespaceBase" scope="request"/>
 <s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
 <s:form action="salvar" id="AcaoForm">
 <input name="codigo" type="hidden" value="${codigo.isEmpty() ? '' : codigo }">
+<input name="estado" type="hidden" value="${estado}">
 	<table id="tabela_interna">
 	<caption>
 		<span class="obrigatorio"><s:text name="label.campos.obrigatorios" /></span>
@@ -17,17 +18,17 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td class="td_label" width="8%" ><s:text name="label.cadastro.departamentocompanhia.cia" /><span class="obrigatorio">*</span>
+			<td class="td_label" width="8%" ><s:text name="label.cadastro.departamentocompanhia.companhia" /><span class="obrigatorio">*</span>
 			</td>
 			<td width="10%">
 				<s:select list="cias" value="codCompanhia" listValue="codigoCompanhia" 
 					listKey="codigoCompanhia" cssClass="dropbox w-100 companhia-codigo-dropbox" name="codCompanhia"
-					disabled="%{codigoCompanhia gt 0}"/>
+					disabled="desabiltarChave"/>
 			</td>
 			<td colspan="2" width="82%">
 				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
 				<s:select list="cias" value="codCompanhia" listValue="descricaoCompanhia" listKey="codigoCompanhia" 
-					cssClass="dropbox w-100 companhia-nome-dropbox" disabled="%{codigoCompanhia gt 0}"/>
+					cssClass="dropbox w-100 companhia-nome-dropbox" disabled="desabiltarChave"/>
 			</td>
 		</tr>
 		<tr>

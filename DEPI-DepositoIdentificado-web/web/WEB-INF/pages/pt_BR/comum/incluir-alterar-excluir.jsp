@@ -9,7 +9,7 @@
 			<td align="center">
 				<div id="tabela_botoes"><c:url var="btnIncluirUrl" value="${namespaceBase}/incluir.do"/>
 					<button class="abtn btnIncluir" id="BtnIncluirRodape" href="${btnIncluirUrl}"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.gif"/>"></button>
-					<button class="abtn" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></button>
+					<c:if test="${! ocultarAlterar}"><button class="abtn" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></button></c:if>
 					<button class="abtn" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></button>
 				</div>
 			</td>

@@ -100,6 +100,9 @@ public final class ConstantesDEPI {
 	public static final String ERRO_REGISTRO_DEP_COMP_JA_CADASTRADO = "msg.erro.departamentocompanhia.registrojacadastrado";
 	public static final String ERRO_PERMISAO_TABELA = "msg.erro.permisaoTabela";
 
+	public static final String ERRO_EXCLUSAO = "msg.erro.exclusao";
+	public static final String ERRO_EXCLUSAO_ITEM = "msg.erro.exclusao.item";
+
 	/**
 	 * ConstantesDEPI Dao
 	 */

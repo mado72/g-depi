@@ -66,4 +66,17 @@ public interface DepartamentoCompanhiaFacade {
 	void excluir(List<DepartamentoCompanhiaVO> ciaVOList)
 			throws IntegrationException;
 
+	/**
+	 * Lista os departamentos a partir de uma lista de siglas
+	 * @param siglas Siglas
+	 * @return Lista
+	 */
+	public List<DepartamentoVO> obterDepartamentos(List<String> siglas);
+
+	/**
+	 * Obter lista de companhias
+	 * @return lista
+	 */
+	public List<CompanhiaSeguradoraVO> obterCompanhias();
+
 }
