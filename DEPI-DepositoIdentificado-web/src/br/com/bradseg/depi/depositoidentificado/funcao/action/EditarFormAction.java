@@ -47,25 +47,45 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	protected abstract CrudHelper<C, VO, F> getCrudHelper();
 	
 	public void validateExibir() {
-		LOGGER.debug("Validando exibir");
+		LOGGER.info("Validando exibir");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		clearErrorsAndMessages();
 	}
 	
 	public void validateIncluir() {
-		LOGGER.debug("Validando incluir. Tem erros: {}", hasErrors());
+		LOGGER.info("Validando incluir. Tem erros: {}", hasErrors());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		this.model.limparDados();
 		clearErrorsAndMessages();
 	}
 	
 	public void validateAlterar() {
-		LOGGER.debug("Validando alterar. Tem erros: {}", hasErrors());
+		LOGGER.info("Validando alterar. Tem erros: {}", hasErrors());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		clearErrorsAndMessages();
 	}
 	
 	public void validateExcluir() {
 		LOGGER.debug("Validando excluir. Tem erros: {}", hasErrors());
-		clearActionErrors();
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		// não limpa mensagens de erro de campo 
+		clearActionErrors();
+	}
+	
+	public void validateRefrescar() {
+		LOGGER.debug("Validando refrescar. Tem erros: {}", hasErrors());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
+		
 	}
 	
 	/**

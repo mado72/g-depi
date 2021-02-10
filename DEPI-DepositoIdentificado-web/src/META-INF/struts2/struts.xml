@@ -267,6 +267,16 @@
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/deptocia/deptocia.jsp</param>
 			</result>
 		</action>
+		
+		<action name="refrescar" method="refrescar">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/deptocia/deptocia.jsp</param>
+			</result>
+		</action>
         
 		<action name="*" method="{1}">
 			<interceptor-ref name="store">
@@ -311,7 +321,7 @@
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
 			<result name="success" type="redirectAction">
-			    <param name="actionName">listar</param>
+			    <param name="actionName">refrescar</param>
 			    <param name="namespace">/cadastro/departamento-companhia/consultar</param>
 			</result>
         </action>

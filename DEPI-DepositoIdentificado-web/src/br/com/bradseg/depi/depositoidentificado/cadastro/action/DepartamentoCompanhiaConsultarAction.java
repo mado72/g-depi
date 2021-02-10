@@ -56,6 +56,25 @@ public class DepartamentoCompanhiaConsultarAction extends FiltroAction<Departame
 		filtroHelper.setFacade(facade);
 	}
 	
+	/**
+	 * Sobreescreve o método para forçar a consulta com os critérios já registrados.
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction#validateRefrescar()
+	 */
+	@Override
+	public void validateRefrescar() {
+		// Sobreescreve para não limpar as mensagens e refaz a consulta.
+		super.realizarConsulta();
+	}
+	
+	/**
+	 * Sobreecreve método para impedir que se limpe as mensagens.
+	 * @return success
+	 */
+	@Override
+	public String refrescar() {
+		return SUCCESS;
+	}
+	
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction#validarCriterio(br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO)
 	 */
@@ -120,7 +139,5 @@ public class DepartamentoCompanhiaConsultarAction extends FiltroAction<Departame
 					LABEL_DEPARTAMENTO_NOME, "40"));
 		}
 	}
-	
-	
 
 }
