@@ -1,10 +1,16 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.helper;
 
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
+import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
@@ -24,6 +30,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
  */
 public class DepartamentoCrudHelper implements
 		CrudHelper<DepartamentoCampo, DepartamentoVO, DepartamentoEditarFormModel> {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoCrudHelper.class);
 	
 	private transient DepartamentoFacade facade;
 	
@@ -82,13 +90,36 @@ public class DepartamentoCrudHelper implements
 	public List<DepartamentoVO> processarCriterios(
 			List<CriterioConsultaVO<DepartamentoCampo>> criterios) {
 
-		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);
-		aux.add(new CriterioConsultaVO<DepartamentoCampo>("CIND_REG_ATIVO = 'S'"));
-		
-		FiltroUtil filtro = new FiltroUtil();
-		filtro.setCriterios(aux);
-		
-		return facade.obterPorFiltro(filtro);
+		try {
+			ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);
+			aux.add(new CriterioConsultaVO<DepartamentoCampo>("CIND_REG_ATIVO = 'S'"));
+			
+			FiltroUtil filtro = new FiltroUtil();
+			filtro.setCriterios(aux);
+			
+			return facade.obterPorFiltro(filtro);
+		} catch (IntegrationException e) {
+			if (e.getCause() instanceof DataIntegrityViolationException) {
+				DataIntegrityViolationException dataE = (DataIntegrityViolationException) e
+						.getCause();
+				if (dataE.getCause() instanceof SQLDataException) {
+					SQLDataException sqlE = (SQLDataException) dataE.getCause();
+					if (sqlE.getSQLState().contains("22001")) {
+						LOGGER.error(
+								"Falha ao processar criterios de consulta. Parâmetro inválido. SQLSTATE=22001",
+								e);
+						throw new DEPIIntegrationException(sqlE,
+								"erro.SQLSTATE.22001");
+					}
+				}
+			}
+			
+			LOGGER.error("Falha ao processar criterios de consulta", e);
+			throw new DEPIIntegrationException(e);
+			
+		} catch (Exception e) {
+			throw new DEPIIntegrationException(e);
+		}
 	}
 
 	// Métodos para o CRUD

@@ -16,7 +16,7 @@ public enum DepartamentoCampo implements IEntidadeCampo {
     /**
      * Código
      */
-    Codigo(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, TipoCampo.NUM, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    Codigo(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, TipoCampo.NUM, 3),
     /**
      * Sigla
      */
@@ -24,7 +24,7 @@ public enum DepartamentoCampo implements IEntidadeCampo {
     /**
      * Nome
      */
-    Nome("IDEPTO_DEP_IDTFD", TipoCampo.ALFA_OBRIG, ConstantesDEPI.SIZE_NAO_DEFINIDO), 
+    Nome("IDEPTO_DEP_IDTFD", TipoCampo.ALFA_OBRIG, 40), 
     
     /**
      * Ativo 
@@ -82,7 +82,7 @@ public enum DepartamentoCampo implements IEntidadeCampo {
      * Obter por nome.
      * @param nome Campo no banco.
      * @return DepartamentoCampo.
-     * @throws DEPIIntegrationException - Integra��o.
+     * @throws DEPIIntegrationException - Integração.
      */
     public static DepartamentoCampo obterPorNome(String nome) throws DEPIIntegrationException {
         for (DepartamentoCampo campo : DepartamentoCampo.values()) {

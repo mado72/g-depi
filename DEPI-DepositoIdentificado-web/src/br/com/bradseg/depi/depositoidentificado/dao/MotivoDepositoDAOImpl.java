@@ -21,11 +21,13 @@ import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.MotivoDepositoDataMapper;
-import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
@@ -79,31 +81,21 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 					QuerysDepi.MOTIVODEPOSITO_EXISTS, params,
 					new MotivoDepositoDataMapper());
 
-			if (motivoDepto.size() >= 1 ) {
-                MotivoDepositoVO motivoDepositoVO = motivoDepto.get(0);
+			if (! motivoDepto.isEmpty()) {
+				
+				MotivoDepositoVO motivoDepositoVO = motivoDepto.get(0);
 				if (motivoDepositoVO.getIndicadorAtivo().equals("S")) {
 					throw new DEPIBusinessException(
-							ConstantesDEPI.ERRO_MOTIVO_DESC_BSCO_JA_CADASTRADA,
+							ConstantesDEPI.MotivoDeposito.DESC_BSCO_JA_CADASTRADA,
 							vo.getDescricaoBasica());
-                }
-
-                params.addValue(PARAM_PRM1, vo.getDescricaoDetalhada().trim());
-                params.addValue(PARAM_PRM2, vo.getCodigoEventoContabil());
-                params.addValue(PARAM_PRM3, vo.getCodigoItemContabil());
-                params.addValue(PARAM_PRM4, vo.getCodigoResponsavelUltimaAtualizacao());
-                params.addValue(PARAM_WHR1, motivoDepositoVO.getCodigoMotivoDeposito());
-
-    			getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_ATIVAR, params);
+				}
+				vo.setCodigoMotivoDeposito(motivoDepositoVO.getCodigoMotivoDeposito());
+				
+                queryAtivar(vo);
         					
             } else {
 
-            	params.addValue(PARAM_PRM1, vo.getDescricaoBasica().trim());
-                params.addValue(PARAM_PRM2, vo.getDescricaoDetalhada());
-                params.addValue(PARAM_PRM3, vo.getCodigoEventoContabil());
-                params.addValue(PARAM_PRM4, vo.getCodigoItemContabil());
-                params.addValue(PARAM_PRM5, vo.getCodigoResponsavelUltimaAtualizacao());
-
-    			getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_INSERT, params);
+            	queryInsert(vo);
                 
             }
 
@@ -112,7 +104,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
         }
     }
 
-    /**
+	/**
      * Método responsável por alterar um Motivo Depósito.
      * @param vo - Motivo Depósito a ser alterado.
      */
@@ -123,39 +115,18 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
         		
 			MotivoDepositoVO motivoExistente = obterPorChave(vo); 
 
-            if (motivoExistente == null) {
-                throw new DEPIBusinessException(ConstantesDEPI.ERRO_MOTIVODEPOSITO_NAOCADASTRADO, vo.getDescricaoBasica());
-            }
-            else if (motivoExistente.getIndicadorAtivo().equals("N")) {
-            	throw new DEPIBusinessException(ConstantesDEPI.ERRO_MOTIVODEPOSITO_STATUSINATIVO, vo.getDescricaoBasica());
+            if (motivoExistente.getIndicadorAtivo().equals("N")) {
+            	throw new DEPIBusinessException(ConstantesDEPI.MotivoDeposito.STATUSINATIVO, vo.getDescricaoBasica());
             }
             
-			MapSqlParameterSource paramsUpd = new MapSqlParameterSource();
-
-			paramsUpd.addValue(PARAM_PRM1, vo.getDescricaoBasica().trim());
-			paramsUpd.addValue(PARAM_PRM2, vo.getDescricaoDetalhada());
-			paramsUpd.addValue(PARAM_PRM3, vo.getCodigoEventoContabil());
-			paramsUpd.addValue(PARAM_PRM4, vo.getCodigoItemContabil());
-			paramsUpd.addValue(PARAM_PRM5, vo.getCodigoResponsavelUltimaAtualizacao());
-			paramsUpd.addValue(PARAM_WHR1, vo.getCodigoMotivoDeposito());
-
-			Integer count;
-			try {
-				count = getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_UPDATE, paramsUpd);
-			} catch (DuplicateKeyException e) {
-				throw new DEPIBusinessException(e, ConstantesDEPI.ERRO_MOTIVO_DESC_BSCO_JA_CADASTRADA, vo.getDescricaoBasica());
-			}
-
-            if (count == 0) {
-                throw new DEPIBusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
-            }
+			queryUpdate(vo);
 
         }  finally {
         	LOGGER.info("alterar(MotivoDepositoVO vo)"); 
         }
     }
 
-    /**
+	/**
      * Método responsável por excluir um Motivo Depósito.
      * @param vo - Motivo Depósito a ser excluído.
      */
@@ -164,23 +135,14 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 
         try {
         	
-			MapSqlParameterSource params = new MapSqlParameterSource();
-
-			params.addValue(PARAM_PRM1, vo.getCodigoResponsavelUltimaAtualizacao());
-			params.addValue(PARAM_WHR1, vo.getCodigoMotivoDeposito());
-
-			Integer count = getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_INATIVAR, params);
-			
-            if (count == 0) {
-                throw new BusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
-            }
+			queryInativar(vo);
 
         } finally {
         	LOGGER.info("excluir(MotivoDepositoVO vo)"); 
         }
     }
-    
-    /**
+
+	/**
      * Método responsável por excluir lista um Motivo Depósito.
      * @param listvo - Motivo Depósito a ser excluído.
      */
@@ -200,7 +162,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
             }
         }
         if (codsMotivos.length() > 0) {
-            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_DEPENDENCIA, codsMotivos.toString(), "Parâmetros de Depósito"));
+            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO, codsMotivos.toString(), "Parâmetros de Depósito"));
         }
         
     }
@@ -214,18 +176,10 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     	
     	LOGGER.error("Inicio - isReferenciado(MotivoDepositoVO vo)"); 
 
-    	StringBuilder query = new StringBuilder(QuerysDepi.MOTIVODEPOSITO_REFERENCIADO_PARAMETRODEPOSITO);
     	
     	try {
     		
-			MapSqlParameterSource params = new MapSqlParameterSource();
-            /**
-             * Where
-             */
-			params.addValue(PARAM_WHR1, vo.getCodigoMotivoDeposito());
-			
-			Integer count = getJdbcTemplate().queryForInt(query.toString(), params);
-
+			Integer count = queryCountReferenceParametroDeposito(vo);
 
             if (count >= 1) { 
             	return true;
@@ -239,16 +193,11 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
         return false;
     }
 
-    /**
-     * Obtém apenas os Motivos que estão associados a Parametros de Depósito.
-     * @param codigoCia - int.
-     * @param codigoDep - int.
-     * @param codigoUsuario - BigDecimal.
-     * @param e - Tabelas.
-     * @return List<MotivoDepositoVO>.
+    /* (non-Javadoc)
+     * @see br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO#obterComRestricaoDeGrupoAcesso(int, int, int, br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas)
      */
     @Override
-	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep,final Double codigoUsuario, final Tabelas e){
+	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep, final int codigoUsuario, final Tabelas e){
     	
     	LOGGER.error("obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep,final Double codigoUsuario, final Tabelas e)"); 
 
@@ -257,7 +206,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     	try {
 
 			MapSqlParameterSource params = new MapSqlParameterSource();   		
-            String msg = "";
+            final String msg;
 
             if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
             	query.append(QuerysDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO);
@@ -302,9 +251,6 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
     	
     	LOGGER.error("MotivoDepositoVO obterPorChave(MotivoDepositoVO vo)"); 
 
-		StringBuilder query = new StringBuilder();
-    	query.append(QuerysDepi.MOTIVODEPOSITO_OBTERPORCHAVE);
-   	
 		try {
 
 			MapSqlParameterSource params = new MapSqlParameterSource();   		
@@ -314,13 +260,17 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
              */
         	// params.addValue("whr1", BigDecimal.valueOf(vo.getCodigoMotivoDeposito()));
 			params.addValue(PARAM_WHR1, vo.getCodigoMotivoDeposito());
-			
-			List<MotivoDepositoVO> motivoDepto = getJdbcTemplate().query(query.toString(), params, new MotivoDepositoDataMapper());
-			
-            if (motivoDepto == null) {
-                throw new BusinessException(ConstantesDEPI.ERRO_RELACIONAMENTOS_NAO_CADASTRADOS);
-            }
-                
+
+			List<MotivoDepositoVO> motivoDepto = getJdbcTemplate().query(
+					QuerysDepi.MOTIVODEPOSITO_OBTERPORCHAVE, params,
+					new MotivoDepositoDataMapper());
+
+			if (motivoDepto == null) {
+				throw new DEPIBusinessException(
+						ConstantesDEPI.MotivoDeposito.NAOCADASTRADO,
+						vo.getDescricaoBasica());
+			}
+            
             return motivoDepto.get(0);
             
         } finally {
@@ -347,7 +297,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 	         * Parametros.
 	         */
 			if (!filtro.getCriterios().isEmpty()) {
-				query.append(filtro.getClausaWhereFiltro());
+				query.append(filtro.getClausulaWhereFiltro());
 				params = filtro.getMapParamFiltro();
 			} 
 			
@@ -392,6 +342,89 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
         } finally {
         	LOGGER.info("obterTodos"); 
         }
+	}
+
+	private void queryInsert(MotivoDepositoVO vo) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue(PARAM_PRM1, vo.getDescricaoBasica().trim());
+		params.addValue(PARAM_PRM2, vo.getDescricaoDetalhada());
+		params.addValue(PARAM_PRM3, vo.getCodigoEventoContabil());
+		params.addValue(PARAM_PRM4, vo.getCodigoItemContabil());
+		params.addValue(PARAM_PRM5, vo.getCodigoResponsavelUltimaAtualizacao());
+	
+		getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_INSERT, params);
+	}
+
+	private void queryUpdate(MotivoDepositoVO vo) {
+		MapSqlParameterSource paramsUpd = new MapSqlParameterSource();
+	
+		paramsUpd.addValue(PARAM_PRM1, vo.getDescricaoBasica().trim());
+		paramsUpd.addValue(PARAM_PRM2, vo.getDescricaoDetalhada());
+		paramsUpd.addValue(PARAM_PRM3, vo.getCodigoEventoContabil());
+		paramsUpd.addValue(PARAM_PRM4, vo.getCodigoItemContabil());
+		paramsUpd.addValue(PARAM_PRM5, vo.getCodigoResponsavelUltimaAtualizacao());
+		paramsUpd.addValue(PARAM_WHR1, vo.getCodigoMotivoDeposito());
+	
+		Integer count;
+		try {
+			count = getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_UPDATE, paramsUpd);
+		} catch (DuplicateKeyException e) {
+			throw new DEPIBusinessException(e, 
+					ConstantesDEPI.MotivoDeposito.DESC_BSCO_JA_CADASTRADA, vo.getDescricaoBasica());
+		}
+	
+		if (count == 0) {
+		    throw new DEPIBusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+		}
+	}
+
+	private void queryAtivar(MotivoDepositoVO vo) {
+		
+		MapSqlParameterSource params = new MapSqlParameterSource();
+	
+		params.addValue(PARAM_PRM1, vo.getDescricaoDetalhada().trim());
+		params.addValue(PARAM_PRM2, vo.getCodigoEventoContabil());
+		params.addValue(PARAM_PRM3, vo.getCodigoItemContabil());
+		params.addValue(PARAM_PRM4, vo.getCodigoResponsavelUltimaAtualizacao());
+		params.addValue(PARAM_WHR1, vo.getCodigoMotivoDeposito());
+	
+		getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_ATIVAR, params);
+	}
+
+	private void queryInativar(MotivoDepositoVO vo) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+	
+		params.addValue(PARAM_PRM1, vo.getCodigoResponsavelUltimaAtualizacao());
+		params.addValue(PARAM_WHR1, vo.getCodigoMotivoDeposito());
+	
+		Integer count = getJdbcTemplate().update(QuerysDepi.MOTIVODEPOSITO_INATIVAR, params);
+		
+		if (count == 0) {
+		    throw new BusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+		}
+	}
+
+	private Integer queryCountReferenceParametroDeposito(MotivoDepositoVO vo) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		/**
+		 * Where
+		 */
+		params.addValue(PARAM_WHR1, vo.getCodigoMotivoDeposito());
+		
+		Integer count = getJdbcTemplate().queryForInt(
+				QuerysDepi.MOTIVODEPOSITO_REFERENCIADO_PARAMETRODEPOSITO,
+				params);
+		return count;
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO#associacaoReferenciada(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO)
+	 */
+	@Override
+	public boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
+			DepartamentoVO departamentoVO) {
+		// FIXME FALTA IMPLEMENTAR
+		return false;
 	}
 	
 }

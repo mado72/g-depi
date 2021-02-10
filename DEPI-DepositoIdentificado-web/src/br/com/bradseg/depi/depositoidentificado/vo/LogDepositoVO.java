@@ -45,7 +45,7 @@ public class LogDepositoVO implements Serializable {
     //@TableField(name = "CUSUAR_ATULZ_ANTIG", converter = BigDecimalToLongPersistenceConverter.class)
     private BigDecimal usuarioAntigo;
     /**
-     * Data da altera��o do registro de dep�sito.
+     * Data da alteração do registro de dep�sito.
      */
     //@TableField(name = "DHORA_INCL_REG")
     private Date dtInclusaoRegistro;

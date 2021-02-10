@@ -2,7 +2,7 @@ package br.com.bradseg.depi.depositoidentificado.facade;
 
 import java.util.List;
 
-import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
@@ -25,7 +25,7 @@ public interface MotivoDepositoFacade {
 
 	public List<MotivoDepositoVO> obterTodosMotivoDepositvo();
 
-	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoDep, Double codigoUsuario, Tabelas e);
+	public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoDep, int codigoUsuario, Tabelas e);
 
 	public void excluirLista(List<MotivoDepositoVO> vo);
 

@@ -38,7 +38,7 @@ public class ManutencoesAnaliticoDataMapper implements RowMapper<ManutencoesAnal
 		manutencoesAnaliticoVO.setVencimento(rs.getDate("DVCTO_DEP_IDTFD"));
 		manutencoesAnaliticoVO.setMatricResp(rs.getLong("CUSUAR_RESP_ATULZ"));
 		manutencoesAnaliticoVO.setValorPago(rs.getDouble("VDEP_IDTFD_ORIGN"));
-		manutencoesAnaliticoVO.setValorRegistrado(rs.getDouble("LCTO_VTOT_DEP_IDTFD"));
+//		manutencoesAnaliticoVO.setValorRegistrado(rs.getDouble("LCTO_VTOT_DEP_IDTFD"));
 		manutencoesAnaliticoVO.setCodigoBanco(rs.getInt("CBCO"));
 		manutencoesAnaliticoVO.setCodigoAgencia(rs.getInt("CAG_BCRIA"));
 		manutencoesAnaliticoVO.setCodigoConta(rs.getLong("CCTA_CORR"));

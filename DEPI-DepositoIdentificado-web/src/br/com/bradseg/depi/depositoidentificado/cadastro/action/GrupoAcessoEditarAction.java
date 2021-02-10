@@ -1,6 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,12 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.helper.GrupoAcessoCrudH
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCampo;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -55,6 +61,94 @@ public class GrupoAcessoEditarAction
 		}
 		
 		return lista;
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#incluir()
+	 */
+	@Override
+	public String incluir() {
+		String retorno = super.incluir();
+		preencherListaCompanhia();
+		return retorno;
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#validateAlterar()
+	 */
+	@Override
+	public void validateAlterar() {
+		super.validateAlterar();
+		
+		String codigo = getModel().getCodigo();
+		if (codigo == null || codigo.isEmpty()) {
+			addFieldError("codigo", BaseUtil.getTextoFormatado(
+					ConstantesDEPI.Geral.ERRORS_REQUIRED,
+					BaseUtil.getTexto(ConstantesDEPI.Geral.ERRO_CODIGO_INVALIDO)));
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#alterar()
+	 */
+	@Override
+	public String alterar() {
+		String retorno = super.alterar();
+		crudHelper.preencherFuncionarios(getModel());
+		crudHelper.preencherFormularioEdicao(getModel());
+		return retorno;
+	}
+	
+	public String selecionar() {
+		listarDepartamentos();
+		crudHelper.preencherFuncionarios(getModel());
+		return INPUT;
+	}
+	
+	public String refrescar() {
+		GrupoAcessoEditarFormModel model = getModel();
+		List<Integer> codFuncionariosInt = model.getCodFuncionariosInt();
+		List<UsuarioVO> funcionarios = model.getFuncionarios();
+		
+		for (Iterator<UsuarioVO> iter = funcionarios.iterator(); iter.hasNext(); ) {
+			UsuarioVO vo = iter.next();
+			if (! codFuncionariosInt.contains(vo.getCodigoUsuario())) {
+				iter.remove();
+			}
+		}
+		
+		List<DepartamentoVO> deptos = model.getDeptos();
+		for (DepartamentoVO vo : deptos) {
+			vo.setDeposito(null);
+		}
+
+		return "json";
+	}
+
+	private void preencherListaCompanhia() {
+		GrupoAcessoEditarFormModel model = getModel();
+		List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias();
+		model.setCias(cias);
+		
+		if (! cias.isEmpty()) {
+			CompanhiaSeguradoraVO cia = cias.get(0);
+
+			model.setCodCompanhia(String.valueOf(cia.getCodigoCompanhia()));
+			listarDepartamentos();
+		}
+		else {
+			model.setDeptos(new ArrayList<DepartamentoVO>());
+		}
+	}
+
+	public void listarDepartamentos() {
+		GrupoAcessoEditarFormModel model = getModel();
+		
+		int codCompanhia = Integer.parseInt(model.getCodCompanhia()); 
+		
+		List<DepartamentoVO> deptos = crudHelper
+				.obterDepartamentos(new CompanhiaSeguradoraVO(codCompanhia));
+		model.setDeptos(deptos);
 	}
 	
 }

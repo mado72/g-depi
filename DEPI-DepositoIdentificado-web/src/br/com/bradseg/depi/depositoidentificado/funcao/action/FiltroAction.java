@@ -1,16 +1,14 @@
 package br.com.bradseg.depi.depositoidentificado.funcao.action;
 
-import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
@@ -30,13 +28,13 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  * filtro já editados anteriormente</li>
  * </ul>
  * 
- * 
- * @author Marcelo Damasceno
- * 
+ * @param <C>
+ *            Tipo do Campo manipulado pelo filtro
  * @param <T>
  *            Tipo do Model deste formulário
  */
 @Controller
+@Scope("request")
 public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroConsultarForm<C>> extends BaseModelAction<T> {
 
 	private static final long serialVersionUID = 935947361413242271L;
@@ -46,6 +44,8 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	private final T model;
 	
 	protected abstract CrudHelper<C, ?, ?> getFiltroHelper();
+	
+	private boolean consultado;
 	
 	@SuppressWarnings("unchecked")
 	public FiltroAction() {
@@ -71,6 +71,10 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 		for (CriterioConsultaVO<C> criterio : model.obterCriteriosConsulta()) {
 			validarCriterio(criterio);
 		}
+	}
+	
+	public void validateJson() {
+		validateConsultar();
 	}
 	
 	protected void validarCriterio(CriterioConsultaVO<C> criterio) {
@@ -122,7 +126,7 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 		try {
 			model.setColecaoDados(new ArrayList<>());
 			
-			T model = getModel();
+//			T model = getModel();
 			
 			List<CriterioConsultaVO<C>> criterios = model.obterCriteriosConsulta();
 
@@ -137,6 +141,7 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 
 	private String processarCriterios(List<CriterioConsultaVO<C>> criterios) {
 		
+		consultado = true;
 		try {
 			List<?> lista = getFiltroHelper().processarCriterios(criterios);
 			model.setColecaoDados(lista);
@@ -144,30 +149,12 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 			if (lista == null || lista.isEmpty()) {
 				addActionError(getText(ConstantesDEPI.ERRO_SEMRESULTADO));
 			}
-		} catch (IntegrationException e) {
-			if (e.getCause() instanceof DataIntegrityViolationException) {
-				DataIntegrityViolationException dataE = (DataIntegrityViolationException) e
-						.getCause();
-				if (dataE.getCause() instanceof SQLDataException) {
-					SQLDataException sqlE = (SQLDataException) dataE.getCause();
-					if (sqlE.getSQLState().contains("22001")) {
-						LOGGER.error(
-								"Falha ao processar criterios de consulta. Parâmetro inválido. SQLSTATE=22001",
-								e);
-						throw new DEPIIntegrationException(sqlE,
-								"erro.SQLSTATE.22001");
-					}
-				}
-			}
-			
-			LOGGER.error("Falha ao processar criterios de consulta", e);
-			throw new DEPIIntegrationException(e);
-			
 		} catch (Exception e) {
 			LOGGER.error("Falha não tratada ao processar criterios de consulta", e);
 			getModel().setColecaoDados(Collections.emptyList());
 			addActionError(e.getMessage());
 		}
+		
 		return INPUT;
 	}
 	
@@ -217,6 +204,21 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 				model.clearCriterios();
 			}
 		}
+		
+		consultado = false;
+	}
+	
+	/**
+	 * Retorna consultado
+	 * @return true se consultado
+	 */
+	public boolean isConsultado() {
+		return consultado;
+	}
+	
+	
+	public String json() {
+		return "json";
 	}
 
 }

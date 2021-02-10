@@ -5,7 +5,7 @@ package br.com.bradseg.depi.depositoidentificado.dao;
 
 import java.util.List;
 
-import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
@@ -25,14 +25,25 @@ public interface DepartamentoDAO {
 	List<DepartamentoVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo);
 
 	/**
-     * Obter Departamentos por Usu�rio.
+     * Obter Departamentos por Usuário.
      * @param codigoCia - int.
-     * @param codigoUsuario - BigDecimal.
+     * @param codigoUsuario - int.
      * @param e - EQueryJoinForward. 
      * @return List<DepartamentoVO>.
      */
-	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e);
+	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, double codigoUsuario, Tabelas e);
 	//List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, BigDecimal codigoUsuario, Tabelas e);
+
+	/**
+	 * Obter um departamento
+	 * @param codigoCia Companhia
+	 * @param usuarioLogadoId Usuário
+	 * @param grupoAcesso Tabela de restrição do Grupo Acesso
+	 * @param siglaDepto Sigla do Departamento
+	 * @return Departamento
+	 */
+	DepartamentoVO obterComRestricaoDeGrupoAcesso(int codigoCia,
+			int usuarioLogadoId, Tabelas grupoAcesso, String siglaDepto);
 
 	/**
 	 * Excluir Departamentos. 
@@ -53,5 +64,14 @@ public interface DepartamentoDAO {
 
 	public List<DepartamentoVO>  obterPorFiltro(FiltroUtil filtro);
 
+	DepartamentoVO obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo,
+			DepartamentoVO deptoVO);
+
+	/**
+	 * Busca os departamentos que correspondem a uma lista de siglas
+	 * @param siglas Lista de Siglas
+	 * @return Lista de departamentos
+	 */
+	List<DepartamentoVO> obterDeListaSiglas(List<String> siglas);
 
 }

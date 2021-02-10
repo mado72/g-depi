@@ -2,27 +2,35 @@ package br.com.bradseg.depi.depositoidentificado.webservice;
 
 import java.util.List;
 
+import javax.servlet.ServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-//import com.fasterxml.jackson.databind.JsonNode;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-
-import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
-import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
-import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
-import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
-import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import br.com.bradseg.bsad.filtrologin.filters.LoginUtils;
+import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
+import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
+import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
+import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
+import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+//import com.fasterxml.jackson.databind.JsonNode;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A(O) Class ConsultasServiceImpl.
@@ -39,6 +47,9 @@ public class ServicosIntegracaoImpl {
 	
 	@Autowired(required=true)
 	private DepartamentoFacade departamentoFacade;
+	
+	@Autowired
+	private GrupoAcessoFacade grupoAcessoFacade;
 	
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServicosIntegracaoImpl.class);
@@ -170,12 +181,35 @@ public class ServicosIntegracaoImpl {
 	@Path("/motivodeposito/obterComRestricaoDeGrupoAcesso")
 	@Consumes({ MediaType.APPLICATION_JSON} )	
 	@Produces({ MediaType.APPLICATION_JSON} )
-    public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoDep, Double codigoUsuario, Tabelas e) throws IntegrationException {
+    public List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoDep, int codigoUsuario, Tabelas e) throws IntegrationException {
 
     	return motivoDepositoFacade.obterComRestricaoDeGrupoAcesso(codigoCia, codigoDep, codigoUsuario, e);
     
     }
 
+	@GET
+	@Path("/cia/departamentos")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<DepartamentoVO> obterCiaDepartamentos(int codigoCia, @Context ServletRequest request) {
+		return grupoAcessoFacade.obterDepartamentos(new CompanhiaSeguradoraVO(codigoCia));
+	}
+	
+	protected LoginVo getUsuarioLogado(ServletRequest request) {
+
+		LOGGER.debug("Tentando recuperar o usuário logado usando LoginUtils.getLoginObject(this.request)");
+		LoginVo loginVO = LoginUtils.getLoginObject(request);
+		LOGGER.debug("Usuário logado {}", loginVO);
+		
+        if (BaseUtil.isNZB(loginVO) || BaseUtil.isNZB(loginVO.getId())) {
+        	LOGGER.error("Não encontrou usuário logado");
+            throw new IntegrationException(BaseUtil.getTexto(ConstantesDEPI.Geral.ERRO_USUARIO_LOGADO));
+        }
+        LOGGER.info("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
+		
+		return loginVO;
+
+	}
 
 	
 

@@ -159,15 +159,15 @@ public class ParcelaCobrancaVO implements Serializable {
 		this.dataHoraInclusao = (Date) dataHoraInclusao.clone();
 	}
 	/**
-	 * Método que retorna o código do usu�rio atualizador.
-	 * @return Long - o código do usu�rio atualizador.
+	 * Método que retorna o código do usuário atualizador.
+	 * @return Long - o código do usuário atualizador.
 	 */
 	public Long getCodigoUsuarioAtualizador() {
 		return codigoUsuarioAtualizador;
 	}
 	/**
-	 * Método que define o código do usu�rio atualizador.
-	 * @param codigoUsuarioAtualizador - o código do usu�rio atualizador.
+	 * Método que define o código do usuário atualizador.
+	 * @param codigoUsuarioAtualizador - o código do usuário atualizador.
 	 */
 	public void setCodigoUsuarioAtualizador(Long codigoUsuarioAtualizador) {
 		this.codigoUsuarioAtualizador = codigoUsuarioAtualizador;

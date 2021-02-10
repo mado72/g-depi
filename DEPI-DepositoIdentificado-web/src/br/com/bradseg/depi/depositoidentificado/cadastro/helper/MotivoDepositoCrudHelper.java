@@ -141,8 +141,7 @@ public class MotivoDepositoCrudHelper implements
 		MotivoDepositoVO vo = new MotivoDepositoVO();
 		vo.setCodigoMotivoDeposito(codigo);
 		
-		MotivoDepositoVO instancia = facade.obterPorChave(vo);
-		return instancia;
+		return facade.obterPorChave(vo);
 	}
 
 	@Override

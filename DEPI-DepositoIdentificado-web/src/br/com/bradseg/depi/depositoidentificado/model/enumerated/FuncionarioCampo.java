@@ -14,14 +14,12 @@ public enum FuncionarioCampo implements IEntidadeCampo {
     /**
      * Matricula.
      */
-	Matricula(ConstantesDEPI.TABELA_USUARIO_ID, TipoCampo.NUM,
-			ConstantesDEPI.SIZE_NAO_DEFINIDO),
+	Matricula(ConstantesDEPI.TABELA_USUARIO_ID, TipoCampo.NUM, 7),
 
     /**
      * Nome.
      */
-	Nome(ConstantesDEPI.TABELA_USUARIO_NOME, TipoCampo.ALFA_OBRIG,
-			ConstantesDEPI.SIZE_NAO_DEFINIDO);
+	Nome(ConstantesDEPI.TABELA_USUARIO_NOME, TipoCampo.ALFA_OBRIG, 40);
 
     private String nome;
 

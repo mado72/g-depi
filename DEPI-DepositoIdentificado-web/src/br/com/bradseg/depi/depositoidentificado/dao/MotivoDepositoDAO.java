@@ -5,8 +5,10 @@ package br.com.bradseg.depi.depositoidentificado.dao;
 
 import java.util.List;
 
-import br.com.bradseg.depi.depositoidentificado.enums.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
@@ -16,14 +18,14 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 public interface MotivoDepositoDAO{
 	
 	/**
-     * Obt�m apenas os Motivos que est�o associados a Parametros de Dep�sito.
-     * @param codigoCia - int.
-     * @param codigoDep - int.
-     * @param codigoUsuario - String.
-     * @param e - Tabelas.
-     * @return List<MotivoDepositoVO>.
-     */
-	List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep, final Double codigoUsuario, final Tabelas e);
+     * Obtém apenas os Motivos que est�o associados a Parâmetros de Depósito.
+	 * @param codigoCia código da companhia
+	 * @param codigoDep código do departamento
+	 * @param codigoUsuario código do usuário
+	 * @param e Tabela de restrição 
+	 * @return List<MotivoDepositoVO>.
+	 */
+	List<MotivoDepositoVO> obterComRestricaoDeGrupoAcesso(final int codigoCia, final int codigoDep, final int codigoUsuario, final Tabelas e);
 
 	public void inserir(MotivoDepositoVO vo );
 
@@ -40,5 +42,17 @@ public interface MotivoDepositoDAO{
 	public List<MotivoDepositoVO> obterTodos();
 
 	void excluirLista(List<MotivoDepositoVO> listvo);
+
+	/**
+	 * Verifica se a associação depto x companhia possui referência por um motivo deposito.
+	 * 
+	 * @param companhia
+	 *            Companhia
+	 * @param departamentoVO
+	 *            Departamento
+	 * @return true quando há referência.
+	 */
+	boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
+			DepartamentoVO departamentoVO);
 
 }

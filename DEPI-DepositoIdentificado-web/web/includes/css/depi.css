@@ -12,11 +12,31 @@ pre.debug {
 	overflow-wrap: anywhere;
 }
 
-a.abtn {
+.w-100 {
+	width: 100% !important;
+}
+
+.center {
+	text-align: center !important;
+}
+
+.tab {
+	margin-right: 10px;
+}
+
+a.abtn, button.abtn {
+	text-decoration: none;
+	background-color: transparent;
 	vertical-align: top;
 	border: 0;
-	text-decoration: none;
 	margin: 2px;
+	padding: 0;
+	width: 70px;
+}
+
+a.abtn.abtn-xs, button.abtn.abtn-xs, .abtn-xs {
+	height: 18px;
+	width: 18px;
 }
 
 button.btn-img {
@@ -24,6 +44,11 @@ button.btn-img {
 	border: 0;
 	padding: 0;
 	margin-right: 2px;
+}
+
+.lt-ie9 button.btn-img {
+	position: relative;
+	top: -1px;
 }
 
 #depi-breadcrumb {
@@ -89,8 +114,6 @@ button.btn-img {
 .tabela_botoes {
 	width: 95%;
 	height: 20px;
-	vertical-align: top !important;
-	border: 1px solid;
 }
 
 .Consulta .selecao {
@@ -130,7 +153,73 @@ button.btn-img {
 }
 
 .paginacao {
-	margin-left: auto;
-	margin-right: auto;
 	text-align: center;
+	margin: 4px auto 12px auto;
+}
+
+.paginacao a {
+	cursor: pointer;
+}
+
+.paginacao a.disabled, .paginacao a.disabled:hover {
+	color: #aaaaaa;
+	cursor: default;
+}
+
+.sortable th {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.GoPage:after {
+	content: ','
+}
+.GoPage:last-of-type:after {
+	content: ''
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+
+.btn.disabled {
+	opacity: 0.5;
+	cursor: auto;
+}
+
+.tblFuncionario table, .tblDepartamento table {
+    background-color: white;
+    border: 0;
+    margin: 0px auto 10px;
+    width: 99%;
+}
+
+button#BtnSalvar {
+    position: relative;
+    top: -1px;
+}
+
+.tblFuncionarios {
+    max-height: 251px;
+    overflow: auto;
+}
+
+.mt2 {
+	margin-top: 2px;
+}
+.mt3 {
+	margin-top: 3px;
+}
+.mt4 {
+	margin-top: 4px;
+}
+.ml2 {
+	margin-left: 2px;
+}
+.ml3 {
+	margin-left: 3px;
+}
+.ml4 {
+	margin-left: 4px;
 }

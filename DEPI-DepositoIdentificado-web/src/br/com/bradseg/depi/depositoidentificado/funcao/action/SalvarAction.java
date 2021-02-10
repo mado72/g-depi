@@ -3,6 +3,7 @@ package br.com.bradseg.depi.depositoidentificado.funcao.action;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
@@ -12,7 +13,16 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCru
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
+/**
+ * Superclasse das ações de salvar entidades
+ * @author Marcelo Damasceno
+ *
+ * @param <C> {@link IEntidadeCampo} de referência
+ * @param <VO> VO manipulado por esta classe
+ * @param <F> Implementação de {@link CrudForm}
+ */
 @Controller
+@Scope("request")
 public abstract class SalvarAction<C extends IEntidadeCampo,  VO, F extends CrudForm> extends BaseModelAction<F> {
 
 	private static final long serialVersionUID = 1949214415954508324L;

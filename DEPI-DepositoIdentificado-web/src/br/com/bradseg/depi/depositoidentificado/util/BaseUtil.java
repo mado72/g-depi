@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.MessageFormat;
@@ -10,12 +11,16 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.beanutils.BeanUtils;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -26,6 +31,7 @@ import org.apache.log4j.Logger;
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.message.Message;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 
 /**
  * Classe Utilitária
@@ -797,5 +803,51 @@ public final class BaseUtil {
     	
     	return (Date) d.clone();
     }
+    
+    public static <T> List<T> obterItensSemIntersecao(List<T> listaAlteravel, Collection<T> itensAComparar, Funcao<T, ?> extrator) {
+    	ArrayList<T> copia = new ArrayList<>(listaAlteravel);
+    	
+    	HashSet<Object> codigos = new HashSet<>();
+    	for (T t : itensAComparar) {
+			Object v = extrator.apply(t);
+			codigos.add(v);
+		}
+    	
+    	for (Iterator<T> iterator = copia.iterator(); iterator.hasNext();) {
+    		Object c = extrator.apply(iterator.next());
+			if (codigos.contains(c)) {
+				iterator.remove();
+			}
+		}
+    	return copia;
+    }
+    
+    public static <T> List<T> obterItensComIntersecao(List<T> listaAlteravel, Collection<T> itensAComparar, Funcao<T, ?> extrator) {
+    	ArrayList<T> copia = new ArrayList<>(listaAlteravel);
+    	
+    	HashSet<Object> codigos = new HashSet<>();
+    	for (T t : itensAComparar) {
+    		Object v = extrator.apply(t);
+    		codigos.add(v);
+    	}
+    	
+    	for (Iterator<T> iterator = copia.iterator(); iterator.hasNext();) {
+    		Object c = extrator.apply(iterator.next());
+    		if (! codigos.contains(c)) {
+    			iterator.remove();
+    		}
+    	}
+    	return copia;
+    }
+    
+    public static String getTexto(Class<? extends IEntidadeCampo> entidade, String campo) {
+    	String simpleName = entidade.getSimpleName();
+    	StringBuilder sb = new StringBuilder("enum.").append(simpleName).append('.').append(campo);
+    	return getTexto(sb.toString());
+    }
 
+    public final static Object copyProperties(Object newObject,Object oldObject ) throws IllegalAccessException, InvocationTargetException{  	 
+    	BeanUtils.copyProperties(newObject, oldObject);
+    	return newObject;
+   }
 }
