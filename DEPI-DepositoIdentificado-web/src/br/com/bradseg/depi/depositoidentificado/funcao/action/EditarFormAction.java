@@ -78,6 +78,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 		}
 		// não limpa mensagens de erro de campo 
 		clearActionErrors();
+		clearMessages();
 	}
 	
 	public void validateRefrescar() {
