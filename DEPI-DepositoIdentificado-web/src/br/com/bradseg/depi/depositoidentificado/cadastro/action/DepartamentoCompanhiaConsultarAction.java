@@ -26,9 +26,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 @Scope("session")
 public class DepartamentoCompanhiaConsultarAction extends FiltroAction<DepartamentoCompanhiaCampo, FiltroConsultarForm<DepartamentoCompanhiaCampo>> {
 
-	/**
-	 * 
-	 */
 	private static final String LABEL_DEPARTAMENTO_SIGLA = "enum.DepartamentoCompanhiaCampo.Sigla";
 
 	private static final String LABEL_DEPARTAMENTO_NOME = "enum.DepartamentoCompanhiaCampo.Nome";

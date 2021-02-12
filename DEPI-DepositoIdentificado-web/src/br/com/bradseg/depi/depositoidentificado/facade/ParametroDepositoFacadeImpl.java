@@ -24,9 +24,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
 
-    private static final String CODIGO_RESPONSAVEL = "Código do Responsável";
-    
-	/** A Constante LOGGER. */
+    /** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParametroDepositoFacadeImpl.class);
     
 	@Autowired
@@ -124,27 +122,29 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
      */
     @Override
     public List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
-        List<ParametroDepositoVO> retorno = parametroDepositoDAO.obterPorFiltro(filtro);
-        for (ParametroDepositoVO p : retorno) {
-            p.setReferenciadoDeposito(parametroDepositoDAO.isReferenciadoDeposito(p));
-        }
-        return retorno;
+        return parametroDepositoDAO.obterPorFiltro(filtro);
     }
 
     /**
-     * M�todo de obter por filtro
-     * @param filtro par�metro dep�sito com o c�digo do objeto requisitado
+     * Método de obter por filtro
+     * @param filtro par�metro depósito com o código do objeto requisitado
      * @param codigoUsuario - BigDecimal.
-     * @throws IntegrationException - trata erro de neg�cio
+     * @throws IntegrationException - trata erro de negócio
      * @return List<ParametroDepositoVO>
      */
     @Override
-    public List<ParametroDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Integer codigoUsuario)throws IntegrationException {
-        List<ParametroDepositoVO> retorno = parametroDepositoDAO.obterPorFiltroComRestricaoDeGrupoAcesso(filtro, codigoUsuario);
-        for (ParametroDepositoVO p : retorno) {
-            p.setReferenciadoDeposito(parametroDepositoDAO.isReferenciadoDeposito(p));
-        }
-        return retorno;
+	public List<ParametroDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(
+			FiltroUtil filtro, Integer codigoUsuario)
+			throws IntegrationException {
+		
+    	List<ParametroDepositoVO> retorno = parametroDepositoDAO
+				.obterPorFiltroComRestricaoDeGrupoAcesso(filtro, codigoUsuario);
+		
+		for (ParametroDepositoVO p : retorno) {
+			p.setReferenciadoDeposito(parametroDepositoDAO
+					.isReferenciadoDeposito(p));
+		}
+		return retorno;
     }
 
     /**

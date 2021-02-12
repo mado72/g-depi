@@ -7,11 +7,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
-import br.com.bradseg.depi.depositoidentificado.cadastro.helper.MotivoDepositoCrudHelper;
-import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.cadastro.helper.ParametroDepositoCrudHelper;
+import br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.ParametroDepositoCampo;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -20,27 +20,27 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoC
  */
 @Controller
 @Scope("session")
-public class ParametroConsultarAction extends FiltroAction<MotivoDepositoCampo, FiltroConsultarForm<MotivoDepositoCampo>> {
+public class ParametroConsultarAction extends FiltroAction<ParametroDepositoCampo, FiltroConsultarForm<ParametroDepositoCampo>> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ParametroConsultarAction.class);
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	private transient MotivoDepositoCrudHelper filtroHelper;
+	private transient ParametroDepositoCrudHelper filtroHelper;
 	
 	public ParametroConsultarAction() {
 		LOGGER.debug("Instancia de filtroHelper", filtroHelper);
 	}
 	
 	@Autowired
-	protected void setFacade(MotivoDepositoFacade facade) {
+	protected void setFacade(ParametroDepositoFacade facade) {
 		this.filtroHelper.setFacade(facade);
 	}
 
 	@Override
-	protected CrudHelper<MotivoDepositoCampo, ?, ?> getFiltroHelper() {
+	protected CrudHelper<ParametroDepositoCampo, ?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
-			filtroHelper = new MotivoDepositoCrudHelper();
+			filtroHelper = new ParametroDepositoCrudHelper();
 		}
 		return filtroHelper;
 	}

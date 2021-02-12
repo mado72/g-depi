@@ -113,7 +113,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
             params.addValue("codusuario", codigoUsuario);
 
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
-            parametros = getJdbcTemplate().query(query.toString(), params, new ParametroDepositosDataMapper());
+			parametros = getJdbcTemplate().query(query.toString(), params,
+					new ParametroDepositosDataMapper(true, true));
             return parametros;
             
         } finally {
@@ -129,29 +130,26 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
     @Override
     public List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro) {
 
-    	
     	List<ParametroDepositoVO> parametros = null;
     	
         StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_OBTERPORFILTRO);
         
         try {
 			
-			MapSqlParameterSource params = new MapSqlParameterSource();
+			final MapSqlParameterSource params;
 			
-	        // COLOCAR OS FILTROS DE ACORDO COM A TELA 
-			
-			if ( filtro != null ) {
-				
-				StringBuilder sb = new StringBuilder();
-				
-				// MHG Incluir os filtros
-				
-	            query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString() );		
-			} else {
-	            query.replace(query.indexOf("#"), query.indexOf("#")+1 , "" );			
+			if (filtro != null && ! filtro.getCriterios().isEmpty()) {
+				query.append(filtro.getClausulasParciais(" AND ", true));
+				params = filtro.getMapParamFiltro();
 			}
-
-            parametros = getJdbcTemplate().query(query.toString(), params, new ParametroDepositosDataMapper());
+			else {
+				params = null;
+			}
+			
+			query.append(QuerysDepi.PARAMETRODEPOSITO_ORDERBY_DHORA_ULT_ATULZ_DESC);
+			
+			parametros = getJdbcTemplate().query(query.toString(), params,
+					new ParametroDepositosDataMapper(true, true));
             return parametros;
             
         } finally {
@@ -328,10 +326,16 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
             params.addValue(PARAM_PRM3, vo.getMotivoDeposito().getCodigoMotivoDeposito());
             
             int retorno =  getJdbcTemplate().queryForInt(query.toString(), params);
-            
             if (retorno >= 1) {return true;}
 
-
+    	} catch (EmptyResultDataAccessException e) {
+    		LOGGER.info("Não encontrou registros para o parametro: Depto({}, Motivo Dep({}), Cia ({})", 
+    				vo.getDepartamento().getCodigoDepartamento(), 
+    				vo.getMotivoDeposito().getCodigoMotivoDeposito(),
+    				vo.getCompanhia().getCodigoCompanhia());
+    		
+    		return false;
+    		
         } finally {
         	LOGGER.info("isReferenciadoDeposito(ParametroDepositoVO vo)"); 
         }
@@ -498,13 +502,12 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
         params.addValue(PARAM_PRM2, parametro.getDepartamento().getCodigoDepartamento());
         params.addValue(PARAM_PRM3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
 
-        List<ParametroDepositoVO> retorno =  getJdbcTemplate().query(query.toString(), params, new ParametroDepositosDataMapper());
-
-        if (retorno.isEmpty()) {
-        	return null;
-        } else { 
-    		return retorno.get(0);        	
-        }
+		try {
+			return getJdbcTemplate().queryForObject(query.toString(), params,
+					new ParametroDepositosDataMapper(false, false));
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 
     }
     

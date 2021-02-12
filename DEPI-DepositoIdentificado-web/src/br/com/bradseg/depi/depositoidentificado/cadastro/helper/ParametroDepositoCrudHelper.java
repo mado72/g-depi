@@ -87,9 +87,8 @@ public class ParametroDepositoCrudHelper implements
 	public List<ParametroDepositoVO> processarCriterios(
 			List<CriterioConsultaVO<ParametroDepositoCampo>> criterios) {
 
-		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(
+		List<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(
 				criterios);
-		aux.add(new CriterioConsultaVO<ParametroDepositoCampo>("CIND_REG_ATIVO = 'S'"));
 		
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(aux);

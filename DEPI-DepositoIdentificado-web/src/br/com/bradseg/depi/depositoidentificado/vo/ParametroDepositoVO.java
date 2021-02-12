@@ -1,32 +1,39 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+
 
 /**
  * Classe Anotada de Mapeamento com a tabela PARMZ_DEP_IDTFD.
  * @author Globality
-*/
+ */
+//@Table(schema = ConstantesDAO.SCHEMA_BANCO, table = "PARMZ_DEP_IDTFD")
+public class ParametroDepositoVO implements Serializable{
 
-public class ParametroDepositoVO implements Serializable {
-	
     private static final long serialVersionUID = 5987719912367700030L;
 
     /**
      * Código da Companhia - obtido atraves da classe
      */
-//    @TableField(name = ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, converter = CompanhiaSeguradoraVOPersistenceConverter.class)
+//    @TableId
+//    @TableField(name = ConstantesDAO.TABELA_COMPANHIA_DEPARTAMENTO_ID, converter = CompanhiaSeguradoraVOPersistenceConverter.class)
     private CompanhiaSeguradoraVO companhia = new CompanhiaSeguradoraVO();
 
     /**
      * Código do departamento - DepartamentoVO obtido atraves da classe DepartamentoConverter
      */
-//    @TableField(name = ConstantesDEPI.TABELA_DEPARTAMENTO_ID, converter = DepartamentoConverter.class)
+//    @TableId
+//    @TableField(name = ConstantesDAO.TABELA_DEPARTAMENTO_ID, converter = DepartamentoConverter.class)
     private DepartamentoVO departamento = new DepartamentoVO();
 
     /**
-     * Código do motivo - MotivoVO obtido atrav�s da classe MotivoDepositoConverter.
+     * Código do motivo - MotivoVO obtido através da classe MotivoDepositoConverter.
      */
-//    @TableField(name = ConstantesDEPI.TABELA_MOTIVO_ID, converter = MotivoDepositoConverter.class)
+//    @TableId
+//    @TableField(name = ConstantesDAO.TABELA_MOTIVO_ID, converter = MotivoDepositoConverter.class)
     private MotivoDepositoVO motivoDeposito = new MotivoDepositoVO();
 
     /**
@@ -60,13 +67,13 @@ public class ParametroDepositoVO implements Serializable {
     }
 
     /**
-     * Código Retirada BancoVO Ap�s Vencimento.
+     * Código Retirada BancoVO Após Vencimento.
      */
 //    @TableField(name = "CIND_DEP_APOS_VCTO")
     private String codigoBancoVencimento = "S";
 
     /**
-     * Descricao Retirada BancoVO Ap�s Vencimento.
+     * Descrição Retirada BancoVO Após Vencimento.
      */
     private String descricaoBancoVencimento;
 
@@ -107,7 +114,7 @@ public class ParametroDepositoVO implements Serializable {
     private String codigoProtocolo = "S";
 
     /**
-     * Código Ap�lice
+     * Código Apólice
      */
 //    @TableField(name = "CIND_APOLC_OBRIG")
     private String codigoApolice = "S";
@@ -143,23 +150,23 @@ public class ParametroDepositoVO implements Serializable {
     private String codigoParcela = "S";
 
     /**
-     * Outros Documentos Necess�rios maxlength = 200
+     * Outros Documentos Necessários maxlength = 200
      */
 //    @TableField(name = "ROBS_PARMZ_DEP")
     private String outrosDocumentosNecessarios;
     
     /**
-     * Outros Documentos Necess�rios maxlength = 200
+     * Outros Documentos Necessários maxlength = 200
      */
     private boolean referenciadoDeposito;
 
     /**
-     * Descricao do Tipo de Deposito
+     * Descrição do Tipo de Deposito
      */
     private String descricaoDeposito;
 
     /**
-     * Descrição b�sica do motivo.
+     * Descrição básica do motivo.
      */
     private String descricaoBasicaMotivo;
 
@@ -167,15 +174,23 @@ public class ParametroDepositoVO implements Serializable {
      * Descrição detalhada do motivo.
      */
     private String descricaoDetalhadaMotivo;
-  
-    /**
-     * Codigo Responsavel Ultima Atualizacao
-     */
-    private Integer codigoResponsavelUltimaAtualizacao;
-    
+
+	/**
+	 * Código do responsável pela atualzação 
+	 */
+	private int codigoResponsavelUltimaAtualizacao;
+	
+	private String codigoAtivo;
+	
+	private Date dataHoraInclusao;
+	
+	private Date ultimaAtualizacao;
+	
+	private Boolean refereciadoDeposito;
+
     /**
      * Retorna o campo codigo da Apolice
-     * @return codigoApolice - Código da ap�lice
+     * @return codigoApolice - Código da apólice
      */
     public String getCodigoApolice() {
         return codigoApolice;
@@ -183,7 +198,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * Especifica o campo codigoApolice
-     * @param codigoApolice Código da ap�lice
+     * @param codigoApolice Código da apólice
      */
     public void setCodigoApolice(String codigoApolice) {
         this.codigoApolice = codigoApolice;
@@ -191,7 +206,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * Retorna o campo codigoBancoVencimento
-     * @return codigoBancoVencimento - Deposito ap�s vencimento
+     * @return codigoBancoVencimento - Deposito após vencimento
      */
     public String getCodigoBancoVencimento() {
         return codigoBancoVencimento;
@@ -223,7 +238,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * retorna o campo codigoDossie
-     * @return codigoDossie - codigo do processo jur�dico obrigat�rio
+     * @return codigoDossie - codigo do processo jurídico obrigatório
      */
     public String getCodigoDossie() {
         return codigoDossie;
@@ -231,7 +246,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * especifica o CodigoDossie
-     * @param codigoDossie - codigo do processo jur�dico obrigat�rio
+     * @param codigoDossie - codigo do processo jurídico obrigatório
      */
     public void setCodigoDossie(String codigoDossie) {
         this.codigoDossie = codigoDossie;
@@ -495,7 +510,7 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * Retorna o valor do atributo outrosDocumentosNecessarios
-     * @return outrosDocumentosNecessarios - Referencia ao campo observa��es
+     * @return outrosDocumentosNecessarios - Referencia ao campo observações
      */
     public String getOutrosDocumentosNecessarios() {
         return outrosDocumentosNecessarios;
@@ -503,10 +518,36 @@ public class ParametroDepositoVO implements Serializable {
 
     /**
      * Especifica o valor do atributo outrosDocumentosNecessarios
-     * @param outrosDocumentosNecessarios - Referencia ao campo obseva��es (tamanho max 200)
+     * @param outrosDocumentosNecessarios - Referencia ao campo obsevações (tamanho max 200)
      */
     public void setOutrosDocumentosNecessarios(String outrosDocumentosNecessarios) {
         this.outrosDocumentosNecessarios = outrosDocumentosNecessarios;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode() * motivoDeposito.getCodigoMotivoDeposito() * 777;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof ParametroDepositoVO)
+            && ((ParametroDepositoVO) obj).getDepartamento().equals(this.getDepartamento())
+            && ((ParametroDepositoVO) obj).getMotivoDeposito().equals(this.getMotivoDeposito());
+    }
+
+    /**
+     * Retorna o serialVersionUID.
+     * @return O atributo serialVersionUID
+     */
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     /**
@@ -526,20 +567,83 @@ public class ParametroDepositoVO implements Serializable {
     }
 
     /**
-     * Retorna o valor do atributo codigoResponsavelUltimaAtualizacao
-     * @return o valor do atributo codigoResponsavelUltimaAtualizacao
-     */
-	public Integer getCodigoResponsavelUltimaAtualizacao() {
+	 * Retorna codigoResponsavelUltimaAtualizacao
+	 * @return o codigoResponsavelUltimaAtualizacao
+	 */
+	public int getCodigoResponsavelUltimaAtualizacao() {
 		return codigoResponsavelUltimaAtualizacao;
 	}
-
-	   /**
-     * Especifica o valor do codigoResponsavelUltimaAtualizacao
-     * @param codigoResponsavelUltimaAtualizacao - codigoResponsavelUltimaAtualizacao.
-     */
-	public void setCodigoResponsavelUltimaAtualizacao(Integer codigoResponsavelUltimaAtualizacao) {
+	
+	/**
+	 * Define codigoResponsavelUltimaAtualizacao
+	 * @param codigoResponsavelUltimaAtualizacao valor codigoResponsavelUltimaAtualizacao a ser definido
+	 */
+	public void setCodigoResponsavelUltimaAtualizacao(
+			int codigoResponsavelUltimaAtualizacao) {
 		this.codigoResponsavelUltimaAtualizacao = codigoResponsavelUltimaAtualizacao;
 	}
-    
-    
+	
+	/**
+	 * Retorna codigoAtivo
+	 * @return o codigoAtivo
+	 */
+	public String getCodigoAtivo() {
+		return codigoAtivo;
+	}
+	
+	/**
+	 * Define codigoAtivo
+	 * @param codigoAtivo valor codigoAtivo a ser definido
+	 */
+	public void setCodigoAtivo(String codigoAtivo) {
+		this.codigoAtivo = codigoAtivo;
+	}
+	
+	/**
+	 * Retorna dataHoraInclusao
+	 * @return o dataHoraInclusao
+	 */
+	public Date getDataHoraInclusao() {
+		return BaseUtil.getDate(dataHoraInclusao);
+	}
+	
+	/**
+	 * Define dataHoraInclusao
+	 * @param dataHoraInclusao valor dataHoraInclusao a ser definido
+	 */
+	public void setDataHoraInclusao(Date dataHoraInclusao) {
+		this.dataHoraInclusao = BaseUtil.getDate(dataHoraInclusao);
+	}
+	
+	/**
+	 * Retorna dataHoraAtualizacao
+	 * @return o dataHoraAtualizacao
+	 */
+	public Date getUltimaAtualizacao() {
+		return BaseUtil.getDate(ultimaAtualizacao);
+	}
+	
+	/**
+	 * Define dataHoraAtualizacao
+	 * @param dataHoraAtualizacao valor dataHoraAtualizacao a ser definido
+	 */
+	public void setUltimaAtualizacao(Date dataHoraAtualizacao) {
+		this.ultimaAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
+	}
+	
+	/**
+	 * Retorna refereciadoDeposito
+	 * @return o refereciadoDeposito
+	 */
+	public Boolean getRefereciadoDeposito() {
+		return refereciadoDeposito;
+	}
+	
+	/**
+	 * Define refereciadoDeposito
+	 * @param refereciadoDeposito valor refereciadoDeposito a ser definido
+	 */
+	public void setRefereciadoDeposito(Boolean refereciadoDeposito) {
+		this.refereciadoDeposito = refereciadoDeposito;
+	}
 }
