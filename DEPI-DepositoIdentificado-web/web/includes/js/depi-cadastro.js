@@ -202,6 +202,45 @@ var fnReady = function ($) {
 			dpcod.val(dpdesc.val());
 		});
 	};
+	
+	$.dpcoddesc.carregar = function(opcoes) {
+		var destino = [$(opcoes.destino[0]), $(opcoes.destino[1])],
+			origem = [$(opcoes.origem[0]), $(opcoes.origem[1])];
+		
+		var onChange = function(ev){
+			var v = $(ev.currentTarget).val(),
+				url = opcoes.url.replace('%d', v);
+			
+			destino[0].find("option").remove().end();
+			destino[1].find("option").remove().end();
+		
+			// Consulta Ajax para obter códigos e descrições
+			$.ajax({
+				url : url,
+				type : "GET",
+				dataType : "json",
+				success : function(data) {
+					var codigos = $(), nomes = $();
+
+					$(data.response).each(function(i,v) {
+						var item = opcoes.fn(v);
+						codigos = codigos.add($('<option>', {text: item[0], value: item[0]}));
+						nomes = nomes.add($("<option>", {value: item[0], text: item[1]}));
+					});
+					
+					destino[0].append(codigos);
+					destino[1].append(nomes);
+				},
+				error : function(data) {
+					opcoes.error(data);
+				}
+			});
+		};
+
+		origem[0].change(onChange);
+		origem[1].change(onChange);
+		origem[0].change();
+	};
 
 	// filtro
 	// ---------------------------------------------------------------------
@@ -469,7 +508,7 @@ var fnReady = function ($) {
 			.parents("table:first")
 			.find('input:checkbox:checked[name="codigo"]');
 		return marcados;
-	}
+	};
 
 	// motivoDeposito
 	// ---------------------------------------------------------------------
@@ -509,7 +548,7 @@ var fnReady = function ($) {
 				
 				if (!!sel) {
 					$(sel.operacoes).each(function(idx, op){
-						jqSecundario.append($('<option>', {text: op.descricao, value: op.descricao}))
+						jqSecundario.append($('<option>', {text: op.descricao, value: op.descricao}));
 					});
 				}
 			});
@@ -549,7 +588,7 @@ var fnReady = function ($) {
 	// se a quantidade de checks marcados é igual a um.
 	// Pós condições: o usuário pode alterar, ou prorrogar um registro.
 	$.motivoDeposito.verificarBoxEdicaoRegras = function() {
-	}
+	};
 	
 	$.motivoDeposito.validarCheckCobs = function() {
 	    var checkboxes = document.forms[0].elements['codigoAutorizador'];
@@ -611,7 +650,7 @@ var fnReady = function ($) {
 	    return (verificarBoxExclusao('codigoAutorizador', 'msg.confirmacao.exclusao', 'msg.selecao.exclusao') 
 	    		&& submitForm('excluir', PAGE_CONTEXT + '/deposito/CadastrarDeposito.do'));
 	};
-
+	
 	// grupoacesso
 	// ---------------------------------------------------------------------
 	$.namespace( '$.grupoacesso' );
@@ -641,43 +680,20 @@ var fnReady = function ($) {
 		codDeptoCombo.toggleClass("w-100", false).toggleClass("w-100", true);
 		nomDeptoCombo.toggleClass("w-100", false).toggleClass("w-100", true);
 	};
+
 	$.grupoacesso.prepararEditar = function(opcoes) {
 		checkTodos();
 		$.dpcoddesc.combinar(['.companhia-codigo-dropbox','.companhia-nome-dropbox']);
 		$.dpcoddesc.combinar(['.departamento-codigo-dropbox','.departamento-nome-dropbox']);
-		var urlDepto = opcoes.urlDepto;
-		
-		var codCiaDropbox=$('.companhia-codigo-dropbox'), nomCiaDropbox=$('.companhia-nome-dropbox');
-		
-		/**
-		 * Função para carregar departamentos em função da escolha da cia
-		 */
-		var carregarDepartamentos = function() {
-			$("#box_loading").show();
-			// remvove as opções anteriores
-			$('.departamento-codigo-dropbox').find("option").remove().end();
-			$('.departamento-nome-dropbox').find("option").remove().end();
-			
-			var v = codCiaDropbox.val();
-			var url = urlDepto.replace('%d', v);
-			// Consulta Ajax para obter deptos da cia
-			$.ajax({
-				url : url,
-				type : "GET",
-				dataType : "json",
-				success : function(data) {
-					$.grupoacesso.preencherDepartamentos(data.response);
-					$("#box_loading").hide();
-				},
-				error : function(data) {
-					$("#box_loading").hide();
-					alert(data.erro);
-				}
-			});
-		};
-		
-		codCiaDropbox.change(carregarDepartamentos);
-		nomCiaDropbox.change(carregarDepartamentos);
+		$.dpcoddesc.carregar({
+			origem: ['.companhia-codigo-dropbox', '.companhia-nome-dropbox'],
+			destino: ['.departamento-codigo-dropbox', '.departamento-nome-dropbox'],
+			url: opcoes.urlDepto,
+			fn: function(v) {
+				return [v.siglaDepartamento, v.nomeDepartamento];
+			},
+			error: opcoes.error
+		});
 		
 		$('.btnRemover').click(function(ev){
 			ev.stopPropagation();
@@ -844,6 +860,37 @@ var fnReady = function ($) {
 				window.close();
 			}, 500);
 		});
+	};
+	
+	// parametro
+	// ---------------------------------------------------------------------
+	$.namespace('$.parametro');
+	
+	$.parametro.prepararFormulario = function(opcoes) {
+		$.dpcoddesc.combinar(['.companhia-codigo-dropbox','.companhia-nome-dropbox']);
+		$.dpcoddesc.combinar(['.departamento-codigo-dropbox','.departamento-nome-dropbox']);
+		$.dpcoddesc.carregar({
+			origem: ['.companhia-codigo-dropbox', '.companhia-nome-dropbox'],
+			destino: ['.departamento-codigo-dropbox', '.departamento-nome-dropbox'],
+			url: opcoes.urlDepto,
+			fn: function(v) {
+				return [v.siglaDepartamento, v.nomeDepartamento];
+			},
+			error: opcoes.error
+		});
+	 	$("#AcaoForm_codigoMotivoDeposito").change(function(){
+	 		var item = $("#AcaoForm_codigoMotivoDeposito").val();
+			$("#AcaoForm_descricaoDetalhadaMotivo").val(opcoes.motivos[item]);
+	 	});
+	 	$("#AcaoForm_codigoMotivoDeposito").change();
+	 	$("#AcaoForm input[type=\"radio\"][name=\"codigoBancoVencimento\"]").change(function() {
+	 		var v = $("#AcaoForm input[type=\"radio\"][name=\"codigoBancoVencimento\"]:checked").val(),
+	 			n = $("#AcaoForm input[name=\"numeroDiasAposVencimento\"]");
+	 		n.prop("disabled", v == "N");
+	 		if (v == "N")
+	 			n.val("");
+	 	});
+	 	$("#AcaoForm input[type=\"radio\"][name=\"codigoBancoVencimento\"]").change();
 	};
 	
 	// paginacao

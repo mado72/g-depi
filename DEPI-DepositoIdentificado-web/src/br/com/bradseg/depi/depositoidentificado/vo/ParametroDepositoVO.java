@@ -189,7 +189,7 @@ public class ParametroDepositoVO implements Serializable{
 	private Boolean refereciadoDeposito;
 
     /**
-     * Retorna o campo codigo da Apolice
+     * Retorna o campo código da Apólice
      * @return codigoApolice - Código da apólice
      */
     public String getCodigoApolice() {

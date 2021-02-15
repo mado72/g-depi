@@ -2,6 +2,7 @@ package br.com.bradseg.depi.depositoidentificado.cadastro.helper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
@@ -14,7 +15,11 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoPKVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
@@ -25,15 +30,15 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 public class ParametroDepositoCrudHelper implements
 		CrudHelper<ParametroDepositoCampo, ParametroDepositoVO, ParametroDepositoEditarFormModel> {
 
-	private static final String TITLE_DEPOSITO_CONSULTAR = "title.deposito.consultar";
+	private static final String TITLE_DEPOSITO_CONSULTAR = "title.parametrodeposito.consultar";
 
-	private static final String TITLE_DEPOSITO_LISTAR = "title.deposito.listar";
+	private static final String TITLE_DEPOSITO_LISTAR = "title.parametrodeposito.listar";
 	
-	private static final String TITLE_DEPOSITO_ALTERAR = "title.deposito.editar";
+	private static final String TITLE_DEPOSITO_ALTERAR = "title.parametrodeposito.editar";
 	
-	private static final String TITLE_DEPOSITO_DETALHAR = "title.deposito.detalhar";
+	private static final String TITLE_DEPOSITO_DETALHAR = "title.parametrodeposito.detalhar";
 
-	private static final String TITLE_DEPOSITO_INCLUIR = "title.deposito.novo";
+	private static final String TITLE_DEPOSITO_INCLUIR = "title.parametrodeposito.novo";
 
 	private transient ParametroDepositoFacade facade;
 
@@ -119,17 +124,116 @@ public class ParametroDepositoCrudHelper implements
 	}
 
 	@Override
-	public void preencherFormularioEdicao(ParametroDepositoEditarFormModel model)
+	public void preencherFormularioEdicao(ParametroDepositoEditarFormModel m)
 			throws DEPIIntegrationException {
 
 		// FIXME Obter pela chave primária e preencher os campos
-		ParametroDepositoVO instancia = obterPeloCodigo(1);
-//		model.setCodigo(String.valueOf(instancia.getCodigoMotivoDeposito()));
+		ParametroDepositoVO v = obterPeloCodigo(m.getCodigo());
+		
+		m.setCodigoApolice(v.getCodigoApolice());
+		m.setCodigoBancoVencimento(v.getCodigoBancoVencimento());
+		m.setCodigoBloqueto(v.getCodigoBloqueto());
+		m.setCodigoCompanhia(String.valueOf(v.getCompanhia().getCodigoCompanhia()));
+		m.setCodigoCpfCnpj(v.getCodigoCpfCnpj());
+		m.setCodigoDepartamento(String.valueOf(v.getDepartamento().getCodigoDepartamento()));
+		m.setCodigoDossie(v.getCodigoDossie());
+		m.setCodigoEndosso(v.getCodigoEndosso());
+		m.setCodigoItem(v.getCodigoItem());
+		m.setCodigoMotivoDeposito(String.valueOf(v.getMotivoDeposito().getCodigoMotivoDeposito()));
+		m.setCodigoParcela(v.getCodigoParcela());
+		m.setCodigoProtocolo(v.getCodigoProtocolo());
+		m.setCodigoRamo(v.getCodigoRamo());
+		m.setCodigoSucursal(v.getCodigoSucursal());
+		m.setCodigoTipo(v.getCodigoTipo());
+		m.setDescricaoBancoVencimento(v.getDescricaoBancoVencimento());
+		m.setDescricaoBasicaMotivo(v.getMotivoDeposito().getDescricaoBasica());
+		m.setDescricaoDeposito(v.getDescricaoDeposito());
+		m.setDescricaoDetalhadaMotivo(v.getMotivoDeposito().getDescricaoDetalhada());
+		m.setNumeroDiasAposVencimento(String.valueOf(v.getNumeroDiasAposVencimento()));
+		m.setOutrosDocumentosNecessarios(v.getOutrosDocumentosNecessarios());
+		m.setReferenciadoDeposito(v.isReferenciadoDeposito() ? ParametroDepositoEditarFormModel.VALOR_SIM
+				: ParametroDepositoEditarFormModel.VALOR_NAO);
+
+		v.setCompanhia(obterCompanhia(v));
+		m.setCias(Collections.singletonList(v.getCompanhia()));
+		
+		v.setDepartamento(obterDepartamento(v.getDepartamento()));
+		m.setDeptos(Collections.singletonList(v.getDepartamento()));
+		
+		v.setMotivoDeposito(obterMotivo(v.getMotivoDeposito()));
+		
+		m.setDescricaoDetalhadaMotivo(v.getMotivoDeposito().getDescricaoDetalhada());
+		m.setMotivos(Collections.singletonList(v.getMotivoDeposito()));
+	
+		//		model.setCodigo(String.valueOf(instancia.getCodigoMotivoDeposito()));
 	}
 
-	private ParametroDepositoVO obterPeloCodigo(int codigo) {
-		ParametroDepositoVO vo = new ParametroDepositoVO();
-		// FIXME definir método para obter pela chave primária
+	private DepartamentoVO obterDepartamento(DepartamentoVO departamento) {
+		return facade.obterDepartamento(departamento);
+	}
+
+	private CompanhiaSeguradoraVO obterCompanhia(ParametroDepositoVO v) {
+		return facade.obterCompanhia(v.getCompanhia());
+	}
+	
+	private MotivoDepositoVO obterMotivo(MotivoDepositoVO motivoDeposito) {
+		return facade.obterMotivo(motivoDeposito);
+	}
+
+	public void prepararFormularioInclusao(
+			ParametroDepositoEditarFormModel model)
+			throws DEPIIntegrationException {
+		
+		List<CompanhiaSeguradoraVO> cias = obterCompanhias();
+		model.setCias(cias);
+		
+		if (! cias.isEmpty()) {
+			CompanhiaSeguradoraVO companhia = cias.get(0);
+			model.setCodigoCompanhia(String.valueOf(companhia.getCodigoCompanhia()));
+			List<DepartamentoVO> deptos = obterDepatamentos(companhia);
+			model.setDeptos(deptos);
+			if (! deptos.isEmpty()) {
+				DepartamentoVO depto = deptos.get(0);
+				model.setCodigoDepartamento(String.valueOf(depto.getCodigoDepartamento()));
+			}
+		}
+		else {
+			model.setCodigoCompanhia(null);
+			model.setDeptos(null);
+		}
+		
+		model.setMotivos(obterMotivos());
+	}
+	
+	/**
+	 * @return
+	 */
+	private List<CompanhiaSeguradoraVO> obterCompanhias() {
+		return facade.obterCompanhias();
+	}
+
+	/**
+	 * @param companhia
+	 * @return
+	 */
+	private List<DepartamentoVO> obterDepatamentos(
+			CompanhiaSeguradoraVO companhia) {
+		return facade.obterDepartamentos(companhia);
+	}
+
+	/**
+	 * @return
+	 */
+	private List<MotivoDepositoVO> obterMotivos() {
+		return facade.obterMotivos();
+	}
+
+	private ParametroDepositoVO obterPeloCodigo(String codigos) {
+		ParametroDepositoPKVO pkvo = new ParametroDepositoPKVO(codigos);
+		
+		ParametroDepositoVO vo = new ParametroDepositoVO(
+				pkvo.getCodigoDepartamento(), pkvo.getCodigoMotivo(),
+				pkvo.getCodigoCompanhia());
 		
 		return facade.obterPorChave(vo);
 	}
@@ -151,7 +255,7 @@ public class ParametroDepositoCrudHelper implements
 		}
 		else {
 			// FIXME Obter pela chave primária
-			instancia = obterPeloCodigo(1);
+			instancia = obterPeloCodigo(model.getCodigo());
 		}
 		
 		// FIXME Preencher os campos

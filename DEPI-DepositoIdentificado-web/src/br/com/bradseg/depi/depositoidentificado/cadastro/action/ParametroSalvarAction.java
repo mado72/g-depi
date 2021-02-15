@@ -46,8 +46,8 @@ public class ParametroSalvarAction extends
 	/* (non-Javadoc)
 	 * @see com.opensymphony.xwork2.ActionSupport#validate()
 	 */
-	@Override
-	public void validate() {
+//	@Override
+//	public void validate() {
 //		FIXME Validar os campos 
 //		if (CollectionUtils.isEmpty(getModel().getSiglaDepartamentos())) {
 //			LOGGER.info("Departamento não informado.");
@@ -56,8 +56,8 @@ public class ParametroSalvarAction extends
 //					getText(ConstantesDEPI.ERRO_CAMPO_REQUERIDO,
 //							new String[]{ getText(LABEL_CADASTRO_DEPARTAMENTOCOMPANHIA_DEPARTAMENTO)}));
 //		}
-		super.validate();
-	}
+//		super.validate();
+//	}
 
 	@Override
 	public String execute() {

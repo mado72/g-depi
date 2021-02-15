@@ -61,8 +61,13 @@ public class ParametroDepositosDataMapper implements RowMapper<ParametroDeposito
 		vo.setCodigoAtivo(rs.getString("CIND_REG_ATIVO"));
 		vo.setRefereciadoDeposito(rs.getBoolean("REFERENCIADO_DEPOSITO"));
 		
-		vo.getMotivoDeposito().setDescricaoBasica(rs.getString("RMOTVO_DEP_IDTFD"));
-		vo.getDepartamento().setNomeDepartamento(rs.getString("IDEPTO_DEP_IDTFD"));
+		if (isIncluiDescricaoMotivo()) {
+			vo.getMotivoDeposito().setDescricaoBasica(rs.getString("RMOTVO_DEP_IDTFD"));
+		}
+		
+		if (isIncluiNomeDepartamento()) {
+			vo.getDepartamento().setNomeDepartamento(rs.getString("IDEPTO_DEP_IDTFD"));
+		}
 		return vo;
 	}
 	

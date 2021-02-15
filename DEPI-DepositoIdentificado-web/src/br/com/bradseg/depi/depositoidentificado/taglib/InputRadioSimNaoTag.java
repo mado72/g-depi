@@ -1,0 +1,106 @@
+/**
+ * 
+ */
+package br.com.bradseg.depi.depositoidentificado.taglib;
+
+import java.io.IOException;
+
+import javax.servlet.jsp.JspException;
+
+import org.apache.struts2.views.jsp.StrutsBodyTagSupport;
+
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+
+/**
+ * 
+ * @author Marcelo Damasceno
+ */
+public class InputRadioSimNaoTag extends StrutsBodyTagSupport {
+
+	private static final long serialVersionUID = -1933185831519767783L;
+	
+	private String name;
+	
+	private String detalhar;
+	
+	/* (non-Javadoc)
+	 * @see javax.servlet.jsp.tagext.TagSupport#doEndTag()
+	 */
+	@Override
+	public int doEndTag() throws JspException {
+		String value = findString(name);
+		String expr = findString(new StringBuilder("%{").append(detalhar).append("}").toString());
+		boolean paraDetalhar = "true".equalsIgnoreCase(expr);
+		
+		if (! (value.startsWith("%{") && value.endsWith("}"))) {
+			value = findString(new StringBuilder("%{").append(value).append("}").toString());
+		}
+		
+		StringBuilder sb;
+		if (paraDetalhar) {
+			sb = new StringBuilder(value.equals("N") ? "Não" : "Sim");
+		}
+		else {
+			sb = new StringBuilder("<div id=\"")
+				.append(id)
+				.append("\">")
+				.append(radio(name, value, "S", "Sim"))
+				.append(radio(name, value, "N", "Não"))
+				.append("</div>");
+		}
+		
+		try {
+			pageContext.getOut().print(sb.toString());
+		} catch (IOException e) {
+			throw new DEPIBusinessException(e, "erro.interno");
+		}
+		
+		return super.doEndTag();
+	}
+	
+	private String radio(String name, String value, String defaultValue, String label) {
+		
+		String id = new StringBuilder("AcaoForm_")
+			.append(name)
+			.append('_')
+			.append(defaultValue)
+			.toString();
+		
+		StringBuilder sb = new StringBuilder("<input type=\"radio\" value=\"")
+			.append(defaultValue)
+			.append("\" name=\"")
+			.append(name)
+			.append("\" id=\"")
+			.append(id)
+			.append("\"");
+		
+		if (defaultValue.equals(value)) {
+			sb.append(" checked=\"checked\"");
+		}
+		
+		sb.append("/><label for=\"")
+			.append(id)
+			.append("\">")
+			.append(label)
+			.append("</label>");
+		
+		return sb.toString();
+		
+	}
+	
+	/**
+	 * Define name
+	 * @param name valor name a ser definido
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * Define detalhar
+	 * @param detalhar valor detalhar a ser definido
+	 */
+	public void setDetalhar(String detalhar) {
+		this.detalhar = detalhar;
+	}
+}

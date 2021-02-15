@@ -493,9 +493,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
     @Override
     public ParametroDepositoVO obterPorChave(ParametroDepositoVO parametro) {
 
-        //* Verifica se j� existe um parametro cadastrado e ativo com os dados informados
-        StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_EXISTS);
-        
+        //* Verifica se já existe um parâmetro cadastrado e ativo com os dados informados
         MapSqlParameterSource params = new MapSqlParameterSource();
         
         params.addValue(PARAM_PRM1, parametro.getCompanhia().getCodigoCompanhia());
@@ -503,7 +501,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
         params.addValue(PARAM_PRM3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
 
 		try {
-			return getJdbcTemplate().queryForObject(query.toString(), params,
+			return getJdbcTemplate().queryForObject(QuerysDepi.PARAMETRODEPOSITO_OBTERPORCHAVE, params,
 					new ParametroDepositosDataMapper(false, false));
 		} catch (EmptyResultDataAccessException e) {
 			return null;
