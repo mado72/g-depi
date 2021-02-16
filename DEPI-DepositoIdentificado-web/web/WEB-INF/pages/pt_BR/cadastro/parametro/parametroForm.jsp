@@ -22,26 +22,25 @@
 			</td>
 			<td>
 				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.codigoCompanhia-->
-				<s:select list="cias" value="codCompanhia" listValue="codigoCompanhia" 
-					listKey="codigoCompanhia" cssClass="dropbox w-100 companhia-codigo-dropbox" name="codCompanhia"
+				<s:select list="cias" value="codigoCompanhia" listValue="codigoCompanhia" 
+					listKey="codigoCompanhia" cssClass="dropbox w-100 companhia-codigo-dropbox" name="codigoCompanhia"
 					disabled="%{detalhar}"/>
 			</td>
 			<td colspan="5">
 				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
-				<s:select list="cias" value="codCompanhia" listValue="descricaoCompanhia" listKey="codigoCompanhia" 
+				<s:select list="cias" value="codigoCompanhia" listValue="descricaoCompanhia" listKey="codigoCompanhia" 
 					cssClass="dropbox w-100 companhia-nome-dropbox" disabled="%{detalhar}"/>
 			</td>
 		</tr>
  		<tr>
+			<!-- combo departamentos -->
 			<td class="td_label" ><s:text name="label.cadastro.parametrodeposito.departamento" /><span class="obrigatorio">*</span></td>
 			<td>
-				<!-- combo companhia -->
-				<s:select list="deptos" name="siglaDepartamento" value="siglaDepartamento" listValue="siglaDepartamento" listKey="siglaDepartamento" 
+				<s:select list="deptos" key="codigoDepartamento" listValue="siglaDepartamento" listKey="codigoDepartamento" 
 					cssClass="dropbox w-100 departamento-codigo-dropbox" disabled="%{detalhar}"/>
 			</td>
 			<td colspan="5">
-				<!-- combo departamento -->
-				<s:select list="deptos" value="siglaDepartamento" listValue="nomeDepartamento" listKey="siglaDepartamento" 
+				<s:select list="deptos" value="codigoDepartamento" listValue="nomeDepartamento" listKey="codigoDepartamento" 
 					cssClass="dropbox w-100 departamento-nome-dropbox" disabled="%{detalhar}"/>
 			</td>
 		</tr>

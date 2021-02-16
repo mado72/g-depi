@@ -224,8 +224,8 @@ var fnReady = function ($) {
 
 					$(data.response).each(function(i,v) {
 						var item = opcoes.fn(v);
-						codigos = codigos.add($('<option>', {text: item[0], value: item[0]}));
-						nomes = nomes.add($("<option>", {value: item[0], text: item[1]}));
+						codigos = codigos.add($('<option>', {value: item[0], text: item[1]}));
+						nomes = nomes.add($("<option>", {value: item[0], text: item[2]}));
 					});
 					
 					destino[0].append(codigos);
@@ -690,7 +690,7 @@ var fnReady = function ($) {
 			destino: ['.departamento-codigo-dropbox', '.departamento-nome-dropbox'],
 			url: opcoes.urlDepto,
 			fn: function(v) {
-				return [v.siglaDepartamento, v.nomeDepartamento];
+				return [v.siglaDepartamento, v.siglaDepartamento, v.nomeDepartamento];
 			},
 			error: opcoes.error
 		});
@@ -874,7 +874,7 @@ var fnReady = function ($) {
 			destino: ['.departamento-codigo-dropbox', '.departamento-nome-dropbox'],
 			url: opcoes.urlDepto,
 			fn: function(v) {
-				return [v.siglaDepartamento, v.nomeDepartamento];
+				return [v.codigoDepartamento, v.siglaDepartamento, v.nomeDepartamento];
 			},
 			error: opcoes.error
 		});

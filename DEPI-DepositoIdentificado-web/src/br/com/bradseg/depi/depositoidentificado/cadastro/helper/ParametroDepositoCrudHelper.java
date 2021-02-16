@@ -127,7 +127,6 @@ public class ParametroDepositoCrudHelper implements
 	public void preencherFormularioEdicao(ParametroDepositoEditarFormModel m)
 			throws DEPIIntegrationException {
 
-		// FIXME Obter pela chave primária e preencher os campos
 		ParametroDepositoVO v = obterPeloCodigo(m.getCodigo());
 		
 		m.setCodigoApolice(v.getCodigoApolice());
@@ -164,8 +163,12 @@ public class ParametroDepositoCrudHelper implements
 		
 		m.setDescricaoDetalhadaMotivo(v.getMotivoDeposito().getDescricaoDetalhada());
 		m.setMotivos(Collections.singletonList(v.getMotivoDeposito()));
-	
-		//		model.setCodigo(String.valueOf(instancia.getCodigoMotivoDeposito()));
+		
+		m.setCodigo(new ParametroDepositoPKVO(
+						v.getDepartamento().getCodigoDepartamento(), 
+						v.getMotivoDeposito().getCodigoMotivoDeposito(), 
+						v.getCompanhia().getCodigoCompanhia())
+				.toString());
 	}
 
 	private DepartamentoVO obterDepartamento(DepartamentoVO departamento) {
@@ -252,19 +255,27 @@ public class ParametroDepositoCrudHelper implements
 			
 			int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
 			instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
+			
+			instancia.setCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(model.getCodigoCompanhia())));
+			instancia.setMotivoDeposito(new MotivoDepositoVO(Integer.parseInt(model.getCodigoMotivoDeposito())));
+			instancia.setDepartamento(new DepartamentoVO(Integer.parseInt(model.getCodigoDepartamento())));
 		}
 		else {
-			// FIXME Obter pela chave primária
 			instancia = obterPeloCodigo(model.getCodigo());
 		}
-		
-		// FIXME Preencher os campos
-		/*
-		instancia.setDescricaoBasica(model.getDescricaoBasica());
-		instancia.setDescricaoDetalhada(model.getDescricaoDetalhada());
-		instancia.setCodigoEventoContabil(CODIGO_EVENTO_CONTABIL);
-		instancia.setCodigoItemContabil(CODIGO_ITEM_CONTABIL);
-		*/
+
+		instancia.setCodigoApolice(model.getCodigoApolice());
+		instancia.setCodigoBancoVencimento(model.getCodigoBancoVencimento());
+		instancia.setCodigoBloqueto(model.getCodigoBloqueto());
+		instancia.setCodigoCpfCnpj(model.getCodigoCpfCnpj());
+		instancia.setCodigoDossie(model.getCodigoDossie());
+		instancia.setCodigoEndosso(model.getCodigoEndosso());
+		instancia.setCodigoItem(model.getCodigoItem());
+		instancia.setCodigoParcela(model.getCodigoParcela());
+		instancia.setCodigoProtocolo(model.getCodigoProtocolo());
+		instancia.setCodigoRamo(model.getCodigoRamo());
+		instancia.setCodigoSucursal(model.getCodigoSucursal());
+		instancia.setCodigoTipo(model.getCodigoTipo());
 		
 		try {
 			if (novo) {

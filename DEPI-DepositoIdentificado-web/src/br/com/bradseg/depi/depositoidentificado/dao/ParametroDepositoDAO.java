@@ -57,9 +57,10 @@ public interface ParametroDepositoDAO  {
 	ParametroDepositoVO obterPorChave(ParametroDepositoVO parametro);
 
 	/**
-	 * @param companhia
-	 * @param departamentoVO
-	 * @return
+	 * Verificar se parâmetro é referenciado
+	 * @param companhia Companhia
+	 * @param departamentoVO Departamento
+	 * @return true quando referenciado
 	 */
 	boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
 			DepartamentoVO departamentoVO);

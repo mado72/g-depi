@@ -17,6 +17,8 @@ import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.DepartamentoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.MotivoDepositoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.ParametroDepositosDataMapper;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
@@ -72,8 +74,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 		private static final String PARAM_PRM17 = "prm17";
 
 		private static final String PARAM_PRM18 = "prm18";
-
-		private static final String PARAM_PRM19 = "prm19";
 
 		/** A Constante LOGGER. */
 		private static final Logger LOGGER = LoggerFactory.getLogger(ParametroDepositoDAOImpl.class);
@@ -349,10 +349,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
     @Override
     public void inserir(ParametroDepositoVO parametro) {
 
-
     	try {
-
-        	MapSqlParameterSource params = new MapSqlParameterSource();
 
             /**
              * Verificação de preenchimento de Campo obrigatório.
@@ -375,116 +372,145 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
                 throw new BusinessException("Código Departamento não informado para o DAO");
             }
 
-            //* Verifica se j� existe um parametro cadastrado e ativo com os dados informados
-            StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_EXISTS);
-            
-            params.addValue(PARAM_PRM1, parametro.getCompanhia().getCodigoCompanhia());
-            params.addValue(PARAM_PRM2, parametro.getDepartamento().getCodigoDepartamento());
-            params.addValue(PARAM_PRM3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+            String retorno = obterIndicadorAtivo(parametro);
 
-            List<String> retorno =  getJdbcTemplate().queryForList(query.toString(), params, String.class);
-
-            if (retorno.isEmpty()) {
-                if (retorno.get(1).equals(ConstantesDEPI.INDICADOR_ATIVO)) { // campo not null.
-                	
-                    StringBuilder queryDepto = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE);
-                	MapSqlParameterSource paramsDepto = new MapSqlParameterSource();
-                	paramsDepto.addValue(PARAM_PRM1, parametro.getDepartamento().getCodigoDepartamento());
-                	
-                	DepartamentoVO dep = (DepartamentoVO) getJdbcTemplate().query(queryDepto.toString(), params, new DepartamentoDataMapper());
-                	
-                    StringBuilder queryMotDepto = new StringBuilder(QuerysDepi.MOTIVODEPOSITO_OBTERPORCHAVE);
-                	MapSqlParameterSource paramsMotDepto = new MapSqlParameterSource();
-                	paramsMotDepto.addValue(PARAM_WHR1, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
-                	
-                	MotivoDepositoVO mot = (MotivoDepositoVO) getJdbcTemplate().query(queryMotDepto.toString(), params, new MotivoDepositoDataMapper());
-
-                	String msg = new StringBuilder("Parâmetros de Depósito: ").append(" já cadastrado para a Cia: ").append(
-                                    parametro.getCompanhia().getCodigoCompanhia()).append(", para o Departamento: ").append(
-                                    dep.getSiglaDepartamento()).append(" e para o Motivo: ").append(mot.getDescricaoBasica()).toString();
-                	
-                    throw new BusinessException(msg) ;
-                } else {
-                	
-                    MapSqlParameterSource paramsReativar = new MapSqlParameterSource();
-
-                    /**
-                     * Novos valores.
-                     */
-                    paramsReativar.addValue(PARAM_PRM1, parametro.getCodigoBancoVencimento());
-                    
-                    if (parametro.getNumeroDiasAposVencimento() <= 0) {
-                    	paramsReativar.addValue(PARAM_PRM2, null);
-                    } else {
-                    	paramsReativar.addValue(PARAM_PRM2, parametro.getNumeroDiasAposVencimento());
-                    }
-                    paramsReativar.addValue(PARAM_PRM3, parametro.getCodigoSucursal());
-                    paramsReativar.addValue(PARAM_PRM4, parametro.getCodigoApolice());
-                    paramsReativar.addValue(PARAM_PRM5, parametro.getCodigoEndosso());
-                    paramsReativar.addValue(PARAM_PRM6, parametro.getCodigoItem());
-                    paramsReativar.addValue(PARAM_PRM7, parametro.getCodigoBloqueto());
-                    paramsReativar.addValue(PARAM_PRM8, "S");
-                    paramsReativar.addValue(PARAM_PRM9, parametro.getCodigoDossie());
-                    paramsReativar.addValue(PARAM_PRM10, parametro.getCodigoProtocolo());
-                    paramsReativar.addValue(PARAM_PRM11, parametro.getCodigoTipo());
-                    paramsReativar.addValue(PARAM_PRM12, parametro.getCodigoRamo());
-                    paramsReativar.addValue(PARAM_PRM13, parametro.getCodigoParcela());
-                    paramsReativar.addValue(PARAM_PRM14, parametro.getOutrosDocumentosNecessarios());
-                    paramsReativar.addValue(PARAM_PRM15, parametro.getCodigoResponsavelUltimaAtualizacao());
-                    
-                    /**
-                     * Where
-                     */
-                    paramsReativar.addValue(PARAM_WHR1, parametro.getCompanhia().getCodigoCompanhia());
-                    paramsReativar.addValue(PARAM_WHR2, parametro.getDepartamento().getCodigoDepartamento());
-                    paramsReativar.addValue(PARAM_WHR3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
-                    
-                    if (getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_REATIVAR, paramsReativar) == 0) {
-                        throw new BusinessException("A reativação falhou!");
-                    }
-                }
-            } else {
-            	
-                MapSqlParameterSource paramsInsert = new MapSqlParameterSource();
-
-                /**
-                 * Novos valores.
-                 */
-				paramsInsert.addValue(PARAM_PRM1, parametro.getCompanhia()
-						.getCodigoCompanhia());
-				paramsInsert.addValue(PARAM_PRM2,
-						parametro.getNumeroDiasAposVencimento());
-                paramsInsert.addValue(PARAM_PRM3, parametro.getDepartamento().getCodigoDepartamento());
-                paramsInsert.addValue(PARAM_PRM4, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
-                paramsInsert.addValue(PARAM_PRM5, parametro.getCodigoBancoVencimento());
-                
-                if (parametro.getNumeroDiasAposVencimento() <= 0) {
-                	paramsInsert.addValue(PARAM_PRM6, null);
-                } else {
-                	paramsInsert.addValue(PARAM_PRM6, parametro.getNumeroDiasAposVencimento());
-                }
-                
-                paramsInsert.addValue(PARAM_PRM7, parametro.getCodigoSucursal());
-                paramsInsert.addValue(PARAM_PRM8, parametro.getCodigoApolice());
-                paramsInsert.addValue(PARAM_PRM9, parametro.getCodigoEndosso());
-                paramsInsert.addValue(PARAM_PRM10, parametro.getCodigoItem());
-                paramsInsert.addValue(PARAM_PRM11, parametro.getCodigoBloqueto());
-                paramsInsert.addValue(PARAM_PRM12, parametro.getCodigoCpfCnpj());
-                paramsInsert.addValue(PARAM_PRM13, parametro.getCodigoDossie());
-                paramsInsert.addValue(PARAM_PRM14, parametro.getCodigoProtocolo());
-                paramsInsert.addValue(PARAM_PRM15, parametro.getCodigoTipo());
-                paramsInsert.addValue(PARAM_PRM16, parametro.getCodigoRamo());
-                paramsInsert.addValue(PARAM_PRM17, parametro.getCodigoParcela());
-                paramsInsert.addValue(PARAM_PRM18, parametro.getOutrosDocumentosNecessarios());
-                paramsInsert.addValue(PARAM_PRM19, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
-
-                getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_INSERT, paramsInsert) ;
-                }
+			if (retorno != null) {
+				if (retorno.equals(ConstantesDEPI.INDICADOR_ATIVO)) {
+					gerarErroRegistroDuplicado(parametro);
+				} else {
+					queryReativar(parametro);
+				}
+			} else {
+				queryInsert(parametro);
+			}
 
         } finally {
         	LOGGER.info("inserir(ParametroDepositoVO parametro)"); 
         }
     }
+
+	private String obterIndicadorAtivo(ParametroDepositoVO parametro) {
+		//* Verifica se já existe um parametro cadastrado e ativo com os dados informados
+		MapSqlParameterSource params = new MapSqlParameterSource();
+
+		params.addValue(PARAM_PRM1, parametro.getCompanhia().getCodigoCompanhia());
+		params.addValue(PARAM_PRM2, parametro.getDepartamento().getCodigoDepartamento());
+		params.addValue(PARAM_PRM3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+
+		try {
+			return getJdbcTemplate().queryForObject(
+					QuerysDepi.PARAMETRODEPOSITO_EXISTS, params, String.class);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
+
+	private void queryInsert(ParametroDepositoVO parametro) {
+		MapSqlParameterSource paramsInsert = new MapSqlParameterSource();
+
+		/**
+		 * Novos valores.
+		 */
+		paramsInsert.addValue(PARAM_PRM1, parametro.getCompanhia().getCodigoCompanhia());
+		paramsInsert.addValue(PARAM_PRM2, parametro.getDepartamento().getCodigoDepartamento());
+		paramsInsert.addValue(PARAM_PRM3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+		
+		paramsInsert.addValue(PARAM_PRM4, parametro.getCodigoBancoVencimento());
+		
+		if (parametro.getNumeroDiasAposVencimento() <= 0) {
+			paramsInsert.addValue(PARAM_PRM5, null);
+		} else {
+			paramsInsert.addValue(PARAM_PRM5, parametro.getNumeroDiasAposVencimento());
+		}
+		
+		paramsInsert.addValue(PARAM_PRM6, parametro.getCodigoSucursal());
+		paramsInsert.addValue(PARAM_PRM7, parametro.getCodigoApolice());
+		paramsInsert.addValue(PARAM_PRM8, parametro.getCodigoEndosso());
+		paramsInsert.addValue(PARAM_PRM9, parametro.getCodigoItem());
+		paramsInsert.addValue(PARAM_PRM10, parametro.getCodigoBloqueto());
+		paramsInsert.addValue(PARAM_PRM11, parametro.getCodigoCpfCnpj());
+		paramsInsert.addValue(PARAM_PRM12, parametro.getCodigoDossie());
+		paramsInsert.addValue(PARAM_PRM13, parametro.getCodigoProtocolo());
+		paramsInsert.addValue(PARAM_PRM14, parametro.getCodigoTipo());
+		paramsInsert.addValue(PARAM_PRM15, parametro.getCodigoRamo());
+		paramsInsert.addValue(PARAM_PRM16, parametro.getCodigoParcela());
+		paramsInsert.addValue(PARAM_PRM17, parametro.getOutrosDocumentosNecessarios());
+		paramsInsert.addValue(PARAM_PRM18, parametro.getCodigoResponsavelUltimaAtualizacao());
+
+		getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_INSERT, paramsInsert) ;
+	}
+
+	private void queryReativar(ParametroDepositoVO parametro) {
+		MapSqlParameterSource paramsReativar = new MapSqlParameterSource();
+
+		/**
+		 * Novos valores.
+		 */
+		paramsReativar.addValue(PARAM_PRM1, parametro.getCodigoBancoVencimento());
+		
+		if (parametro.getNumeroDiasAposVencimento() <= 0) {
+			paramsReativar.addValue(PARAM_PRM2, null);
+		} else {
+			paramsReativar.addValue(PARAM_PRM2, parametro.getNumeroDiasAposVencimento());
+		}
+		paramsReativar.addValue(PARAM_PRM3, parametro.getCodigoSucursal());
+		paramsReativar.addValue(PARAM_PRM4, parametro.getCodigoApolice());
+		paramsReativar.addValue(PARAM_PRM5, parametro.getCodigoEndosso());
+		paramsReativar.addValue(PARAM_PRM6, parametro.getCodigoItem());
+		paramsReativar.addValue(PARAM_PRM7, parametro.getCodigoBloqueto());
+		paramsReativar.addValue(PARAM_PRM8, "S");
+		paramsReativar.addValue(PARAM_PRM9, parametro.getCodigoDossie());
+		paramsReativar.addValue(PARAM_PRM10, parametro.getCodigoProtocolo());
+		paramsReativar.addValue(PARAM_PRM11, parametro.getCodigoTipo());
+		paramsReativar.addValue(PARAM_PRM12, parametro.getCodigoRamo());
+		paramsReativar.addValue(PARAM_PRM13, parametro.getCodigoParcela());
+		paramsReativar.addValue(PARAM_PRM14, parametro.getOutrosDocumentosNecessarios());
+		paramsReativar.addValue(PARAM_PRM15, parametro.getCodigoResponsavelUltimaAtualizacao());
+		
+		/**
+		 * Where
+		 */
+		paramsReativar.addValue(PARAM_WHR1, parametro.getCompanhia().getCodigoCompanhia());
+		paramsReativar.addValue(PARAM_WHR2, parametro.getDepartamento().getCodigoDepartamento());
+		paramsReativar.addValue(PARAM_WHR3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+		
+		if (getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_REATIVAR, paramsReativar) == 0) {
+		    throw new BusinessException("A reativação falhou!");
+		}
+	}
+
+	private void gerarErroRegistroDuplicado(ParametroDepositoVO parametro) {
+		
+		MapSqlParameterSource paramsDepto = new MapSqlParameterSource();
+		paramsDepto.addValue(PARAM_PRM1, parametro.getDepartamento().getCodigoDepartamento());
+		
+		DepartamentoVO dep;
+		try {
+			dep = getJdbcTemplate().queryForObject(
+					QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE, paramsDepto,
+					new DepartamentoDataMapper());
+		} catch (EmptyResultDataAccessException e) {
+			throw new DEPIIntegrationException(e);
+		}
+		
+		MapSqlParameterSource paramsMotDepto = new MapSqlParameterSource();
+		paramsMotDepto.addValue(PARAM_WHR1, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+		
+		MotivoDepositoVO mot;
+		try {
+			mot = getJdbcTemplate().queryForObject(
+					QuerysDepi.MOTIVODEPOSITO_OBTERPORCHAVE, paramsMotDepto,
+					new MotivoDepositoDataMapper());
+		} catch (EmptyResultDataAccessException e) {
+			throw new DEPIIntegrationException(e);
+		}
+
+		throw new DEPIBusinessException(
+				"msg.erro.parametrodeposito.duplicado",
+				String.valueOf(parametro.getCompanhia().getCodigoCompanhia()),
+				dep.getSiglaDepartamento(),
+				mot.getDescricaoBasica());
+	}
     
     /**
      * Inserir registro de ParametroDepositoVO

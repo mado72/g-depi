@@ -151,6 +151,14 @@ public class MotivoDepositoVO implements Serializable {
 	}
 
 	/**
+	 * Construtor para definir o codigoMotivoDeposito
+	 * @param codigoMotivoDeposito Código
+	 */
+	public MotivoDepositoVO(int codigoMotivoDeposito) {
+		this.codigoMotivoDeposito = codigoMotivoDeposito;
+	}
+
+	/**
 	 * Especifica o campo codigoMotivoDeposito
 	 * 
 	 * @param pCodigoMotivoDeposito

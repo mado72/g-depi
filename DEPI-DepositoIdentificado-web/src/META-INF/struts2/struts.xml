@@ -366,9 +366,7 @@
 				<param name="operationMode">RETRIEVE</param>
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcesso.jsp</param>
-			</result>
+			<result name="input">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcesso.jsp</result>
 		</action>
         
 		<action name="*" method="{1}">
@@ -451,12 +449,20 @@
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
 		</action>
-        
-		<action name="*" method="{1}"/>
+
 		<action name="listar" method="listar">
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/parametro/parametro.jsp</param>
-			</result>
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+			<result name="input">/WEB-INF/pages/pt_BR/cadastro/parametro/parametro.jsp</result>
+		</action>
+        
+		<action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
 		</action>
 	</package>
 	
@@ -469,7 +475,7 @@
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/parametro/parametroForm.jsp</param>
 			</result>
 			<result name="success" type="redirectAction">
-			    <param name="actionName">refrescar</param>
+			    <param name="actionName">retornar</param>
 			    <param name="namespace">/cadastro/parametro/consultar</param>
 			</result>
 			<result name="voltar" type="redirectAction">
@@ -477,8 +483,6 @@
 			    <param name="namespace">/cadastro/parametro/consultar</param>
 			</result>			
 		</global-results>
-		
-		<action name="*" method="{1}"/>
 		
 		<action name="incluir" method="incluir">
 			<interceptor-ref name="limparDados"/>
@@ -490,20 +494,32 @@
 			<result name="input" type="redirectAction">input</result>
 		</action>
         
+        <action name="salvar" class="parametroSalvarAction">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">input</result>
+        </action>
+        
         <action name="excluir" method="excluir">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">
+				<param name="namespace">/cadastro/parametro/consultar</param>
+				<param name="actionName">listar</param>
+			</result>
+        </action>
+        
+        <action name="*" method="{1}">
 			<interceptor-ref name="store">
-				<param name="operationMode">STORE</param>
+				<param name="operationMode">RETRIEVE</param>
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
         </action>
         
-        <action name="salvar" class="departamentoSalvarAction">
-			<interceptor-ref name="store">
-				<param name="operationMode">STORE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-			<result name="input" type="redirectAction">input</result>
-        </action>
     </package>
 
 	<package name="filtroUsuario" namespace="/filtro/funcionario/consultar" extends="depi-default">
