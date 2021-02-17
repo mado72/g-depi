@@ -65,9 +65,16 @@ public class ParametroEditarAction extends EditarFormAction<ParametroDepositoCam
 	 */
 	@Override
 	public String incluir() {
-		String retorno = super.incluir();
-		crudHelper.prepararFormularioInclusao(getModel());
-		return retorno;
+		try {
+			int codUsuario = getCodUsuarioLogado();
+			
+			String retorno = super.incluir();
+			crudHelper.prepararFormularioInclusao(codUsuario, getModel());
+			return retorno;
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			return voltar();
+		}
 	}
 	
 }

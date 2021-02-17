@@ -165,7 +165,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
      * {@inheritDoc}
      */
 	@Override
-    public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, double codigoUsuario, Tabelas tabela)    {
+    public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoUsuario, Tabelas tabela)    {
 
 		try {
 			

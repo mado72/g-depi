@@ -90,7 +90,7 @@ public class GrupoAcessoCrudHelper implements
 	}
 
 	@Override
-	public List<GrupoAcessoVO> processarCriterios(
+	public List<GrupoAcessoVO> processarCriterios(int codUsuario,
 			List<CriterioConsultaVO<GrupoAcessoCampo>> criterios) {
 		
 		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);

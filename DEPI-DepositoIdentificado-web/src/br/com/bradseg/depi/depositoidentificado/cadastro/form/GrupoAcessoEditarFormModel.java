@@ -43,7 +43,7 @@ public class GrupoAcessoEditarFormModel extends CrudForm {
 	}
 
 	@Override
-	public void limparDados() {
+	public void preencherDadosIniciais() {
 		setCodigo("");
 		codigoGrupoAcesso = "";
 		siglaDepartamento = "";

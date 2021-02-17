@@ -3,6 +3,9 @@
  */
 package br.com.bradseg.depi.depositoidentificado.cics.dao;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +52,37 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 		
 		GTAB1412VO retorno = lista.get(0);
 		CompanhiaSeguradoraVO vo = new CompanhiaSeguradoraVO();
-		vo.setCodigoCompanhia(codigoCompanhia);
+		vo.setCodigoCompanhia(Integer.parseInt(retorno.getCiaInterno()));
 		vo.setDescricaoCompanhia(retorno.getNome());
 		return vo;
 	}
 	
-	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO#obterCias(java.util.Collection)
+	 */
+	@Override
+	public List<CompanhiaSeguradoraVO> obterCias(
+			Collection<CompanhiaSeguradoraVO> cias) {
+		HashMap<Integer, CompanhiaSeguradoraVO> cache = new HashMap<>();
+		
+		ArrayList<CompanhiaSeguradoraVO> retorno = new ArrayList<>();
+		
+		for (CompanhiaSeguradoraVO item : cias) {
+			final CompanhiaSeguradoraVO cia;
+			
+			int codigoCompanhia = item.getCodigoCompanhia();
+			if (cache.containsKey(codigoCompanhia)) {
+				cia = cache.get(codigoCompanhia);
+			}
+			else {
+				cia = obterCiaPorCodigo(codigoCompanhia);
+				cache.put(codigoCompanhia, cia);
+			}
+			
+			retorno.add(cia);
+		}
+		
+		return retorno;
+	}
 
 }

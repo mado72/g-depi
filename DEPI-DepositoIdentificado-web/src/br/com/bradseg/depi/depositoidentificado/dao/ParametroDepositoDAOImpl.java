@@ -98,64 +98,60 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
      */
 	@Override
     public List<ParametroDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Integer codigoUsuario) {
-    	
-    	List<ParametroDepositoVO> parametros = null;
-    	
-        StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_OBTERPORFILTROCOMRESTRICAODEGRUPOACESSO);
-        
-        StringBuilder sb = new StringBuilder();
         
         try {
-			
+			StringBuilder query = new StringBuilder(
+					QuerysDepi.PARAMETRODEPOSITO_SELECT_FROM_ALOC_USUARIO)
+					.append(QuerysDepi.PARAMETRODEPOSITO_WHERE_JOIN_ALOC_USUARIO)
+					.append(filtro.getClausulasParciais(" AND ", true))
+					.append(QuerysDepi.PARAMETRODEPOSITO_ORDERBY_DHORA_ULT_ATULZ_DESC);
+        	
 			MapSqlParameterSource params = new MapSqlParameterSource();
-			
-            sb.append(" AND DBPROD.ALOC_USUAR_GRP_DEP.CUSUAR_DEP_IDTFD = :codusuario ");
             params.addValue("codusuario", codigoUsuario);
-
-            query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
-			parametros = getJdbcTemplate().query(query.toString(), params,
+            params.addValues(filtro.getMapParamFiltro().getValues());
+            
+			return getJdbcTemplate().query(query.toString(), params,
 					new ParametroDepositosDataMapper(true, true));
-            return parametros;
             
         } finally {
             LOGGER.info("obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Double codigoUsuario)"); 
         }
     }
-
-    /**
-     * Método de obter por filtro
-     * @param filtro parâmetro depósito com o código do objeto requisitado
-     * @return List<ParametroDepositoVO>
-     */
-    @Override
-    public List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro) {
-
-    	List<ParametroDepositoVO> parametros = null;
-    	
-        StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_OBTERPORFILTRO);
-        
-        try {
-			
-			final MapSqlParameterSource params;
-			
-			if (filtro != null && ! filtro.getCriterios().isEmpty()) {
-				query.append(filtro.getClausulasParciais(" AND ", true));
-				params = filtro.getMapParamFiltro();
-			}
-			else {
-				params = null;
-			}
-			
-			query.append(QuerysDepi.PARAMETRODEPOSITO_ORDERBY_DHORA_ULT_ATULZ_DESC);
-			
-			parametros = getJdbcTemplate().query(query.toString(), params,
-					new ParametroDepositosDataMapper(true, true));
-            return parametros;
-            
-        } finally {
-            LOGGER.info("obterPorFiltroComRestricaoDeGrupoAcesso(CriterioFiltroUtil filtro, BigDecimal codigoUsuario)"); 
-        }
-    }
+//
+//    /**
+//     * Método de obter por filtro
+//     * @param filtro parâmetro depósito com o código do objeto requisitado
+//     * @return List<ParametroDepositoVO>
+//     */
+//    @Override
+//    public List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro) {
+//
+//    	List<ParametroDepositoVO> parametros = null;
+//    	
+//        StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_OBTERPORFILTRO);
+//        
+//        try {
+//			
+//			final MapSqlParameterSource params;
+//			
+//			if (filtro != null && ! filtro.getCriterios().isEmpty()) {
+//				query.append(filtro.getClausulasParciais(" AND ", true));
+//				params = filtro.getMapParamFiltro();
+//			}
+//			else {
+//				params = null;
+//			}
+//			
+//			query.append(QuerysDepi.PARAMETRODEPOSITO_ORDERBY_DHORA_ULT_ATULZ_DESC);
+//			
+//			parametros = getJdbcTemplate().query(query.toString(), params,
+//					new ParametroDepositosDataMapper(true, true));
+//            return parametros;
+//            
+//        } finally {
+//            LOGGER.info("obterPorFiltroComRestricaoDeGrupoAcesso(CriterioFiltroUtil filtro, BigDecimal codigoUsuario)"); 
+//        }
+//    }
 
     /**
      * Atualiza um Parametro Depósito.

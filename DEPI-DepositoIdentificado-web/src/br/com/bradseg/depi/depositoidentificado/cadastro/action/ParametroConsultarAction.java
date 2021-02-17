@@ -12,6 +12,7 @@ import br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.ParametroDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -30,6 +31,7 @@ public class ParametroConsultarAction extends FiltroAction<ParametroDepositoCamp
 	
 	public ParametroConsultarAction() {
 		LOGGER.debug("Instancia de filtroHelper", filtroHelper);
+		setMensagemConsultaSemResultado(getText(ConstantesDEPI.ParametroDeposito.ERRO_USUARIO_SEM_GRUPO_ASSOCIADO));
 	}
 	
 	@Autowired

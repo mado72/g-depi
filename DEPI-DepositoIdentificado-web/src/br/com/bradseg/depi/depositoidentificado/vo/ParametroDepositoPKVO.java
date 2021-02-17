@@ -24,6 +24,7 @@ public class ParametroDepositoPKVO implements Serializable {
 	 * Construtor padrão 
 	 */
 	public ParametroDepositoPKVO() {
+		// Construtor para seguir o padrão de VO
 	}
 
 	/**

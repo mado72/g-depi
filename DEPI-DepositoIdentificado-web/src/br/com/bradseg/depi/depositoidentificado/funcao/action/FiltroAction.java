@@ -46,10 +46,30 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	protected abstract CrudHelper<C, ?, ?> getFiltroHelper();
 	
 	private boolean consultado;
+
+	private String mensagemConsultaSemResultado;
 	
 	@SuppressWarnings("unchecked")
 	public FiltroAction() {
 		this.model = (T) getFiltroHelper().criarFiltroModel();
+		mensagemConsultaSemResultado = getText(ConstantesDEPI.ERRO_SEMRESULTADO);
+	}
+	
+	/**
+	 * Retorna mensagemConsultaSemResultado
+	 * @return o mensagemConsultaSemResultado
+	 */
+	protected String getMensagemConsultaSemResultado() {
+		return mensagemConsultaSemResultado;
+	}
+	
+	/**
+	 * Define mensagemConsultaSemResultado
+	 * @param mensagemConsultaSemResultado valor mensagemConsultaSemResultado a ser definido
+	 */
+	protected void setMensagemConsultaSemResultado(
+			String mensagemConsultaSemResultado) {
+		this.mensagemConsultaSemResultado = mensagemConsultaSemResultado;
 	}
 	
 	/**
@@ -186,11 +206,11 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 		try {
 			model.setColecaoDados(new ArrayList<>());
 			
-//			T model = getModel();
+			int codUsuario = getCodUsuarioLogado();
 			
 			List<CriterioConsultaVO<C>> criterios = model.obterCriteriosConsulta();
 
-			return processarCriterios(criterios);
+			return processarCriterios(codUsuario, criterios);
 		} catch (DEPIIntegrationException e) {
 			LOGGER.error("Falha na consulta", e);
 			addActionError(e.getMessage());
@@ -199,15 +219,15 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 		}
 	}
 
-	private String processarCriterios(List<CriterioConsultaVO<C>> criterios) {
+	private String processarCriterios(int codUsuario, List<CriterioConsultaVO<C>> criterios) {
 		
 		consultado = true;
 		try {
-			List<?> lista = getFiltroHelper().processarCriterios(criterios);
+			List<?> lista = getFiltroHelper().processarCriterios(codUsuario, criterios);
 			model.setColecaoDados(lista);
 			
 			if (lista == null || lista.isEmpty()) {
-				addActionError(getText(ConstantesDEPI.ERRO_SEMRESULTADO));
+				addActionError(mensagemConsultaSemResultado);
 			}
 		} catch (Exception e) {
 			LOGGER.error("Falha não tratada ao processar criterios de consulta", e);
@@ -233,7 +253,7 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 		model.setColecaoDados(null);
 		
 		List<CriterioConsultaVO<C>> criterios = model.obterCriteriosConsulta();
-		return processarCriterios(criterios);
+		return processarCriterios(getCodUsuarioLogado(), criterios);
 	}
 	
 	@Override

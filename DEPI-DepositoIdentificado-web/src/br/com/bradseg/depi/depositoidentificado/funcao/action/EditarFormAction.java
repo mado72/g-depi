@@ -26,6 +26,8 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	private static final long serialVersionUID = -8669859699304965615L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EditarFormAction.class);
+	
+	protected static final String VOLTAR = "voltar";
 
 	private final F model;
 	
@@ -59,7 +61,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug(dumpErros());
 		}
-		this.model.limparDados();
+		this.model.preencherDadosIniciais();
 		clearErrorsAndMessages();
 	}
 	
@@ -139,7 +141,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	 * @return "voltar"
 	 */
 	public String voltar() {
-		return "voltar";
+		return VOLTAR;
 	}
 	
 	/**

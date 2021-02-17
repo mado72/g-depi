@@ -63,6 +63,7 @@
 				<s:textarea key="descricaoDetalhadaMotivo" rows="5" cols="70" value="%{descricaoDetalhadaMotivo}" readonly="true" disabled="detalhar"/>
 			</td>
 		</tr>
+<c:if test="${estado != 'INSERIR' }">
 		<tr>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.parametros.controle" /></td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.vencto"/><span class="obrigatorio"></span></td>
@@ -130,6 +131,7 @@
 			</td>
 			<td colspan="2">&nbsp;</td>
 		</tr>
+</c:if>
 		</tbody>
 	</table>
 <s:include value="/WEB-INF/pages/pt_BR/comum/voltar-salvar-cancelar.jsp"/>
@@ -147,7 +149,7 @@ jQuery(document).ready(function($){
  */
  	$.parametro.prepararFormulario({
  		motivos : ${motivos},
-		urlDepto : '<c:url value="/json/ciaDepartamentos.do?codigoCia=%d"></c:url>'
+		urlDepto : '<c:url value="/json/ciaDeptosComRestricao.do?codigoCia=%d"></c:url>'
  	});
 }(jQuery));
 </script>

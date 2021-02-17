@@ -7,8 +7,10 @@ import java.util.List;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.ParametroDepositoEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.ParametroDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -89,7 +91,7 @@ public class ParametroDepositoCrudHelper implements
 	}
 
 	@Override
-	public List<ParametroDepositoVO> processarCriterios(
+	public List<ParametroDepositoVO> processarCriterios(int codUsuario,
 			List<CriterioConsultaVO<ParametroDepositoCampo>> criterios) {
 
 		List<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(
@@ -98,7 +100,7 @@ public class ParametroDepositoCrudHelper implements
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(aux);
 
-		return facade.obterPorFiltro(filtro);
+		return facade.obterPorFiltroComRestricaoDeGrupoAcesso(codUsuario, filtro);
 	}
 	
 	// Métodos para atender ao CRUD
@@ -150,8 +152,13 @@ public class ParametroDepositoCrudHelper implements
 		m.setDescricaoDetalhadaMotivo(v.getMotivoDeposito().getDescricaoDetalhada());
 		m.setNumeroDiasAposVencimento(String.valueOf(v.getNumeroDiasAposVencimento()));
 		m.setOutrosDocumentosNecessarios(v.getOutrosDocumentosNecessarios());
-		m.setReferenciadoDeposito(v.isReferenciadoDeposito() ? ParametroDepositoEditarFormModel.VALOR_SIM
-				: ParametroDepositoEditarFormModel.VALOR_NAO);
+		
+		if (v.isReferenciadoDeposito()) {
+			m.setReferenciadoDeposito(ParametroDepositoEditarFormModel.VALOR_SIM);
+		}
+		else {
+			m.setReferenciadoDeposito(ParametroDepositoEditarFormModel.VALOR_NAO);
+		}
 
 		v.setCompanhia(obterCompanhia(v));
 		m.setCias(Collections.singletonList(v.getCompanhia()));
@@ -183,17 +190,31 @@ public class ParametroDepositoCrudHelper implements
 		return facade.obterMotivo(motivoDeposito);
 	}
 
+	/**
+	 * Prepara o formulário para inclusão.
+	 * @param codUsuario Usuário logado
+	 * @param model Formulário
+	 * @throws DEPIIntegrationException Erro de lógica
+	 */
 	public void prepararFormularioInclusao(
-			ParametroDepositoEditarFormModel model)
+			int codUsuario, ParametroDepositoEditarFormModel model)
 			throws DEPIIntegrationException {
+
+		model.setEstado(EstadoCrud.INSERIR);
 		
-		List<CompanhiaSeguradoraVO> cias = obterCompanhias();
+		List<CompanhiaSeguradoraVO> cias = obterCompanhias(codUsuario);
+		
+		if (cias.isEmpty()) {
+			throw new DEPIBusinessException(
+					ConstantesDEPI.ParametroDeposito.ERRO_USUARIO_SEM_GRUPO_ASSOCIADO);
+		}
+		
 		model.setCias(cias);
 		
 		if (! cias.isEmpty()) {
 			CompanhiaSeguradoraVO companhia = cias.get(0);
 			model.setCodigoCompanhia(String.valueOf(companhia.getCodigoCompanhia()));
-			List<DepartamentoVO> deptos = obterDepatamentos(companhia);
+			List<DepartamentoVO> deptos = obterDepatamentos(codUsuario, companhia);
 			model.setDeptos(deptos);
 			if (! deptos.isEmpty()) {
 				DepartamentoVO depto = deptos.get(0);
@@ -209,19 +230,17 @@ public class ParametroDepositoCrudHelper implements
 	}
 	
 	/**
-	 * @return
+	 * Lista as companhias a que o usuário logado tem acesso
+	 * @param codUsuario Código do usuário logado 
+	 * @return Lista de companhias
 	 */
-	private List<CompanhiaSeguradoraVO> obterCompanhias() {
-		return facade.obterCompanhias();
+	private List<CompanhiaSeguradoraVO> obterCompanhias(int codUsuario) {
+		return facade.obterCompanhias(codUsuario);
 	}
 
-	/**
-	 * @param companhia
-	 * @return
-	 */
 	private List<DepartamentoVO> obterDepatamentos(
-			CompanhiaSeguradoraVO companhia) {
-		return facade.obterDepartamentos(companhia);
+			int codUsuario, CompanhiaSeguradoraVO companhia) {
+		return facade.obterComRestricaoGrupoAcesso(codUsuario, companhia);
 	}
 
 	/**
@@ -276,6 +295,15 @@ public class ParametroDepositoCrudHelper implements
 		instancia.setCodigoRamo(model.getCodigoRamo());
 		instancia.setCodigoSucursal(model.getCodigoSucursal());
 		instancia.setCodigoTipo(model.getCodigoTipo());
+		
+		if (model.getNumeroDiasAposVencimento() != null) {
+			instancia.setNumeroDiasAposVencimento(Integer.parseInt(model
+					.getNumeroDiasAposVencimento()));
+		}
+		
+		instancia.setDescricaoBasicaMotivo(model.getDescricaoBasicaMotivo());
+		instancia.setDescricaoDetalhadaMotivo(model.getDescricaoDetalhadaMotivo());
+		instancia.setOutrosDocumentosNecessarios(model.getOutrosDocumentosNecessarios());
 		
 		try {
 			if (novo) {

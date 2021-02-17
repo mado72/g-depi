@@ -85,10 +85,12 @@ public interface CrudHelper<C extends IEntidadeCampo, VO, EF extends CrudForm> {
 	 * Processa os critérios de pesquisa e preenche o
 	 * {@link br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction#getModel()}
 	 * 
+	 * @param codUsuario
+	 *            Código do usuário logado.
 	 * @param criterioCol
 	 *            Coleção de critérios para ser utilizado na pesquisa.
 	 */
-	List<VO> processarCriterios(List<CriterioConsultaVO<C>> criterioCol);
+	List<VO> processarCriterios(int codUsuario, List<CriterioConsultaVO<C>> criterioCol);
 	
 	/**
 	 * Preenche formulário para edição de um registro.

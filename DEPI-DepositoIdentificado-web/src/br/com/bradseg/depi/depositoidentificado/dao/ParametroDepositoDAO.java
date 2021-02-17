@@ -13,13 +13,13 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
  */
 
 public interface ParametroDepositoDAO  {
-
-    /**
-     * Método de obter por filtro
-     * @param filtro par�metro dep�sito com o código do objeto requisitado
-     * @return List<ParametroDepositoVO>
-     */
-    List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro);
+//
+//    /**
+//     * Método de obter por filtro
+//     * @param filtro par�metro dep�sito com o código do objeto requisitado
+//     * @return List<ParametroDepositoVO>
+//     */
+//    List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro);
 
     /**
      * Método de obter por filtro

@@ -292,6 +292,15 @@ public final class ConstantesDEPI {
 		public static final String LABEL_DEPARTAMENTO = "label.cadastro.grupoacesso.departamento";
 		public static final String LABEL_FUNCIONARIO = "label.cadastro.grupoacesso.funcionario";
 	}
+
+	/**
+	 * Constantes para Parâmetro Depósito
+	 */
+	public static final class ParametroDeposito {
+
+		public static final String ERRO_USUARIO_SEM_GRUPO_ASSOCIADO = "msg.erro.parametrodeposito.semgrupoacessoassociado";
+		
+	}
 	
 	
 	public static final String MIME_TYPE_PDF = "application/pdf";

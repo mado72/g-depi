@@ -71,9 +71,13 @@ public class ParametroDepositoEditarFormModel extends CrudForm {
 
 	private String descricaoDetalhadaMotivo;
 	
+	/**
+	 * Prepara o formulário com os valores padrões
+	 */
 	public ParametroDepositoEditarFormModel() {
+		preencherDadosIniciais();
 	}
-
+	
 	@Override
 	public boolean isDetalhar() {
 		return getEstado() == EstadoCrud.EXIBIR;
@@ -483,27 +487,30 @@ public class ParametroDepositoEditarFormModel extends CrudForm {
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm#limparDados()
 	 */
 	@Override
-	public void limparDados() {
-		setCodigoApolice(VALOR_NAO);
+	public void preencherDadosIniciais() {
+		setCodigoCompanhia(null);
+		setCodigoDepartamento(null);
+		setCodigoMotivoDeposito(null);
+
+		setCodigoApolice(VALOR_SIM);
+		setCodigoCpfCnpj(VALOR_SIM);
+		setCodigoEndosso(VALOR_SIM);
+		setCodigoRamo(VALOR_SIM);
+		setCodigoSucursal(VALOR_SIM);
+		setCodigoItem(VALOR_SIM);
+
 		setCodigoBancoVencimento(VALOR_NAO);
 		setCodigoBloqueto(VALOR_NAO);
-		setCodigoCompanhia(VALOR_NAO);
-		setCodigoCpfCnpj(VALOR_NAO);
-		setCodigoDepartamento(null);
 		setCodigoDossie(VALOR_NAO);
-		setCodigoEndosso(VALOR_NAO);
-		setCodigoItem(VALOR_NAO);
-		setCodigoMotivoDeposito(null);
 		setCodigoParcela(VALOR_NAO);
 		setCodigoProtocolo(VALOR_NAO);
-		setCodigoRamo(VALOR_NAO);
-		setCodigoSucursal(VALOR_NAO);
 		setCodigoTipo(VALOR_NAO);
+		
 		setDescricaoBancoVencimento(null);
 		setDescricaoBasicaMotivo(null);
 		setDescricaoDeposito(null);
 		setDescricaoDetalhadaMotivo(null);
-		setNumeroDiasAposVencimento(null);
+		setNumeroDiasAposVencimento("0");
 		setOutrosDocumentosNecessarios(null);
 		setReferenciadoDeposito(null);
 		

@@ -23,7 +23,7 @@ public class DepartamentoCompanhiaEditarFormModel extends CrudForm {
 	private String codCompanhia;
 
 	@Override
-	public void limparDados() {
+	public void preencherDadosIniciais() {
 		setCodigo(null);
 		if (siglaDepartamentos != null) {
 			siglaDepartamentos.clear();

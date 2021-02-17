@@ -239,7 +239,6 @@ var fnReady = function ($) {
 
 		origem[0].change(onChange);
 		origem[1].change(onChange);
-		origem[0].change();
 	};
 
 	// filtro
@@ -354,8 +353,9 @@ var fnReady = function ($) {
 
 		$("#BtnConsultar").click(function(ev) {
 			ev.preventDefault();
-			$.filtro.prepararConsultar(ev, jqForm, jqRecipiente);
-			$(this).closest("form").submit();
+			if ($.filtro.prepararConsultar(ev, jqForm, jqRecipiente)) {
+    			$(this).closest("form").submit();
+			}
 		});
 		
 		btnIncluir.click(function(ev) {
@@ -404,8 +404,8 @@ var fnReady = function ($) {
 		if (criterios.length == 0) {
 			if (! window.confirm(MENSAGEM["msg.confirmacao.consulta"])) {
 				ev.preventDefault();
-				ev.stopPropagation();
-				return;
+				ev.stopImmediatePropagation();
+				return false;
 			};
 		}
 
@@ -421,6 +421,7 @@ var fnReady = function ($) {
 		$("#box_loading").show();
 		
 		jqForm.append(elements);
+		return true;
 	};
 
 	$.filtro.adicionarCriterio = function(jqRecipiente, item) {
@@ -891,6 +892,14 @@ var fnReady = function ($) {
 	 			n.val("");
 	 	});
 	 	$("#AcaoForm input[type=\"radio\"][name=\"codigoBancoVencimento\"]").change();
+	 	
+	 	var numeroDiasAposVencimento=$("#AcaoForm_numeroDiasAposVencimento");
+		numeroDiasAposVencimento.on("input keydown keyup mousedown mouseup select", function(ev){
+	 		var value = numeroDiasAposVencimento.val();
+	 		value = value.replace(/\D/g, '');
+	 		numeroDiasAposVencimento.val(value);
+	 	});
+	 	
 	};
 	
 	// paginacao

@@ -13,7 +13,12 @@ import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 //@Table(schema = ConstantesDAO.SCHEMA_BANCO, table = "PARMZ_DEP_IDTFD")
 public class ParametroDepositoVO implements Serializable{
 
-    private static final long serialVersionUID = 5987719912367700030L;
+    /**
+	 * 
+	 */
+	private static final String NULL_VALUE = "null";
+
+	private static final long serialVersionUID = 5987719912367700030L;
 
     /**
      * Código da Companhia - obtido atraves da classe
@@ -64,6 +69,37 @@ public class ParametroDepositoVO implements Serializable{
     public ParametroDepositoVO(int departamento, int motivoDeposito) {
         this.departamento.setCodigoDepartamento(departamento);
         this.motivoDeposito.setCodigoMotivoDeposito(motivoDeposito);
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder("ParametroDepositoVO: Cia: ");
+    	if (getCompanhia() != null) {
+    		sb.append(getCompanhia().getCodigoCompanhia());
+    	}
+    	else {
+    		sb.append(NULL_VALUE);
+    	}
+    	
+    	sb.append(", Depto: ");
+    	if (getDepartamento() != null) {
+    		sb.append(getDepartamento().getCodigoDepartamento());
+    	}
+    	else {
+    		sb.append(NULL_VALUE);
+    	}
+    	
+    	sb.append(", MDep: ");
+    	if (getMotivoDeposito() != null) {
+    		sb.append(getMotivoDeposito().getCodigoMotivoDeposito());
+    	}
+    	else {
+    		sb.append(NULL_VALUE);
+    	}
+    	return sb.toString();
     }
 
     /**
@@ -156,7 +192,7 @@ public class ParametroDepositoVO implements Serializable{
     private String outrosDocumentosNecessarios;
     
     /**
-     * Outros Documentos Necessários maxlength = 200
+     * Se o parâmetro é referenciado
      */
     private boolean referenciadoDeposito;
 
@@ -186,8 +222,6 @@ public class ParametroDepositoVO implements Serializable{
 	
 	private Date ultimaAtualizacao;
 	
-	private Boolean refereciadoDeposito;
-
     /**
      * Retorna o campo código da Apólice
      * @return codigoApolice - Código da apólice
@@ -629,21 +663,5 @@ public class ParametroDepositoVO implements Serializable{
 	 */
 	public void setUltimaAtualizacao(Date dataHoraAtualizacao) {
 		this.ultimaAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
-	}
-	
-	/**
-	 * Retorna refereciadoDeposito
-	 * @return o refereciadoDeposito
-	 */
-	public Boolean getRefereciadoDeposito() {
-		return refereciadoDeposito;
-	}
-	
-	/**
-	 * Define refereciadoDeposito
-	 * @param refereciadoDeposito valor refereciadoDeposito a ser definido
-	 */
-	public void setRefereciadoDeposito(Boolean refereciadoDeposito) {
-		this.refereciadoDeposito = refereciadoDeposito;
 	}
 }

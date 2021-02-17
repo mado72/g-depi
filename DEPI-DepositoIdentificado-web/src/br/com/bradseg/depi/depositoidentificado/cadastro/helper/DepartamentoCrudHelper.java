@@ -87,7 +87,7 @@ public class DepartamentoCrudHelper implements
 	}
 
 	@Override
-	public List<DepartamentoVO> processarCriterios(
+	public List<DepartamentoVO> processarCriterios(int codUsuario,
 			List<CriterioConsultaVO<DepartamentoCampo>> criterios) {
 
 		try {

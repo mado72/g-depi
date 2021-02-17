@@ -16,6 +16,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
@@ -39,7 +40,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
 	private ParametroDepositoDAO parametroDepositoDAO;
 	
 	@Autowired
-	private CICSDepiDAO depiDAO;
+	private CICSDepiDAO cicsDepiDAO;
 	
 	@Autowired
 	private CompanhiaSeguradoraDAO ciaDAO;
@@ -135,52 +136,25 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     }
 
     /**
-     * Obter por Filtro
-     * @param filtro CriterioFiltroUtil
-     * @return List<ParametroDepositoVO>
-     * @throws IntegrationException IntegrationException
-     */
-    @Override
-    public List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
-        return parametroDepositoDAO.obterPorFiltro(filtro);
-    }
-
-    /**
      * Método de obter por filtro
-     * @param filtro par�metro depósito com o código do objeto requisitado
      * @param codigoUsuario - BigDecimal.
+     * @param filtro par�metro depósito com o código do objeto requisitado
      * @throws IntegrationException - trata erro de negócio
      * @return List<ParametroDepositoVO>
      */
     @Override
 	public List<ParametroDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(
-			FiltroUtil filtro, Integer codigoUsuario)
+			int codigoUsuario, FiltroUtil filtro)
 			throws IntegrationException {
 		
     	List<ParametroDepositoVO> retorno = parametroDepositoDAO
 				.obterPorFiltroComRestricaoDeGrupoAcesso(filtro, codigoUsuario);
 		
-		for (ParametroDepositoVO p : retorno) {
-			p.setReferenciadoDeposito(parametroDepositoDAO
-					.isReferenciadoDeposito(p));
-		}
+//		for (ParametroDepositoVO p : retorno) {
+//			p.setReferenciadoDeposito(parametroDepositoDAO
+//					.isReferenciadoDeposito(p));
+//		}
 		return retorno;
-    }
-
-    /**
-     * Obter todos
-     * @return List<ParametroDepositoVO>
-     * @throws IntegrationException IntegrationException
-     */
-    @Override
-    public List<ParametroDepositoVO> obterTodos() throws IntegrationException {
-
-    	FiltroUtil filtro = new FiltroUtil();
-        List<ParametroDepositoVO> retorno = parametroDepositoDAO.obterPorFiltro(filtro);
-        for (ParametroDepositoVO p : retorno) {
-            p.setReferenciadoDeposito(parametroDepositoDAO.isReferenciadoDeposito(p));
-        }
-        return retorno;
     }
 
     /**
@@ -271,16 +245,17 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     }
     
     /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade#obterCompanhias()
+     * @see br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade#obterCompanhias(int)
      */
     @Override
-    public List<CompanhiaSeguradoraVO> obterCompanhias() {
-    	List<CompanhiaSeguradoraVO> cias = ciaDAO.obterCias();
-    	for (CompanhiaSeguradoraVO vo : cias) {
-    		CompanhiaSeguradoraVO item = depiDAO.obterCiaPorCodigo(vo.getCodigoCompanhia());
-    		vo.setDescricaoCompanhia(item.getDescricaoCompanhia());
-		}
-		return cias;
+    public List<CompanhiaSeguradoraVO> obterCompanhias(int codUsuario) {
+    	List<CompanhiaSeguradoraVO> cias = ciaDAO.obterComRestricaoDeGrupoAcesso(codUsuario);
+    	
+    	if (cias.isEmpty()) {
+    		throw new DEPIBusinessException(ConstantesDEPI.ParametroDeposito.ERRO_USUARIO_SEM_GRUPO_ASSOCIADO);
+    	}
+    	
+		return cicsDepiDAO.obterCias(cias);
     }
     
     /* (non-Javadoc)
@@ -288,16 +263,16 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
      */
     @Override
     public CompanhiaSeguradoraVO obterCompanhia(CompanhiaSeguradoraVO companhia) {
-    	return depiDAO.obterCiaPorCodigo(companhia.getCodigoCompanhia());
+    	return cicsDepiDAO.obterCiaPorCodigo(companhia.getCodigoCompanhia());
     }
-    
+
     /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade#obterDepartamentos(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO)
+     * @see br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade#obterComRestricaoGrupoAcesso(int, br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO)
      */
     @Override
-    public List<DepartamentoVO> obterDepartamentos(
+    public List<DepartamentoVO> obterComRestricaoGrupoAcesso(int codUsuario,
     		CompanhiaSeguradoraVO companhia) {
-    	return deptoDAO.obterPorCompanhiaSeguradora(companhia);
+    	return deptoDAO.obterComRestricaoDeGrupoAcesso(companhia.getCodigoCompanhia(), codUsuario, Tabelas.GRUPO_ACESSO);
     }
     
     /* (non-Javadoc)

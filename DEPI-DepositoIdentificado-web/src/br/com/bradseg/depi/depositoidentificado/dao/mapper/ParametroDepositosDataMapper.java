@@ -17,8 +17,9 @@ public class ParametroDepositosDataMapper implements RowMapper<ParametroDeposito
 	private final boolean incluiNomeDepartamento;
 	
 	/**
-	 * @param incluiDescricaoMotivo
-	 * @param incluiNomeDepartamento
+	 * O construtor define se deve ou não incluir campos adicionais no mapeamento
+	 * @param incluiDescricaoMotivo Inclui a descrição do motivo
+	 * @param incluiNomeDepartamento Inclui o nome do departamento
 	 */
 	public ParametroDepositosDataMapper(boolean incluiDescricaoMotivo,
 			boolean incluiNomeDepartamento) {
@@ -59,7 +60,7 @@ public class ParametroDepositosDataMapper implements RowMapper<ParametroDeposito
 		vo.setUltimaAtualizacao(rs.getDate("DHORA_ULT_ATULZ"));
 		vo.setCodigoResponsavelUltimaAtualizacao(rs.getInt("CUSUAR_RESP_ATULZ"));
 		vo.setCodigoAtivo(rs.getString("CIND_REG_ATIVO"));
-		vo.setRefereciadoDeposito(rs.getBoolean("REFERENCIADO_DEPOSITO"));
+		vo.setReferenciadoDeposito(rs.getBoolean("REFERENCIADO_DEPOSITO"));
 		
 		if (isIncluiDescricaoMotivo()) {
 			vo.getMotivoDeposito().setDescricaoBasica(rs.getString("RMOTVO_DEP_IDTFD"));

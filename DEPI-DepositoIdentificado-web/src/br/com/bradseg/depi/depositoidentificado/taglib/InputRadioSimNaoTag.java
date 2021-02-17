@@ -33,12 +33,18 @@ public class InputRadioSimNaoTag extends StrutsBodyTagSupport {
 		boolean paraDetalhar = "true".equalsIgnoreCase(expr);
 		
 		if (! (value.startsWith("%{") && value.endsWith("}"))) {
-			value = findString(new StringBuilder("%{").append(value).append("}").toString());
+			StringBuilder sb = new StringBuilder("%{").append(value).append('}');
+			value = findString(sb.toString());
 		}
 		
 		StringBuilder sb;
 		if (paraDetalhar) {
-			sb = new StringBuilder(value.equals("N") ? "Não" : "Sim");
+			if ("S".equals(value)) {
+				sb = new StringBuilder("Sim");
+			}
+			else {
+				sb = new StringBuilder("Não");
+			}
 		}
 		else {
 			sb = new StringBuilder("<div id=\"")

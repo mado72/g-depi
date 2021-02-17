@@ -485,12 +485,20 @@
 		</global-results>
 		
 		<action name="incluir" method="incluir">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
 			<interceptor-ref name="limparDados"/>
 			<interceptor-ref name="applicationStack"/>
 			<result name="input" type="redirectAction">input</result>
 		</action>
 		
 		<action name="alterar" method="alterar">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
 			<result name="input" type="redirectAction">input</result>
 		</action>
         
