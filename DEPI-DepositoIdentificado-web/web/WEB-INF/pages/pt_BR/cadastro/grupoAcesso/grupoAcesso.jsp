@@ -3,137 +3,69 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/comum/filtro2dropbox.jsp">
+<c:set var="namespaceBase" scope="request">/cadastro/grupo-acesso/editar</c:set>
+<s:include value="/WEB-INF/pages/pt_BR/comum/filtro2dropbox.jsp">
 	<s:param name="scriptOff" value="true"/>
 </s:include>
-<br />
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/comum/incluir-consultar.jsp" />
 
-<s:if test="colecaoDados">
-<s:form action="acao.do" namespace="/cadastro/grupoAcesso/editar" id="AcaoForm">
+<s:if test="colecaoDados && !colecaoDados.isEmpty()">
+<c:url value="${namespaceBase}/alterar.do" var="actionForm"></c:url>
 
-<table id="tabela_interna" class="GrupoAcesso Consulta">
-	<thead>
-		<tr>
-		<th class="selecao">
-			<s:text name="label.todos"/>
-			<br/>
-			<input type="checkbox" class="optionbutton checkTodos" />
-		</th>
-		<th class="codigoGrupoAcesso">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
-				<s:param name="campo" value="codigoGrupoAcesso"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.codigoGrupoAcesso"/>
-			</s:a>
-		</th>
-		<th class="nomeGrupoAcesso">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
-				<s:param name="campo" value="nome"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.nomeGrupoAcesso"/>
-			</s:a>
-		</th>
-		<th class="codigoCompanhia">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
-				<s:param name="campo" value="cia.codigoCompanhia"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.codigoCompanhia"/>
-			</s:a>
-		</th>
-		<th class="descricaoCompanhia">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
-				<s:param name="campo" value="cia.descricaoCompanhia"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.descricaoCompanhia"/>
-			</s:a>
-		</th>
-		<th class="codigoDepartamento">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
-				<s:param name="campo" value="depto.codigoDepartamento"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.codigoDepartamento"/>
-			</s:a>
-		</th>
-		<th class="nomeDepartamento">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
-				<s:param name="campo" value="depto.nomeDepartamento"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.nomeDepartamento"/>
-			</s:a>
-		</th>
-		<th class="responsavel">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
-				<s:param name="campo" value="responsavel"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.responsavelAtualizacao"/>
-			</s:a>
-		</th>
-		<th class="atualizacao">
-			<s:url action="ordenar" namespace="/consulta/grupoAcesso" var="linkSort">
-				<s:param name="campo" value="atualizacao"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.grupoAcesso.dataHoraAtualizacao"/>
-			</s:a>
-		</th>
-		</tr>
-	</thead>
-	<tbody class="lista">
- 	<s:iterator value="colecaoDados" var="item" status="status">
-		<tr>
-		<td>
-			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoGrupoAcesso}"/>"/>
-		</td>
-		<td>
-			<s:url action="exibir" namespace="/cadastro/grupoAcesso/editar" var="linkExibir">
-				<s:param name="codigo">${item.codigoGrupoAcesso}</s:param>
-			</s:url>
-			<s:a href="%{linkExibir}">
-				${item.codigoGrupoAcesso}
-			</s:a>
-		</td>
-		<td>${item.nomeGrupoAcesso}</td>
-		<td>${item.cia.codigoCompanhia}</td>
-		<td>${item.cia.descricaoCompanhia}</td>
-		<td>${item.depto.codigoDepartamento}</td>
-		<td>${item.depto.nomeDepartamento}</td>
-		<td class="responsavel">${item.codigoResponsavelUltimaAtualizacao}</td>
-		<td class="atualizacao">
-			<%--
-				FIXME Adicionar campo atualização em GrupoAcessoVO 
-				<fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/> 
-			--%>
-		</td>
-		</tr>
-	</s:iterator>
- 	</tbody>
-</table>
-<div class="paginacao"></div>
+	<form action="${actionForm}" id="AcaoForm" method="post">
+		<table id="tabela_interna" class="sortable GrupoAcesso Consulta">
+			<thead>
+				<tr>
+					<th class="selecao"><s:text name="label.todos" /> <br /> <input
+						type="checkbox" class="optionbutton checkTodos" /></th>
+					<th class="codigoGrupoAcesso"><s:text
+							name="label.grid.grupoAcesso.codigoGrupoAcesso" /></th>
+					<th class="nomeGrupoAcesso"><s:text
+							name="label.grid.grupoAcesso.nomeGrupoAcesso" /></th>
+					<th class="codigoCompanhia"><s:text
+							name="label.grid.departamentocompanhia.codigoCompanhia" /></th>
+					<th class="descricaoCompanhia"><s:text
+							name="label.grid.departamentocompanhia.descricaoCompanhia" /></th>
+					<th class="codigoDepartamento"><s:text
+							name="label.grid.grupoAcesso.siglaDepartamento" /></th>
+					<th class="nomeDepartamento"><s:text
+							name="label.grid.grupoAcesso.nomeDepartamento" /></th>
+					<th class="responsavel"><s:text
+							name="label.grid.grupoAcesso.responsavelAtualizacao" /></th>
+					<th class="atualizacao"><s:text
+							name="label.grid.grupoAcesso.dataHoraAtualizacao" /></th>
+				</tr>
+			</thead>
+			<tbody class="lista">
+				<s:iterator value="colecaoDados" var="item" status="status">
+					<tr>
+						<td class="text-center"><input type="checkbox"
+							class="optionbutton" name="codigo"
+							value="<c:out value="${item.codigoGrupoAcesso}"/>" /></td>
+						<td class="text-center"><s:url action="exibir"
+								namespace="/cadastro/grupo-acesso/editar" var="linkExibir">
+								<s:param name="codigo">${item.codigoGrupoAcesso}</s:param>
+							</s:url> <s:a href="%{linkExibir}">
+					${item.codigoGrupoAcesso}
+				</s:a></td>
+						<td class="text-center">${item.nomeGrupoAcesso}</td>
+						<td class="text-center">${item.cia.codigoCompanhia}</td>
+						<td>${item.cia.descricaoCompanhia}</td>
+						<td class="text-center">${item.depto.siglaDepartamento}</td>
+						<td>${item.depto.nomeDepartamento}</td>
+						<td class="text-center">${item.codigoResponsavelUltimaAtualizacao}</td>
+						<td class="text-center"><fmt:formatDate type="both"
+								dateStyle="medium" timeStyle="medium"
+								value="${item.dataHoraAtualizacao}" /></td>
+					</tr>
+				</s:iterator>
+			</tbody>
+		</table>
+		<div class="paginacao"></div>
 
-<br/>
+		<s:include
+			value="/WEB-INF/pages/pt_BR/comum/incluir-alterar-excluir.jsp"></s:include>
+	</form>
 	<br/>
-	<table class="tabela_botoes">
-		<tr>
-			<td align="center">
-				<div id="tabela_botoes">
-					<s:a id="BtnIncluir2" class="button btnIncluir" action="incluir" namespace="/cadastro/grupoAcesso/editar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
-					<a class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
-					<a class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
-				</div>
-			</td>
-		</tr>
-	</table>
-
-</s:form>
-<br/>
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>
 <script>

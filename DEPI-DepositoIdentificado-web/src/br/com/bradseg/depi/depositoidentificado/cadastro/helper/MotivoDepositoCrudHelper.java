@@ -94,7 +94,7 @@ public class MotivoDepositoCrudHelper implements
 	}
 
 	@Override
-	public List<MotivoDepositoVO> processarCriterios(
+	public List<MotivoDepositoVO> processarCriterios(int codUsuario,
 			List<CriterioConsultaVO<MotivoDepositoCampo>> criterios) {
 		
 		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);
@@ -141,8 +141,7 @@ public class MotivoDepositoCrudHelper implements
 		MotivoDepositoVO vo = new MotivoDepositoVO();
 		vo.setCodigoMotivoDeposito(codigo);
 		
-		MotivoDepositoVO instancia = facade.obterPorChave(vo);
-		return instancia;
+		return facade.obterPorChave(vo);
 	}
 
 	@Override

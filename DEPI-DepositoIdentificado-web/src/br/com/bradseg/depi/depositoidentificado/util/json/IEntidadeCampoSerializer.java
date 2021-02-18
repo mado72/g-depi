@@ -32,6 +32,8 @@ public class IEntidadeCampoSerializer extends
 		
 		generator.writeObjectField("descricao", descricao);
 		generator.writeObjectField("tipo", tipoCampo);
+		generator.writeObjectField("s", campo.getSize());
+		
 		generator.writeEndObject();
 	}
 	

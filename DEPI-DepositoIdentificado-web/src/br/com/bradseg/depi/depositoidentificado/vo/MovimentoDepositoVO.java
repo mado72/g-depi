@@ -77,13 +77,13 @@ public class MovimentoDepositoVO implements Serializable {
     private Date dataHoraAtualizacao;
 
     /**
-     * código do responsável pela �ltima altera��o.
+     * código do responsável pela �ltima alteração.
      */
 //    @TableField(name = "CUSUAR_RESP_ATULZ")
     private BigDecimal codigoResponsavelUltimaAtualizacao;
 
     /**
-     * indicador que sinaliza se foi excluido logicamente. 'S' = exclu�da; 'N' = n�o exclu�da; 'D' = desativado
+     * indicador que sinaliza se foi excluido logicamente. 'S' = exclu�da; 'N' = não exclu�da; 'D' = desativado
      */
  //   @TableField(name = "CIND_REG_ATIVO")
     private String codigoIndicativoAtivo = "S";

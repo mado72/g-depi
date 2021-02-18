@@ -14,7 +14,7 @@ public class AssociarMotivoDepositoVO implements Serializable {
 	private static final long serialVersionUID = -1914046307346454242L;
 
 	/**
-     * Código da Companhia Seguradora.
+     * CÃ³digo da Companhia Seguradora.
      */
 	//ConstantesDAO.TABELA_COMPANHIA_DEPARTAMENTO_ID)
 	private CompanhiaSeguradoraVO cia = new CompanhiaSeguradoraVO();

@@ -14,12 +14,12 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
     /**
      * Código Companhia
      */
-    CodigoCompanhia(ConstantesDEPI.TABELA_CIA_ID, "Código Companhia", TipoCampo.NUM, false, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    CodigoCompanhia(ConstantesDEPI.TABELA_CIA_ID, "Código Companhia", TipoCampo.NUM, false, 4),
 
     /**
-     * Descri��o Companhia.
+     * Descrição Companhia.
      */
-    DescricaoCompanhia(ConstantesDEPI.TABELA_CIA_NOME, "Descri��o Companhia", TipoCampo.ALFA_OBRIG, true,
+    DescricaoCompanhia(ConstantesDEPI.TABELA_CIA_NOME, "Descrição Companhia", TipoCampo.ALFA_OBRIG, true,
         ConstantesDEPI.SIZE_NAO_DEFINIDO);
 
     private String nome;
@@ -62,7 +62,8 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
      * metodo que retorna o tipoCampo
      * @return o tipoCampo
      */
-    public TipoCampo getTipoCampo() {
+    @Override
+	public TipoCampo getTipoCampo() {
         return tipoCampo;
     }
 
@@ -70,16 +71,9 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
      * metodo que retorna o nome
      * @return o nome
      */
-    public String getNome() {
+    @Override
+	public String getNome() {
         return nome;
-    }
-
-    /**
-     * Retorna valores da combo de consulta.
-     * @return DepartamentoCampo[].
-     */
-    public static DepartamentoCompanhiaCampo[] valuesForCriteria() {
-        return DepartamentoCompanhiaCampo.values();
     }
 
     /**
@@ -124,7 +118,8 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
      * Retorna o valor do atributo cics.
      * @return o valor do atributo cics
      */
-    public boolean isCics() {
+    @Override
+	public boolean isCics() {
         return cics;
     }
 
@@ -140,7 +135,8 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
      * Retorna o valor do atributo size.
      * @return o valor do atributo size
      */
-    public int getSize() {
+    @Override
+	public int getSize() {
         return size;
     }
 }

@@ -12,6 +12,7 @@ import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCampo;
+import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -20,7 +21,7 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCamp
  */
 @Controller
 @Scope("session")
-public class GrupoAcessoConsultarAction extends FiltroAction<FiltroConsultarForm<GrupoAcessoCampo>> {
+public class GrupoAcessoConsultarAction extends FiltroAction<GrupoAcessoCampo, FiltroConsultarForm<GrupoAcessoCampo>> {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(GrupoAcessoConsultarAction.class);
 
@@ -38,11 +39,22 @@ public class GrupoAcessoConsultarAction extends FiltroAction<FiltroConsultarForm
 	}
 
 	@Override
-	protected CrudHelper<?, ?> getFiltroHelper() {
+	protected CrudHelper<GrupoAcessoCampo, ?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
 			filtroHelper = new GrupoAcessoCrudHelper();
 		}
 		return filtroHelper;
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction#validarCriterio(br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO)
+	 */
+	@Override
+	protected void validarCriterio(CriterioConsultaVO<GrupoAcessoCampo> criterio) {
+		GrupoAcessoCampo campo = criterio.getCampo();
+		String valor = criterio.getValor();
+
+		validarValor(valor, campo);
 	}
 
 }

@@ -34,7 +34,7 @@
     <!--
       Habilitar BSAD Foundation - Integração ao CICS
     -->
-    <!-- <import resource="classpath*:META-INF/bsad/spring/AppContext-Resources-Cics.xml" /> -->
+    <import resource="classpath*:META-INF/bsad/spring/AppContext-Resources-Cics.xml" />
 
     <!--
       Habilitar BSAD Foundation - Integração para envio de email

@@ -3,6 +3,7 @@ package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoEditarFormModel;
@@ -24,6 +25,7 @@ import com.opensymphony.xwork2.validator.annotations.ValidatorType;
  *
  */
 @Controller
+@Scope("request")
 public class DepartamentoSalvarAction extends
 		SalvarAction<DepartamentoCampo, DepartamentoVO, DepartamentoEditarFormModel> {
 	

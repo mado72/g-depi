@@ -9,144 +9,164 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Classe Anotada de Mapeamento com a tabela USUAR.
  * @author Globality
  */
-@XmlRootElement(name="Usuario")
+@XmlRootElement(name = "Usuario")
 public class UsuarioVO implements Serializable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -7474657010868812876L;
+	private static final long serialVersionUID = -7474657010868812876L;
 
-    /**
-     * Construtor default
-     */
+	/**
+	 * Construtor default
+	 */
 	public UsuarioVO() {
 		super();
 	}
+	
+	/**
+	 * Construtor para definir codigoUsuario
+	 * @param codigoUsuario Código do usuário
+	 */
+	public UsuarioVO(int codigoUsuario) {
+		this.codigoUsuario = codigoUsuario;
+	}
 
 	/**
-     * Código de usuario.
-     */
+	 * Código de usuario.
+	 */
 	private int codigoUsuario;
 
 	/**
-     * Nome Usuario.
-     */
+	 * Nome Usuario.
+	 */
 	private String nomeUsuario;
 
 	/**
-     * XXXXXXXXXXX
-     */
+	 * Data da inclusão
+	 */
 	private Date dataInclusao;
 
 	/**
-     * XXXXXXXXXXX
-     */
+	 * Data da última atualização
+	 */
 	private Date dataUltimaAtualizacao;
 
 	/**
-     * Nome Usuario.
-     */
-
-	private String indicadorRegistroAtivo; 
-
-	/**
-     * XXXXXXXXXXX
-     */
-	private int codigoUsuarioAtualizacao; 
+	 * Indicador se o registro está ativo.
+	 */
+	private String indicadorRegistroAtivo;
 
 	/**
-     * Retorna o XXXXXXXXXXX
-     * @return XXXXXXXXXXX
-     */
+	 * Código do usuário da última atualização
+	 */
+	private int responsavelAtualizacao;
+
+	/**
+	 * Retorna o data da inclusão
+	 * 
+	 * @return data
+	 */
 	public Date getDataInclusao() {
 		return (Date) dataInclusao.clone();
 	}
 
 	/**
-     * Define dataInclusao.
-     * {@inheritDoc}
-     */
+	 * Define a data da inclusão
+	 * 
+	 * @param dataInclusao
+	 *            Data
+	 */
 	public void setDataInclusao(Date dataInclusao) {
 		this.dataInclusao = (Date) dataInclusao.clone();
 	}
 
 	/**
-     * Retorna o XXXXXXXXXXX
-     * @return XXXXXXXXXXX
-     */
+	 * Retorna a data da última atualização
+	 * 
+	 * @return data
+	 */
 	public Date getDataUltimaAtualizacao() {
 		return (Date) dataUltimaAtualizacao.clone();
 	}
 
 	/**
-     * Define dataUltimaAtualizacao.
-     * {@inheritDoc}
-     */
+	 * Define dataUltimaAtualizacao.
+	 * 
+	 * @param dataUltimaAtualizacao
+	 *            data
+	 */
 	public void setDataUltimaAtualizacao(Date dataUltimaAtualizacao) {
 		this.dataUltimaAtualizacao = (Date) dataUltimaAtualizacao.clone();
 	}
 
 	/**
-     * Retorna o XXXXXXXXXXX
-     * @return XXXXXXXXXXX
-     */
+	 * Retorna o indicador se está ativo
+	 * 
+	 * @return indicador
+	 */
 	public String getIndicadorRegistroAtivo() {
 		return indicadorRegistroAtivo;
 	}
 
 	/**
-     * Define indicadorRegistroAtivo.
-     * {@inheritDoc}
-     */
+	 * Define indicadorRegistroAtivo
+	 * @param indicadorRegistroAtivo valor indicadorRegistroAtivo a ser definido
+	 */
 	public void setIndicadorRegistroAtivo(String indicadorRegistroAtivo) {
 		this.indicadorRegistroAtivo = indicadorRegistroAtivo;
 	}
 
 	/**
-     * Retorna o XXXXXXXXXXX
-     * @return XXXXXXXXXXX
-     */
-	public int getCodigoUsuarioAtualizacao() {
-		return codigoUsuarioAtualizacao;
+	 * Retorna responsavelAtualizacao
+	 * 
+	 * @return o responsavelAtualizacao
+	 */
+	public int getResponsavelAtualizacao() {
+		return responsavelAtualizacao;
 	}
 
 	/**
-     * Define codigoUsuarioAtualizacao.
-     * {@inheritDoc}
-     */
-	public void setCodigoUsuarioAtualizacao(int codigoUsuarioAtualizacao) {
-		this.codigoUsuarioAtualizacao = codigoUsuarioAtualizacao;
+	 * Define responsavelAtualizacao
+	 * 
+	 * @param responsavelAtualizacao
+	 *            valor responsavelAtualizacao a ser definido
+	 */
+	public void setResponsavelAtualizacao(int responsavelAtualizacao) {
+		this.responsavelAtualizacao = responsavelAtualizacao;
 	}
 
 	/**
-     * setCodigoUsuario
-     * @param codigoUsuario codigoUsuario
-     */
+	 * Define codigoUsuario
+	 * 
+	 * @param codigoUsuario
+	 *            valor codigoUsuario a ser definido
+	 */
 	public void setCodigoUsuario(int codigoUsuario) {
 		this.codigoUsuario = codigoUsuario;
 	}
 
 	/**
-     * Retorna o codigoUsuario.
-     * @return O atributo codigoUsuario
-     */
+	 * Retorna codigoUsuario
+	 * 
+	 * @return o codigoUsuario
+	 */
 	public int getCodigoUsuario() {
-		return this.codigoUsuario;
+		return codigoUsuario;
 	}
 
 	/**
-     * Retorna o nomeUsuario.
-     * @return O atributo nomeUsuario
-     */
+	 * Retorna o nomeUsuario.
+	 * 
+	 * @return O atributo nomeUsuario
+	 */
 	public String getNomeUsuario() {
 		return this.nomeUsuario;
 	}
 
 	/**
-     * setNomeUsuario
-     * @param nomeUsuario nomeUsuario
-     */
+	 * setNomeUsuario
+	 * 
+	 * @param nomeUsuario
+	 *            nomeUsuario
+	 */
 	public void setNomeUsuario(String nomeUsuario) {
 		this.nomeUsuario = nomeUsuario;
 	}

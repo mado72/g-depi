@@ -15,10 +15,10 @@
 				<s:text name="label.filtro.consultaPor"/>
 			</td>
 			<td>
-				<select id="DropboxPrincipal" class="select"></select>
+				<select id="DropboxPrincipal" tabindex="1" class="select"></select>
 			</td>
 			<td style="width: 400px" rowspan="4">
-				<select tabindex="4" id="Lista" multiple size=6>
+				<select tabindex="5" id="Lista" multiple size=6>
 				</select>
 			</td>
 		</tr>
@@ -27,7 +27,7 @@
 				<s:text name="label.filtro.tipoOperacao"/>
 			</td>
 			<td>
-				<select id="DropboxSecundario" class="select" tabindex="6">
+				<select id="DropboxSecundario" class="select" tabindex="2">
 				</select>
 			</td>
 		</tr>
@@ -36,18 +36,21 @@
 				<s:text name="label.filtro.valor"/>
 			</td>
 			<td>
-				<INPUT id="Valor" tabIndex=3 style="WIDTH: 150px; TEXT-TRANSFORM: uppercase" maxLength=50 size=40>
+				<INPUT id="ValorFiltro" tabIndex="3" style="WIDTH: 150px; TEXT-TRANSFORM: uppercase" maxLength=50 size=40>
 			</td>
 		</tr>
 		<tr>
 			<td style="width: 200px">
 			</td>
 			<td>
-				<a class="button" id="BtnPlus"><img src="<c:url value="${www3}padroes_web/intranet/imagens/plus.gif"/>"></a>
-				<a class="button" id="BtnMinus"><img src="<c:url value="${www3}padroes_web/intranet/imagens/minus.gif"/>"></a>
+				<button class="abtn abtn-xs" id="BtnPlus" tabindex="4"><img src="<c:url value="${www3}padroes_web/intranet/imagens/plus.gif"/>"></button>
+				<button class="abtn abtn-xs" id="BtnMinus" tabindex="6"><img src="<c:url value="${www3}padroes_web/intranet/imagens/minus.gif"/>"></button>
 			</td>
 		</tr>
 	</table>
+
+${btnAction}<c:if test="${empty btnAction}"><s:include value="/WEB-INF/pages/pt_BR/comum/incluir-consultar.jsp"></s:include></c:if>
+
 </s:form>
 <c:set var="scriptPage" scope="request">
 <script>
@@ -63,6 +66,8 @@ jQuery(document).ready(function($){
 		principal[idx] = {
 			texto: item.entidade.descricao,
 			valor: item.entidade.campo,
+			tipo: item.entidade.tipo,
+			tam: item.entidade.s,
 			sublista: operacoes
 		};
 	});

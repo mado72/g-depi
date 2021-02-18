@@ -23,10 +23,14 @@ public abstract class CrudForm implements Serializable {
 	
 	private EstadoCrud estado;
 	
-	public abstract void limparDados();
+	public abstract void preencherDadosIniciais();
 	
 	public boolean isDetalhar() {
 		return this.estado == EstadoCrud.EXIBIR;
+	}
+	
+	public boolean isDesabiltarChave() {
+		return this.estado != EstadoCrud.INSERIR;
 	}
 	
 	/**

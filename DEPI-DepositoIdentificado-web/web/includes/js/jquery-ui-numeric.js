@@ -47,7 +47,7 @@ jQuery.fn.extend({ //indica que est� sendo criado um plugin
 			symbol: ''
 			}
 
-		//fun��o do jquery que substitui os parametros que n�o foram informados pelos defaults
+		//fun��o do jquery que substitui os parametros que não foram informados pelos defaults
 		var options = jQuery.extend(sDefaults, params);
 
 		//CORPO DO PLUGIN

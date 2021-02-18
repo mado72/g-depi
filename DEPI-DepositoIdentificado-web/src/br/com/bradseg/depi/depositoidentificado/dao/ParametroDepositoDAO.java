@@ -3,6 +3,8 @@ package br.com.bradseg.depi.depositoidentificado.dao;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
@@ -11,13 +13,13 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
  */
 
 public interface ParametroDepositoDAO  {
-
-    /**
-     * Método de obter por filtro
-     * @param filtro par�metro dep�sito com o código do objeto requisitado
-     * @return List<ParametroDepositoVO>
-     */
-    List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro);
+//
+//    /**
+//     * Método de obter por filtro
+//     * @param filtro par�metro dep�sito com o código do objeto requisitado
+//     * @return List<ParametroDepositoVO>
+//     */
+//    List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro);
 
     /**
      * Método de obter por filtro
@@ -53,5 +55,14 @@ public interface ParametroDepositoDAO  {
 	void excluir(ParametroDepositoVO vo);
 
 	ParametroDepositoVO obterPorChave(ParametroDepositoVO parametro);
+
+	/**
+	 * Verificar se parâmetro é referenciado
+	 * @param companhia Companhia
+	 * @param departamentoVO Departamento
+	 * @return true quando referenciado
+	 */
+	boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
+			DepartamentoVO departamentoVO);
 
 }

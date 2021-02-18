@@ -8,7 +8,7 @@
 		window.open(url + '/cadastro/PopupSelecionarDepartamento.do?acao=exibir','SelecaoDepartamento','status=yes,menubar=no,scrollbars=yes,height=500,width=800');
     }
 
-    //Essa rotina não é chamada!
+    //Essa rotina nÃ£o ï¿½ chamada!
    	function detalharDepartamento(labelEdicao){ 
    		if(verificarBoxEdicao('codDepto', '<bean:message key="msg.selecao.edicao" />')){
 				 var checks =  document.forms[0].elements['codDepto'];

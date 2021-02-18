@@ -25,12 +25,12 @@ public class CompanhiaSeguradoraVO implements Serializable {
     private int codigoCompanhia;
 
     /**
-     * Descri��o da Cia
+     * Descrição da Cia
      */
     private String descricaoCompanhia;
 
     /**
-     * Construtor padr�o
+     * Construtor padrão
      */
     public CompanhiaSeguradoraVO() {
         super();
@@ -62,7 +62,7 @@ public class CompanhiaSeguradoraVO implements Serializable {
     }
 
     /**
-     * retorna desci��o
+     * retorna descrição
      * @return o descricaoCompanhia
      */
     public String getDescricaoCompanhia() {
@@ -70,7 +70,7 @@ public class CompanhiaSeguradoraVO implements Serializable {
     }
 
     /**
-     * configura descri��o
+     * configura descrição
      * @param descricaoCompanhia o descricaoCompanhia a ser configurado
      */
     public void setDescricaoCompanhia(String descricaoCompanhia) {

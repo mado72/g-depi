@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
@@ -14,17 +15,19 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 /**
  * Superclasse para Actions que processam formulários de edição
  * 
- * @author Marcelo Damasceno
- *
- * @param <VO> Tipo que é manipulado pelo CRUD
+ * @param <C> Tipo da entidade manipulada pelo CRUD
+ * @param <VO> Tipo do Bean manipulado pelo CRUD para utilizar nas camadas de persistência
  * @param <F> Tipo do Model utilizado por esta Action.
  */
 @Controller
+@Scope("request")
 public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends CrudForm> extends BaseModelAction<F> {
 
 	private static final long serialVersionUID = -8669859699304965615L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EditarFormAction.class);
+	
+	protected static final String VOLTAR = "voltar";
 
 	private final F model;
 	
@@ -46,24 +49,46 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	protected abstract CrudHelper<C, VO, F> getCrudHelper();
 	
 	public void validateExibir() {
-		LOGGER.debug("Validando exibir");
+		LOGGER.info("Validando exibir");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		clearErrorsAndMessages();
 	}
 	
 	public void validateIncluir() {
-		LOGGER.debug("Validando incluir. Tem erros: {}", hasErrors());
-		this.model.limparDados();
+		LOGGER.info("Validando incluir. Tem erros: {}", hasErrors());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
+		this.model.preencherDadosIniciais();
 		clearErrorsAndMessages();
 	}
 	
 	public void validateAlterar() {
-		LOGGER.debug("Validando alterar. Tem erros: {}", hasErrors());
+		LOGGER.info("Validando alterar. Tem erros: {}", hasErrors());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		clearErrorsAndMessages();
 	}
 	
 	public void validateExcluir() {
 		LOGGER.debug("Validando excluir. Tem erros: {}", hasErrors());
-		// não limpa mensagens de erro 
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
+		// não limpa mensagens de erro de campo 
+		clearActionErrors();
+		clearMessages();
+	}
+	
+	public void validateRefrescar() {
+		LOGGER.debug("Validando refrescar. Tem erros: {}", hasErrors());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
+		
 	}
 	
 	/**
@@ -88,7 +113,6 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	public String incluir() {
 		LOGGER.debug("Preparando formulário para inclusão de um novo registro");
 
-		this.model.limparDados();
 		this.model.setEstado(EstadoCrud.INSERIR);
 		this.model.setSubtitulo(getText(getCrudHelper().getChaveTituloIncluir()));
 		
@@ -117,7 +141,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	 * @return "voltar"
 	 */
 	public String voltar() {
-		return "voltar";
+		return VOLTAR;
 	}
 	
 	/**
@@ -128,10 +152,16 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 		String[] codigos = request.getParameterValues("codigo");
 		List<VO> listaVO = mapearListaVO(codigos);
 		
-		getCrudHelper().excluirRegistros(listaVO);
-		addActionMessage(getText(ConstantesDEPI.MSG_EXCLUIR_EXITO));
-		
-		return SUCCESS;
+		try {
+			getCrudHelper().excluirRegistros(listaVO);
+			addActionMessage(getText(ConstantesDEPI.MSG_EXCLUIR_EXITO));
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			LOGGER.error("Erro ao excluir registros", e);
+			return SUCCESS;
+		}
 	}
 	
 	/**

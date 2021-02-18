@@ -1,6 +1,6 @@
 /* 
-* Responsável pela submissão do form se referindo a action correta.
-* Fábio Henrique.
+* Responsï¿½vel pela submissï¿½o do form se referindo a action correta.
+* Fï¿½bio Henrique.
 */	
 	function executar(acao, submit) {
 		var form = document.getElementById('form');
@@ -8,8 +8,8 @@
 		if(submit) form.submit();
 	}
 	
-//Modifica o tipo da combo "Tipo de Operação" dependendo do campo selecionado na combo "Consultar por".
-//Caso o tipo selecionado seja numérico.
+//Modifica o tipo da combo "Tipo de OperaÃ§Ã£o" dependendo do campo selecionado na combo "Consultar por".
+//Caso o tipo selecionado seja numï¿½rico.
 
 function carregarFiltroCampos(valor) {
 	var selectOperadores = document.getElementById("operadores");
@@ -26,12 +26,12 @@ function carregarFiltroCampos(valor) {
 		selectOperadores.options[5] = new Option("Maior ou igual", "numerico");
 		document.form.textValor.disabled = 0;
 		
-//Caso seja alfanumérico.
+//Caso seja alfanumï¿½rico.
 	} else if (valor == "alfanumerico") {
 		selectOperadores.options[0] = new Option("Igual", "numerico");
 		selectOperadores.options[1] = new Option("Diferente", "numerico");
-		selectOperadores.options[2] = new Option("Contém", "numerico");
-		selectOperadores.options[3] = new Option("Não Contém", "numerico");
+		selectOperadores.options[2] = new Option("Contï¿½m", "numerico");
+		selectOperadores.options[3] = new Option("Nï¿½o Contï¿½m", "numerico");
 		selectOperadores.options[4] = new Option("Inicia com", "numerico");
 		selectOperadores.options[5] = new Option("Termina com", "numerico");
 		selectOperadores.options[6] = new Option("Em branco", "numerico");
@@ -39,7 +39,7 @@ function carregarFiltroCampos(valor) {
 
 //caso seja deposito
 	} else if (valor == "deposito") {
-		selectOperadores.options[0] = new Option("Igual a Prêmio", "deposito");
+		selectOperadores.options[0] = new Option("Igual a Prï¿½mio", "deposito");
 		selectOperadores.options[1] = new Option("Igual a Diversos", "deposito");
 		document.all('textValor').value ="";
 		document.form.textValor.disabled = 1;
@@ -72,9 +72,9 @@ function removerItemFiltro() {
 	return true;
 }
 
-//opção de exclusão
+//opï¿½ï¿½o de exclusï¿½o
 function opcao() {
-  confirm ("Confirma Exclusão?");
+  confirm ("Confirma Exclusï¿½o?");
 }
 
 //checkbox obrigatorio
@@ -87,29 +87,29 @@ function verificaBox() {
 		}
 	}	
 	if (marcado == -1) {
-		alert("Obrigatório a seleção de um registro.");
+		alert("Obrigatï¿½rio a seleï¿½ï¿½o de um registro.");
 		return false;
 	} 		
 }
 
-//checkbox obrigatório para exclusão
+//checkbox obrigatï¿½rio para exclusï¿½o
 function verificaBoxExclusao(opcao) {
 	//validacao de checkbox sem saber quantos sao
 	marcado = -1
 	for (i=0; i<document.forms[0].check.length; i++) {
 		if (document.forms[0].check[i].checked) {
 			marcado = i ;
-			confirm ("Confirma Exclusão?");
+			confirm ("Confirma Exclusï¿½o?");
 			break;
 		}
 	}	
 	if (marcado == -1) {
-		alert("Pelo menos um registro deve ser selecionado para exclusão.");
+		alert("Pelo menos um registro deve ser selecionado para exclusï¿½o.");
 		return false;
 	} 		
 }
 
-//Permite digitação somente de números.
+//Permite digitaï¿½ï¿½o somente de nï¿½meros.
 function isIE() {
 
 	var isIE;
@@ -157,7 +157,7 @@ function hbRadio() {
        				 document.forms[0].sRadio[4].disabled=false;
        			}
      		} else if(document.forms[0].elements[i].value=="M") {
-     		//Quando for Manutenções
+     		//Quando for Manutenï¿½ï¿½es
        			if(document.forms[0].elements[i].checked == true) {
 
        				 document.forms[0].sRadio[0].disabled=true;

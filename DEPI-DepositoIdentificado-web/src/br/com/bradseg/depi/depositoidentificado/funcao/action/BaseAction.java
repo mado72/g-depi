@@ -66,6 +66,10 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
+		if (LOGGER.isInfoEnabled()) {
+			StringBuilder msg = new StringBuilder("@@@ DEPI Requisitado ").append(request.getRequestURL());
+			LOGGER.info(msg.toString());
+		}
 		this.request = request;
 	}
 
@@ -96,7 +100,15 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
         LOGGER.error("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		
 		return loginVO;
-
+	}
+	
+	/**
+	 * Retorna a matrícula do usuário logado
+	 * @return número da matrícula
+	 */
+	protected int getCodUsuarioLogado() {
+		LoginVo usuarioLogado = getUsuarioLogado();
+		return Integer.parseInt(usuarioLogado.getId());
 	}
 	
 	/*

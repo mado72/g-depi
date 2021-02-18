@@ -2,17 +2,58 @@ package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+
 /**
- * Classe Anotada de Mapeamento com a tabela GRP_DEPTO_DEP.
- * @author Globalitu
+ * Classe que representa um Grupo de Acesso.
+ * @author Globality
  */
 //@Table(schema = ConstantesDEPI.SCHEMA_BANCO, table = "GRP_DEPTO_DEP")
 public class GrupoAcessoVO implements Serializable{
 
 	private static final long serialVersionUID = -7192188807301270330L;
+	
+	/**
+	 * Código sequencial do Grupo Acesso.
+	 */
+	private int codigoGrupoAcesso;
+	
+	/**
+	 * codigo do departamento - DepartamentoVO obtido atraves da classe DepartamentoConverter
+	 */
+	private DepartamentoVO depto = new DepartamentoVO();
+	
+	/**
+	 * codigo da Companhia - CompanhiaSeguradoraVO obtido atraves da classe CompanhiaSeguradoraPersistenceConverter
+	 */
+	private CompanhiaSeguradoraVO cia = new CompanhiaSeguradoraVO();
+	
+	private List<UsuarioVO> funcionarios = new ArrayList<UsuarioVO>();
+	
+	/**
+	 * Codigo Responsavel Ultima Atualizacao.
+	 */
+	private Integer codigoResponsavelUltimaAtualizacao;
 
+	/**
+	 * Indica se o registro está ativo 
+	 */
+	private String codigoIndicativoAtivo = "S";
+	
+    /**
+     * Data da inclusão do registro 
+     */
+    private Date dataInclusao;
+
+    /**
+     * data da útima atualização
+     */
+    private Date dataHoraAtualizacao;
+
+	
 	/**
 	 * Construtor.
      * @param codigoGrupoAcesso - int.
@@ -28,46 +69,21 @@ public class GrupoAcessoVO implements Serializable{
 	public GrupoAcessoVO() {
 		super();
 	}
-
-	/**
-     * Código sequencial do Grupo Acesso.
-     */
-//	@TableField(name = "CGRP_DEPTO_DEP")
-	private int codigoGrupoAcesso;
-
-	/**
-     * codigo do departamento - DepartamentoVO obtido atraves da classe DepartamentoConverter
-     */
-//	@TableField(name = "CDEPTO_DEP_IDTFD")
-	private DepartamentoVO depto = new DepartamentoVO();
-
-	/**
-     * codigo da Companhia - CompanhiaSeguradoraVO obtido atraves da classe CompanhiaSeguradoraPersistenceConverter
-     */
-//	@TableField(name = "CINTRN_CIA_SEGDR")
-	private CompanhiaSeguradoraVO cia = new CompanhiaSeguradoraVO();
-
-	private List<UsuarioVO> usuarios = new ArrayList<UsuarioVO>();
-	
-    /**
-     * Codigo Responsavel Ultima Atualizacao.
-     */
-    private Integer codigoResponsavelUltimaAtualizacao;
     
 	/**
      * Retorna o valor do atributo usuarios.
      * @return o valor do atributo usuarios
      */
-	public List<UsuarioVO> getUsuarios() {
-		return usuarios;
+	public List<UsuarioVO> getFuncionarios() {
+		return funcionarios;
 	}
 
 	/**
      * Especifica o valor do atributo usuarios.
      * @param usuarios - List<UsuarioVO> do usuarios a ser configurado.
      */
-	public void setUsuarios(List<UsuarioVO> usuarios) {
-		this.usuarios = usuarios;
+	public void setFuncionarios(List<UsuarioVO> usuarios) {
+		this.funcionarios = usuarios;
 	}
 
 	/**
@@ -91,8 +107,11 @@ public class GrupoAcessoVO implements Serializable{
      * @return nomeGrupoAcesso
      */
 	public String getNomeGrupoAcesso() {
-		return String.valueOf(this.getCia().getCodigoCompanhia()).concat(this.getDepto().getSiglaDepartamento()).concat(
-		    String.valueOf(this.getCodigoGrupoAcesso()));
+		int codigoCompanhia = this.getCia().getCodigoCompanhia();
+		String siglaDepartamento = this.getDepto().getSiglaDepartamento();
+		String codigoGrupoAcessoString = String.valueOf(this.getCodigoGrupoAcesso());
+		return String.valueOf(codigoCompanhia).concat(siglaDepartamento).concat(
+		    codigoGrupoAcessoString);
 	}
 
 	/**
@@ -113,7 +132,7 @@ public class GrupoAcessoVO implements Serializable{
 	}
 
 	/**
-     * Método que retornar� o codigo do grupo usu�rio formatado.
+     * Método que retornar� o codigo do grupo usuário formatado.
      * @return String.
      */
 	public String getCodigoFormatado() {
@@ -151,6 +170,54 @@ public class GrupoAcessoVO implements Serializable{
      */
 	public void setCodigoResponsavelUltimaAtualizacao(Integer codigoResponsavelUltimaAtualizacao) {
 		this.codigoResponsavelUltimaAtualizacao = codigoResponsavelUltimaAtualizacao;
+	}
+	
+	/**
+	 * Retorna codigoIndicativoAtivo
+	 * @return o codigoIndicativoAtivo
+	 */
+	public String getCodigoIndicativoAtivo() {
+		return codigoIndicativoAtivo;
+	}
+	
+	/**
+	 * Define codigoIndicativoAtivo
+	 * @param codigoIndicativoAtivo valor codigoIndicativoAtivo a ser definido
+	 */
+	public void setCodigoIndicativoAtivo(String codigoIndicativoAtivo) {
+		this.codigoIndicativoAtivo = codigoIndicativoAtivo;
+	}
+
+	/**
+	 * Retorna dataInclusao
+	 * @return o dataInclusao
+	 */
+	public Date getDataInclusao() {
+		return BaseUtil.getDate(dataInclusao);
+	}
+
+	/**
+	 * Define dataInclusao
+	 * @param dataInclusao valor dataInclusao a ser definido
+	 */
+	public void setDataInclusao(Date dataInclusao) {
+		this.dataInclusao = BaseUtil.getDate(dataInclusao);
+	}
+
+	/**
+	 * Retorna dataHoraAtualizacao
+	 * @return o dataHoraAtualizacao
+	 */
+	public Date getDataHoraAtualizacao() {
+		return BaseUtil.getDate(dataHoraAtualizacao);
+	}
+
+	/**
+	 * Define dataHoraAtualizacao
+	 * @param dataHoraAtualizacao valor dataHoraAtualizacao a ser definido
+	 */
+	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
+		this.dataHoraAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
 	}
 	
 }

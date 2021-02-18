@@ -3,6 +3,7 @@
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<c:url scope="request" var="namespaceBase" value="/cadastro/departamento"></c:url>
 <s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
 <s:form action="salvar">
 <input name="codigo" type="hidden" value="${codigo.isEmpty() ? '' : codigo }">
@@ -30,33 +31,6 @@
 		</tr>
 	</tbody>
 	</table>
-	<table class="tabela_botoes">
-		<tbody>
-			<tr>
-				<td align="center" valign="middle" colspan="3">
-					<c:choose>
-						<c:when test="${detalhar}">
-							<s:a action="listar" namespace="/cadastro/departamento/consultar" class="button">
-								<img src="${www3}/padroes_web/intranet/imagens/bt_voltar.gif"/>
-							</s:a>
-						</c:when>
-						<c:otherwise>
-							<button class="btn-img" id="BtnSalvar" type="submit" value="salvar">
-								<img src="${www3}/padroes_web/intranet/imagens/bt_salvar.gif"/>
-							</button>
-							<s:a action="listar" namespace="/cadastro/departamento/consultar" class="button">
-								<img src="${www3}/padroes_web/intranet/imagens/bt_cancelar.gif"/>
-							</s:a>
-						</c:otherwise>
-					</c:choose>
-				</td>
-			</tr>
-		</tbody>
-		<tbody>
-			<tr>
-				<td align="center"><div id="box_loading"></div></td>
-			</tr>
-		</tbody>
-	</table>
+<s:include value="/WEB-INF/pages/pt_BR/comum/voltar-salvar-cancelar.jsp"/>
 </s:form>
 <depi:clearMessages actionErrors="true" fieldErrors="true" messages="true"/>
