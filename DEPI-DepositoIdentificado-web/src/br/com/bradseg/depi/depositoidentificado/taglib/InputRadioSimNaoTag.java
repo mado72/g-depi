@@ -55,7 +55,7 @@ public class InputRadioSimNaoTag extends StrutsBodyTagSupport {
 				.append(id)
 				.append("\">")
 				.append(radio(name, value, "S", "Sim"))
-				.append(radio(name, value, "N", "Não"))
+				.append(radio(name, value, "N", "N\u00E3o")) // Não
 				.append("</div>");
 		}
 		

@@ -272,9 +272,6 @@ public class ParametroDepositoCrudHelper implements
 		if (novo) {
 			instancia = new ParametroDepositoVO();
 			
-			int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
-			instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
-			
 			instancia.setCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(model.getCodigoCompanhia())));
 			instancia.setMotivoDeposito(new MotivoDepositoVO(Integer.parseInt(model.getCodigoMotivoDeposito())));
 			instancia.setDepartamento(new DepartamentoVO(Integer.parseInt(model.getCodigoDepartamento())));
@@ -282,6 +279,9 @@ public class ParametroDepositoCrudHelper implements
 		else {
 			instancia = obterPeloCodigo(model.getCodigo());
 		}
+		
+		int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
+		instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 
 		instancia.setCodigoApolice(model.getCodigoApolice());
 		instancia.setCodigoBancoVencimento(model.getCodigoBancoVencimento());
@@ -314,6 +314,8 @@ public class ParametroDepositoCrudHelper implements
 				facade.alterar(instancia);
 				return EstadoRegistro.PERSISTIDO;
 			}
+		} catch (DEPIBusinessException e) {
+			throw new DEPIIntegrationException(e);
 		} catch (Exception e) {
 			throw new DEPIIntegrationException(e, ConstantesDEPI.ERRO_INTERNO);
 		}

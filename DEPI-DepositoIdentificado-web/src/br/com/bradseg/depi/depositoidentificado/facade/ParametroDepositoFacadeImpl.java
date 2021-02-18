@@ -127,12 +127,20 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     @Override
     public void inserir(ParametroDepositoVO vo) throws IntegrationException {
         validaOperacao(vo);
-        try {
-        	parametroDepositoDAO.inserir(vo);
-        } catch (IntegrationException e) {
-        	LOGGER.error("inserir(ParametroDepositoVO vo)",e);
-            throw new IntegrationException(e);
+        
+/*
+        if (parametroDepositoDAO.obterPorChave(vo) != null) {
+        	
+        	DepartamentoVO depto = deptoDAO.obterPorChave(vo.getDepartamento());
+        	MotivoDepositoVO motv = motivoDAO.obterPorChave(vo.getMotivoDeposito());
+        	
+        	throw new DEPIBusinessException(ConstantesDEPI.ParametroDeposito.DUPLICADO, 
+        			String.valueOf(vo.getCompanhia().getCodigoCompanhia()),
+        			depto.getSiglaDepartamento(),
+        			motv.getDescricaoBasica());
         }
+*/
+        parametroDepositoDAO.inserir(vo);
     }
 
     /**

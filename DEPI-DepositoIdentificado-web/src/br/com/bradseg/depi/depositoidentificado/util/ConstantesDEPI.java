@@ -299,6 +299,7 @@ public final class ConstantesDEPI {
 	public static final class ParametroDeposito {
 
 		public static final String ERRO_USUARIO_SEM_GRUPO_ASSOCIADO = "msg.erro.parametrodeposito.semgrupoacessoassociado";
+		public static final String DUPLICADO = "msg.erro.parametrodeposito.duplicado";
 		
 	}
 	

@@ -478,7 +478,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 	private void gerarErroRegistroDuplicado(ParametroDepositoVO parametro) {
 		
 		MapSqlParameterSource paramsDepto = new MapSqlParameterSource();
-		paramsDepto.addValue(PARAM_PRM1, parametro.getDepartamento().getCodigoDepartamento());
+		paramsDepto.addValue(PARAM_WHR1, parametro.getDepartamento().getCodigoDepartamento());
 		
 		DepartamentoVO dep;
 		try {
