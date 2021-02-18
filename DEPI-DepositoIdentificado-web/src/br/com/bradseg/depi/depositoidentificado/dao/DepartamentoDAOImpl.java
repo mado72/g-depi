@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
@@ -164,7 +165,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
      * {@inheritDoc}
      */
 	@Override
-    public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, double codigoUsuario, Tabelas tabela)    {
+    public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoUsuario, Tabelas tabela)    {
 
 		try {
 			
@@ -338,12 +339,13 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	    	MapSqlParameterSource params = new MapSqlParameterSource();
 			params.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
 			
-			List<DepartamentoVO> departamentoVO = getJdbcTemplate().query(
+			DepartamentoVO departamentoVO = getJdbcTemplate().queryForObject(
 					QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE, params,
 					new DepartamentoDataMapper());
 			
-			return departamentoVO.get(0);
-			 
+			return departamentoVO;
+	    } catch (EmptyResultDataAccessException e) {
+	    	return null;
 	    } finally {
 	    	LOGGER.info("obterPorChave(DepartamentoVO vo) "); 
 	    }

@@ -31,7 +31,7 @@ public interface DepartamentoDAO {
      * @param e - EQueryJoinForward. 
      * @return List<DepartamentoVO>.
      */
-	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, double codigoUsuario, Tabelas e);
+	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoUsuario, Tabelas e);
 	//List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, BigDecimal codigoUsuario, Tabelas e);
 
 	/**

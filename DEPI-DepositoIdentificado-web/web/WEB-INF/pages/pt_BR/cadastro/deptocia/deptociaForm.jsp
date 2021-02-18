@@ -66,7 +66,7 @@
 <script>
 jQuery(document).ready(function($){
 		$.deptoCia.prepararEditar({
-			urlCias : '<c:url value="/json/ciaListar.do"/>',
+			urlCias : '<c:url value="/json/ciaListar.do"/>'
 		});
 		
 		$.popupDepto.prepararOpener({

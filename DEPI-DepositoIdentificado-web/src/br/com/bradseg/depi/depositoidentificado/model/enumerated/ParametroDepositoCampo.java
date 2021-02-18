@@ -111,7 +111,7 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
 
     /**
      * retorna o nome
-     * @param nome - nome do campo de parametro dep�sito
+     * @param nome - nome do campo de parâmetro depósito
      * @return retorna o nome campo
      */
     public static ParametroDepositoCampo obterPorNome(String nome) {

@@ -271,13 +271,7 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
     public List<CompanhiaSeguradoraVO> obterCompanhias() {
 		List<CompanhiaSeguradoraVO> lista = ciaDAO.obterCias();
 
-		for (CompanhiaSeguradoraVO vo : lista) {
-			CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(vo
-					.getCodigoCompanhia());
-			vo.setDescricaoCompanhia(cia.getDescricaoCompanhia());
-		}
-		
-		return lista;
+		return cicsDepiDAO.obterCias(lista);
     }
     
 }
