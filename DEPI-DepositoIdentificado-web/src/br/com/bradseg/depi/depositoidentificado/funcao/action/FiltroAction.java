@@ -46,44 +46,112 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	protected abstract CrudHelper<C, ?, ?> getFiltroHelper();
 	
 	private boolean consultado;
+
+	private String mensagemConsultaSemResultado;
 	
 	@SuppressWarnings("unchecked")
 	public FiltroAction() {
 		this.model = (T) getFiltroHelper().criarFiltroModel();
+		mensagemConsultaSemResultado = getText(ConstantesDEPI.ERRO_SEMRESULTADO);
 	}
 	
+	/**
+	 * Retorna mensagemConsultaSemResultado
+	 * @return o mensagemConsultaSemResultado
+	 */
+	protected String getMensagemConsultaSemResultado() {
+		return mensagemConsultaSemResultado;
+	}
+	
+	/**
+	 * Define mensagemConsultaSemResultado
+	 * @param mensagemConsultaSemResultado valor mensagemConsultaSemResultado a ser definido
+	 */
+	protected void setMensagemConsultaSemResultado(
+			String mensagemConsultaSemResultado) {
+		this.mensagemConsultaSemResultado = mensagemConsultaSemResultado;
+	}
+	
+	/**
+	 * Limpa as mensagens gerais e de erros e reseta o formulário
+	 */
 	public void validateExecute() {
+		LOGGER.info("Validando execute");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		clearErrorsAndMessages();
 		model.limparDados();
 	}
 	
+	/**
+	 * Limpa as mensagens de erro e reseta o formulário
+	 */
 	public void validateRetornar() {
+		LOGGER.info("Validando retornar");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		clearErrors();
 		model.limparDados();
 	}
 	
+	/**
+	 * Limpa as mensagens da ação e de erro
+	 */
 	public void validateRefrescar() {
+		LOGGER.info("Validando refrescar");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		clearErrorsAndMessages();
 	}
 	
+	/**
+	 * Limpa as mensagens da ação e de erro e valida os critérios
+	 */
 	public void validateConsultar() {
+		LOGGER.info("Validando consultar");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		clearErrorsAndMessages();
 		for (CriterioConsultaVO<C> criterio : model.obterCriteriosConsulta()) {
 			validarCriterio(criterio);
 		}
 	}
 	
+	/**
+	 * Chama {@link #validateConsultar()}
+	 */
 	public void validateJson() {
+		LOGGER.info("Validando json");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		validateConsultar();
 	}
 	
+	/**
+	 * Método que deve ser sobrescrito pelas consultas para validar os critérios
+	 * utilizados na consulta
+	 * 
+	 * @param criterio
+	 *            Critérios da consulta
+	 */
 	protected void validarCriterio(CriterioConsultaVO<C> criterio) {
 		LOGGER.warn("Sem validação do critério " + criterio);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.opensymphony.xwork2.ActionSupport#validate()
+	 */
 	@Override
 	public void validate() {
-		LOGGER.debug("Tem erros {}", hasErrors());
+		LOGGER.info("Validate()");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 	}
 
 	/**
@@ -123,14 +191,26 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	 *         {@link com.opensymphony.xwork2.Action#ERROR}
 	 */
 	public String consultar() {
+		clearErrorsAndMessages();
+		return realizarConsulta();
+	}
+
+	/**
+	 * Realiza a consulta com base nos critérios. Chama internamente o método
+	 * {@link #processarCriterios(List)}.
+	 * 
+	 * @return Caso ocorra algum erro, retorna <code>error</code>, senão
+	 *         <code>success</code>
+	 */
+	protected String realizarConsulta() {
 		try {
 			model.setColecaoDados(new ArrayList<>());
 			
-//			T model = getModel();
+			int codUsuario = getCodUsuarioLogado();
 			
 			List<CriterioConsultaVO<C>> criterios = model.obterCriteriosConsulta();
 
-			return processarCriterios(criterios);
+			return processarCriterios(codUsuario, criterios);
 		} catch (DEPIIntegrationException e) {
 			LOGGER.error("Falha na consulta", e);
 			addActionError(e.getMessage());
@@ -139,15 +219,15 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 		}
 	}
 
-	private String processarCriterios(List<CriterioConsultaVO<C>> criterios) {
+	private String processarCriterios(int codUsuario, List<CriterioConsultaVO<C>> criterios) {
 		
 		consultado = true;
 		try {
-			List<?> lista = getFiltroHelper().processarCriterios(criterios);
+			List<?> lista = getFiltroHelper().processarCriterios(codUsuario, criterios);
 			model.setColecaoDados(lista);
 			
 			if (lista == null || lista.isEmpty()) {
-				addActionError(getText(ConstantesDEPI.ERRO_SEMRESULTADO));
+				addActionError(mensagemConsultaSemResultado);
 			}
 		} catch (Exception e) {
 			LOGGER.error("Falha não tratada ao processar criterios de consulta", e);
@@ -173,7 +253,7 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 		model.setColecaoDados(null);
 		
 		List<CriterioConsultaVO<C>> criterios = model.obterCriteriosConsulta();
-		return processarCriterios(criterios);
+		return processarCriterios(getCodUsuarioLogado(), criterios);
 	}
 	
 	@Override

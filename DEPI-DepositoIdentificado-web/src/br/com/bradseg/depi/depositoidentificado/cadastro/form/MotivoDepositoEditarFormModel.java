@@ -36,7 +36,7 @@ public class MotivoDepositoEditarFormModel extends CrudForm {
 	}
 
 	@Override
-	public void limparDados() {
+	public void preencherDadosIniciais() {
 		setCodigo(null);
 		descricaoBasica = "";
 		descricaoDetalhada = "";

@@ -3,29 +3,39 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/parametro/parametroFiltro.jsp">
+<c:set var="namespaceBase" scope="request">/cadastro/parametro/editar</c:set>
+<s:include value="/WEB-INF/pages/pt_BR/comum/filtro2dropbox.jsp">
 	<s:param name="scriptOff" value="true"/>
 </s:include>
 
-<s:if test="colecaoDados">
-
-<s:form action="acao.do" namespace="/cadastro/parametro/editar" id="AcaoForm">
+<s:if test="colecaoDados && !colecaoDados.isEmpty()">
+<c:url value="${namespaceBase}/alterar.do" var="actionForm"></c:url>
+<form action="${actionForm}" id="AcaoForm" method="post">
 
 <table id="tabela_interna" class="sortable Parametro Consulta">
 	<thead>
 		<tr>
-		<th class="selecao">
+		<th class="selecao" style="width: 10%">
 			<s:text name="label.todos"/>
 			<br/>
 			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
-		<th class="descricao">
-			<s:text name="label.grid.parametro.descricaoMotivoDeposito"/>
+		<th style="width: 20%">
+			<s:text name="label.grid.parametrodeposito.motivo"/>
 		</th>
-		<th class="responsavel">
-			<s:text name="label.grid.parametro.responsavelAtualizacao"/>
+		<th style="width: 7%">
+			<s:text name="label.grid.parametrodeposito.cia"/>
 		</th>
-		<th class="atualizacao">
+		<th style="width: 20%">
+			<s:text name="label.grid.parametrodeposito.departamento"/>
+		</th>
+		<th style="width: 13%">
+			<s:text name="label.grid.parametrodeposito.retiradaVencimento"/>
+		</th>
+		<th style="width: 13%">
+			<s:text name="label.grid.parametrodeposito.responsavelAtualizacao"/>
+		</th>
+		<th style="width: 13%">
 			<s:text name="label.grid.departamento.dataHoraAtualizacao"/>
 		</th>
 		</tr>
@@ -33,39 +43,29 @@
 	<tbody class="lista">
  	<s:iterator value="colecaoDados" var="item" status="status">
 		<tr>
-		<td class="selecao">
-			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoMotivoDeposito}"/>"/>
+		<td class="text-center"><c:set var="pk">${item.departamento.codigoDepartamento};${item.motivoDeposito.codigoMotivoDeposito};${item.companhia.codigoCompanhia}</c:set>
+			<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${pk}"/>"/>
 		</td>
-		<td class="descricao">
+		<td>
 			<s:url action="exibir" namespace="/cadastro/parametro/editar" var="linkExibir">
-				<s:param name="codigo">${item.codigoMotivoDeposito}</s:param>
+				<s:param name="codigo">${pk}</s:param>
 			</s:url>
 			<s:a href="%{linkExibir}">
-				${item.descricaoBasica}
+				${item.motivoDeposito.descricaoBasica}
 			</s:a>
 		</td>
-		<td class="responsavel">${item.codigoResponsavelUltimaAtualizacao}</td>
-		<td class="atualizacao"><fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/></td>
+		<td class="text-center">${item.companhia.codigoCompanhia}</td>
+		<td>${item.departamento.nomeDepartamento}</td>
+		<td class="text-center"><c:choose><c:when test="${item.codigoBancoVencimento eq 'S'}">Sim</c:when><c:otherwise>Não</c:otherwise></c:choose></td>
+		<td class="text-center">${item.codigoResponsavelUltimaAtualizacao}</td>
+		<td class="text-center"><fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/></td>
 		</tr>
 	</s:iterator>
  	</tbody>
 </table>
 <div class="paginacao"></div>
-<br/>
-	<br/>
-	<table class="tabela_botoes">
-		<tr>
-			<td align="center">
-				<div id="tabela_botoes">
-					<s:a id="BtnIncluir2" class="btnIncluir" action="incluir" namespace="/cadastro/parametro/editar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
-					<a class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
-					<a class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
-				</div>
-			</td>
-		</tr>
-	</table>
-
-</s:form>
+<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-alterar-excluir.jsp"></s:include>
+</form>
 <br/>
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>
@@ -74,7 +74,7 @@ jQuery(document).ready(function($){
 	$.consulta.prepararFormulario("#AcaoForm");
 	<s:if test="colecaoDados">
 	$.paginacao.paginar({
-		tblSeletor: ".MotivoDeposito",
+		tblSeletor: ".Parametro",
 		pagSeletor: ".paginacao",
 		registros: 7,
 		pattern: ":reg itens encontrados, mostrando :idxIni até :idxFin."

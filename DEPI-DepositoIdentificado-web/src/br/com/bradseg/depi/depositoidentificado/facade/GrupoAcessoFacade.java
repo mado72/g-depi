@@ -41,14 +41,24 @@ public interface GrupoAcessoFacade {
 	 * @return Lista de Companhias
 	 */
 	List<CompanhiaSeguradoraVO> obterCompanhias();
-
+	
 	/**
 	 * Obtém os departamentos disponíveis para o cadastro de Grupo de Acesso
 	 * 
+	 * @param codigoUsuario Código do usuário logado
 	 * @param vo Companhia Seguradora
 	 * @return Lista de Departamentos
 	 */
 	List<DepartamentoVO> obterDepartamentos(CompanhiaSeguradoraVO vo);
+
+	/**
+	 * Obtém os departamentos restritos ao grupo de de acesso do usuário logado 
+	 * 
+	 * @param codigoUsuario Código do usuário logado
+	 * @param vo Companhia Seguradora
+	 * @return Lista de Departamentos
+	 */
+	List<DepartamentoVO> obterDepartamentos(int codigoUsuario, CompanhiaSeguradoraVO vo);
 
 	/**
 	 * Obtém dados da companhia

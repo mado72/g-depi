@@ -22,6 +22,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.UsuarioDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
@@ -246,18 +247,17 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     public List<CompanhiaSeguradoraVO> obterCompanhias() {
 		List<CompanhiaSeguradoraVO> lista = ciaDAO.obterCias();
 
-		for (CompanhiaSeguradoraVO vo : lista) {
-			CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(vo
-					.getCodigoCompanhia());
-			vo.setDescricaoCompanhia(cia.getDescricaoCompanhia());
-		}
-		
-		return lista;
+		return cicsDepiDAO.obterCias(lista);
+    }
+    
+    @Override
+    public List<DepartamentoVO> obterDepartamentos(CompanhiaSeguradoraVO vo) {
+    	return deptoDAO.obterPorCompanhiaSeguradora(vo);
     }
 
 	@Override
-	public List<DepartamentoVO> obterDepartamentos(CompanhiaSeguradoraVO vo) {
-		return deptoDAO.obterPorCompanhiaSeguradora(vo);
+	public List<DepartamentoVO> obterDepartamentos(int codigoUsuario, CompanhiaSeguradoraVO vo) {
+		return deptoDAO.obterComRestricaoDeGrupoAcesso(vo.getCodigoCompanhia(), codigoUsuario, Tabelas.GRUPO_ACESSO);
 	}
 	
 	/* (non-Javadoc)

@@ -26,4 +26,20 @@
 		</attribute>
 	</tag>
 	
+	<tag>
+		<name>radioSimNao</name>
+		<tagclass>br.com.bradseg.depi.depositoidentificado.taglib.InputRadioSimNaoTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>detalhar</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
 </taglib>

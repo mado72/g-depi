@@ -13,13 +13,13 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
  */
 
 public interface ParametroDepositoDAO  {
-
-    /**
-     * Método de obter por filtro
-     * @param filtro par�metro dep�sito com o código do objeto requisitado
-     * @return List<ParametroDepositoVO>
-     */
-    List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro);
+//
+//    /**
+//     * Método de obter por filtro
+//     * @param filtro par�metro dep�sito com o código do objeto requisitado
+//     * @return List<ParametroDepositoVO>
+//     */
+//    List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro);
 
     /**
      * Método de obter por filtro
@@ -57,9 +57,10 @@ public interface ParametroDepositoDAO  {
 	ParametroDepositoVO obterPorChave(ParametroDepositoVO parametro);
 
 	/**
-	 * @param companhia
-	 * @param departamentoVO
-	 * @return
+	 * Verificar se parâmetro é referenciado
+	 * @param companhia Companhia
+	 * @param departamentoVO Departamento
+	 * @return true quando referenciado
 	 */
 	boolean associacaoReferenciada(CompanhiaSeguradoraVO companhia,
 			DepartamentoVO departamentoVO);

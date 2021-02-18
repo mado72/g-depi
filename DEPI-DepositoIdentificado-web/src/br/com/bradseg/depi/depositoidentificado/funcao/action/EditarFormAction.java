@@ -26,6 +26,8 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	private static final long serialVersionUID = -8669859699304965615L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EditarFormAction.class);
+	
+	protected static final String VOLTAR = "voltar";
 
 	private final F model;
 	
@@ -47,25 +49,46 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	protected abstract CrudHelper<C, VO, F> getCrudHelper();
 	
 	public void validateExibir() {
-		LOGGER.debug("Validando exibir");
+		LOGGER.info("Validando exibir");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		clearErrorsAndMessages();
 	}
 	
 	public void validateIncluir() {
-		LOGGER.debug("Validando incluir. Tem erros: {}", hasErrors());
-		this.model.limparDados();
+		LOGGER.info("Validando incluir. Tem erros: {}", hasErrors());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
+		this.model.preencherDadosIniciais();
 		clearErrorsAndMessages();
 	}
 	
 	public void validateAlterar() {
-		LOGGER.debug("Validando alterar. Tem erros: {}", hasErrors());
+		LOGGER.info("Validando alterar. Tem erros: {}", hasErrors());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		clearErrorsAndMessages();
 	}
 	
 	public void validateExcluir() {
 		LOGGER.debug("Validando excluir. Tem erros: {}", hasErrors());
-		clearActionErrors();
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
 		// não limpa mensagens de erro de campo 
+		clearActionErrors();
+		clearMessages();
+	}
+	
+	public void validateRefrescar() {
+		LOGGER.debug("Validando refrescar. Tem erros: {}", hasErrors());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(dumpErros());
+		}
+		
 	}
 	
 	/**
@@ -118,7 +141,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	 * @return "voltar"
 	 */
 	public String voltar() {
-		return "voltar";
+		return VOLTAR;
 	}
 	
 	/**

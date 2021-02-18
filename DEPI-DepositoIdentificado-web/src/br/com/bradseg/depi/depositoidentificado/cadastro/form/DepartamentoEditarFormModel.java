@@ -67,7 +67,7 @@ public class DepartamentoEditarFormModel extends CrudForm {
 	}
 
 	@Override
-	public void limparDados() {
+	public void preencherDadosIniciais() {
 		setCodigo(null);
 		siglaDepartamento = "";
 		nomeDepartamento = "";

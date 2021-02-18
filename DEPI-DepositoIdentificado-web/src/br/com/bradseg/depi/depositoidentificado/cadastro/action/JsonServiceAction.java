@@ -94,5 +94,25 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 		
 		return SUCCESS;
 	}
+	
+	public String ciaDeptosComRestricao() {
+		try {
+			int codigoCia = Integer.parseInt(model.getCodigoCia());
+			int codUsuarioLogado = getCodUsuarioLogado();
+			
+			List<DepartamentoVO> deptos = facade.obterDepartamentos(
+					codUsuarioLogado, new CompanhiaSeguradoraVO(codigoCia));
+			
+			for (DepartamentoVO vo : deptos) {
+				vo.setDeposito(null);
+			}
+			
+			model.setResponse(deptos);
+		} catch (Exception e) {
+			handleException(e);
+		}
+		
+		return SUCCESS;
+	}
 
 }

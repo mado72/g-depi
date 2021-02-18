@@ -85,7 +85,7 @@ public class DepartamentoCompanhiaCrudHelper implements
 	}
 
 	@Override
-	public List<DepartamentoCompanhiaVO> processarCriterios(
+	public List<DepartamentoCompanhiaVO> processarCriterios(int codUsuario,
 			List<CriterioConsultaVO<DepartamentoCompanhiaCampo>> criterios) {
 
 		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);

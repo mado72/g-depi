@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoCompanhiaEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepartamentoCompanhiaCrudHelper;
@@ -48,8 +47,7 @@ public class DepartamentoCompanhiaEditarAction extends EditarFormAction<Departam
 	@Override
 	protected List<DepartamentoCompanhiaVO> mapearListaVO(String[] codigosCompostos) {
 		
-		LoginVo usuarioLogado = getUsuarioLogado();
-		Integer codUsuario = new Integer(usuarioLogado.getId());
+		int codUsuario = getCodUsuarioLogado();
 		
         List<DepartamentoCompanhiaVO> lista = new ArrayList<>();
         

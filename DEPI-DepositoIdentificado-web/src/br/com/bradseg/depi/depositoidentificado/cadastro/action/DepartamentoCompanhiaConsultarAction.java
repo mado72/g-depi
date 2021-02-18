@@ -26,9 +26,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 @Scope("session")
 public class DepartamentoCompanhiaConsultarAction extends FiltroAction<DepartamentoCompanhiaCampo, FiltroConsultarForm<DepartamentoCompanhiaCampo>> {
 
-	/**
-	 * 
-	 */
 	private static final String LABEL_DEPARTAMENTO_SIGLA = "enum.DepartamentoCompanhiaCampo.Sigla";
 
 	private static final String LABEL_DEPARTAMENTO_NOME = "enum.DepartamentoCompanhiaCampo.Nome";
@@ -54,6 +51,25 @@ public class DepartamentoCompanhiaConsultarAction extends FiltroAction<Departame
 	@Autowired
 	public void setFacade(DepartamentoCompanhiaFacade facade) {
 		filtroHelper.setFacade(facade);
+	}
+	
+	/**
+	 * Sobrescreve o método para forçar a consulta com os critérios já registrados.
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroAction#validateRefrescar()
+	 */
+	@Override
+	public void validateRefrescar() {
+		// Sobreescreve para não limpar as mensagens e refaz a consulta.
+		super.realizarConsulta();
+	}
+	
+	/**
+	 * Sobrescreve método para impedir que se limpe as mensagens.
+	 * @return success
+	 */
+	@Override
+	public String refrescar() {
+		return SUCCESS;
 	}
 	
 	/* (non-Javadoc)
@@ -120,7 +136,5 @@ public class DepartamentoCompanhiaConsultarAction extends FiltroAction<Departame
 					LABEL_DEPARTAMENTO_NOME, "40"));
 		}
 	}
-	
-	
 
 }

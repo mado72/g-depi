@@ -78,7 +78,7 @@ public class FuncionarioCrudHelper implements
 	}
 
 	@Override
-	public List<UsuarioVO> processarCriterios(
+	public List<UsuarioVO> processarCriterios(int codUsuario,
 			List<CriterioConsultaVO<FuncionarioCampo>> criterios) {
 
 		try {
