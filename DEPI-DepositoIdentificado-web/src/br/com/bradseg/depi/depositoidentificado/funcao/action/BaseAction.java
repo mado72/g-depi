@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -26,6 +28,8 @@ import com.opensymphony.xwork2.ActionSupport;
 @Controller
 @Scope("request")
 public class BaseAction extends ActionSupport implements ServletRequestAware {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(BaseAction.class);
 
 	private static final long serialVersionUID = -6643036342809251102L;
 
@@ -33,9 +37,6 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	
 	private static final String MSG_LOGIN_USUARIO = "msg.erro.usuario.logado";
 	
-	private String subtitulo;
-
-
 	/**
 	 * Construtor da classe BaseAction
 	 */
@@ -60,11 +61,15 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
      */
     @Override
     public String getText(String chave) {
-    	return BaseUtil.getInstance().getText(chave);
+    	return BaseUtil.getTexto(chave);
     }
 
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
+		if (LOGGER.isInfoEnabled()) {
+			StringBuilder msg = new StringBuilder("@@@ DEPI Requisitado ").append(request.getRequestURL());
+			LOGGER.info(msg.toString());
+		}
 		this.request = request;
 	}
 
@@ -83,23 +88,33 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	 */
 	protected LoginVo getUsuarioLogado() {
 
+		// FIXME retirar este log da publicação final
+		LOGGER.error("Tentando recuperar o usuário logado usando LoginUtils.getLoginObject(this.request)");
 		LoginVo loginVO = LoginUtils.getLoginObject(this.request);
+		LOGGER.error("Usuário logado {}", loginVO);
 		
         if (BaseUtil.isNZB(loginVO) || BaseUtil.isNZB(loginVO.getId())) {
+        	LOGGER.error("Não encontrou usuário logado");
             throw new IntegrationException(getText(MSG_LOGIN_USUARIO));
         }
+        LOGGER.error("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		
 		return loginVO;
-
+	}
+	
+	/**
+	 * Retorna a matrícula do usuário logado
+	 * @return número da matrícula
+	 */
+	protected int getCodUsuarioLogado() {
+		LoginVo usuarioLogado = getUsuarioLogado();
+		return Integer.parseInt(usuarioLogado.getId());
 	}
 	
 	/*
 	 * Método para facilitar o desenvolvimento para expôr os arquivos estáticos por URL configurável 
 	 */
 	public String getEstatico() {
-		// @FIXME Deve estar dentro da aplicação, não na intranet: return request.getContextPath() + "/includes";
-		
-//		return getWww3() + "includes";
 		return request.getContextPath() + "/includes";
 	}
 
@@ -110,31 +125,6 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	@Override
 	public String execute() {
 		return SUCCESS;
-	}
-	
-	/**
-	 * Retorna Subtítulo da página
-	 * @return Subtítulo da página
-	 */
-	public String getSubtitulo() {
-		return subtitulo;
-	}
-	
-	/**
-	 * Define subtítulo
-	 * @param subtitulo Subtítulo a ser definido
-	 */
-	protected void setSubtitulo(String subtitulo) {
-		this.subtitulo = subtitulo;
-	}
-	
-	/**
-	 * Recupera o subtítulo da página a partir de uma chave do ResourceBundle
-	 * @param chave Chave do subtítulo
-	 */
-	protected void setSubtituloChave(String chave) {
-		String subtitulo = getText(chave);
-		setSubtitulo(subtitulo);
 	}
 
 }

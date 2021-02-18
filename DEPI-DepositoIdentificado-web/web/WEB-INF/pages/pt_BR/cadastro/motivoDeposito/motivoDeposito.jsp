@@ -1,17 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" %><%@ 
+	taglib prefix="depi" uri="/depi-tags" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
-	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<s:include value="/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoFiltro.jsp">
+	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" 
+%>
+<c:set var="namespaceBase" scope="request">/cadastro/motivoDeposito/editar</c:set>
+<s:include value="/WEB-INF/pages/pt_BR/comum/filtro2dropbox.jsp">
 	<s:param name="scriptOff" value="true"/>
 </s:include>
 
-<s:if test="colecaoDados">
+<s:if test="colecaoDados && !colecaoDados.isEmpty()">
+<c:url value="${namespaceBase}/alterar.do" var="actionForm"></c:url>
 
-<s:form action="acao.do" namespace="/cadastro/motivoDeposito/editar" id="AcaoForm">
-
-<table id="tabela_interna" class="MotivoDeposito Consulta">
+<form action="${actionForm}" id="AcaoForm" method="post">
+<table id="tabela_interna" class="sortable MotivoDeposito Consulta">
 	<thead>
 		<tr>
 		<th class="selecao">
@@ -20,28 +22,13 @@
 			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
 		<th class="descricao">
-			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">
-				<s:param name="campo" value="descricao"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.motivodeposito.descricaoMotivoDeposito"/>
-			</s:a>
+			<s:text name="label.grid.motivodeposito.descricaoMotivoDeposito"/>
 		</th>
 		<th class="responsavel">
-			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">
-				<s:param name="campo" value="responsavel"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.motivodeposito.responsavelAtualizacao"/>
-			</s:a>
+			<s:text name="label.grid.motivodeposito.responsavelAtualizacao"/>
 		</th>
 		<th class="atualizacao">
-			<s:url action="ordenar" namespace="/consulta/motivoDeposito" var="linkSort">
-				<s:param name="campo" value="atualizacao"/>
-			</s:url>
-			<s:a href="%{linkSort}">
-				<s:text name="label.grid.departamento.dataHoraAtualizacao"/>
-			</s:a>
+			<s:text name="label.grid.departamento.dataHoraAtualizacao"/>
 		</th>
 		</tr>
 	</thead>
@@ -66,22 +53,12 @@
  	</tbody>
 </table>
 <div class="paginacao"></div>
-<br/>
-	<br/>
-	<table class="tabela_botoes">
-		<tr>
-			<td align="center">
-				<div id="tabela_botoes">
-					<s:a id="BtnIncluir2" class="btnIncluir" action="incluir" namespace="/cadastro/motivoDeposito/editar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.jpg"/>"></s:a>
-					<a class="button" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></a>
-					<a class="button" id="BtnExcluir"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_excluir.jpg"/>"></a>
-				</div>
-			</td>
-		</tr>
-	</table>
 
-</s:form>
-<br/>
+<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-alterar-excluir.jsp">
+	<s:param name="namespaceBase" >${namespaceBase}</s:param>
+</s:include>
+</form>
+
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>
 <script>

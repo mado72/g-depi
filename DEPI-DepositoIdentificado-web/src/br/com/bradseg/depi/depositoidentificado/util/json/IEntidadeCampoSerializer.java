@@ -32,6 +32,8 @@ public class IEntidadeCampoSerializer extends
 		
 		generator.writeObjectField("descricao", descricao);
 		generator.writeObjectField("tipo", tipoCampo);
+		generator.writeObjectField("s", campo.getSize());
+		
 		generator.writeEndObject();
 	}
 	
@@ -40,9 +42,9 @@ public class IEntidadeCampoSerializer extends
 		if (campo instanceof Enum) {
 			Enum<?> enumCampo = (Enum<?>) campo;
 			String chave = String.format("enum.%s.%s", classe, enumCampo.name());
-			return BaseUtil.getInstance().getText(chave);
+			return BaseUtil.getTexto(chave);
 		}
-		return BaseUtil.getInstance().getText(String.format("entidade.%s", classe));
+		return BaseUtil.getTexto(String.format("entidade.%s", classe));
 	}
 
 }

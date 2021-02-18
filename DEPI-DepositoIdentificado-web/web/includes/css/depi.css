@@ -1,5 +1,8 @@
 @CHARSET "UTF-8";
 
+.text-center {
+	text-align: center;
+}
 input:disabled {
 	color: #999999;
 }
@@ -9,10 +12,31 @@ pre.debug {
 	overflow-wrap: anywhere;
 }
 
-a.button {
-	border: 0;
+.w-100 {
+	width: 100% !important;
+}
+
+.center {
+	text-align: center !important;
+}
+
+.tab {
+	margin-right: 10px;
+}
+
+a.abtn, button.abtn {
 	text-decoration: none;
+	background-color: transparent;
+	vertical-align: top;
+	border: 0;
 	margin: 2px;
+	padding: 0;
+	width: 70px;
+}
+
+a.abtn.abtn-xs, button.abtn.abtn-xs, .abtn-xs {
+	height: 18px;
+	width: 18px;
 }
 
 button.btn-img {
@@ -20,6 +44,11 @@ button.btn-img {
 	border: 0;
 	padding: 0;
 	margin-right: 2px;
+}
+
+.lt-ie9 button.btn-img {
+	position: relative;
+	top: -1px;
 }
 
 #depi-breadcrumb {
@@ -33,7 +62,7 @@ button.btn-img {
 
 #depi-app #menu_horizontal .dropdown {
 	border-bottom: 1px solid #bc0000;
-	top: 90px;
+	top: 68px;
 	width: 200px;
 }
 #depi-app #menu_horizontal #s1 {
@@ -44,6 +73,21 @@ button.btn-img {
 	left: 239px;
 }
 
+#depi-app .tabela_verm, #depi-app .tabela_sucesso {
+	width: 100%;
+}
+
+#depi-app .tabela_verm li, #depi-app .tabela_sucesso li {
+	text-align: left;
+}
+
+#box_loading {
+	display: none;
+	margin-left: auto;
+	margin-right: auto;
+    width: 100px;
+    height: 10px;
+}
 #carregandoImg {
 	display: none;
 }
@@ -69,6 +113,7 @@ button.btn-img {
 
 .tabela_botoes {
 	width: 95%;
+	height: 20px;
 }
 
 .Consulta .selecao {
@@ -108,7 +153,73 @@ button.btn-img {
 }
 
 .paginacao {
-	margin-left: auto;
-	margin-right: auto;
 	text-align: center;
+	margin: 4px auto 12px auto;
+}
+
+.paginacao a {
+	cursor: pointer;
+}
+
+.paginacao a.disabled, .paginacao a.disabled:hover {
+	color: #aaaaaa;
+	cursor: default;
+}
+
+.sortable th {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.GoPage:after {
+	content: ','
+}
+.GoPage:last-of-type:after {
+	content: ''
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+
+.btn.disabled {
+	opacity: 0.5;
+	cursor: auto;
+}
+
+.tblFuncionario table, .tblDepartamento table {
+    background-color: white;
+    border: 0;
+    margin: 0px auto 10px;
+    width: 99%;
+}
+
+button#BtnSalvar {
+    position: relative;
+    top: -1px;
+}
+
+.tblFuncionarios {
+    max-height: 251px;
+    overflow: auto;
+}
+
+.mt2 {
+	margin-top: 2px;
+}
+.mt3 {
+	margin-top: 3px;
+}
+.mt4 {
+	margin-top: 4px;
+}
+.ml2 {
+	margin-left: 2px;
+}
+.ml3 {
+	margin-left: 3px;
+}
+.ml4 {
+	margin-left: 4px;
 }

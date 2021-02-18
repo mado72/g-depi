@@ -90,7 +90,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 
     /**
      * método para inserir uma associa��o de motivo
-     * @param vo - objeto que ser� inserido
+     * @param vo - objeto que será inserido
      */
     @Override
     public void inserir(AssociarMotivoDepositoVO vo) {
@@ -274,7 +274,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 		if (!filtro.getCriterios().isEmpty()) {
 			// Solicitação do IC - Bradesco
 			final String string = "{0}";
-			query.replace(query.indexOf(string), query.indexOf(string) + 3, filtro.getClausaAndFiltro());
+			query.replace(query.indexOf(string), query.indexOf(string) + 3, filtro.getClausulasParciais());
 		}
 		return filtro.getMapParamFiltro();
 	}

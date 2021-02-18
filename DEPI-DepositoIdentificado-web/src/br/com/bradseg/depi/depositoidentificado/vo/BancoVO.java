@@ -90,7 +90,7 @@ public class BancoVO implements Serializable {
     private String fillerFinal = "";
 
     /**
-     * Campos que faltam, mas o sistema n�o precisa deles.
+     * Campos que faltam, mas o sistema não precisa deles.
      */
     // 05 WS-DATA-CADASTRO-BANCO PIC X(10).
     // 05 WS-CD-RESP-BANCO PIC X(8).

@@ -3,7 +3,7 @@
  */
 package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -30,6 +30,8 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
      * Código Cia.
      */
     CodigoCompanhia(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, CompanhiaSeguradoraCampo.CodigoCompanhia);
+    
+    private final static List<DepartamentoCompanhiaCampo> CRITERIAS = Arrays.asList(Sigla, NomeDepartamento, CodigoCompanhia);
 
     private String nome;
 
@@ -38,7 +40,7 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
     private boolean cics;
 
     private int size;
-
+    
     /**
      * Construtor.
      * @param nome - String.
@@ -124,19 +126,9 @@ public enum DepartamentoCompanhiaCampo implements IEntidadeCampo {
 
     /**
      * Retorna valores da combo de consulta.
-     * @return DepartamentoCampo[].
+     * @return AssociacaoDeptoCiaCampo.
      */
-    public static DepartamentoCompanhiaCampo[] valuesForCriteria() {
-        List<DepartamentoCompanhiaCampo> list = new ArrayList<DepartamentoCompanhiaCampo>();
-        for (DepartamentoCompanhiaCampo campo : DepartamentoCompanhiaCampo.values()) {
-            if (!campo.equals(CodigoDepartamento)) {
-                list.add(campo);
-            }
-        }
-        DepartamentoCompanhiaCampo[] deps = new DepartamentoCompanhiaCampo[list.size()];
-        for (int i = 0; i < deps.length; i++) {
-            deps[i] = list.get(i);
-        }
-        return deps;
+    public static List<DepartamentoCompanhiaCampo> valuesForCriteria() {
+        return CRITERIAS;
     }
 }

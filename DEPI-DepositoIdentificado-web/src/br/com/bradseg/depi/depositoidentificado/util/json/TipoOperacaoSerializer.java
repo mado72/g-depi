@@ -2,7 +2,6 @@ package br.com.bradseg.depi.depositoidentificado.util.json;
 
 import java.io.IOException;
 
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
@@ -22,17 +21,12 @@ public class TipoOperacaoSerializer extends
 	public void serialize(TipoOperacao tipoOperacao, JsonGenerator generator,
 			SerializerProvider provider) throws IOException,
 			JsonProcessingException {
-		BaseUtil baseUtil = BaseUtil.getInstance();
-
-		TipoCampo tipoCampo = tipoOperacao.getTipoCampo();
-
 		generator.writeStartObject();
 		String name = tipoOperacao.name();
 		String chave = String.format("enum.TipoOperacao.%s", name);
 		generator.writeObjectField("n", name);
-		String descricao = baseUtil.getText(chave);
+		String descricao = BaseUtil.getTexto(chave);
 		generator.writeObjectField("d", descricao);
-		generator.writeObjectField("t", tipoCampo);
 		generator.writeEndObject();
 	}
 

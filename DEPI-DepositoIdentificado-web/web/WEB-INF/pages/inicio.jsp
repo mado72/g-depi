@@ -6,14 +6,14 @@
 <html>
 <head>
 <meta name="titulo" content="DEPI-DepositoIdentificado" />
-<meta name="subtitulo" content="Início" />
+<meta name="subtitulo" content="Inï¿½cio" />
 </head>
 <body>
-<p class="destaque">Importante, esta funcionalidade é apenas uma
-referência para o desenvolvimento, e deve ser removida da aplicação.</p>
+<p class="destaque">Importante, esta funcionalidade ï¿½ apenas uma
+referï¿½ncia para o desenvolvimento, e deve ser removida da aplicaï¿½ï¿½o.</p>
 <p class="destaque">O pacote br.com.bradseg.depi.depositoidentificado.funcao deve ser removido antes de uma entrega de EAR.</p>
 <br/>
-<p class="destaque">Para testar, preencha com os nomes: 'bsp', ou 'bsad', ou 'fulano' e veja os diferentes comportamentos da aplicação. Os nomes 'bsp' e 'bsad' geram respectivamente BusinessException e IntegrationException.</p>
+<p class="destaque">Para testar, preencha com os nomes: 'bsp', ou 'bsad', ou 'fulano' e veja os diferentes comportamentos da aplicaï¿½ï¿½o. Os nomes 'bsp' e 'bsad' geram respectivamente BusinessException e IntegrationException.</p>
 <br/>
 <table>
 	<thead>
@@ -22,10 +22,10 @@ referência para o desenvolvimento, e deve ser removida da aplicação.</p>
 		</tr>
 	</thead>
 	<tbody>
-		<tr><td>bsp</td><td>Ocorre de forma proposital, um erro de negócio na camada de serviço, mas que será tratada pela action e exibida como mensagem de erro. (BusinessException)</td></tr>
-		<tr><td>bsad</td><td>Ocorre de forma proposital, um erro de integração na camada de serviço, que não será tratado por essa action, e será redirecionado para uma página de erro. (IntegrationException)</td></tr>
-		<tr><td>fulano</td><td>Exibe uma mensagem específica para este nome.</td></tr>
-		<tr><td>(qualquer outro nome)</td><td>Exibe uma mensagem padrão para qualquer outro nome não cadastrado.</td></tr>
+		<tr><td>bsp</td><td>Ocorre de forma proposital, um erro de negï¿½cio na camada de serviï¿½o, mas que serï¿½ tratada pela action e exibida como mensagem de erro. (BusinessException)</td></tr>
+		<tr><td>bsad</td><td>Ocorre de forma proposital, um erro de integraÃ§Ã£o na camada de serviï¿½o, que nÃ£o serï¿½ tratado por essa action, e serï¿½ redirecionado para uma pï¿½gina de erro. (IntegrationException)</td></tr>
+		<tr><td>fulano</td><td>Exibe uma mensagem especï¿½fica para este nome.</td></tr>
+		<tr><td>(qualquer outro nome)</td><td>Exibe uma mensagem padrÃ£o para qualquer outro nome nÃ£o cadastrado.</td></tr>
 	</tbody>
 </table>
 <br/>
@@ -33,7 +33,7 @@ referência para o desenvolvimento, e deve ser removida da aplicação.</p>
 <s:form action="consultarSaudacao">
 	<table width="30%" class="tabela_interna">
 		<tr>
-			<th colspan="2">Saudação</th>
+			<th colspan="2">Saudaï¿½ï¿½o</th>
 		</tr>
 		<tr>
 			<td width="120">Nome: <span class="obrigatorio">*</span></td>

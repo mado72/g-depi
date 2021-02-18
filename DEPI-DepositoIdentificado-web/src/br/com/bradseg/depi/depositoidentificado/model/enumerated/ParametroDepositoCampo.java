@@ -1,6 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -35,9 +35,13 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
      */
     MotivoDescricaoBasica(MotivoDepositoCampo.DescricaoBasica),
     /**
-     * Descri��o Detalhada do Motivo
+     * Descrição Detalhada do Motivo
      */
     MotivoDescricaoDetalhada(MotivoDepositoCampo.DescricaoDetalhada);
+    
+	private final static List<ParametroDepositoCampo> CRITERIAS = Arrays
+			.asList(CodigoCia, DepartamentoSigla, DepartamentoNome,
+					MotivoDescricaoBasica, MotivoDescricaoDetalhada);
 
     private String nome;
 
@@ -107,7 +111,7 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
 
     /**
      * retorna o nome
-     * @param nome - nome do campo de parametro dep�sito
+     * @param nome - nome do campo de parâmetro depósito
      * @return retorna o nome campo
      */
     public static ParametroDepositoCampo obterPorNome(String nome) {
@@ -143,18 +147,8 @@ public enum ParametroDepositoCampo implements IEntidadeCampo {
      * Retorna valores da combo de consulta.
      * @return ParametroDepositoCampo[].
      */
-    public static ParametroDepositoCampo[] valuesForCriteria() {
-        List<ParametroDepositoCampo> list = new ArrayList<ParametroDepositoCampo>();
-        for (ParametroDepositoCampo campo : ParametroDepositoCampo.values()) {
-            if (!campo.equals(DepartamentoCodigo)) {
-                list.add(campo);
-            }
-        }
-        ParametroDepositoCampo[] deps = new ParametroDepositoCampo[list.size()];
-        for (int i = 0; i < deps.length; i++) {
-            deps[i] = list.get(i);
-        }
-        return deps;
+    public static List<ParametroDepositoCampo> valuesForCriteria() {
+        return CRITERIAS;
     }
 
     /**

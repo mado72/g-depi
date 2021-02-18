@@ -151,6 +151,14 @@ public class MotivoDepositoVO implements Serializable {
 	}
 
 	/**
+	 * Construtor para definir o codigoMotivoDeposito
+	 * @param codigoMotivoDeposito Código
+	 */
+	public MotivoDepositoVO(int codigoMotivoDeposito) {
+		this.codigoMotivoDeposito = codigoMotivoDeposito;
+	}
+
+	/**
 	 * Especifica o campo codigoMotivoDeposito
 	 * 
 	 * @param pCodigoMotivoDeposito
@@ -241,19 +249,19 @@ public class MotivoDepositoVO implements Serializable {
 	}
 
 	/**
-	 * Retorna o ultima atualizacao.
+	 * Retorna o ultima atualização.
 	 * 
-	 * @return O atributo ultima atualizacao.
+	 * @return O atributo ultima atualização.
 	 */
 	public Date getUltimaAtualizacao() {
 		return (Date) ultimaAtualizacao.clone();
 	}
 
 	/**
-	 * Especifica o data ultima atualizacao.
+	 * Especifica o data ultima atualização.
 	 * 
 	 * @param ultimaAtualizacao
-	 *            atualizacao a ser setado
+	 *            atualização a ser setado
 	 */
 	public void setUltimaAtualizacao(Date ultimaAtualizacao) {
 		this.ultimaAtualizacao = (Date) ultimaAtualizacao.clone();

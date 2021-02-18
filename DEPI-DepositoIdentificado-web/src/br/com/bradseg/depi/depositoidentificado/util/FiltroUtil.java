@@ -8,11 +8,13 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 
 /**
- * A(O)FiltroUtil.
- * @return the FiltroUtil
+ * <p>FiltroUtil armazena os critérios de consulta e provê métodos utilitários para
+ * preparar as consultas no banco de dados utilizando o
+ * {@link org.springframework.jdbc.core.JdbcTemplate}.</p>
  */
 public class FiltroUtil {
 
+	// FIXME Remover referências diretas aos campos. Utilizar a lista de critérios.
 	private Date    dataInicio;
 	private Date    dataFinal;
 	private Integer codigoCia;
@@ -35,18 +37,19 @@ public class FiltroUtil {
 	private String  sigla;
     private String  nome;
     
-    private List<CriterioConsultaVO> criterios;
+    private List<CriterioConsultaVO<?>> criterios;
 	
 	/**
 	 * Obtem ip.
 	 * @return the situacaoArquivo
-	 */	
+	 */
 	public String getIp() {
 		return ip;
 	}
+	
 	/**
-	 * Define ip.
-	 * {@inheritDoc}
+	 * Define ip
+	 * @param ip o ip a ser configurado
 	 */
 	public void setIp(String ip) {
 		this.ip = ip;
@@ -59,8 +62,8 @@ public class FiltroUtil {
 		return usuario;
 	}
 	/**
-	 * Define usuario.
-	 * {@inheritDoc}
+	 * Define usuario
+	 * @param usuario valor usuario a ser definido
 	 */
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
@@ -73,17 +76,15 @@ public class FiltroUtil {
 		return situacaoArquivo;
 	}
 	/**
-	 * Define situacaoArquivo.
-	 * @param situacaoArquivo the situacaoArquivo to set
-	 * {@inheritDoc}
+	 * Define situacaoArquivo
+	 * @param situacaoArquivo valor situacaoArquivo a ser definido
 	 */
 	public void setSituacaoArquivo(Integer situacaoArquivo) {
 		this.situacaoArquivo = situacaoArquivo;
 	}
 	/**
-	 * Define situacaoManutencao.
-	 * @param situacaoManutencao the situacaoManutencao to set
-	 * {@inheritDoc}
+	 * Define situacaoManutencao
+	 * @param situacaoManutencao valor situacaoManutencao a ser definido
 	 */
 	public void setSituacaoManutencao(Integer situacaoManutencao) {
 		this.situacaoManutencao = situacaoManutencao;
@@ -236,8 +237,8 @@ public class FiltroUtil {
 		return situacaoManutencao;
 	}
 	/**
-	 * Define situacaoManutencao.
-	 * {@inheritDoc}
+	 * Define situacaoManutencao
+	 * @param situacaoManutencao o valor a ser utilizado
 	 */
 	public void setSituacaoManutecao(Integer situacaoManutencao) {
 		this.situacaoManutencao = situacaoManutencao;
@@ -310,58 +311,96 @@ public class FiltroUtil {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	
+	/* ------------------------------------------------------------------------------------ */
+	/* ------------------------------------------------------------------------------------ */
+	/* ------------------------------------------------------------------------------------ */
+	/* ------------------------------------------------------------------------------------ */
+	/* ------------------------------------------------------------------------------------ */
+
+	
 	/**
 	 * Lista com critérios para filtrar consulta
 	 * @return list
 	 */
-	public List<CriterioConsultaVO> getCriterios() {
+	public List<CriterioConsultaVO<?>> getCriterios() {
 		return criterios;
 	}
 	/**
 	 * Define a lista com critérios para filtrar consulta
 	 * @param criterios Lista com critérios
 	 */
-	public void setCriterios(List<CriterioConsultaVO> criterios) {
+	public void setCriterios(List<CriterioConsultaVO<?>> criterios) {
 		this.criterios = criterios;
 	}
 	
-	public String getClausaWhereFiltro () {
+	/**
+	 * Método utilitário para montar a cláusula WHERE baseado nos
+	 * {@link #criterios}
+	 * 
+	 * @return Cláusula where.
+	 */
+	public String getClausulaWhereFiltro () {
 		
-		StringBuilder where = new StringBuilder(" WHERE ");
+		StringBuilder where = new StringBuilder(" WHERE ")
+			.append(getClausulasParciais());
 		
-	    for(int i = 0 ; i < this.criterios.size() ; i++  ) {
-	    	where.append(criterios.get(i).getCriterio());
-	    	
-	    	if (i < (this.criterios.size()-1) ) {
-	    	   where.append(" AND ");
-	    	}
-	    }
-	    
 	    return where.toString();
 	}
 	
-	public String getClausaAndFiltro () {
-		
-		StringBuilder where = new StringBuilder(" AND ");
-		
-	    for(int i = 0 ; i < this.criterios.size() ; i++  ) {
-	    	where.append(criterios.get(i).getCriterio());
-	    	
-	    	if (i < (this.criterios.size()-1) ) {
-	    	   where.append(" AND ");
-	    	}
-	    }
-	    
-	    return where.toString();
+	/**
+	 * Método utilitário para escrever os critérios de consulta unidos por
+	 * <code>AND</code>.
+	 * 
+	 * @return String contendo os critérios de consulta.
+	 */
+	public String getClausulasParciais () {
+	    return getClausulasParciais(" AND ", false);
 	}
-
 	
+	/**
+	 * Método utilitário para montar as cláusulas parciais da query. É util para
+	 * ser utilizado quando os critérios da consulta já possuam uma cláusula
+	 * WHERE inicial.
+	 * 
+	 * @param operador
+	 *            Operador que une as partes: AND, OR. Deve adicionar os espaços
+	 *            necessários " AND " ou " OR "
+	 * @param acrescentaNoInicio
+	 *            Quando verdadeiro acrescenta o operador no início do resultado
+	 *            desta função
+	 * @return Cláusula de consulta baseada nos critérios estabelecidos.
+	 */
+	public String getClausulasParciais(String operador, boolean acrescentaNoInicio) {
+		StringBuilder clausulas = new StringBuilder();
+		
+		for (CriterioConsultaVO<?> item : criterios) {
+			if (acrescentaNoInicio || clausulas.length() > 0) {
+				clausulas.append(operador);
+			}
+			clausulas.append(item.getClausula());
+		}
+		
+		return clausulas.toString();
+	}
+	
+	/**
+	 * Prepara um {@link MapSqlParameterSource} com base nos critérios de
+	 * consulta.
+	 * 
+	 * @return parâmetros da consulta.
+	 */
 	public MapSqlParameterSource getMapParamFiltro () {
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();
 
-	    for(CriterioConsultaVO criterio : criterios) {
-	    	params.addValue(criterio.getParam(), criterio.getValor());
+	    for(CriterioConsultaVO<?> criterio : criterios) {
+	    	String param = criterio.getParam();
+	    	if (param != null) {
+	    		String valorFormatado = criterio.getValorFormatado();
+	    		params.addValue(param, valorFormatado);
+	    	}
 	    }
 	    
 	    return params;

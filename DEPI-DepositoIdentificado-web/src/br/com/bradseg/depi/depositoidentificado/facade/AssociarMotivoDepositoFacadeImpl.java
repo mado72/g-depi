@@ -61,7 +61,7 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
         }
         
         if (codsAssocMotivos.length() > 0) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA + " - " + codsAssocMotivos.toString() + " - " + STR1);
+            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO + " - " + codsAssocMotivos.toString() + " - " + STR1);
         }
     }
 

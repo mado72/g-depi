@@ -4,13 +4,22 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
+
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Classe Anotada de Mapeamento com a tabela DEPTO.
  * @author Globality
  */
 @XmlRootElement(name="DepartamentoVO")
+@JsonInclude(Include.NON_NULL)
 public class DepartamentoVO implements Serializable {
 
     private static final long serialVersionUID = -7156547889624154032L;
@@ -21,6 +30,22 @@ public class DepartamentoVO implements Serializable {
     public DepartamentoVO() {
     	super();
     }
+    
+    /**
+     * Constutor
+     * @param codigoDepartamento - int
+     */
+    public DepartamentoVO(int codigoDepartamento) {
+    	this.setCodigoDepartamento(codigoDepartamento);
+    }
+    
+    /**
+     * Constutor
+     * @param siglaDepartamento - String
+     */
+    public DepartamentoVO(String siglaDepartamento) {
+    	this.setSiglaDepartamento(siglaDepartamento);
+    }
 
     /**
      * Construtor.
@@ -28,14 +53,14 @@ public class DepartamentoVO implements Serializable {
      * @param nomeDepartamento - String.
      * @param siglaDepartamento - String.
      */
-    public DepartamentoVO(Integer codigoDepartamento, String nomeDepartamento, String siglaDepartamento) {
+    public DepartamentoVO(int codigoDepartamento, String nomeDepartamento, String siglaDepartamento) {
         this.setCodigoDepartamento(codigoDepartamento);
         this.setNomeDepartamento(nomeDepartamento);
         this.setSiglaDepartamento(siglaDepartamento);
     }
 
     /**
-     * Código seq�encial de departamento.
+     * Código sequencial de departamento.
      */
     private int codigoDepartamento;
 
@@ -59,6 +84,12 @@ public class DepartamentoVO implements Serializable {
      */
     private String indicadoRegistroAtivo;
     
+	/**
+	 * Atributo que receberá um depósito vinculado ao departamento
+	 */
+    private Date ultimaAtualizacao;
+    
+    @JsonIgnore
     private DepositoVO deposito;
     
     /**
@@ -160,6 +191,24 @@ public class DepartamentoVO implements Serializable {
 	public void setIndicadoRegistroAtivo(String indicadoRegistroAtivo) {
 		this.indicadoRegistroAtivo = indicadoRegistroAtivo;
 	}
-    
+
+	/**
+	 * Retorna o ultima atualização.
+	 * 
+	 * @return O atributo ultima atualização.
+	 */
+	public Date getUltimaAtualizacao() {
+		return BaseUtil.getDate(ultimaAtualizacao);
+	}
+
+	/**
+	 * Especifica o data ultima atualização.
+	 * 
+	 * @param ultimaAtualizacao
+	 *            atualização a ser setado
+	 */
+	public void setUltimaAtualizacao(Date ultimaAtualizacao) {
+		this.ultimaAtualizacao = BaseUtil.getDate(ultimaAtualizacao);
+	}
     
 }

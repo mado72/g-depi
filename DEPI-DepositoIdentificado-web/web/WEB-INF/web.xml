@@ -9,6 +9,10 @@
 		<listener-class>br.com.bradseg.bsad.framework.web.spring.DefaultContextLoaderListener</listener-class>
 	</listener>
 
+ 	<listener>
+        <listener-class>br.com.bradseg.depi.depositoidentificado.listeners.UrlListener</listener-class>
+    </listener>
+
 	<!--
             FILTROS DE SEGURANCA
 		Exemplo de utilizacao de filtros de seguranca.
@@ -90,7 +94,19 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>sitemesh</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/cadastro/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>/filtro/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>/relatorio/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>/index.do</url-pattern>
 	</filter-mapping>
 
 	<!--
@@ -149,6 +165,10 @@
 		<taglib>
 			<taglib-uri>/bsad-tags</taglib-uri>
 			<taglib-location>META-INF/bsad-tags.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/depi-tags</taglib-uri>
+			<taglib-location>/WEB-INF/tld/depi-taglibs.tld</taglib-location>
 		</taglib>
 	</jsp-config>
 

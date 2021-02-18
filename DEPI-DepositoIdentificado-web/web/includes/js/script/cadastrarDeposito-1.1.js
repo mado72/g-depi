@@ -30,7 +30,7 @@ $(function() {
 	var acao = $("input[name='acao']").val();
 	var departamento = $("select[id='codigo_departamento'] option:selected").text();
 
-	//SÓ EXECUTA EM CASO DE SER AÇÃO DETALHAR E PARA OS DEPARTAMENTOS ESPECÍFICOS.
+	//Sï¿½ EXECUTA EM CASO DE SER Aï¿½ï¿½O DETALHAR E PARA OS DEPARTAMENTOS ESPECï¿½FICOS.
 	if((departamento == "GRV" || departamento == "GRC") && acao != "novo") {
 		carregarParcelasConsulta();	
 	}
@@ -46,7 +46,7 @@ $(function() {
 					$(this).dialog("close");
 				},		
 				Ok: function() {
-					//SÓ TEM AÇÃO QUANDO É A AÇÃO DE INSERIR NOVO REGISTRO.
+					//Sï¿½ TEM Aï¿½ï¿½O QUANDO ï¿½ A Aï¿½ï¿½O DE INSERIR NOVO REGISTRO.
 					if(acao == "novo" || acao == "inserir") {
 						var checked = [];
 						$("input[name='parcela_check[]']:checked").each(function () {
@@ -157,7 +157,7 @@ function loading(id) {
 
 
 function validaCheckBox(indice) {
-	//Só valida "janelas" para CIA 244.
+	//Sï¿½ valida "janelas" para CIA 244.
 	if($('#codigo_cia').val() == "244") {
 		var total = $("#total_parcelas").val();
 		
@@ -205,20 +205,20 @@ function calculaValorTotal() {
 function validaCamposObrigatorios(sucursal, ramo, apolice, item, endosso, cpfCnpj, dataVencimento, cia) {
 	
 	var contemErros = 'N';
-	var erros = 'Chave Informada Inválida:\n';
+	var erros = 'Chave Informada Invï¿½lida:\n';
 
 	if(sucursal == 0 || sucursal == "" || sucursal == undefined) {
-		erros += '- Sucursal obrigatória\n';
+		erros += '- Sucursal obrigatï¿½ria\n';
 		contemErros = 'S';
 	}
 		
 	if(ramo == "0" || ramo == "" || ramo == undefined) {
-		erros += '- Ramo obrigatório\n';
+		erros += '- Ramo obrigatï¿½rio\n';
 		contemErros = 'S';
 	}
 	if (cia != "186" && cia != "144") {
 		if (!$.isNumeric(ramo))	{
-		  erros += '- Para empresas diferente de 186 e 144 o ramo tem que ser numérico\n';
+		  erros += '- Para empresas diferente de 186 e 144 o ramo tem que ser numï¿½rico\n';
 		  contemErros = 'S';
 		}
 	}
@@ -227,23 +227,23 @@ function validaCamposObrigatorios(sucursal, ramo, apolice, item, endosso, cpfCnp
 		contemErros = 'S';
 	}	
 	if(apolice == 0 || apolice == "" || apolice == undefined) {
-		erros += '- Apólice obrigatória\n';
+		erros += '- Apï¿½lice obrigatï¿½ria\n';
 		contemErros = 'S';
 	}
 	if(item == "" || item == undefined) {
-		erros += '- Item obrigatório\n';
+		erros += '- Item obrigatï¿½rio\n';
 		contemErros = 'S';
 	}
 	if(endosso == "" || endosso == undefined) {
-		erros += '- Endosso obrigatório';
+		erros += '- Endosso obrigatï¿½rio';
 		contemErros = 'S';
 	}
 	if(cpfCnpj == 0 || cpfCnpj == "" || cpfCnpj == undefined) {
-		erros += '- CPF/CNPJ obrigatório\n';
+		erros += '- CPF/CNPJ obrigatï¿½rio\n';
 		contemErros = 'S';
 	}
 	if($('#codigo_cia').val() != "244" && dataVencimento == "") {
-		erros += '- Data de Vencimento obrigatória\n';
+		erros += '- Data de Vencimento obrigatï¿½ria\n';
 		contemErros = 'S';
 	}
 	
@@ -318,14 +318,14 @@ function carregarParcelasPendetes() {
 				 						   }
 				 						listaConteudo += '</tr>';
 				 						listaConteudo += '<tr>';
-				 							listaConteudo += '<th>Seleção</th>';
+				 							listaConteudo += '<th>Seleï¿½ï¿½o</th>';
 				 							listaConteudo += '<th>Bloquete</th>';
 				 							listaConteudo += '<th>Segurado</th>';
 				 							listaConteudo += '<th>Parcela</th>';
 				 							listaConteudo += '<th>Sucursal</th>';
 				 							listaConteudo += '<th>Cia</th>';
 				 							listaConteudo += '<th>Ramo</th>';
-				 							listaConteudo += '<th>Apólice</th>';
+				 							listaConteudo += '<th>Apï¿½lice</th>';
 				 							listaConteudo += '<th>Valor</th>';
 				 						listaConteudo += '</tr>';
 				 					listaConteudo += '</thead>';
@@ -356,7 +356,7 @@ function carregarParcelasPendetes() {
 								listaConteudo += '</table>';
 								listaConteudo += '<table width="100%" align="right" border="0">';
 									listaConteudo += '<tr>';
-										listaConteudo += '<td width="90%" align="right">Total Seleção</td>';
+										listaConteudo += '<td width="90%" align="right">Total Seleï¿½ï¿½o</td>';
 										listaConteudo += '<td><input type="text" id="total_selecao" readonly="readonly" align="right"></td>';
 									listaConteudo += '</tr>';
 								listaConteudo += '</table>';					
@@ -371,7 +371,7 @@ function carregarParcelasPendetes() {
 								calculaValorTotal();
 
 			 				} else {
-			 					$("#div_parcelas").html("<span class='tabela_verm'>Bloquetes não encontrados para a chave informada.</span>");
+			 					$("#div_parcelas").html("<span class='tabela_verm'>Bloquetes nÃ£o encontrados para a chave informada.</span>");
 			 				}							
 						} else if(obj_retorno_ajax.statusOperacao == "ERROR"){
 							var erro = obj_retorno_ajax.exceptionRetornada;
@@ -490,7 +490,7 @@ function carregarDetalhesParcelasAssociadas() {
 				 							listaConteudo += '<th>Sucursal</th>';
 				 							listaConteudo += '<th>Cia</th>';
 				 							listaConteudo += '<th>Ramo</th>';
-				 							listaConteudo += '<th>Apólice</th>';
+				 							listaConteudo += '<th>Apï¿½lice</th>';
 				 							listaConteudo += '<th>Valor</th>';
 				 						listaConteudo += '</tr>';
 				 					listaConteudo += '</thead>';
@@ -520,7 +520,7 @@ function carregarDetalhesParcelasAssociadas() {
 								$("#div_parcelas").html(listaConteudo);
 
 			 				} else {
-			 					$("#div_parcelas").html("<span class='tabela_verm'>Bloquetes não encontrados para a chave informada.</span>");
+			 					$("#div_parcelas").html("<span class='tabela_verm'>Bloquetes nÃ£o encontrados para a chave informada.</span>");
 			 				}							
 						} else if(obj_retorno_ajax.statusOperacao == "ERROR"){
 							var erro = obj_retorno_ajax.exceptionRetornada;

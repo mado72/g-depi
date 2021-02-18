@@ -1,16 +1,10 @@
 package br.com.bradseg.depi.depositoidentificado.util;
 
+
 /**
  * Classe com constantes do sistema.
  */
 public final class ConstantesDEPI {
-
-	/**
-	 * Construtor privado.
-	 */
-	private ConstantesDEPI() {
-		super();
-	}
 
 	/**
 	 * Data Source.
@@ -89,7 +83,9 @@ public final class ConstantesDEPI {
 	/**
 	 * Erros.
 	 */
+	public static final String ERRO_CAMPO_REQUERIDO = "errors.required"; 
 	public static final String ERRO_INTERNO = "msg.erro.interno";
+	public static final String ERRO_SEMRESULTADO = "errors.semresultado";
 	public static final String ERRO_REGISTRO_DUPLICADO = "msg.erro.registroduplicado";
 	public static final String ERRO_RELACIONAMENTOS_NAO_CADASTRADOS = "msg.erro.relecionamentosDependestesNaoCadastrados";
 
@@ -103,7 +99,9 @@ public final class ConstantesDEPI {
 
 	public static final String ERRO_REGISTRO_DEP_COMP_JA_CADASTRADO = "msg.erro.departamentocompanhia.registrojacadastrado";
 	public static final String ERRO_PERMISAO_TABELA = "msg.erro.permisaoTabela";
-	public static final String ERRO_MOTIVO_DESC_BSCO_JA_CADASTRADA = "msg.erro.motivodeposito.descricao.jacadastrada";
+
+	public static final String ERRO_EXCLUSAO = "msg.erro.exclusao";
+	public static final String ERRO_EXCLUSAO_ITEM = "msg.erro.exclusao.item";
 
 	/**
 	 * ConstantesDEPI Dao
@@ -187,13 +185,13 @@ public final class ConstantesDEPI {
 
 	// Erros de Negocio
 	public static final String ERRO_CAMPO_OBRIGATORIO = "msg.erro.campo.obrigatorio";
-	public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
 	public static final String ERRO_CAMPO_NUMERICO = "msg.erro.campo.numerico";
 	public static final String ERRO_DEPARTAMENTO_NOME_NAOENCONTRADO = "msg.erro.departamento.nome.naoencontrado";
 	public static final String ERRO_DEPARTAMENTO_DESCRICAO_NAOENCONTRADA = "msg.erro.departamento.descricao.naoencontrada";
 	public static final String ERRO_DEPARTAMENTO_REGISTROCOMDEPENDENCIA = "msg.erro.departamento.registrocomdependencia";
 	public static final String ERRO_MOTIVODEPOSITO_REGISTROCOMDEPENDENCIA = "msg.erro.motivodeposito.registrocomdependencia";
-	public static final String ERRO_DEPENDENCIA = "msg.erro.registrocomdependencia";
+	public static final String ERRO_DEPENDENCIAS = "msg.erro.dependencias";
+	public static final String ERRO_DEPENDENCIA_MODULO = "msg.erro.registrocomdependencia";
 	public static final String ERRO_PARAMETRODEPOSITO_REGISTROCOMDEPENDENCIA = "msg.erro.parametrodeposito.registrocomdependencia";
 	public static final String ERRO_GRUPOACESSO_REGISTROCOMDEPENDENCIA = "msg.erro.grupoacesso.registrocomdependencia";
 
@@ -244,5 +242,76 @@ public final class ConstantesDEPI {
 	public static final String MSG_INSERIR_EXITO = "msg.inserir.sucesso";
 	public static final String MSG_ALTERAR_EXITO = "msg.alterar.sucesso";
 	public static final String MSG_EXCLUIR_EXITO = "msg.excluir.sucesso";
+
+
+	/**
+	 * Constantes Gerais 
+	 */
+	public static final class Geral {
+		public static final String ERRORS_REQUIRED = "errors.required";
+		public static final String ERRORS_MAXLENGTH = "errors.maxlength";
+		public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
+		public static final String ERRO_USUARIO_LOGADO = "msg.erro.usuario.logado";
+		public static final String ERRO_USUARIO_OBRIGATORIO = "msg.erro.usuario.obrigatorio";
+		public static final String ERRO_CODIGO_INVALIDO = "msg.erro.codigo.invalido";
+	}
+	
+	/**
+	 * Constantes para Motivo Deposito 
+	 */
+	public static final class MotivoDeposito {
+		
+		public static final String STATUSINATIVO = "msg.erro.motivodeposito.status.inativo";
+		public static final String NAOCADASTRADO = "msg.erro.motivodeposito.naocadastrado";
+		public static final String DESC_BSCO_JA_CADASTRADA = "msg.erro.motivodeposito.descricao.jacadastrada";
+		
+	}
+	
+	/**
+	 * Constantes para Departamento 
+	 */
+	public static final class Departamento {
+		public static final String ERRO_CADASTRADO_INATIVO = "msg.erro.departamento.inativo_cadastrado";
+	}
+	
+	/**
+	 * Constantes para Departamento Companhia. 
+	 */
+	public static final class DepartamentoCompanhia {
+		public static final String ERRO_PARAMETRODEPOSITO_REFERENCIADO = "msg.erro.departamentocompanhia.parametro";
+		public static final String ERRO_GRUPODEPARTAMENTO_REFERENCIADO = "msg.erro.grupodepartamento.parametro";
+		public static final String ERRO_MOTIVODEPOSITO_REFERENCIADO = "msg.erro.motivodeposito.parametro";
+		public static final String ERRO_NAOCONCLUIDO = "msg.erro.departamentocompanhia.naoconcluido";
+		public static final String ERRO_DEPENDENCIA = "msg.erro.departamentocompanhia.dependencia";
+	}
+	
+	/**
+	 * Constantes gerais para Grupo Acesso 
+	 */
+	public static final class GrupoAcesso {
+		public static final String LABEL_DEPARTAMENTO = "label.cadastro.grupoacesso.departamento";
+		public static final String LABEL_FUNCIONARIO = "label.cadastro.grupoacesso.funcionario";
+	}
+
+	/**
+	 * Constantes para Parâmetro Depósito
+	 */
+	public static final class ParametroDeposito {
+
+		public static final String ERRO_USUARIO_SEM_GRUPO_ASSOCIADO = "msg.erro.parametrodeposito.semgrupoacessoassociado";
+		
+	}
+	
+	
+	public static final String MIME_TYPE_PDF = "application/pdf";
+	public static final String MIME_TYPE_HTML = "text/html";
+	public static final String MIME_TYPE_DOC = "application/msword";
+	public static final String MIME_TYPE_DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+	public static final String MIME_TYPE_XLS = "application/excel";
+	public static final String MIME_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+	public static final String MIME_TYPE_JPEG = "image/jpeg";
+	public static final String MIME_TYPE_GIF = "image/gif";
+	public static final String MIME_TYPE_PNG = "image/png";
+	public static final String MIME_TYPE_BMP = "image/bmp";
 
 }

@@ -5,6 +5,12 @@ package br.com.bradseg.depi.depositoidentificado.model.enumerated;
  * @author fabio.pinto
  */
 public interface IEntidadeCampo {
+	
+	/**
+	 * Obter o nome do tipo Java
+	 * @return Nome
+	 */
+	String name();
 
     /**
      * Obter nome

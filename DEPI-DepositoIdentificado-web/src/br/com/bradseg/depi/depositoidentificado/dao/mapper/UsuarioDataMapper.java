@@ -26,7 +26,7 @@ public class UsuarioDataMapper implements RowMapper<UsuarioVO> {
 		usuarioVO.setDataInclusao(rs.getDate("DHORA_INCL_REG"));
 		usuarioVO.setDataUltimaAtualizacao(rs.getDate("DHORA_ULT_ATULZ"));
 		usuarioVO.setIndicadorRegistroAtivo(rs.getString("CIND_REG_ATIVO"));
-		usuarioVO.setCodigoUsuarioAtualizacao(rs.getInt("CUSUAR_RESP_ATULZ"));
+		usuarioVO.setResponsavelAtualizacao(rs.getInt("CUSUAR_RESP_ATULZ"));
 		
 		return usuarioVO;
 	}

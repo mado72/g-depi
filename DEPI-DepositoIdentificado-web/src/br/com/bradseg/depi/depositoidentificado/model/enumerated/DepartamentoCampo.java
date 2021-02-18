@@ -1,7 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
@@ -17,21 +16,28 @@ public enum DepartamentoCampo implements IEntidadeCampo {
     /**
      * Código
      */
-    Codigo(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, TipoCampo.NUM, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    Codigo(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, TipoCampo.NUM, 3),
     /**
      * Sigla
      */
-    Sigla("CSGL_DEPTO_DEP", TipoCampo.ALFA_OBRIG, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    Sigla("CSGL_DEPTO_DEP", TipoCampo.ALFA_OBRIG, 3),
     /**
      * Nome
      */
-    Nome("IDEPTO_DEP_IDTFD", TipoCampo.ALFA_OBRIG, ConstantesDEPI.SIZE_NAO_DEFINIDO);
+    Nome("IDEPTO_DEP_IDTFD", TipoCampo.ALFA_OBRIG, 40), 
+    
+    /**
+     * Ativo 
+     */
+    Ativo("CIND_REG_ATIVO", TipoCampo.ALFA_OBRIG, 1);
 
     private String nome;
 
     private TipoCampo tipoCampo;
 
     private int size;
+    
+    private final static List<DepartamentoCampo> CRITERIAS = Arrays.asList(Sigla, Nome);
 
     /**
      * {@inheritDoc}
@@ -76,7 +82,7 @@ public enum DepartamentoCampo implements IEntidadeCampo {
      * Obter por nome.
      * @param nome Campo no banco.
      * @return DepartamentoCampo.
-     * @throws DEPIIntegrationException - Integra��o.
+     * @throws DEPIIntegrationException - Integração.
      */
     public static DepartamentoCampo obterPorNome(String nome) throws DEPIIntegrationException {
         for (DepartamentoCampo campo : DepartamentoCampo.values()) {
@@ -92,13 +98,7 @@ public enum DepartamentoCampo implements IEntidadeCampo {
      * @return DepartamentoCampo[].
      */
     public static List<DepartamentoCampo> valuesForCriteria() {
-        List<DepartamentoCampo> list = new ArrayList<DepartamentoCampo>();
-        for (DepartamentoCampo campo : DepartamentoCampo.values()) {
-            if (!campo.equals(Codigo)) {
-                list.add(campo);
-            }
-        }
-        return Collections.unmodifiableList(list);
+        return CRITERIAS;
     }
 
     /**
