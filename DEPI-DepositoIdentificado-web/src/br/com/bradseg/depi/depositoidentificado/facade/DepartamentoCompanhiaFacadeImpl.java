@@ -95,6 +95,20 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
     		
     	}
     	
+    	for (DepartamentoVO vo : deptos) {
+    		String flag = deptoCiaDAO.obterFlagAtivo(new DepartamentoCompanhiaVO(cia, vo));
+    		
+    		if ("S".equals(flag)) {
+				StringBuilder msg = new StringBuilder("Cia: ")
+						.append(cia.getCodigoCompanhia()).append(", ")
+						.append("Depto: ").append(vo.getCodigoDepartamento());
+				
+				throw new DEPIIntegrationException(
+						ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO,
+						msg.toString());
+    		}
+		}
+    	
     	deptoCiaDAO.persistir(cia, deptos, codUsuario);
 
     	LOGGER.error("Fim - alterar(DepartamentoVO vo)"); 
@@ -232,14 +246,6 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
 			}
 		}
 		return lista;
-    }
-    
-    /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoCompanhiaFacade#obterPorChave(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO)
-     */
-    @Override
-    public DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo) {
-    	return deptoCiaDAO.obterPorChave(vo);
     }
 
     /**

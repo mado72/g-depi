@@ -55,9 +55,9 @@ public interface DepartamentoCompanhiaDAO {
 	List<DepartamentoCompanhiaVO> obterPorFiltro(FiltroUtil filtro);
 
 	/**
-	 * Obtém uma instância da associação cia x depto
-	 * @param vo A associação
-	 * @return Dados da associação
+	 * Obtém flag ativo de uma relação Depto-Cia.
+	 * @param vo Depto-Cia
+	 * @return "S" Ativo, "N" Inativo, null quando não existe registro.
 	 */
-	DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo);
+	String obterFlagAtivo(DepartamentoCompanhiaVO vo);
 }

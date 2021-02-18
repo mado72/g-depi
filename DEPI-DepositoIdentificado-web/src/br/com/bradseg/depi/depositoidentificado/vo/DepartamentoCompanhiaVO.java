@@ -54,6 +54,18 @@ public class DepartamentoCompanhiaVO implements Serializable {
 	}
 	
 	/**
+	 * Construtor para definir companhia e departamento
+	 * @param companhia Companhia
+	 * @param departamento Departamento
+	 */
+	public DepartamentoCompanhiaVO(CompanhiaSeguradoraVO companhia,
+			DepartamentoVO departamento) {
+		super();
+		this.companhia = companhia;
+		this.departamento = departamento;
+	}
+
+	/**
 	 * Retorna um código composto que representa a relação Depto x Cia
 	 * @return Código composto
 	 */
