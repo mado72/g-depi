@@ -10,9 +10,11 @@ import java.io.Serializable;
  * @author fabio.pimentel
  */
 //@Table(schema = ConstantesDEPI.SCHEMA_BANCO, table = ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA)
-public final class ContaCorrenteAutorizadaVO implements Serializable{
+public final class ContaCorrenteAutorizadaVO implements Serializable {
 
 	private static final long serialVersionUID = -488890761499702708L;
+	
+	private int codigoResponsavelUltimaAtualizacao;
 
 	/**
      * Construtor
@@ -21,7 +23,21 @@ public final class ContaCorrenteAutorizadaVO implements Serializable{
 		super();
 	}
 
-//	@TableField(name = ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_BANCO, converter = BancoPersistenceConverter.class)
+	/**
+	 * Construtor que preenche a chave primária
+	 * @param banco Banco
+	 * @param codigoAgencia agencia
+	 * @param contaCorrente Conta corrente
+	 */
+	public ContaCorrenteAutorizadaVO(BancoVO banco, int codigoAgencia,
+			long contaCorrente) {
+		super();
+		this.banco = banco;
+		this.codigoAgencia = codigoAgencia;
+		this.contaCorrente = contaCorrente;
+	}
+
+	//	@TableField(name = ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_BANCO, converter = BancoPersistenceConverter.class)
 	private BancoVO banco = new BancoVO();
 
 //	@TableField(name = ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_AGENCIA)
@@ -240,5 +256,22 @@ public final class ContaCorrenteAutorizadaVO implements Serializable{
     public void setTrps(long trps) {
         this.trps = trps;
     }
+    
+    /**
+	 * Retorna codigoResponsavelUltimaAtualizacao
+	 * @return o codigoResponsavelUltimaAtualizacao
+	 */
+	public int getCodigoResponsavelUltimaAtualizacao() {
+		return codigoResponsavelUltimaAtualizacao;
+	}
+	
+	/**
+	 * Define codigoResponsavelUltimaAtualizacao
+	 * @param codigoResponsavelUltimaAtualizacao valor codigoResponsavelUltimaAtualizacao a ser definido
+	 */
+	public void setCodigoResponsavelUltimaAtualizacao(
+			int codigoResponsavelUltimaAtualizacao) {
+		this.codigoResponsavelUltimaAtualizacao = codigoResponsavelUltimaAtualizacao;
+	}
 
 }

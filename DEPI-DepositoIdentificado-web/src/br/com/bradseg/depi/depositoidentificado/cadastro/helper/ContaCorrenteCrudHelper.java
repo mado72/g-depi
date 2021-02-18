@@ -2,35 +2,33 @@ package br.com.bradseg.depi.depositoidentificado.cadastro.helper;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.ParametroDepositoEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.ContaCorrenteEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.ContaCorrenteAutorizadaCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.ParametroDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
+import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
-import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
-import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
-import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoPKVO;
-import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
- * Classe auxiliar para o fluxo de cadastro de motivo depósito.
+ * Classe auxiliar para o fluxo de cadastro de conta corrente.
  * 
  * @author Marcelo Damasceno
  */
 public class ContaCorrenteCrudHelper implements
-		CrudHelper<ParametroDepositoCampo, ParametroDepositoVO, ParametroDepositoEditarFormModel> {
+		CrudHelper<ContaCorrenteAutorizadaCampo, ContaCorrenteAutorizadaVO, ContaCorrenteEditarFormModel> {
 
 	private static final String TITLE_DEPOSITO_CONSULTAR = "title.parametrodeposito.consultar";
 
@@ -42,13 +40,13 @@ public class ContaCorrenteCrudHelper implements
 
 	private static final String TITLE_DEPOSITO_INCLUIR = "title.parametrodeposito.novo";
 
-	private transient ParametroDepositoFacade facade;
+	private transient ContaCorrenteFacade facade;
 
-	public ParametroDepositoFacade getFacade() {
+	public ContaCorrenteFacade getFacade() {
 		return facade;
 	}
 	
-	public void setFacade(ParametroDepositoFacade facade) {
+	public void setFacade(ContaCorrenteFacade facade) {
 		this.facade = facade;
 	}
 	
@@ -91,8 +89,8 @@ public class ContaCorrenteCrudHelper implements
 	}
 
 	@Override
-	public List<ParametroDepositoVO> processarCriterios(int codUsuario,
-			List<CriterioConsultaVO<ParametroDepositoCampo>> criterios) {
+	public List<ContaCorrenteAutorizadaVO> processarCriterios(int codUsuario,
+			List<CriterioConsultaVO<ContaCorrenteAutorizadaCampo>> criterios) {
 
 		List<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(
 				criterios);
@@ -100,7 +98,8 @@ public class ContaCorrenteCrudHelper implements
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(aux);
 
-		return facade.obterPorFiltroComRestricaoDeGrupoAcesso(codUsuario, filtro);
+//		return facade.obterPorFiltroComRestricaoDeGrupoAcesso(codUsuario, filtro);
+		return null;
 	}
 	
 	// Métodos para atender ao CRUD
@@ -121,73 +120,13 @@ public class ContaCorrenteCrudHelper implements
 	}
 
 	@Override
-	public ParametroDepositoEditarFormModel criarCrudModel() {
-		return new ParametroDepositoEditarFormModel();
+	public ContaCorrenteEditarFormModel criarCrudModel() {
+		return new ContaCorrenteEditarFormModel();
 	}
 
 	@Override
-	public void preencherFormularioEdicao(ParametroDepositoEditarFormModel m)
+	public void preencherFormularioEdicao(ContaCorrenteEditarFormModel m)
 			throws DEPIIntegrationException {
-
-		ParametroDepositoVO v = obterPeloCodigo(m.getCodigo());
-		
-		m.setCodigoApolice(v.getCodigoApolice());
-		m.setCodigoBancoVencimento(v.getCodigoBancoVencimento());
-		m.setCodigoBloqueto(v.getCodigoBloqueto());
-		m.setCodigoCompanhia(String.valueOf(v.getCompanhia().getCodigoCompanhia()));
-		m.setCodigoCpfCnpj(v.getCodigoCpfCnpj());
-		m.setCodigoDepartamento(String.valueOf(v.getDepartamento().getCodigoDepartamento()));
-		m.setCodigoDossie(v.getCodigoDossie());
-		m.setCodigoEndosso(v.getCodigoEndosso());
-		m.setCodigoItem(v.getCodigoItem());
-		m.setCodigoMotivoDeposito(String.valueOf(v.getMotivoDeposito().getCodigoMotivoDeposito()));
-		m.setCodigoParcela(v.getCodigoParcela());
-		m.setCodigoProtocolo(v.getCodigoProtocolo());
-		m.setCodigoRamo(v.getCodigoRamo());
-		m.setCodigoSucursal(v.getCodigoSucursal());
-		m.setCodigoTipo(v.getCodigoTipo());
-		m.setDescricaoBancoVencimento(v.getDescricaoBancoVencimento());
-		m.setDescricaoBasicaMotivo(v.getMotivoDeposito().getDescricaoBasica());
-		m.setDescricaoDeposito(v.getDescricaoDeposito());
-		m.setDescricaoDetalhadaMotivo(v.getMotivoDeposito().getDescricaoDetalhada());
-		m.setNumeroDiasAposVencimento(String.valueOf(v.getNumeroDiasAposVencimento()));
-		m.setOutrosDocumentosNecessarios(v.getOutrosDocumentosNecessarios());
-		
-		if (v.isReferenciadoDeposito()) {
-			m.setReferenciadoDeposito(ParametroDepositoEditarFormModel.VALOR_SIM);
-		}
-		else {
-			m.setReferenciadoDeposito(ParametroDepositoEditarFormModel.VALOR_NAO);
-		}
-
-		v.setCompanhia(obterCompanhia(v));
-		m.setCias(Collections.singletonList(v.getCompanhia()));
-		
-		v.setDepartamento(obterDepartamento(v.getDepartamento()));
-		m.setDeptos(Collections.singletonList(v.getDepartamento()));
-		
-		v.setMotivoDeposito(obterMotivo(v.getMotivoDeposito()));
-		
-		m.setDescricaoDetalhadaMotivo(v.getMotivoDeposito().getDescricaoDetalhada());
-		m.setMotivos(Collections.singletonList(v.getMotivoDeposito()));
-		
-		m.setCodigo(new ParametroDepositoPKVO(
-						v.getDepartamento().getCodigoDepartamento(), 
-						v.getMotivoDeposito().getCodigoMotivoDeposito(), 
-						v.getCompanhia().getCodigoCompanhia())
-				.toString());
-	}
-
-	private DepartamentoVO obterDepartamento(DepartamentoVO departamento) {
-		return facade.obterDepartamento(departamento);
-	}
-
-	private CompanhiaSeguradoraVO obterCompanhia(ParametroDepositoVO v) {
-		return facade.obterCompanhia(v.getCompanhia());
-	}
-	
-	private MotivoDepositoVO obterMotivo(MotivoDepositoVO motivoDeposito) {
-		return facade.obterMotivo(motivoDeposito);
 	}
 
 	/**
@@ -197,7 +136,7 @@ public class ContaCorrenteCrudHelper implements
 	 * @throws DEPIIntegrationException Erro de lógica
 	 */
 	public void prepararFormularioInclusao(
-			int codUsuario, ParametroDepositoEditarFormModel model)
+			int codUsuario, ContaCorrenteEditarFormModel model)
 			throws DEPIIntegrationException {
 
 		model.setEstado(EstadoCrud.INSERIR);
@@ -214,19 +153,10 @@ public class ContaCorrenteCrudHelper implements
 		if (! cias.isEmpty()) {
 			CompanhiaSeguradoraVO companhia = cias.get(0);
 			model.setCodigoCompanhia(String.valueOf(companhia.getCodigoCompanhia()));
-			List<DepartamentoVO> deptos = obterDepatamentos(codUsuario, companhia);
-			model.setDeptos(deptos);
-			if (! deptos.isEmpty()) {
-				DepartamentoVO depto = deptos.get(0);
-				model.setCodigoDepartamento(String.valueOf(depto.getCodigoDepartamento()));
-			}
 		}
 		else {
 			model.setCodigoCompanhia(null);
-			model.setDeptos(null);
 		}
-		
-		model.setMotivos(obterMotivos());
 	}
 	
 	/**
@@ -238,72 +168,46 @@ public class ContaCorrenteCrudHelper implements
 		return facade.obterCompanhias(codUsuario);
 	}
 
-	private List<DepartamentoVO> obterDepatamentos(
-			int codUsuario, CompanhiaSeguradoraVO companhia) {
-		return facade.obterComRestricaoGrupoAcesso(codUsuario, companhia);
-	}
-
-	/**
-	 * @return
-	 */
-	private List<MotivoDepositoVO> obterMotivos() {
-		return facade.obterMotivos();
-	}
-
-	private ParametroDepositoVO obterPeloCodigo(String codigos) {
-		ParametroDepositoPKVO pkvo = new ParametroDepositoPKVO(codigos);
+	private ContaCorrenteAutorizadaVO obterPeloCodigo(String codigo) {
+		if (codigo == null) {
+			return null;
+		}
 		
-		ParametroDepositoVO vo = new ParametroDepositoVO(
-				pkvo.getCodigoDepartamento(), pkvo.getCodigoMotivo(),
-				pkvo.getCodigoCompanhia());
+		String[] sCodigos = codigo.split(";");
+		if (sCodigos.length != 3) {
+			return null;
+		}
+		
+		ContaCorrenteAutorizadaVO vo = new ContaCorrenteAutorizadaVO(
+				new BancoVO(Integer.parseInt(sCodigos[0])),
+				Integer.parseInt(sCodigos[1]), 
+				Long.parseLong(sCodigos[2]));
 		
 		return facade.obterPorChave(vo);
 	}
 
 	@Override
 	public EstadoRegistro persistirDados(
-			ParametroDepositoEditarFormModel model, LoginVo usuarioLogado)
+			ContaCorrenteEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 
 		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
 		
-		ParametroDepositoVO instancia;
+		ContaCorrenteAutorizadaVO instancia;
 
 		if (novo) {
-			instancia = new ParametroDepositoVO();
+			instancia = new ContaCorrenteAutorizadaVO();
 			
 			int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
 			instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 			
-			instancia.setCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(model.getCodigoCompanhia())));
-			instancia.setMotivoDeposito(new MotivoDepositoVO(Integer.parseInt(model.getCodigoMotivoDeposito())));
-			instancia.setDepartamento(new DepartamentoVO(Integer.parseInt(model.getCodigoDepartamento())));
+			instancia.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(model.getCodigoCompanhia())));
 		}
 		else {
 			instancia = obterPeloCodigo(model.getCodigo());
 		}
 
-		instancia.setCodigoApolice(model.getCodigoApolice());
-		instancia.setCodigoBancoVencimento(model.getCodigoBancoVencimento());
-		instancia.setCodigoBloqueto(model.getCodigoBloqueto());
-		instancia.setCodigoCpfCnpj(model.getCodigoCpfCnpj());
-		instancia.setCodigoDossie(model.getCodigoDossie());
-		instancia.setCodigoEndosso(model.getCodigoEndosso());
-		instancia.setCodigoItem(model.getCodigoItem());
-		instancia.setCodigoParcela(model.getCodigoParcela());
-		instancia.setCodigoProtocolo(model.getCodigoProtocolo());
-		instancia.setCodigoRamo(model.getCodigoRamo());
-		instancia.setCodigoSucursal(model.getCodigoSucursal());
-		instancia.setCodigoTipo(model.getCodigoTipo());
-		
-		if (model.getNumeroDiasAposVencimento() != null) {
-			instancia.setNumeroDiasAposVencimento(Integer.parseInt(model
-					.getNumeroDiasAposVencimento()));
-		}
-		
-		instancia.setDescricaoBasicaMotivo(model.getDescricaoBasicaMotivo());
-		instancia.setDescricaoDetalhadaMotivo(model.getDescricaoDetalhadaMotivo());
-		instancia.setOutrosDocumentosNecessarios(model.getOutrosDocumentosNecessarios());
+		// TODO preencher campos
 		
 		try {
 			if (novo) {
@@ -320,14 +224,13 @@ public class ContaCorrenteCrudHelper implements
 	}
 
 	@Override
-	public void excluirRegistros(List<ParametroDepositoVO> voList)
+	public void excluirRegistros(List<ContaCorrenteAutorizadaVO> voList)
 			throws DEPIIntegrationException {
-		// FIXME Criar exclusão por listta
-		// facade.excluirLista(voList);
+		facade.excluirLista(voList);
 	}
 	
 	@Override
-	public ParametroDepositoVO obterPorChave(ParametroDepositoVO vo) {
+	public ContaCorrenteAutorizadaVO obterPorChave(ContaCorrenteAutorizadaVO vo) {
 		return facade.obterPorChave(vo);
 	}
 
