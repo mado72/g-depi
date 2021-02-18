@@ -12,6 +12,10 @@ import org.apache.struts2.views.jsp.StrutsBodyTagSupport;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 
 /**
+ * Tag para controlar quando deve imprimir radio buttons para selecionar Sim ou
+ * Não, ou quando deve apenas imprimir um dos valores associados ao parâmetro
+ * definido em name. Quando detalhar é true, imprime os valores. Quando é false,
+ * imprime os radio buttons.
  * 
  * @author Marcelo Damasceno
  */
