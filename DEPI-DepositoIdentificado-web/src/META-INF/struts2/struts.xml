@@ -529,6 +529,101 @@
         </action>
         
     </package>
+	<package name="cadastroContaCorrenteConsultar" namespace="/cadastro/conta-corrente/consultar" extends="depi-default">
+	
+		<default-class-ref class="contaCorrenteConsultarAction"/>
+		
+		<global-results>
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/conta-corrente/contaCorrente.jsp</param>
+			</result>
+			<result name="input" type="redirectAction">listar</result>
+		</global-results>
+
+		<action name="index">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+
+		<action name="listar" method="listar">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+			<result name="input">/WEB-INF/pages/pt_BR/cadastro/conta-corrente/contaCorrente.jsp</result>
+		</action>
+        
+		<action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+		</action>
+	</package>
+	
+	<package name="cadastroContaCorrenteEditar" namespace="/cadastro/conta-corrente/editar" extends="depi-default">
+	
+		<default-class-ref class="contaCorrenteEditarAction"></default-class-ref>
+	
+		<global-results>
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/conta-corrente/contaCorrenteForm.jsp</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">retornar</param>
+			    <param name="namespace">/cadastro/conta-corrente/consultar</param>
+			</result>
+			<result name="voltar" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/conta-corrente/consultar</param>
+			</result>			
+		</global-results>
+		
+		<action name="incluir" method="incluir">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+			<result name="input" type="redirectAction">input</result>
+		</action>
+		
+		<action name="alterar" method="alterar">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">input</result>
+		</action>
+        
+        <action name="salvar" class="contaCorrenteSalvarAction">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">input</result>
+        </action>
+        
+        <action name="excluir" method="excluir">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">
+				<param name="namespace">/cadastro/conta-corrente/consultar</param>
+				<param name="actionName">listar</param>
+			</result>
+        </action>
+        
+        <action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+        </action>
+        
+    </package>
 
 	<package name="filtroUsuario" namespace="/filtro/funcionario/consultar" extends="depi-default">
 	
