@@ -45,7 +45,6 @@ public interface GrupoAcessoFacade {
 	/**
 	 * Obtém os departamentos disponíveis para o cadastro de Grupo de Acesso
 	 * 
-	 * @param codigoUsuario Código do usuário logado
 	 * @param vo Companhia Seguradora
 	 * @return Lista de Departamentos
 	 */

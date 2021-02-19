@@ -27,7 +27,7 @@
 				<s:text name="label.filtro.tipoOperacao"/>
 			</td>
 			<td>
-				<select id="DropboxSecundario" class="select" tabindex="2">
+				<select id="DropboxSecundario" class="select" tabindex="2" style="WIDTH: 150px" >
 				</select>
 			</td>
 		</tr>

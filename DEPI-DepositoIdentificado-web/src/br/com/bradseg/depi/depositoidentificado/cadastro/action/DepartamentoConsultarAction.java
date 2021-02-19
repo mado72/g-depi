@@ -56,6 +56,8 @@ public class DepartamentoConsultarAction extends FiltroAction<DepartamentoCampo,
 	 */
 	@Override
 	protected void validarCriterio(CriterioConsultaVO<DepartamentoCampo> criterio) {
+		super.validarCriterio(criterio);
+		
 		DepartamentoCampo campo = criterio.getCampo();
 		String valor = criterio.getValor();
 
