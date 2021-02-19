@@ -12,7 +12,7 @@
 	</caption>
 	<thead>
 		<tr>
-			<th colspan="4"><s:text name="label.cadastro.parametrodeposito.tabela" /></th>
+			<th colspan="7"><s:text name="label.cadastro.parametrodeposito.tabela" /></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -73,7 +73,7 @@
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.dias" /></td>
 			<td class="control">
 				<c:set var="numeroDiasDisabled" value="${codigoBancoVencimento eq 'N'}" scope="request"/>
-				<s:textfield key="numeroDiasAposVencimento" maxlength="3" disabled="%{numeroDiasDisabled}"/>
+				<s:textfield key="numeroDiasAposVencimento" maxlength="2" disabled="%{numeroDiasDisabled}"/>
 			</td>
 			<td colspan="2">&nbsp;</td>
 		</tr>
@@ -130,6 +130,12 @@
 				<depi:radioSimNao name="codigoProtocolo"  detalhar="detalhar"/>
 			</td>
 			<td colspan="2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.outros"></s:text></td>
+			<td class="control" colspan="6">
+				<s:textarea key="outrosDocumentosNecessarios" rows="5" cols="70" style="text-transform: uppercase;" disabled="true"/>
+			</td>
 		</tr>
 </c:if>
 		</tbody>

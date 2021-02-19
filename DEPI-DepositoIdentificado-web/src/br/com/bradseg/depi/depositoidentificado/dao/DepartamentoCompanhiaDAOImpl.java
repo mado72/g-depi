@@ -17,12 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.DepartamentoCompanhiaDataMapper;
-import br.com.bradseg.depi.depositoidentificado.dao.mapper.DepartamentoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
@@ -112,11 +109,11 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 	}
 	
 	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.dao.DepartamentoCompanhiaDAO#obterPorChave(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO)
+	 * @see br.com.bradseg.depi.depositoidentificado.dao.DepartamentoCompanhiaDAO#obterFlagAtivo(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO)
 	 */
 	@Override
-	public DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo) {
-		return null;
+	public String obterFlagAtivo(DepartamentoCompanhiaVO vo) {
+		return queryObterStatusAtivo(vo.getCompanhia(), vo.getDepartamento());
 	}
 
 	/* (non-Javadoc)
@@ -126,24 +123,7 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
     public void persistir(CompanhiaSeguradoraVO cia,
     		List<DepartamentoVO> associacoes, int codUsuario) {
     	
-    	final Funcao<DepartamentoVO, String> extrairCodigo = new Funcao<DepartamentoVO, String>() {
-    		@Override
-    		public String apply(DepartamentoVO source) {
-    			return source.getSiglaDepartamento();
-    		}
-    	};
-    	
-    	MapSqlParameterSource params = new MapSqlParameterSource();
-    	params.addValue(WHR1, cia.getCodigoCompanhia());
-    	
-    	List<DepartamentoVO> deptosPersistidos = getJdbcTemplate()
-    			.query(QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERDEPARTAMENTOS_PORCOMPANHIA,
-    					params, new DepartamentoDataMapper());
-
-    	List<DepartamentoVO> paraSalvar = BaseUtil.obterItensSemIntersecao(
-    			associacoes, deptosPersistidos, extrairCodigo);
-
-    	for (DepartamentoVO departamentoVO : paraSalvar) {
+    	for (DepartamentoVO departamentoVO : associacoes) {
 			queryAlocarOuRealocar(cia, departamentoVO, codUsuario);
 		}
     }
