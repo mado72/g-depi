@@ -24,6 +24,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
@@ -126,7 +127,7 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
 	    	try {
 	    		excluirItem(item);
 	    	} catch (DEPIBusinessException e) {
-				String msg = BaseUtil.getTextoFormatado(ConstantesDEPI.ERRO_EXCLUSAO_ITEM, e.getMessage());
+				String msg = BaseUtil.getTextoFormatado(Geral.ERRO_EXCLUSAO_ITEM, e.getMessage());
 	    		msgErros.append(msg);
 	    	}
 	    	
@@ -148,8 +149,8 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
 		try {
 			excluirItem(vo);
 		} catch (DEPIBusinessException e) {
-			String msg = BaseUtil.getTextoFormatado(ConstantesDEPI.ERRO_EXCLUSAO_ITEM, e.getMessage());
-			throw new DEPIBusinessException(ConstantesDEPI.ERRO_EXCLUSAO, msg);
+			String msg = BaseUtil.getTextoFormatado(Geral.ERRO_EXCLUSAO_ITEM, e.getMessage());
+			throw new DEPIBusinessException(Geral.ERRO_EXCLUSAO_LISTA, msg);
 		}
 		
 		LOGGER.error("Fim - excluir(DepartamentoVO vo)");

@@ -324,8 +324,7 @@ public class ParametroDepositoCrudHelper implements
 	@Override
 	public void excluirRegistros(List<ParametroDepositoVO> voList)
 			throws DEPIIntegrationException {
-		// FIXME Criar exclusão por listta
-		// facade.excluirLista(voList);
+		facade.excluir(voList);
 	}
 	
 	@Override

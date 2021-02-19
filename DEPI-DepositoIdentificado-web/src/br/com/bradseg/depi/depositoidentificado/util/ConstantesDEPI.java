@@ -100,9 +100,6 @@ public final class ConstantesDEPI {
 	public static final String ERRO_REGISTRO_DEP_COMP_JA_CADASTRADO = "msg.erro.departamentocompanhia.registrojacadastrado";
 	public static final String ERRO_PERMISAO_TABELA = "msg.erro.permisaoTabela";
 
-	public static final String ERRO_EXCLUSAO = "msg.erro.exclusao";
-	public static final String ERRO_EXCLUSAO_ITEM = "msg.erro.exclusao.item";
-
 	/**
 	 * ConstantesDEPI Dao
 	 */
@@ -254,6 +251,11 @@ public final class ConstantesDEPI {
 		public static final String ERRO_USUARIO_OBRIGATORIO = "msg.erro.usuario.obrigatorio";
 		public static final String ERRO_CODIGO_INVALIDO = "msg.erro.codigo.invalido";
 		public static final String ERRO_CRITERIO_INVALIDO = "msg.erro.criterio.invalido";
+		public static final String ERRO_INCLUSAO = "msg.erro.inclusao";
+		public static final String ERRO_EXCLUSAO = "msg.erro.exclusao";
+		public static final String ERRO_EXCLUSAO_LISTA = "msg.erro.exclusao.lista";
+		public static final String ERRO_EXCLUSAO_ITEM = "msg.erro.exclusao.item";
+		public static final String ERRO_ALTERACAO = "msg.erro.alteracao";
 	}
 	
 	/**

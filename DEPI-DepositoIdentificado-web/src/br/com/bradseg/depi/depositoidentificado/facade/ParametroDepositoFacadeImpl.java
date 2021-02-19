@@ -17,12 +17,16 @@ import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.UsuarioDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
@@ -113,13 +117,13 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
                     sb.append("; ");
                 }
                 ParametroDepositoVO param = parametroDepositoDAO.obterPorChave(vo);
-                sb.append(" Par�metro de Dep�sito: [Cia: ").append(param.getCompanhia().getCodigoCompanhia()).append(
+                sb.append(" Par\u00e3metro de Dep\u00f3sito: [Cia: ").append(param.getCompanhia().getCodigoCompanhia()).append(
                     " Departamento: ").append(param.getDepartamento().getSiglaDepartamento()).append(" Motivo: ").append(
                     param.getMotivoDeposito().getDescricaoBasica()).append("]");
             }
         }
         if (sb.length() > 0) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO + " - " + sb.toString() + " - " +  "Associa��o de Motivos");
+            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO + " - " + sb.toString() + " - " +  "Associa\u00e7\u00e3o de Motivos");
         }
     }
 
@@ -300,7 +304,15 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
      */
     @Override
     public List<MotivoDepositoVO> obterMotivos() {
-    	return motivoDAO.obterTodos();
+    	FiltroUtil filtro = new FiltroUtil();
+		CriterioConsultaVO<?> criterio = new CriterioConsultaVO<IEntidadeCampo>(
+				MotivoDepositoCampo.Ativo,
+				TipoOperacao.IgualAlfanumericoObrigatorio,
+				ConstantesDEPI.INDICADOR_ATIVO, 
+				"param1");
+		filtro.adicionaCriterio(criterio);
+		
+    	return motivoDAO.obterPorFiltro(filtro);
     }
     
     /* (non-Javadoc)

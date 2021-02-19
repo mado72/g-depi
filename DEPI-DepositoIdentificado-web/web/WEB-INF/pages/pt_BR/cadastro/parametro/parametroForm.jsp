@@ -12,7 +12,7 @@
 	</caption>
 	<thead>
 		<tr>
-			<th colspan="4"><s:text name="label.cadastro.parametrodeposito.tabela" /></th>
+			<th colspan="7"><s:text name="label.cadastro.parametrodeposito.tabela" /></th>
 		</tr>
 	</thead>
 	<tbody>
