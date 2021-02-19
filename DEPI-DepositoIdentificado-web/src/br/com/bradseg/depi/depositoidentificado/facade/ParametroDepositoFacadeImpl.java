@@ -15,6 +15,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.UsuarioDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
@@ -50,6 +51,9 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
 	
 	@Autowired
 	private MotivoDepositoDAO motivoDAO;
+	
+	@Autowired
+	private UsuarioDAO usuarioDAO;
 
     /**
      * alterar
@@ -158,10 +162,10 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     	List<ParametroDepositoVO> retorno = parametroDepositoDAO
 				.obterPorFiltroComRestricaoDeGrupoAcesso(filtro, codigoUsuario);
 		
-//		for (ParametroDepositoVO p : retorno) {
-//			p.setReferenciadoDeposito(parametroDepositoDAO
-//					.isReferenciadoDeposito(p));
-//		}
+    	if (retorno.isEmpty() && !usuarioDAO.existeGrupoAcessoUsuario(codigoUsuario)) {
+    		throw new DEPIBusinessException(ConstantesDEPI.ParametroDeposito.ERRO_USUARIO_SEM_GRUPO_ASSOCIADO);
+    	}
+
 		return retorno;
     }
 
@@ -236,7 +240,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     }
 
     /**
-     * m�todo que v�lida a chave
+     * método que valida a chave
      * @param vo - objeto que será validado
      * @throws IntegrationException - trata erros
      */

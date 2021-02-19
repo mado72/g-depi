@@ -280,7 +280,7 @@ public class ParametroDepositoCrudHelper implements
 			instancia = obterPeloCodigo(model.getCodigo());
 		}
 		
-		int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
+		int usuarioId = Integer.parseInt(usuarioLogado.getId());
 		instancia.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 
 		instancia.setCodigoApolice(model.getCodigoApolice());

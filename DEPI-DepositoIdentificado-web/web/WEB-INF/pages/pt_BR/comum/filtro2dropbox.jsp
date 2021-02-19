@@ -18,7 +18,7 @@
 				<select id="DropboxPrincipal" tabindex="1" class="select"></select>
 			</td>
 			<td style="width: 400px" rowspan="4">
-				<select tabindex="5" id="Lista" multiple size=6 style="WIDTH: 150px">
+				<select tabindex="5" id="Lista" multiple size=6>
 				</select>
 			</td>
 		</tr>

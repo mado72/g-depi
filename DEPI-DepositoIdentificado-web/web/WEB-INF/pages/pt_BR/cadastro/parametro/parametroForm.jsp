@@ -134,7 +134,7 @@
 		<tr>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.outros"></s:text></td>
 			<td class="control" colspan="6">
-				<s:textarea key="outrosDocumentosNecessarios" readonly="detalhar" disabled="detalhar"/>
+				<s:textarea key="outrosDocumentosNecessarios" rows="5" cols="70" style="text-transform: uppercase;" disabled="true"/>
 			</td>
 		</tr>
 </c:if>

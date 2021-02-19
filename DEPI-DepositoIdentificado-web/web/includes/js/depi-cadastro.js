@@ -287,6 +287,8 @@ var fnReady = function ($) {
 						jqSecundario.append($('<option>', {text: op.texto, value: op.valor}));
 					});
 				};
+				
+				$.filtro.arrumarValor(jqPrincipal, jqSecundario, jqValor, jqRecipiente);
 			});
 
 		jqSecundario

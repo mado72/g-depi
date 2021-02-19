@@ -189,7 +189,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
             if (referenciado) {
                 params.addValue(PARAM_PRM1, parametro.getOutrosDocumentosNecessarios());
-                params.addValue(PARAM_PRM2, parametro.getMotivoDeposito().getCodigoMotivoDeposito());                
+                params.addValue(PARAM_PRM2, parametro.getCodigoResponsavelUltimaAtualizacao());                
                 params.addValue(PARAM_WHR1, parametro.getCompanhia().getCodigoCompanhia());        	
                 params.addValue(PARAM_WHR2, parametro.getDepartamento().getCodigoDepartamento());  
                 params.addValue(PARAM_WHR3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());  
@@ -218,7 +218,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
                 params.addValue(PARAM_PRM12, parametro.getCodigoRamo());
                 params.addValue(PARAM_PRM13, parametro.getCodigoParcela());
                 params.addValue(PARAM_PRM14, parametro.getOutrosDocumentosNecessarios());
-                params.addValue(PARAM_PRM15, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+                params.addValue(PARAM_PRM15, parametro.getCodigoResponsavelUltimaAtualizacao());
 
                 /**
                  * Where

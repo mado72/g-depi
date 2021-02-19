@@ -249,11 +249,11 @@ public final class ConstantesDEPI {
 	 */
 	public static final class Geral {
 		public static final String ERRORS_REQUIRED = "errors.required";
-		public static final String ERRORS_MAXLENGTH = "errors.maxlength";
 		public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
 		public static final String ERRO_USUARIO_LOGADO = "msg.erro.usuario.logado";
 		public static final String ERRO_USUARIO_OBRIGATORIO = "msg.erro.usuario.obrigatorio";
 		public static final String ERRO_CODIGO_INVALIDO = "msg.erro.codigo.invalido";
+		public static final String ERRO_CRITERIO_INVALIDO = "msg.erro.criterio.invalido";
 	}
 	
 	/**
