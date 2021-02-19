@@ -5,13 +5,19 @@
 
 <script type="text/javascript" src="/includes/js/script/arquivo.js"></script>
 <script type="text/javascript" src="/includes/js/script/consultarRelatorio.js"></script>
-		
-<s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank">
-
 
     <s:set name="vacao" value="acao"/>
     <s:set name="vtpcCias" value="tpcCias"/>
     <s:set name="vtpcCiasOrdenadas" value="tpcCiasOrdenadas"/>
+    
+    
+		
+<s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank">
+    <input type="hidden" id="acao" name="acao" value="${acao}" />
+    <input type="hidden" id="tituloTabela" name="tituloTabela" value="${tituloTabela}" />
+    
+    
+
 
         <!-- 
     	<input type="hidden" id="hdntipoRelatorio" name="codigoAutorizador" value="" />
@@ -50,7 +56,7 @@
 					<tr>
 						<th colspan="7">
 						<div id="titulo_tabela">
-							 Dados de Envío/ Relatroio. 
+							 ${tituloTabela}
 							
 							</div>
 						</th>
@@ -106,7 +112,7 @@
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoCompanhia" 
-						  			listValue="descricaoCompanhia" 
+						  			listValue="codigoCompanhia" 
 						  			name="companhia.listaCompanhia" 
 						  			style="width: 100%;"/>
 						  		</s:if>
@@ -115,12 +121,12 @@
 							<td align="left" colspan="5">
 							<s:if test="%{#vtpcCiasOrdenadas=='TRUE'}">
 								<s:select 
-									list="ordenaCompanhia" 
-									id="ordenaCompanhia" 
+									list="listaCompanhiaOrd" 
+									id="listaCompanhiaOrd" 
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoCompanhia" 
-						  			listValue="descricaoCompanhia" 
+						  			listValue="codigoCompanhia" 
 						  			name="companhia.listaCompanhiaOrd"
 						  			style="width: 100%;"/>
 						  	</s:if>
