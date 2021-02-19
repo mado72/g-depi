@@ -18,7 +18,7 @@
 				<select id="DropboxPrincipal" tabindex="1" class="select"></select>
 			</td>
 			<td style="width: 400px" rowspan="4">
-				<select tabindex="5" id="Lista" multiple size=6>
+				<select tabindex="5" id="Lista" multiple size=6 style="WIDTH: 150px">
 				</select>
 			</td>
 		</tr>
@@ -27,7 +27,7 @@
 				<s:text name="label.filtro.tipoOperacao"/>
 			</td>
 			<td>
-				<select id="DropboxSecundario" class="select" tabindex="2">
+				<select id="DropboxSecundario" class="select" tabindex="2" style="WIDTH: 150px" >
 				</select>
 			</td>
 		</tr>
