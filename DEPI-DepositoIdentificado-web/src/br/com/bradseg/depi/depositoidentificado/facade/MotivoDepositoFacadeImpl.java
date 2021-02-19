@@ -114,7 +114,7 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
 		
     	LOGGER.error("Inicio - obterTodosMotivoDepositvo()"); 
 		
-		return motivoDepositoDAO.obterTodos();
+		return motivoDepositoDAO.obterPorFiltro(new FiltroUtil());
 		
 	}
 

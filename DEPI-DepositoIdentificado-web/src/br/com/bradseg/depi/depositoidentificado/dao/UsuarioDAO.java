@@ -32,5 +32,12 @@ public interface UsuarioDAO {
 	 * @return Usuário
 	 */
 	UsuarioVO obterPorCodigo(Integer codigoUsuario);
+
+	/**
+	 * Verifica se existe grupo acesso associado ao usuário
+	 * @param codigoUsuario Código do usuário
+	 * @return true quando existe.
+	 */
+	boolean existeGrupoAcessoUsuario(Integer codigoUsuario);
     	
 }

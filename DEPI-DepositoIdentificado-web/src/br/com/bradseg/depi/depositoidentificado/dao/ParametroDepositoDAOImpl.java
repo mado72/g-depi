@@ -20,6 +20,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.mapper.ParametroDepositosDat
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
@@ -189,7 +190,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
             if (referenciado) {
                 params.addValue(PARAM_PRM1, parametro.getOutrosDocumentosNecessarios());
-                params.addValue(PARAM_PRM2, parametro.getMotivoDeposito().getCodigoMotivoDeposito());                
+                params.addValue(PARAM_PRM2, parametro.getCodigoResponsavelUltimaAtualizacao());                
                 params.addValue(PARAM_WHR1, parametro.getCompanhia().getCodigoCompanhia());        	
                 params.addValue(PARAM_WHR2, parametro.getDepartamento().getCodigoDepartamento());  
                 params.addValue(PARAM_WHR3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());  
@@ -218,7 +219,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
                 params.addValue(PARAM_PRM12, parametro.getCodigoRamo());
                 params.addValue(PARAM_PRM13, parametro.getCodigoParcela());
                 params.addValue(PARAM_PRM14, parametro.getOutrosDocumentosNecessarios());
-                params.addValue(PARAM_PRM15, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
+                params.addValue(PARAM_PRM15, parametro.getCodigoResponsavelUltimaAtualizacao());
 
                 /**
                  * Where
@@ -230,9 +231,15 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
             }
             
             if (referenciado) {
-    			getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_UPDATEREFERENCIADO, params);	
+    			int count = getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_UPDATEREFERENCIADO, params);
+    			if (count != 1) {
+    				throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_ALTERACAO, String.valueOf(count));
+    			}
             } else {
-    			getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_UPDATENAOREFERENCIADO, params);	
+    			int count = getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_UPDATENAOREFERENCIADO, params);
+    			if (count != 1) {
+    				throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_ALTERACAO, String.valueOf(count));
+    			}
             } 
 
         } catch(DataAccessException e){
@@ -263,10 +270,14 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
             params.addValue(PARAM_WHR2, vo.getDepartamento().getCodigoDepartamento());
             params.addValue(PARAM_WHR3, vo.getMotivoDeposito().getCodigoMotivoDeposito());
 
-            getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_INATIVAR, params);	
+            int count = getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_INATIVAR, params);
+            
+            if (count != 1) {
+            	throw new DEPIBusinessException(Geral.ERRO_EXCLUSAO, String.valueOf(count));
+            }
             
         } catch(DataAccessException e){
-			throw new BusinessException("\nA exclus�o falhou!\n");
+			throw new DEPIBusinessException(Geral.ERRO_EXCLUSAO, "0");
 		} finally {
         	LOGGER.info("excluir(ParametroDepositoVO vo)"); 
         }
@@ -290,15 +301,18 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
             params.addValue(PARAM_PRM2, vo.getDepartamento().getCodigoDepartamento());
             params.addValue(PARAM_PRM3, vo.getMotivoDeposito().getCodigoMotivoDeposito());
             
-            int retorno =  getJdbcTemplate().queryForInt(query.toString(), params);
-            
-            if (retorno >= 1) {return true;}
+            try {
+				int retorno =  getJdbcTemplate().queryForInt(query.toString(), params);
+				
+				return retorno >= 1;
+			} catch (EmptyResultDataAccessException e) {
+				return false;
+			}
 
         } finally {
 
         	LOGGER.info("isReferenciado(ParametroDepositoVO vo)"); 
         }
-        return false;
     }
 
     /**
@@ -433,7 +447,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 		paramsInsert.addValue(PARAM_PRM17, parametro.getOutrosDocumentosNecessarios());
 		paramsInsert.addValue(PARAM_PRM18, parametro.getCodigoResponsavelUltimaAtualizacao());
 
-		getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_INSERT, paramsInsert) ;
+		int count = getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_INSERT, paramsInsert);
+		if (count != 1) {
+			throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_INCLUSAO, String.valueOf(count));
+		}
 	}
 
 	private void queryReativar(ParametroDepositoVO parametro) {
@@ -470,15 +487,17 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 		paramsReativar.addValue(PARAM_WHR2, parametro.getDepartamento().getCodigoDepartamento());
 		paramsReativar.addValue(PARAM_WHR3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
 		
-		if (getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_REATIVAR, paramsReativar) == 0) {
-		    throw new BusinessException("A reativação falhou!");
+		int count = getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_REATIVAR, paramsReativar);
+		
+		if (count != 1) {
+		    throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_INCLUSAO, String.valueOf(count));
 		}
 	}
 
 	private void gerarErroRegistroDuplicado(ParametroDepositoVO parametro) {
 		
 		MapSqlParameterSource paramsDepto = new MapSqlParameterSource();
-		paramsDepto.addValue(PARAM_PRM1, parametro.getDepartamento().getCodigoDepartamento());
+		paramsDepto.addValue(PARAM_WHR1, parametro.getDepartamento().getCodigoDepartamento());
 		
 		DepartamentoVO dep;
 		try {

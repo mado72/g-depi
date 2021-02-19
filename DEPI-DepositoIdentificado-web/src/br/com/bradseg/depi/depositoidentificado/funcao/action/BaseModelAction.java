@@ -82,7 +82,7 @@ public abstract class BaseModelAction<T> extends BaseAction implements ModelDriv
 		}
 		else if (campo.getSize() > 0 && valor.length() > campo.getSize()){
 			addFieldError(campo.name(), BaseUtil.getTextoFormatado(
-					ConstantesDEPI.Geral.ERRORS_MAXLENGTH,
+					ConstantesDEPI.Geral.ERRO_CAMPO_EXCESSO,
 					BaseUtil.getTexto(campo.getClass(), campo.name()),
 					String.valueOf(campo.getSize())));
 		}

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -47,29 +48,9 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	
 	private boolean consultado;
 
-	private String mensagemConsultaSemResultado;
-	
 	@SuppressWarnings("unchecked")
 	public FiltroAction() {
 		this.model = (T) getFiltroHelper().criarFiltroModel();
-		mensagemConsultaSemResultado = getText(ConstantesDEPI.ERRO_SEMRESULTADO);
-	}
-	
-	/**
-	 * Retorna mensagemConsultaSemResultado
-	 * @return o mensagemConsultaSemResultado
-	 */
-	protected String getMensagemConsultaSemResultado() {
-		return mensagemConsultaSemResultado;
-	}
-	
-	/**
-	 * Define mensagemConsultaSemResultado
-	 * @param mensagemConsultaSemResultado valor mensagemConsultaSemResultado a ser definido
-	 */
-	protected void setMensagemConsultaSemResultado(
-			String mensagemConsultaSemResultado) {
-		this.mensagemConsultaSemResultado = mensagemConsultaSemResultado;
 	}
 	
 	/**
@@ -140,7 +121,20 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	 *            Critérios da consulta
 	 */
 	protected void validarCriterio(CriterioConsultaVO<C> criterio) {
-		LOGGER.warn("Sem validação do critério " + criterio);
+		String valor = criterio.getValor();
+		C campo = criterio.getCampo();
+		if (valor == null) {
+			addFieldError("criterio", getText(ConstantesDEPI.Geral.ERRO_CRITERIO_INVALIDO, new String[]{
+				getText(campo.name()),
+				getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{"Valor"})
+			}));
+		}
+		else if (campo.getSize() > 0 && valor.length() > campo.getSize()) {
+			addFieldError("criterio", getText(ConstantesDEPI.Geral.ERRO_CAMPO_EXCESSO, new String[]{
+					getText(campo),
+					String.valueOf(campo.getSize())
+			}));
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -227,8 +221,14 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 			model.setColecaoDados(lista);
 			
 			if (lista == null || lista.isEmpty()) {
-				addActionError(mensagemConsultaSemResultado);
+				addActionError(getText(ConstantesDEPI.ERRO_SEMRESULTADO));
 			}
+		} catch (DEPIIntegrationException e) {
+			getModel().setColecaoDados(Collections.emptyList());
+			addActionError(e.getMessage());
+		} catch (DEPIBusinessException e) {
+			getModel().setColecaoDados(Collections.emptyList());
+			addActionError(e.getMessage());
 		} catch (Exception e) {
 			LOGGER.error("Falha não tratada ao processar criterios de consulta", e);
 			getModel().setColecaoDados(Collections.emptyList());

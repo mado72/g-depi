@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import br.com.bradseg.bsad.filtrologin.filters.LoginUtils;
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
@@ -62,6 +63,15 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
     @Override
     public String getText(String chave) {
     	return BaseUtil.getTexto(chave);
+    }
+    
+    public String getText(IEntidadeCampo c) {
+    	StringBuilder sb = new StringBuilder("enum.")
+    		.append(c.getClass().getSimpleName())
+    		.append('.')
+    		.append(c.name());
+    	
+    	return getText(sb.toString());
     }
 
 	@Override

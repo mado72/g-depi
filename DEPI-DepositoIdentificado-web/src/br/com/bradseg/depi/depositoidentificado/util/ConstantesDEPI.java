@@ -100,9 +100,6 @@ public final class ConstantesDEPI {
 	public static final String ERRO_REGISTRO_DEP_COMP_JA_CADASTRADO = "msg.erro.departamentocompanhia.registrojacadastrado";
 	public static final String ERRO_PERMISAO_TABELA = "msg.erro.permisaoTabela";
 
-	public static final String ERRO_EXCLUSAO = "msg.erro.exclusao";
-	public static final String ERRO_EXCLUSAO_ITEM = "msg.erro.exclusao.item";
-
 	/**
 	 * ConstantesDEPI Dao
 	 */
@@ -249,11 +246,16 @@ public final class ConstantesDEPI {
 	 */
 	public static final class Geral {
 		public static final String ERRORS_REQUIRED = "errors.required";
-		public static final String ERRORS_MAXLENGTH = "errors.maxlength";
 		public static final String ERRO_CAMPO_EXCESSO = "msg.erro.campo.excessocaracteres";
 		public static final String ERRO_USUARIO_LOGADO = "msg.erro.usuario.logado";
 		public static final String ERRO_USUARIO_OBRIGATORIO = "msg.erro.usuario.obrigatorio";
 		public static final String ERRO_CODIGO_INVALIDO = "msg.erro.codigo.invalido";
+		public static final String ERRO_CRITERIO_INVALIDO = "msg.erro.criterio.invalido";
+		public static final String ERRO_INCLUSAO = "msg.erro.inclusao";
+		public static final String ERRO_EXCLUSAO = "msg.erro.exclusao";
+		public static final String ERRO_EXCLUSAO_LISTA = "msg.erro.exclusao.lista";
+		public static final String ERRO_EXCLUSAO_ITEM = "msg.erro.exclusao.item";
+		public static final String ERRO_ALTERACAO = "msg.erro.alteracao";
 	}
 	
 	/**
@@ -299,6 +301,7 @@ public final class ConstantesDEPI {
 	public static final class ParametroDeposito {
 
 		public static final String ERRO_USUARIO_SEM_GRUPO_ASSOCIADO = "msg.erro.parametrodeposito.semgrupoacessoassociado";
+		public static final String DUPLICADO = "msg.erro.parametrodeposito.duplicado";
 		
 	}
 	

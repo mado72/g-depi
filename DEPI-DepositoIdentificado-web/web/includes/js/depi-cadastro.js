@@ -287,6 +287,8 @@ var fnReady = function ($) {
 						jqSecundario.append($('<option>', {text: op.texto, value: op.valor}));
 					});
 				};
+				
+				$.filtro.arrumarValor(jqPrincipal, jqSecundario, jqValor, jqRecipiente);
 			});
 
 		jqSecundario
@@ -770,7 +772,7 @@ var fnReady = function ($) {
 		window.name = "_opener";
 		
 		$(opcoes.btn).click(function(){
-			$("#box_loading").show();
+//			$("#box_loading").show();
 			var codCompanhia = $("#AcaoForm_codCompanhia").val();
 			var url = opcoes.url + '&codCompanhia=' + codCompanhia;
 			window.open(url, 'SelDeptos', "height=550,width=800,resizable=no");
@@ -818,7 +820,7 @@ var fnReady = function ($) {
 		window.name = "_opener";
 		
 		$(opcoes.btn).click(function(){
-			$("#box_loading").show();
+//			$("#box_loading").show();
 			var codCompanhia = $("#AcaoForm_codCompanhia").val();
 			var siglaDepartamento = $("#AcaoForm_siglaDepartamento").val();
 			var url = opcoes.url + '&codCompanhia=' + codCompanhia + '&siglaDepartamento=' + siglaDepartamento;

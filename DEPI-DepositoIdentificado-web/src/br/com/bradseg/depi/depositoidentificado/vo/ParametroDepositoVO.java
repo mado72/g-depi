@@ -23,22 +23,16 @@ public class ParametroDepositoVO implements Serializable{
     /**
      * Código da Companhia - obtido atraves da classe
      */
-//    @TableId
-//    @TableField(name = ConstantesDAO.TABELA_COMPANHIA_DEPARTAMENTO_ID, converter = CompanhiaSeguradoraVOPersistenceConverter.class)
     private CompanhiaSeguradoraVO companhia = new CompanhiaSeguradoraVO();
 
     /**
      * Código do departamento - DepartamentoVO obtido atraves da classe DepartamentoConverter
      */
-//    @TableId
-//    @TableField(name = ConstantesDAO.TABELA_DEPARTAMENTO_ID, converter = DepartamentoConverter.class)
     private DepartamentoVO departamento = new DepartamentoVO();
 
     /**
      * Código do motivo - MotivoVO obtido através da classe MotivoDepositoConverter.
      */
-//    @TableId
-//    @TableField(name = ConstantesDAO.TABELA_MOTIVO_ID, converter = MotivoDepositoConverter.class)
     private MotivoDepositoVO motivoDeposito = new MotivoDepositoVO();
 
     /**

@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.util;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -347,6 +348,17 @@ public class FiltroUtil {
 			.append(getClausulasParciais());
 		
 	    return where.toString();
+	}
+	
+	/**
+	 * Método utilitário para adicionar um critério ao filtro
+	 * @param criterio Critério
+	 */
+	public void adicionaCriterio(CriterioConsultaVO<?> criterio) {
+		if (this.criterios == null) {
+			this.criterios = new ArrayList<CriterioConsultaVO<?>>();
+		}
+		this.criterios.add(criterio);
 	}
 	
 	/**

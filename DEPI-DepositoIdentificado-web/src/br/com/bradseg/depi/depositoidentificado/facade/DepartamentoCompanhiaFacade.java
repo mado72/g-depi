@@ -25,13 +25,6 @@ public interface DepartamentoCompanhiaFacade {
 	public List<DepartamentoCompanhiaVO> obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo) throws IntegrationException;
 
 	/**
-	 * Obtém uma instância da associação cia x depto
-	 * @param vo A associação
-	 * @return Dados da associação
-	 */
-	public DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo);
-
-	/**
 	 * Processa filtro
 	 * @param filtro critérios
 	 * @return Lista de VO.
