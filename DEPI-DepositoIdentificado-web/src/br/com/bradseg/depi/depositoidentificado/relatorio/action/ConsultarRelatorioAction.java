@@ -1,30 +1,40 @@
 package br.com.bradseg.depi.depositoidentificado.relatorio.action;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+import org.apache.jasper.JasperException;
+import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
 
+
+import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.bsad.framework.web.struts.support.BsadExceptionInterceptor;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseAction;
 import br.com.bradseg.depi.depositoidentificado.relatorio.facade.ConsultarRelatorioFacade;
@@ -34,6 +44,7 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesSinteticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
@@ -49,7 +60,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
 @Controller
 @Scope("request")
-public class ConsultarRelatorioAction extends BaseAction implements Serializable {
+public class ConsultarRelatorioAction extends BaseAction  {
 
 
 	private static final long serialVersionUID = 3407809247264650489L;
@@ -57,6 +68,9 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 
 	private static final String DATA_FINAL = "Data Final";
 	private static final String DATA_INICIAL = "Data Inicial";
+	private static final String FORWARD_CONSULTAR = "consultar.relatorio";
+	// private static final String FORWARD_APRESENTAR = "apresentar.relatorio";
+	private static final String FORWARD_MENU = "dp06.menu";
 	private static final String VISUALIZACAO = "VISUALIZACAO";
 	private static final String HEADER = "HEADER";
 	private static final String SITUACAO = "SITUACAO";
@@ -70,6 +84,11 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 	
     public static final String ESTRUTURA_PASTA_IMAGENS = "/padroes_web/intranet/imagens/";
     public static final String ESTRUTURA_PASTA_CSS = "/padroes_web/intranet/css/";
+	
+	private static final String JRXML = ".jrxml";
+	private static final String JASPER = ".jasper";
+	private static final String PDF = ".pdf";
+	
 	
 	private static final String EXIBIRENVIORETORNOANALITICO = "exibirEnvioRetornoAnalitico";
 	private static final String EXIBIRENVIORETORNOSINTETICO = "exibirEnvioRetornoSintetico";
@@ -87,13 +106,18 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 	//Combos da tela
 
 	private List<CompanhiaSeguradoraVO> listaCompanhia = new ArrayList<CompanhiaSeguradoraVO>();
-	private List<CompanhiaSeguradoraVO> ordenaCompanhia  = new ArrayList<CompanhiaSeguradoraVO>();
+	private List<CompanhiaSeguradoraVO> listaCompanhiaOrd  = new ArrayList<CompanhiaSeguradoraVO>();
 	
 	private List<DepartamentoVO> listaDepartamentos = new ArrayList<DepartamentoVO>();
+	private List<DepartamentoVO> listaDepartamentosOrd = new ArrayList<DepartamentoVO>();
 	private List<MotivoDepositoVO> listaMotivosDepositos = new ArrayList<MotivoDepositoVO>();
 	
 	
 	private FiltroUtil filtro;
+	
+	private String fileNameReport ;
+	private String contentTypeReport = "application/pdf"  ;
+	private transient InputStream fileInputStream;
 	
 	private String acao; 
 	private String acaoAnterior;
@@ -126,12 +150,12 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
     
 	
 	public String consultar(){
-   	   // System.out.println("acao "+ this.acao);
+   	  
 		
 	    //List<CompanhiaSeguradoraVO> listaRetorno = //  CompanhiaSeguradoraBusinessDelegate.getInstance().obterComRestricaoDeDeposito(getUsuarioLogado());
-//		System.out.println("consultar");
 		
-		//carregarComboCompanhia();
+		
+		carregarComboCompanhia();
 		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 		
@@ -181,11 +205,13 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 
 	public void exibirEnvioRetornoAnalitico() throws DEPIIntegrationException {
 	        try {
-	            setSubtitulo("Envio/Retorno BancoVO - Analï¿½tico");
-	            setTituloTabela("Dados de Envio/Retorno BancoVO - Analï¿½tico");
+	            setSubtitulo("Envio/Retorno BancoVO - Analítico");
+	            setTituloTabela("Dados de Envio/Retorno BancoVO - Analítico");
 	            setTipoRelatorio("ER");
 	            setVisualizacao("A");
-//carregarComboCompanhia();
+	            carregarComboCompanhia();
+	            carregarComboDepartamentos();
+	            carregarComboMotivos();
 //	    		listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 //	    		listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -199,11 +225,11 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
     public void exibirEnvioRetornoSintetico() throws DEPIIntegrationException {
 
             try {
-                setSubtitulo("Envio/Retorno BancoVO - Sintï¿½tico");
-                setTituloTabela("Dados de Envio/Retorno BancoVO - Sintï¿½tico");
+                setSubtitulo("Envio/Retorno BancoVO - Sintético");
+                setTituloTabela("Dados de Envio/Retorno BancoVO - Sintético");
                 setTipoRelatorio("ER");
                 setVisualizacao("S");
-	    		//carregarComboCompanhia();
+	    		carregarComboCompanhia();
 	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
              } catch (DEPIIntegrationException e) {
@@ -217,11 +243,11 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 
             try {
 
-                setSubtitulo("Extrato BancoVO - Analï¿½tico");
-                setTituloTabela("Dados de Extrato BancoVO - Analï¿½tico");
+                setSubtitulo("Extrato BancoVO - Analítico");
+                setTituloTabela("Dados de Extrato BancoVO - Analítico");
                 setTipoRelatorio("EX");
                 setVisualizacao("A");
-	    		//carregarComboCompanhia();
+	    		carregarComboCompanhia();
 	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -235,11 +261,11 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 	  public void exibirExtratoSintetico() throws DEPIIntegrationException {
 
 		        try {
-		            setSubtitulo("Extrato BancoVO - Sintï¿½tico");
-		            setTituloTabela("Dados de Extrato BancoVO - Sintï¿½tico");
+		            setSubtitulo("Extrato BancoVO - Sintético");
+		            setTituloTabela("Dados de Extrato BancoVO - Sintético");
 		            setTipoRelatorio("EX");
 		            setVisualizacao("S");
-		    		//carregarComboCompanhia();
+		    		carregarComboCompanhia();
 		    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 		    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -254,12 +280,12 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 	  public void exibirManutencoesAnalitico() throws DEPIIntegrationException {
 		    try {
 		    	
-		        setSubtitulo("Manutenï¿½ï¿½es - Analï¿½tico");
-		        setTituloTabela("Dados de Manutenï¿½ï¿½es - Analï¿½tico");
+		        setSubtitulo("Manutenções - Analítico");
+		        setTituloTabela("Dados de Manutenções - Analítico");
 		        setTipoRelatorio("MN");
 		        setVisualizacao("A");
 		        setAcaoAnterior("exibirManutencoesAnalitico");
-				//carregarComboCompanhia();
+				carregarComboCompanhia();
 	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 		    
@@ -274,12 +300,12 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 	  public void exibirManutencoesSintetico() throws DEPIIntegrationException {
 	        try {
 
-		        setSubtitulo("Manutenï¿½ï¿½es - Sintï¿½tico");
-		        setTituloTabela("Dados de Manutenï¿½ï¿½es - Sintï¿½tico");
+		        setSubtitulo("Manutenções - Sintético");
+		        setTituloTabela("Dados de Manutenções - Sintético");
 		        setTipoRelatorio("MN");
 		        setVisualizacao("S");
 
-		        //carregarComboCompanhia();
+		        carregarComboCompanhia();
   				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
   				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -292,14 +318,14 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 	  
 	  public void exibirDadosComplementares() throws DEPIIntegrationException {
 	        try {
-	        	setSubtitulo("Dados Complementares - Analï¿½tico");
-		        setTituloTabela("Dados Complementares - Analï¿½tico");
+	        	setSubtitulo("Dados Complementares - Analítico");
+		        setTituloTabela("Dados Complementares - Analítico");
 		        setTipoRelatorio("DC");
 		        setVisualizacao("A");
 		        setSituacaoEnvioRetorno("A");
 		        
 
-			  		//carregarComboCompanhia();
+			  		carregarComboCompanhia();
 	  				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 	  				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -314,12 +340,15 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 	         if(filtro == null ){
 	        	  filtro = new FiltroUtil(); 
 	         }
-	    	// System.out.println("setDataInicio");        	 		 
-	    	 filtro.setDataInicio(RelogioUtil.validaData("01/01/2018"));
-	    	// System.out.println("setDataInicio2");
-	    	 filtro.setDataFinal(RelogioUtil.validaData("01/11/2018"));
+	    	
+	         //
+	         filtro.setDataInicio(RelogioUtil.validaData("01/01/2018"));
+	    	 //filtro.setDataInicio(BaseUtil.parserStringToDate(filtro.getDataInicio()+ " "+ConstantesDEPI.HORA_INI,ConstantesDEPI.FORMATO_DATO_HORA2));
+	    	// LOGGER.error("setDataInicio2");
+	    	 filtro.setDataFinal(RelogioUtil.validaData("30/12/2018"));
+	    	 //filtro.setDataFinal(BaseUtil.parserStringToDate(filtro.getDataFinal()+ " "+ConstantesDEPI.HORA_FIM,ConstantesDEPI.FORMATO_DATO_HORA2));
 
-
+	    	 
 			 
 			 filtro.setCodigoCia(0);
 			 filtro.setCodigoDepartamento(0);
@@ -334,41 +363,62 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 			 filtro.setValorInicial(0.0);
 			 filtro.setValorFinal(0.0); 
 			 filtro.setCpfCnpj("");
-
+			 filtro.setSituacaoArquivo(0);
+			 
+			//	private String  ip; 
+			//	private String  usuario; 
+			//	private String  descricaoBasica;
+			//    private String  descricaoDetalhada;
+			//	private String  sigla;
+			//    private String  nome;
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
 	         return filtro;		 
 			 
 		}	
 	  
 	public String gerarRelatorio() {
-		System.out.println("gerarRelatorio");
+
 		//acao = EXIBIRENVIORETORNOANALITICO;
+		String retorno = SUCCESS;
 		if(acao.equals(EXIBIRENVIORETORNOANALITICO)){
-			this.consultarEnvioRetornoAnalitico();
+			retorno = this.consultarEnvioRetornoAnalitico();
 		}
 		if(acao.equals(EXIBIRENVIORETORNOSINTETICO)){
-			this.consultarEnvioRetornoSintetico();
+			retorno = this.consultarEnvioRetornoSintetico();
 		}
 		if(acao.equals(EXIBIREXTRATOANALITICO)){
-			this.consultarExtratoAnalitico();
+			retorno = this.consultarExtratoAnalitico();
 		}			
 		if(acao.equals(EXIBIREXTRATOSINTETICO)){
-			this.consultarEnvioRetornoSintetico();
+			retorno = this.consultarEnvioRetornoSintetico();
 		}				
 		if(acao.equals(EXIBIRMANUTENCOESANALITICO)){
-			this.consultarManutencoesAnalitico();				
+			retorno = this.consultarManutencoesAnalitico();				
 		}					     
 		if(acao.equals(EXIBIRMANUTENCOESSINTETICO)){
-			this.consultarManutencoesSintetico();
+			retorno = this.consultarManutencoesSintetico();
 		}					      			     
 		if(acao.equals(EXIBIRDADOSCOMPLEMENTARES)){		
-			this.consultarDadosComplementaresAnalitico();
+			retorno = this.consultarDadosComplementaresAnalitico();
 		}					     
 		
-		return SUCCESS;
+		return retorno;
 	}
 	
 	/**
-     * Processa a aï¿½ï¿½o consultar
+     * Processa a ação consultar
      * @param pMapping ActionMapping
      * @param pForm ActionForm
      * @param pRequest HttpServletRequest
@@ -377,11 +427,11 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
      * @throws DEPIIntegrationException Exception
      */
     public String consultarManutencoesAnalitico(){      
-//    	System.out.println("consultarManutencoesAnalitico");                   
+    	                 
         //RelatorioForm frm = (RelatorioForm) pForm;
 
         //GeneralFiltroVO c = montaFiltro(new Object());
-        
+        filtro = this.montaFiltro(filtro);
         if (BaseUtil.isNZB(filtro.getDataInicio())) {
             //addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_INICIAL);
             exibirManutencoesAnalitico();
@@ -407,16 +457,16 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
   	            return ERROR;
              }
         	 
-            // System.out.println("obterDadosManutencoesAnalitico 1");
+            
              List<ManutencoesAnaliticoVO> dados =  consultarRelatorioFacade.obterDadosManutencoesAnalitico(filtro); //RelatorioBusinessDelegate.getInstance().obterDadosManutencoesAnalitico(c);
              if (dados.size() == 0){
     	            addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
     	            return ERROR;
              }
-            // System.out.println("obterDadosManutencoesAnalitico 2");
+            
             
             Map<String, Object> params = new HashMap<String, Object>();
-            params.put(VISUALIZACAO, "ANALï¿½TICO");
+            params.put(VISUALIZACAO, "ANALÍTICO");
             
             params.put( SITUACAO, filtro.getSituacaoManutencao() );
             params.put(DATA_INICIO, filtro.getDataInicio() );
@@ -431,7 +481,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
             LOGGER.error(e.getMessage());
             return ERROR;
         }
-        return SUCESS;//exibirManutencoesAnalitico();//();
+        return "relManutencoesAnalitico.pdf";//exibirManutencoesAnalitico();//();
     }
 	
 	
@@ -476,7 +526,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
                 }
 */
                 Map<String, Object> params = new HashMap<String, Object>();
-                params.put(VISUALIZACAO, "ANALï¿½TICO");
+                params.put(VISUALIZACAO, "ANALÍTICO");
                 params.put(SITUACAO, filtro.getSituacaoManutencao());
                 params.put(DATA_INICIO, filtro.getDataInicio());
                 params.put(DATA_FIM, filtro.getDataFinal());
@@ -490,9 +540,9 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 
             } catch (DEPIIntegrationException e) {
                 LOGGER.error(e.getMessage());
-                return ERROR;
+                return "relDadosComplementares.pdf";
             }
-            return SUCESS;//exibirDadosComplementares();
+            return "relDadosComplementares.pdf";//exibirDadosComplementares();
         }
     
     
@@ -515,7 +565,8 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
             try {
 
                 List<ManutencoesSinteticoVO> dados = consultarRelatorioFacade.obterDadosManutencoesSintetico(filtro);
-              
+             
+                
                 if (BaseUtil.isNZB(dados)) {
                     addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
                      exibirManutencoesSintetico();
@@ -526,11 +577,11 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
                 String situacao = "";//RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(c.getSituacaoManutencao());
                 
                 if (BaseUtil.isNZB(situacao)) {
-                    situacao = "MANUTENï¿½ï¿½ES";
+                    situacao = "MANUTENÇÕES";
                 }
                 
                 StringBuilder sb = new StringBuilder().append("DEPOSITOS IDENTIFICADOS - ").append(situacao)
-                    .append(" - ").append("SINTï¿½TICO");
+                    .append(" - ").append("SINTÉTICO");
                 params.put(HEADER, sb.toString());
                 params.put(DATA_INICIO, filtro.getDataInicio());
                 params.put(DATA_FIM, filtro.getDataFinal());
@@ -544,7 +595,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
                 LOGGER.error(e.getMessage());
                 return ERROR;
             }
-            return SUCESS;// exibirManutencoesSintetico();
+            return "relManutencoesSintetico.pdf";// exibirManutencoesSintetico();
         }
 
 
@@ -567,8 +618,15 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
                 return ERROR;
             }
 
-            List<RelatorioEnvioRetornoAnaliticoVO> colRelatorio = new ArrayList<RelatorioEnvioRetornoAnaliticoVO>();
-            colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
+            List<RelatorioEnvioRetornoAnaliticoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
+            
+            for(RelatorioEnvioRetornoAnaliticoVO t: colRelatorio) {
+            	if(t.getVencimento()== null) {					
+            		LOGGER.error("getVencimento is null");
+            	}
+            }
+         	
+            
             
             if (BaseUtil.isNZB(colRelatorio)) {
                 addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
@@ -577,9 +635,11 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
                 return ERROR;
             }
             
+            
+            
             Map<String, Object> params = new HashMap<String, Object>();
-            params.put(DATA_INICIO, filtro.getDataInicio());
-            params.put(DATA_FIM, filtro.getDataFinal());
+            params.put(DATA_INICIO,  RelogioUtil.formataDate(filtro.getDataInicio()));
+            params.put(DATA_FIM, RelogioUtil.formataDate(filtro.getDataFinal()));
 
             params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
             params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
@@ -587,6 +647,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
             
            gerarPdf( "relEnvioRetornoBancoAnalitico.jasper", params,  colRelatorio);
 
+       
         } catch (DEPIIntegrationException e) {
             LOGGER.error(e.getMessage());
             return ERROR;
@@ -594,7 +655,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
         	LOGGER.error(e.getMessage());
             throw new DEPIIntegrationException(e.getMessage());
         }
-        return SUCESS;// exibirEnvioRetornoAnalitico();
+        return "relEnvioRetornoBancoAnalitico.pdf";// exibirEnvioRetornoAnalitico();
     }
     public String consultarEnvioRetornoSintetico() throws DEPIIntegrationException {
 
@@ -636,7 +697,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
              	LOGGER.error(e.getMessage());
                 throw new DEPIIntegrationException(e.getMessage());
             }
-            return SUCESS;// exibirEnvioRetornoSintetico();
+            return "relEnvioRetornoBancoSintetico.pdf";// exibirEnvioRetornoSintetico();
         }
 
     public String consultarExtratoAnalitico() throws DEPIIntegrationException {        
@@ -666,7 +727,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
             }
 	
             
-            // Adiciona dados obtidos de envio retorno na lista de Extrato apï¿½s conversï¿½o
+            // Adiciona dados obtidos de envio retorno na lista de Extrato após conversão
 	            for (RelatorioEnvioRetornoAnaliticoVO vo : dadosER) {
 	                RelatorioExtratoAnaliticoVO extratoVO = new RelatorioExtratoAnaliticoVO();
 	               
@@ -686,11 +747,11 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
                 return exibirExtratoAnalitico();
             }
 
-            // // Adiciona dados obtidos de manutenï¿½ï¿½es na lista de Extrato apoï¿½s conversï¿½o
+            // // Adiciona dados obtidos de manutenções na lista de Extrato apoós conversão
             for (ManutencoesAnaliticoVO vo : dadosManut) {
                 RelatorioExtratoAnaliticoVO extratoVO = new RelatorioExtratoAnaliticoVO();
                 copyProperties(extratoVO, vo);
-                extratoVO.setNomeGrupo("MANUTENï¿½ï¿½ES");
+                extratoVO.setNomeGrupo("MANUTENÇÕES");
                 extratoVO.setSituacaoManutencao(vo.getCodigoTipoAcao());
                 extratoVO.setVencimento(vo.getVencimento());
                 extratoVO.setSituacao(RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(vo.getCodigoTipoAcao()));
@@ -702,7 +763,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 	            consultarRelatorioFacade.ordenarDadosAnalitico(dados);
 
 	            Map<String, Object> params = new HashMap<String, Object>();
-	            params.put(VISUALIZACAO, "ANALï¿½TICO");
+	            params.put(VISUALIZACAO, "ANALÍTICO");
 	            params.put(SITUACAO, "TODOS");
 	            params.put(DATA_INICIO, filtro.getDataInicio());
 	            params.put(DATA_FIM, filtro.getDataFinal());
@@ -721,7 +782,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 			throw new DEPIIntegrationException(e.getMessage());
 		}
             
-            return SUCESS;// exibirExtratoAnalitico();
+            return "relExtratoAnalitico.pdf";// exibirExtratoAnalitico();
     }
 
     
@@ -750,7 +811,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
                 		{
 
                     Map<String, Object> params = new HashMap<String, Object>();
-                    params.put(VISUALIZACAO, "SINTï¿½TICO");
+                    params.put(VISUALIZACAO, "SINTÉTICO");
                     params.put(SITUACAO, "TODOS");
     	            params.put(DATA_INICIO, filtro.getDataInicio());
     	            params.put(DATA_FIM, filtro.getDataFinal());
@@ -767,18 +828,204 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
     			throw new DEPIIntegrationException(e.getMessage());
     		}
     	
-        return SUCESS;//       
+        return "relExtratoSintetico.pdf";//       
     }
     
+    private void carregarComboCompanhia() throws DEPIIntegrationException {
+    	//request.setAttribute("cias", new ArrayList<CompanhiaSeguradoraVO>());
+        //request.setAttribute("ciasOrdenadas", new ArrayList<CompanhiaSeguradoraVO>());
+    
+    	List<CompanhiaSeguradoraVO> listaRetorno = 
+        		consultarRelatorioFacade.carregarComboCompanhiaUsuLogado(getUsuarioLogado());
+        List<CompanhiaSeguradoraVO> ciasOrdenadas = new ArrayList<CompanhiaSeguradoraVO>(listaRetorno);
+        
+        
+        //ordenaCompanhia = Collections.sort(ciasOrdenadas);
+        
+    	tpcCias = "TRUE";
+    	tpcCiasOrdenadas = "TRUE";
+        
+    	//request.setAttribute("cias", listaRetorno);
+        //request.setAttribute("ciasOrdenadas", ciasOrdenadas);
+    	this.listaCompanhia = listaRetorno; 
+    	this.setListaCompanhiaOrd(ciasOrdenadas);
+        if (!BaseUtil.isNZB(this.codigoCompanhia)) {
+            for (CompanhiaSeguradoraVO cia : listaRetorno) {
+                if (cia.equals(new CompanhiaSeguradoraVO(this.codigoCompanhia))) {
+                    return;
+                }
+            }
+
+        }
+        
+       
+        this.codigoCompanhia = 0;
+    }
+    
+    private static Comparator<CompanhiaSeguradoraVO> ordenaCompanhia = new Comparator<CompanhiaSeguradoraVO>() {
+        public int compare(CompanhiaSeguradoraVO p1, CompanhiaSeguradoraVO p2) {
+            return p1.getDescricaoCompanhia().compareTo(p2.getDescricaoCompanhia());
+        };
+    };   
+    
+    
+    
+    
+    
+    private void carregarComboMotivos() throws DEPIIntegrationException {
+        //request.setAttribute("motivos", new ArrayList<MotivoDepositoVO>());
+        if (!BaseUtil.isNZB(this.codigoCompanhia) && !BaseUtil.isNZB(this.codigoDepartamento)) {
+            List<MotivoDepositoVO> listaRetorno = consultarRelatorioFacade.obterMotivoComRestricaoDeDeposito(
+            		this.codigoCompanhia, this.codigoDepartamento, getUsuarioLogado());
+            if (!BaseUtil.isNZB(listaRetorno)) {
+                Collections.sort(listaRetorno, ordenaMotivoBasico);
+                request.setAttribute("motivos", listaRetorno);
+                if (!BaseUtil.isNZB(this.codigoMotivoDeposito)) {
+                    for (MotivoDepositoVO mot : listaRetorno) {
+                        if (mot.equals(new MotivoDepositoVO(this.codigoMotivoDeposito, null, null))) {
+                            setDescricaoDetalhada(mot.getDescricaoDetalhada());
+                            return;
+                        }
+                    }
+                }
+                
+                this.listaMotivosDepositos = listaRetorno;
+                this.codigoMotivoDeposito =0;
+                this.setDescricaoDetalhada("");
+            }
+        }
+    }
+
     /**
-     * Mï¿½todo utilizado para gerar relatï¿½rio em PDF.
+     * Comparador de MotivoDepositoVO onde a ordenação será realizada pela descrição básica do motivo de depósito.
+     */
+    private static Comparator<MotivoDepositoVO> ordenaMotivoBasico = new Comparator<MotivoDepositoVO>() {
+        public int compare(MotivoDepositoVO p1, MotivoDepositoVO p2) {
+            return p1.getDescricaoBasica().compareTo(p2.getDescricaoBasica());
+        };
+    };
+    
+    private void carregarComboDepartamentos() throws DEPIIntegrationException {
+        //request.setAttribute("departamentos", new ArrayList<DepartamentoVO>());
+        //request.setAttribute("departamentosOrdenados", new ArrayList<DepartamentoVO>());
+    	
+    	if (!BaseUtil.isNZB(this.codigoCompanhia)) {
+            List<DepartamentoVO> listaRetorno = consultarRelatorioFacade.obterComDepositoRestricaoDeDeposito(
+                Integer.valueOf( this.codigoCompanhia) , getUsuarioLogado());
+            if (!BaseUtil.isNZB(listaRetorno)) {
+                List<DepartamentoVO> departamentosOrdenados = new ArrayList<DepartamentoVO>(listaRetorno);
+                Collections.sort(departamentosOrdenados, ordenaDepartamento);
+
+                this.listaDepartamentos = listaRetorno;
+                this.listaDepartamentosOrd = departamentosOrdenados;
+                request.setAttribute("departamentosOrdenados", departamentosOrdenados);
+
+                if (!BaseUtil.isNZB(this.codigoDepartamento)) {
+                    for (DepartamentoVO dep : listaRetorno) {
+                        if (dep.equals(new DepartamentoVO(this.codigoDepartamento , null, null))) {
+                            return;
+                        }
+                    }
+                }
+                this.codigoDepartamento =0;
+            }
+        }
+    }
+    /**
+     * Comparador de DepartamentoVO onde a ordenação será realizada pelo código do departamento.
+     */
+    private static Comparator<DepartamentoVO> ordenaDepartamento = new Comparator<DepartamentoVO>() {
+        public int compare(DepartamentoVO p1, DepartamentoVO p2) {
+            return p1.getSiglaDepartamento().compareTo(p2.getSiglaDepartamento());
+        };
+    };   
+    
+ 
+    /**
+     * Retorna valores do form para um nova instância do tipo GeneralFiltroVO
+     * @param frm RelatorioForm
+     * @return GeneralFiltroVO
+     * @throws DEPIIntegrationException - DEPIIntegrationException
+     */
+    private Object montaFiltro_lod(Object frm) throws IntegrationException {
+
+    	
+        //GeneralFiltroVO  filtro = new GeneralFiltroVO();
+        /*
+        if (!BaseUtil.isNZB(frm.getCodigoCompanhia())) {
+            filtro.setCodigoCia(frm.getCodigoCompanhia());
+        }
+
+        if (!BaseUtil.isNZB(frm.getCodigoAutorizador())) {
+            filtro.setCodigoAutorizador(Long.valueOf(frm.getCodigoAutorizador()));
+        }
+
+        if (!BaseUtil.isNZB(frm.getCodigoDepartamento())) {
+            filtro.setCodigoDepartamento(frm.getCodigoDepartamento());
+        }
+
+        if (!BaseUtil.isNZB(frm.getCodigoMotivoDeposito())) {
+            filtro.setCodigoMotivo(frm.getCodigoMotivoDeposito());
+        }
+
+        if (!BaseUtil.isNZB(frm.getApolice())) {
+            filtro.setApolice(Integer.valueOf(frm.getApolice()));
+        }
+
+        if (!BaseUtil.isNZB(frm.getSucursal())) {
+            filtro.setSucursal(Integer.valueOf(frm.getSucursal()));
+        }
+
+        if (!BaseUtil.isNZB(frm.getEndosso())) {
+            filtro.setEndosso(Integer.valueOf(frm.getEndosso()));
+        }
+
+        filtro.setTipoDeposito(frm.getDeposito());
+
+        if (!BaseUtil.isNZB(frm.getCpfCnpj())) {
+            filtro.setCpfCnpj(Long.valueOf(BaseUtil.retiraMascaraCNPJ(frm.getCpfCnpj())));
+        }
+
+        if (!BaseUtil.isNZB(filtro.getDataInicio())) {
+            filtro.setDtIni(BaseUtil.parserStringToDate(filtro.getDataInicio().concat(" ").concat(ConstantesModel.HORA_INI),
+                ConstantesModel.FORMATO_DATO_HORA2));
+        }
+
+        if (!BaseUtil.isNZB(filtro.getDataFinal())) {
+            filtro.setDtFim(BaseUtil.parserStringToDate(filtro.getDataFinal().concat(" ").concat(ConstantesModel.HORA_FIM),
+                ConstantesModel.FORMATO_DATO_HORA2));
+        }
+
+        if (!BaseUtil.isNZB(frm.getValorInicial())) {
+            filtro.setValorIni(BaseUtil.stringToBigDecimal(frm.getValorInicial()));
+        }
+
+        if (!BaseUtil.isNZB(frm.getValorFinal())) {
+            filtro.setValorFim(BaseUtil.stringToBigDecimal(frm.getValorFinal()));
+        }
+        if (!BaseUtil.isNZB(frm.getCodigoContaCorrente())) {
+            filtro.setContaCorrente(Long.valueOf(frm.getCodigoContaCorrente()));
+        }
+
+        filtro.setSituacaoArquivo(RelatorioEnvioRetornoUtil.obterCodigoSituacaoPorLetra(frm.getSituacaoEnvioRetorno()));
+
+        filtro.setSituacaoManutencao(frm.getSituacaoManutencoes());
+        */
+        return filtro;
+    }
+	
+	
+	
+	
+    /**
+     * Método utilizado para gerar relatório em PDF.
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      * @param nomeRelatorio Nome do Relatorio
      * @param parametros Parametros do Relatorio.
-     * @throws IntegrationException - Integraï¿½ï¿½o.
+     * @throws IntegrationException - Integração.
      */
-    public InputStream gerarPdf(String nomeRelatorio, Map<String, Object> parametros) throws IntegrationException, IOException {
+    public InputStream gerarPdf(String nomeRelatorio, Map<String, Object> parametros) throws DEPIIntegrationException, IOException {
         Connection conn = null;
         InputStream ouputStream = null;
         conn = null; // Falta obter conn new  dao.getDataSource().getConnection();
@@ -814,7 +1061,7 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 	private InputStream gerarCartaInterna(CartaVO cartaAux) throws JRException  {
 		LOGGER.error("Proposta Action - gerarCartaInterna - inicio");
 		
-		//=>Gera o PDF a partir do relatï¿½rio JASPER
+		//=>Gera o PDF a partir do relatório JASPER
 		String pathRel = request.getSession().getServletContext().getRealPath(PATH_REPORT + cartaAux.getFormulario().getiArqAnexoDocto());
 		pathRel = pathRel.replace(PDF, JASPER);
 
@@ -836,40 +1083,67 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
     
     
     /**
-     * Mï¿½todo utilizado para gerar relatï¿½rio em PDF.
+     * Método utilizado para gerar relatório em PDF.
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      * @param nomeRelatorio Nome do Relatorio
      * @param parametros Parametros do Relatorio
      * @param dados Collection
-     * @throws DEPIIntegrationException - Integraï¿½ï¿½o.
+     * @throws DEPIIntegrationException - Integração.
      */
-    public void gerarPdf( String nomeRelatorio,Map<String, Object> parametros, Collection dados) throws IntegrationException {
-//    	System.out.println("gerarPdf 1");  
+    public void gerarPdf( String nomeRelatorio,Map<String, Object> parametros, Collection dados) throws DEPIIntegrationException {
+    	LOGGER.error("gerarPdf 1");  
         try {
+        	JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(dados);
             File reportFile = new File(request.getSession().getServletContext().getRealPath(ConstantesDEPI.DIR_RELATORIOS + nomeRelatorio));
             String pathImg = this.getWww3()+ESTRUTURA_PASTA_IMAGENS;
             parametros.put(ConstantesDEPI.PARAM_LOGO, pathImg + ConstantesDEPI.DP06_LOGO_JPG);
-           // System.out.println("pathImg:"+pathImg);
-           // System.out.println("reportFile.getPath():"+reportFile.getPath());
-           // System.out.println("ConstantesDEPI.DP06_LOGO_JPG:"+ ConstantesDEPI.DP06_LOGO_JPG);
-           // System.out.println("PARAM_LOGO:"+ConstantesDEPI.PARAM_LOGO);
-           // System.out.println("pathImg:"+pathImg);
+           // LOGGER.error("pathImg:"+pathImg);
+           // LOGGER.error("reportFile.getPath():"+reportFile.getPath());
+           // LOGGER.error("ConstantesDEPI.DP06_LOGO_JPG:"+ ConstantesDEPI.DP06_LOGO_JPG);
+           // LOGGER.error("PARAM_LOGO:"+ConstantesDEPI.PARAM_LOGO);
+           // LOGGER.error("pathImg:"+pathImg);
             byte[] bytes = null;
-            bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, new JRBeanCollectionDataSource(dados));
+            bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, ds);
 
             InputStream is = new ByteArrayInputStream(bytes);
     		LOGGER.error("Proposta Action - gerarCartaInterna - fim");
+    		setFileInputStream(is);
 
         } catch (JRException e) {
             LOGGER.error(e.getMessage());
-            throw new IntegrationException(e.getMessage());
-        } 
-       
+            throw new DEPIIntegrationException(e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            throw new DEPIIntegrationException(e.getMessage());
+        }
     }
    
 
 	
+	private InputStream geraEnvioRetornoSintetico()throws JRException  {
+		
+	   return null;
+	}
+	
+	private InputStream geraExtratoAnalitico()throws JRException  {
+		
+		return null;
+	}
+	
+	private InputStream geraExtratoSintetico()throws JRException  {
+	     return null;	
+	}
+	
+	private InputStream geraManutencoesAnalitico()throws JRException  {
+		return null;
+	}
+	
+	private InputStream geraDadosComplementares()throws JRException  {
+		return null;
+	}
+
+
 	public String getAcao() {
 		return acao;
 	}
@@ -912,17 +1186,6 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 		this.listaCompanhia = listaCompanhia;
 	}
 
-	public List<CompanhiaSeguradoraVO> getOrdenaCompanhia() {
-		return ordenaCompanhia;
-	}
-
-
-	public void setOrdenaCompanhia(List<CompanhiaSeguradoraVO> ordenaCompanhia) {
-		this.ordenaCompanhia = ordenaCompanhia;
-	}
-
-	
-	
 	
 	public List<DepartamentoVO> getListaDepartamentos() {
 		return listaDepartamentos;
@@ -1219,6 +1482,46 @@ public class ConsultarRelatorioAction extends BaseAction implements Serializable
 
 	public void setSubtitulo(String subtitulo) {
 		this.subtitulo = subtitulo;
+	}
+
+	public List<CompanhiaSeguradoraVO> getListaCompanhiaOrd() {
+		return listaCompanhiaOrd;
+	}
+
+	public void setListaCompanhiaOrd(List<CompanhiaSeguradoraVO> listaCompanhiaOrd) {
+		this.listaCompanhiaOrd = listaCompanhiaOrd;
+	}
+
+	public List<DepartamentoVO> getListaDepartamentosOrd() {
+		return listaDepartamentosOrd;
+	}
+
+	public void setListaDepartamentosOrd(List<DepartamentoVO> listaDepartamentosOrd) {
+		this.listaDepartamentosOrd = listaDepartamentosOrd;
+	}
+
+	public String getFileNameReport() {
+		return fileNameReport;
+	}
+
+	public void setFileNameReport(String fileNameReport) {
+		this.fileNameReport = fileNameReport;
+	}
+
+	public String getContentTypeReport() {
+		return contentTypeReport;
+	}
+
+	public void setContentTypeReport(String contentTypeReport) {
+		this.contentTypeReport = contentTypeReport;
+	}
+
+	public InputStream getFileInputStream() {
+		return fileInputStream;
+	}
+
+	public void setFileInputStream(InputStream fileInputStream) {
+		this.fileInputStream = fileInputStream;
 	}
 
 		

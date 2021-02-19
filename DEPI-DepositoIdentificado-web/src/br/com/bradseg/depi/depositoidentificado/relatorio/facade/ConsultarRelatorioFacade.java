@@ -21,13 +21,15 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 public interface ConsultarRelatorioFacade {
 	
    public List<CompanhiaSeguradoraVO>  carregarComboCompanhia();
+   public List<CompanhiaSeguradoraVO>  carregarComboCompanhiaUsuLogado(LoginVo loginVO);
    public List<DepartamentoVO>  carregarComboDepartamentos();
-   public List<MotivoDepositoVO>  carregarComboMotivos();
+   public List<MotivoDepositoVO>  obterMotivoComRestricaoDeDeposito(int codigCompanhia, int codigoDepartamento, LoginVo loginVO);
    
    
    
    
-   public  List<CompanhiaSeguradoraVO> obterComRestricaoDeDeposito(LoginVo loginVO);
+   public  List<DepartamentoVO> obterComDepositoRestricaoDeDeposito(int codigCompanhia, LoginVo loginVO);
+  
    
    public List<ManutencoesAnaliticoVO> obterDadosManutencoesAnalitico(FiltroUtil filtro);
    public List<RelatorioDadosComplementaresVO> obterDadosComplementares(FiltroUtil filtro);

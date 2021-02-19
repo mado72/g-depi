@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="template" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="206ada61-63fb-4023-a4c8-1a6965cd772e">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PERIODO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["PERIODO DE "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CPD_DATA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["CPD - DATA/HORA - "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATA_INICIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DATA_FIM" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ATE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[" ATE "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATA_HORA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DATA_MOVIMENTO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["DATA MOVIMENTO  - 99/99/9999 "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SEQUENCIAL" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["99999999/9999999999/99"]]></defaultValueExpression>
+	</parameter>
+	<field name="apolice" class="java.lang.String">
+		<fieldDescription><![CDATA[apolice]]></fieldDescription>
+	</field>
+	<field name="bloquete" class="java.lang.String">
+		<fieldDescription><![CDATA[bloquete]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="codigoAgencia" class="java.lang.String">
+		<fieldDescription><![CDATA[codigoAgencia]]></fieldDescription>
+	</field>
+	<field name="codigoAutorizador" class="java.lang.Integer">
+		<fieldDescription><![CDATA[codigoAutorizador]]></fieldDescription>
+	</field>
+	<field name="codigoBanco" class="java.lang.String">
+		<fieldDescription><![CDATA[codigoBanco]]></fieldDescription>
+	</field>
+	<field name="codigoCia" class="java.lang.String">
+		<fieldDescription><![CDATA[codigoCia]]></fieldDescription>
+	</field>
+	<field name="codigoConta" class="java.lang.Integer">
+		<fieldDescription><![CDATA[codigoConta]]></fieldDescription>
+	</field>
+	<field name="cpfCnpj" class="java.lang.String">
+		<fieldDescription><![CDATA[cpfCnpj]]></fieldDescription>
+	</field>
+	<field name="descricaoBanco" class="java.lang.String">
+		<fieldDescription><![CDATA[descricaoBanco]]></fieldDescription>
+	</field>
+	<field name="descricaoCia" class="java.lang.String">
+		<fieldDescription><![CDATA[descricaoCia]]></fieldDescription>
+	</field>
+	<field name="descricaoConta" class="java.lang.String">
+		<fieldDescription><![CDATA[descricaoConta]]></fieldDescription>
+	</field>
+	<field name="endosso" class="java.lang.String">
+		<fieldDescription><![CDATA[endosso]]></fieldDescription>
+	</field>
+	<field name="item" class="java.lang.String">
+		<fieldDescription><![CDATA[item]]></fieldDescription>
+	</field>
+	<field name="matricula" class="java.lang.String">
+		<fieldDescription><![CDATA[matricula]]></fieldDescription>
+	</field>
+	<field name="parcela" class="java.lang.String">
+		<fieldDescription><![CDATA[parcela]]></fieldDescription>
+	</field>
+	<field name="ramo" class="java.lang.String">
+		<fieldDescription><![CDATA[ramo]]></fieldDescription>
+	</field>
+	<field name="situacao" class="java.lang.String">
+		<fieldDescription><![CDATA[situacao]]></fieldDescription>
+	</field>
+	<field name="sucursal" class="java.lang.String">
+		<fieldDescription><![CDATA[sucursal]]></fieldDescription>
+	</field>
+	<field name="tipo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[tipo]]></fieldDescription>
+	</field>
+	<field name="valorPago" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorPago]]></fieldDescription>
+	</field>
+	<field name="valorRegistrado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorRegistrado]]></fieldDescription>
+	</field>
+	<field name="vencimento" class="java.util.Date">
+		<fieldDescription><![CDATA[vencimento]]></fieldDescription>
+	</field>
+	<variable name="totalPagoSituacao" class="java.math.BigDecimal" resetType="Group" resetGroup="Situacao" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorPago}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalRegistradoSituacao" class="java.math.BigDecimal" resetType="Group" resetGroup="Situacao" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorRegistrado}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalRegistradoConta" class="java.math.BigDecimal" resetType="Group" resetGroup="Conta" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorRegistrado}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalPagoConta" class="java.math.BigDecimal" resetType="Group" resetGroup="Conta" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorPago}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalRegistradoBancoXCia" class="java.math.BigDecimal" resetType="Group" resetGroup="BancoxCia" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorRegistrado}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalPagoBancoXCia" class="java.math.BigDecimal" resetType="Group" resetGroup="BancoxCia" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorPago}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="diferenca" class="java.math.BigDecimal" resetType="None">
+		<variableExpression><![CDATA[$F{valorRegistrado}.subtract($F{valorPago})]]></variableExpression>
+	</variable>
+	<group name="BancoxCia">
+		<groupExpression><![CDATA[$F{codigoBanco}]]></groupExpression>
+		<groupHeader>
+			<band height="20" splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="48" splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="Conta">
+		<groupExpression><![CDATA[$F{codigoConta}]]></groupExpression>
+		<groupHeader>
+			<band height="20" splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="24" splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="Situacao">
+		<groupExpression><![CDATA[$F{situacao}]]></groupExpression>
+		<groupHeader>
+			<band height="52" splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="24" splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-82" x="22" y="-71" width="0" height="0" uuid="1211f659-9736-4f26-8335-2c857e114c2a"/>
+				<text><![CDATA[Texto Estático]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-90" x="20" y="0" width="0" height="0" uuid="e775a472-b469-4259-84a8-7ebe05e24702"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New"/>
+				</textElement>
+				<text><![CDATA[Texto Estático]]></text>
+			</staticText>
+		</band>
+	</background>
+	<title>
+		<band height="71" splitType="Stretch">
+			<printWhenExpression><![CDATA[new Boolean(true)]]></printWhenExpression>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-46" x="0" y="40" width="786" height="10" uuid="07f19639-e82e-408f-9631-4d43c47b999e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PERIODO}+$P{DATA_INICIO}+$P{ATE}+$P{DATA_FIM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-84" positionType="Float" mode="Opaque" x="0" y="30" width="786" height="10" isRemoveLineWhenBlank="true" uuid="40515dc5-d6ec-4bba-b354-5cc36e2c9477"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[MOVIMENTO DE ENVIO E RETORNO DO BANCO - ANALITICO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-85" positionType="Float" mode="Opaque" x="0" y="20" width="786" height="10" isRemoveLineWhenBlank="true" uuid="1a485d82-330d-44ef-a289-565a1f9fe33a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[DP06 - COBRANÇA BRADESCO SEGUROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-87" x="0" y="60" width="786" height="10" isRemoveLineWhenBlank="true" uuid="db141029-5ebb-4792-90d0-2349f84392f9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-88" x="0" y="10" width="110" height="10" uuid="acdee27b-32b7-4089-b1c2-03499085c38b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[GRUPO BRADESCO SEGUROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-107" x="0" y="-1" width="786" height="10" isRemoveLineWhenBlank="true" uuid="684d4464-73dc-4242-bf7c-2c8fcaebc942"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="40" width="162" height="10" uuid="da50f5bb-08dc-4109-a66e-b648711dd4cb"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DATA_MOVIMENTO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-44" x="0" y="50" width="162" height="10" uuid="ff5da13f-2d91-40a0-b9ed-2200c9feb25e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CPD_DATA}+$P{DATA_HORA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-108" x="737" y="10" width="27" height="10" uuid="d5e3012f-4315-4e06-a8b7-00638c178940"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[PAG #]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-48" x="621" y="50" width="162" height="10" uuid="60d7b5e3-4121-4e61-9779-1b8dfc82fd75"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEQUENCIAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-49" x="763" y="10" width="20" height="10" uuid="5191356d-20dd-45a5-b683-65fa1cc929d0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

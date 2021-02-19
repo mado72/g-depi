@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -47,7 +48,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
      * @param filtro do relatório
      * @return List<RelatorioEnvioRetornoAnaliticoVO>
      */
-    public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro){
+    public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro) throws SQLException {
     	
     	BUCBBusinessDelegate bucbDelegate = new BUCBBusinessDelegate ();
 
@@ -57,7 +58,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
         
         StringBuilder sb = new StringBuilder();
     	
-    	try {
+    	
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			
         	params.addValue("dtInicio", filtro.getDataInicio());
@@ -141,10 +142,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
             relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoAnaliticoDataMapper());
 
 
-        }  finally {
-        	LOGGER.info("obterDadosAnalitico(CriterioFiltroUtil filtro) - termino com sucesso"); 
-        }
-    	
     	return relatorio;
     }
 
@@ -153,7 +150,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
      * @param filtro do relatório
      * @return List<RelatorioExtratoAnaliticoVO>
      */
-    public List<RelatorioExtratoSinteticoVO> obterDadosSintetico(FiltroUtil filtro){
+    public List<RelatorioExtratoSinteticoVO> obterDadosSintetico(FiltroUtil filtro)throws SQLException {
 
     	List<?> lista  = null; 
     	
@@ -165,7 +162,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
         
         StringBuilder sb = new StringBuilder();
         
-        try {
+     
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			
         	params.addValue("dtInicio", filtro.getDataInicio());
@@ -251,9 +248,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
             relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioExtratoSinteticoDataMapper());
 
-        }  finally {
-        	LOGGER.info("RelatorioExtratoSinteticoVO(FiltroUtil filtro) - termino com sucesso"); 
-        }
         return relatorio;
     }
 }
