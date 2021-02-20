@@ -1037,8 +1037,8 @@ public class ConsultarRelatorioAction extends BaseAction  {
 		try {
 			bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, conn);
 		} catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// TODO Auto-generated catch block 
+			LOGGER.error(e.getMessage());
 		}
 		InputStream is = new ByteArrayInputStream(bytes);
 		LOGGER.error("Proposta Action - gerarCartaInterna - fim");
