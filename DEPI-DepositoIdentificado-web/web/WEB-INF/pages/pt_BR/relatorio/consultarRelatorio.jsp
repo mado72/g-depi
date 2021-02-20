@@ -6,6 +6,8 @@
 <script type="text/javascript" src="/includes/js/script/arquivo.js"></script>
 <script type="text/javascript" src="/includes/js/script/consultarRelatorio.js"></script>
 
+<s:include value="/WEB-INF/pages/pt_BR/includes/include-consultarRelatorio.jsp"/>
+
     <s:set name="vacao" value="acao"/>
     <s:set name="vtpcCias" value="tpcCias"/>
     <s:set name="vtpcCiasOrdenadas" value="tpcCiasOrdenadas"/>
@@ -15,11 +17,13 @@
 <s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank">
     <input type="hidden" id="acao" name="acao" value="${acao}" />
     <input type="hidden" id="tituloTabela" name="tituloTabela" value="${tituloTabela}" />
+    <input type="hidden" id="acaoOriginal" name="acaoOriginal" value="${acao}" />
+    
     
     
 
 
-        <!-- 
+       
     	<input type="hidden" id="hdntipoRelatorio" name="codigoAutorizador" value="" />
 		<input type="hidden" id="hdnvisualizacao" name="visualizacao" value="" />
 	    <input type="hidden" id="hdndeposito" name="deposito" value="1"/>
@@ -39,7 +43,7 @@
 	    <input type="hidden" id="hdnvalorInicial" name="valorInicial" value = "" />		
 	    <input type="hidden" id="hdnvalorFinal" name="valorFinal" value = "" />
 	    <input type="hidden" id="hdndescricaoDetalhada" name="descricaoDetalhada" value = "" />	
- 		-->
+ 		
 
 
 	<table  class="tabela_principal" align="center">
@@ -344,7 +348,7 @@
 						</a> 
 						
 						<a href="#" title="Voltar"
-						onclick="window.location.href('index.do');"> 
+						onclick="window.location.href('/DEPI-DepositoIdentificado/index.do');"> 
 						<img src="${caminhoImagens}bt_voltar.gif" class="margem_botoes"  />
 						</a>
 					</div>
