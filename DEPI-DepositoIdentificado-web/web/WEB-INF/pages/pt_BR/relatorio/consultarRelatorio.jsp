@@ -21,7 +21,7 @@
     	<input type="hidden" id="acao" name="acao" value="${acao}" />
     	<input type="hidden" id="tituloTabela" name="tituloTabela" value="${tituloTabela}" />
     	<input type="hidden" id="acaoOriginal" name="acaoOriginal" value="${acao}" />
-           
+        <!--    
     	<input type="hidden" id="hdntipoRelatorio" name="codigoAutorizador" value="" />
 		<input type="hidden" id="hdnvisualizacao" name="visualizacao" value="" />
 	    <input type="hidden" id="hdndeposito" name="deposito" value="1"/>
@@ -41,7 +41,7 @@
 	    <input type="hidden" id="hdnvalorInicial" name="valorInicial" value = "" onkeypress="return mascararValor(this, event, 13)"/>		
 	    <input type="hidden" id="hdnvalorFinal" name="valorFinal" value = ""  onkeypress="return mascararValor(this, event, 13)"/>
 	    <input type="hidden" id="hdndescricaoDetalhada" name="descricaoDetalhada" value = "" />	
- 		
+ 		 -->
 
 
 	<table  class="tabela_principal" align="center">
@@ -72,10 +72,10 @@
 					
 							<td colspan="6">
 								<!-- checked="checked"  -->
-								<input type="radio" name="tipoRelatorio" id="tipoRelatorio" value="ER" checked="checked" class="optionbutton" onclick = "ajustarPagina();">Dados de Envio/Retorno Banco   
-							    <input type="radio" name="tipoRelatorio" id="tipoRelatorio" value="EX" class="optionbutton" onclick = "ajustarPagina();">Extrato Banco 
-								<input type="radio" name="tipoRelatorio" id="tipoRelatorio" value="MN" class="optionbutton"onclick = "ajustarPagina();">Manutenções  
-							    <input type="radio" name="tipoRelatorio" id="tipoRelatorio" value="DC" class="optionbutton" onclick = "ajustarPagina();">Dados Complementares 
+								<input type="radio" name="tipoRelatorio"  value="ER" checked="checked" class="optionbutton" onclick = "ajustarPagina();">&nbsp; Envio/Retorno Banco    
+							    <input type="radio" name="tipoRelatorio"  value="EX" class="optionbutton" onclick = "ajustarPagina();">&nbsp;Extrato-Banco
+								<input type="radio" name="tipoRelatorio"  value="MN" class="optionbutton"onclick = "ajustarPagina();">&nbsp;Manutenções   
+							    <input type="radio" name="tipoRelatorio"  value="DC" class="optionbutton" onclick = "ajustarPagina();">&nbsp;Dados Complementares 
 							</td>
 					</tr>
 					
@@ -86,7 +86,7 @@
 								<span class="obrigatorio">*</span>
 							</td>
 							<td colspan="6">
-								<input type="radio" name="tipoVisualizacao" id="tipoRelatorioA" value="A" checked="checked" class="optionbutton" onclick = "ajustarPagina();">Analítico   
+								<input type="radio" name="visualizacao" value="A" checked="checked" class="optionbutton" onclick = "ajustarPagina();">Analítico   
 							</td>
 						</tr>
 					</s:if>
@@ -97,8 +97,8 @@
 								<span class="obrigatorio">*</span>
 							</td>
 							<td colspan="6">					
-						    	<input type="radio" name="tipoVisualizacao" id="tipoRelatorioA" value="A" checked="checked" class="optionbutton" onclick = "ajustarPagina();">Analítico
-						    	<input type="radio" name="tipoVisualizacao" id="tipoRelatorioS" value="S" class="optionbutton" onclick = "ajustarPagina();">Sintético
+						    	<input type="radio" name="visualizacao" value="A" checked="checked" class="optionbutton" onclick = "ajustarPagina();">Analítico
+						    	<input type="radio" name="visualizacao" value="S" class="optionbutton" onclick = "ajustarPagina();">Sintético
 							</td>
 						</tr>	
 					</s:else>
@@ -280,19 +280,19 @@
 					<td colspan="6" id="id_envio_retorno">
 					<s:if test="%{#vacao=='exibirEnvioRetornoAnalitico' or #vacao=='exibirEnvioRetornoSintetico' }">
 
-						<input type="radio" name="situacaoEnvioRetorno" id="situacaoEnvioRetornoE" value="E" class="optionbutton" onclick = "ajustarPagina();" >Enviados  
-						<input type="radio" name="situacaoEnvioRetorno" id="situacaoEnvioRetornoA" value="A" class="optionbutton" onclick = "ajustarPagina();">Aceitos
-						<input type="radio" name="situacaoEnvioRetorno" id="situacaoEnvioRetornoR" value="R" class="optionbutton"onclick = "ajustarPagina();">Rejeitados  
-						<input type="radio" name="situacaoEnvioRetorno" id="situacaoEnvioRetornoC" value="C" class="optionbutton" onclick = "ajustarPagina();">Cancelados
-						<input type="radio" name="situacaoEnvioRetorno" id="situacaoEnvioRetornoVZ" value="" checked="checked" class="optionbutton" onclick = "ajustarPagina();">Todos
+						<input type="radio" name="situacaoEnvioRetorno"  value="E" class="optionbutton" >Enviados  
+						<input type="radio" name="situacaoEnvioRetorno"  value="A" class="optionbutton" >Aceitos
+						<input type="radio" name="situacaoEnvioRetorno"  value="R" class="optionbutton" >Rejeitados  
+						<input type="radio" name="situacaoEnvioRetorno"  value="C" class="optionbutton" >Cancelados
+						<input type="radio" name="situacaoEnvioRetorno"  value="" checked="checked" class="optionbutton" >Todos
 					</s:if>
 					
 					<s:if test="%{#vacao!='exibirEnvioRetornoAnalitico' and #vacao!='exibirEnvioRetornoSintetico' }">
-						<input type="radio" name="situacaoEnvioRetorno" id="situacaoEnvioRetornoE"  value="E" class="optionbutton" onclick = "ajustarPagina();" disabled>Enviados  
-						<input type="radio" name="situacaoEnvioRetorno" id="situacaoEnvioRetornoA"  value="A" class="optionbutton" onclick = "ajustarPagina();" disabled>Aceitos
-						<input type="radio" name="situacaoEnvioRetorno" id="situacaoEnvioRetornoR"  value="R" class="optionbutton"onclick = "ajustarPagina();"  disabled>Rejeitados  
-						<input type="radio" name="situacaoEnvioRetorno" id="situacaoEnvioRetornoC"  value="C" class="optionbutton" onclick = "ajustarPagina();" disabled>Cancelados
-						<input type="radio" name="situacaoEnvioRetorno" id="situacaoEnvioRetornoVZ" value="" checked="checked" class="optionbutton" onclick = "ajustarPagina();"disabled>Todos
+						<input type="radio" name="situacaoEnvioRetorno"  value="E" class="optionbutton" disabled>Enviados  
+						<input type="radio" name="situacaoEnvioRetorno"  value="A" class="optionbutton" disabled>Aceitos
+						<input type="radio" name="situacaoEnvioRetorno"  value="R" class="optionbutton" disabled>Rejeitados  
+						<input type="radio" name="situacaoEnvioRetorno"  value="C" class="optionbutton" disabled>Cancelados
+						<input type="radio" name="situacaoEnvioRetorno"  value="" checked="checked" class="optionbutton" disabled>Todos
 				
 					</s:if>
 					
@@ -344,7 +344,7 @@
 						onclick="gerarRelatorio();">
 						<img src="${caminhoImagens}bt_consultar.jpg" class="margem_botoes"  />
 						</a> 
-						<a href="#"	title="Limpar" onclick="limpar()"> 
+						<a href="#"	title="Limpar" onclick="limpar();"> 
 						<img src="${caminhoImagens}bt_limpar.gif" class="margem_botoes"  />
 						</a> 
 						

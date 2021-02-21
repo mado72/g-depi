@@ -302,14 +302,17 @@ function selecionarCombobox(comp, nome) {
 	return true;
 }
 function refresh() {
-	var acao = document.forms[0].acaoOriginal.value;
+	var acao = document.getElementById("acaoOriginal").value;//document.forms[0].acaoOriginal.value;     
 	submitForm(acao, undefined, '');
 	return true;
 }
 function limpar() {
-	var acao = document.forms[0].acaoOriginal.value;
+   var acaoOriginal = document.getElementById("acaoOriginal").value;// document.forms[0].acaoOriginal.value;
+   var acao = document.getElementById("acaoOriginal").value;// document.forms[0].acaoOriginal.value;
+   //alert("acao:"+acao +"  -   acaoOriginal:"+acaoOriginal);
+   //document.location.href = '<c:out value="${pageContext.request.contextPath}" />/relatorio/ConsultarRelatorio.do?acao='+acaoOriginal;
+   //submitForm2(undefined,  "/DEP-DepositoIdentificado/relatorio/consultarRelatorio.do?acao="+acaoOriginal);
 	limpaTela(acao);
-	//document.location.href = document.forms[0].action + '?acao=' + acao;
 	return true;
 }
 function consultar() {
@@ -404,58 +407,87 @@ function gerarRelatorio(){
 
 
 function limpaTela(acao){
-
+        //alert(acao);
 		if (acao=="exibirEnvioRetornoAnalitico"){
-			exibirEnvioRetornoAnalitico();			
+			exibirEnvioRetornoAnalitico(acao);			
 		}		
 		if (acao=="exibirEnvioRetornoSintetico"){
-		  	exibirEnvioRetornoSintetico();			
+		  	exibirEnvioRetornoSintetico(acao);			
 		}
 		if (acao=="exibirExtratoAnalitico"){
-			exibirExtratoAnalitico();		
+			exibirExtratoAnalitico(acao);		
 		}
 		if (acao=="exibirExtratoSintetico"){
-			exibirExtratoSintetico();		
+			exibirExtratoSintetico(acao);		
 		}		
 		if (acao=="exibirManutencoesAnalitico"){
-		    exibirManutencoesAnalitico();			
+		    exibirManutencoesAnalitico(acao);			
 		}		
 		if (acao=="exibirManutencoesSintetico"){
-			exibirManutencoesSintetico();			
+			exibirManutencoesSintetico(acao);			
 		}					
 		if (acao=="exibirDadosComplementares"){
-			exibirDadosComplementares();			
+			exibirDadosComplementares(acao);			
 		}					
-		
+		ajustarPagina();	
 }
 
+function setTipoRelatorio(tp){
+    var tipoRelatorio = document.forms[0].elements['tipoRelatorio'];
+	for (var i = 0; i < tipoRelatorio.length; i++) {
+		if (tipoRelatorio[i].value == tp) {
+		   tipoRelatorio[i].checked = true;
+		}		
+	}	
+}
 
-function  exibirEnvioRetornoAnalitico() {
-/*
-	var janela = '<s:text name="label.relatorio.consultar.projeto"/>.'; 
-
-	var acao = 'consultar';
+function setVisualizacao(tp){
 	var visualizacao = document.forms[0].elements['visualizacao'];
-	 document.forms[0].elements['tipoRelatorio'];
-	var situacaoEnvioRetorno = document.forms[0].elements['situacaoEnvioRetorno'];
-	var situacaoManutencoes = document.forms[0].elements['situacaoManutencoes'];
-	var sucu = document.forms[0].sucursal;
-	var apol = document.forms[0].apolice;
-	var cpfC = document.forms[0].cpfCnpj;
-	var end = document.forms[0].endosso;	
-	
-	            var subtitulo = "Envio/Retorno BancoVO - Analítico";
-	           	var subtitulo = "Dados de Envio/Retorno BancoVO - Analítico");
-	            var tipoRelatorio ="ER";
-	            setVisualizacao("A");
-	            carregarComboCompanhia();
-	            carregarComboDepartamentos();
-	            carregarComboMotivos();
+	for (var i = 0; i < visualizacao.length; i++) {
+		if (visualizacao[i].value == tp) {
+		   visualizacao[i].checked = true;
+		}		
+	}	
+}
 
-*/	       
+function setSituacaoManutencoes(tp){
+	var situacaoManutencoes = document.forms[0].elements['situacaoManutencoes'];
+	for (var i = 0; i < situacaoManutencoes.length; i++) {
+		if (situacaoManutencoes[i].id == tp) {
+		   situacaoManutencoes[i].checked = true;
+		}		
+	}	
+}
+
+function setSituacaoEnvioRetorno(tp){
+	var situacaoEnvioRetorno = document.forms[0].elements['situacaoEnvioRetorno'];
+	for (var i = 0; i < situacaoEnvioRetorno.length; i++) {
+		if (situacaoEnvioRetorno[i].id == tp) {
+		   situacaoEnvioRetorno[i].checked = true;
+		}		
+	}	
+}
+
+function  exibirEnvioRetornoAnalitico(acao) {
+    //alert(acao);
+    var subtitulo = "Envio/Retorno BancoVO - Analítico";
+    var titulo    = "Dados de Envio/Retorno BancoVO - Analítico";
+	setTipoRelatorio("ER");
+	setVisualizacao("A");
+	setSituacaoEnvioRetorno("situacaoEnvioRetornoVZ");
+	setSituacaoManutencoes("situacaoManutencoesVZ");
+	            
+	carregarComboCompanhia();
+	carregarComboDepartamentos();
+	carregarComboMotivos();
+	document.getElementById('subtitulo').innerHTML = subtitulo;
+	document.getElementById('titulo_tabela').innerHTML = titulo;
+	document.forms[0].acao.value = acao;
+            
+	       
 }
 	
-function  exibirEnvioRetornoSintetico() {
+function  exibirEnvioRetornoSintetico(acao) {
 /*
             try {
                 setSubtitulo("Envio/Retorno BancoVO - Sintético");
@@ -472,7 +504,7 @@ function  exibirEnvioRetornoSintetico() {
   */          
 }
 
-function  exibirExtratoAnalitico() {
+function  exibirExtratoAnalitico(acao) {
 /*
             try {
 
@@ -491,7 +523,7 @@ function  exibirExtratoAnalitico() {
   */
   }
 
-function  exibirExtratoSintetico() {
+function  exibirExtratoSintetico(acao) {
      /*
 		        try {
 		            setSubtitulo("Extrato BancoVO - Sintético");
@@ -510,7 +542,7 @@ function  exibirExtratoSintetico() {
 */
 }
 	  
-function  exibirManutencoesAnalitico() {
+function  exibirManutencoesAnalitico(acao) {
 /*
 		    try {
 		    	
@@ -531,7 +563,7 @@ function  exibirManutencoesAnalitico() {
 */		       
 	  }
 
-	  function  exibirManutencoesSintetico() {
+	  function  exibirManutencoesSintetico(acao) {
 /*	
 	
 	       try {
@@ -552,7 +584,7 @@ function  exibirManutencoesAnalitico() {
 */	
 	  }
 	  
-	  function  exibirDadosComplementares() {
+	  function  exibirDadosComplementares(acao) {
 /*	
 	        try {
 	        	setSubtitulo("Dados Complementares - Analítico");
@@ -573,7 +605,14 @@ function  exibirManutencoesAnalitico() {
 */
 	  }	  
 
+function carregarComboCompanhia(){
+}
+function carregarComboDepartamentos(){
+}
 
+function carregarComboMotivos(){
+
+}
 
 
 
