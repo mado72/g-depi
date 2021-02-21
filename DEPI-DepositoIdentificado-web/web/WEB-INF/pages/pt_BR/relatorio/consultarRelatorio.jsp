@@ -2,11 +2,14 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@	taglib prefix="s" uri="/struts-tags" %>
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<!-- 
 <script type="text/javascript" src="/includes/js/script/arquivo.js"></script>
 <script type="text/javascript" src="/includes/js/script/consultarRelatorio.js"></script>
-
+ -->
+ 
 <s:include value="/WEB-INF/pages/pt_BR/includes/include-consultarRelatorio.jsp"/>
+<s:include value="/WEB-INF/pages/pt_BR/includes/include-arquivos.jsp"/>
+
 
     <s:set name="vacao" value="acao"/>
     <s:set name="vtpcCias" value="tpcCias"/>
@@ -15,15 +18,10 @@
     
 		
 <s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank">
-    <input type="hidden" id="acao" name="acao" value="${acao}" />
-    <input type="hidden" id="tituloTabela" name="tituloTabela" value="${tituloTabela}" />
-    <input type="hidden" id="acaoOriginal" name="acaoOriginal" value="${acao}" />
-    
-    
-    
-
-
-       
+    	<input type="hidden" id="acao" name="acao" value="${acao}" />
+    	<input type="hidden" id="tituloTabela" name="tituloTabela" value="${tituloTabela}" />
+    	<input type="hidden" id="acaoOriginal" name="acaoOriginal" value="${acao}" />
+           
     	<input type="hidden" id="hdntipoRelatorio" name="codigoAutorizador" value="" />
 		<input type="hidden" id="hdnvisualizacao" name="visualizacao" value="" />
 	    <input type="hidden" id="hdndeposito" name="deposito" value="1"/>
@@ -40,8 +38,8 @@
 	        	    
 	    <input type="hidden" id="hdndataInicial" name="dataInicial" value = "" />
 	    <input type="hidden" id="hdndataFinal" name="dataFinal" value = "" />
-	    <input type="hidden" id="hdnvalorInicial" name="valorInicial" value = "" />		
-	    <input type="hidden" id="hdnvalorFinal" name="valorFinal" value = "" />
+	    <input type="hidden" id="hdnvalorInicial" name="valorInicial" value = "" onkeypress="return mascararValor(this, event, 13)"/>		
+	    <input type="hidden" id="hdnvalorFinal" name="valorFinal" value = ""  onkeypress="return mascararValor(this, event, 13)"/>
 	    <input type="hidden" id="hdndescricaoDetalhada" name="descricaoDetalhada" value = "" />	
  		
 
@@ -148,8 +146,8 @@
 						  			listKey="codigoDepartamento" 
 						  			listValue="nomeDepartamento" 
 						  			name="departamento.listaDepartamentos"
-						  			style="width: 100%;"/>
-						            <!-- onkeydown="return tabEnter(event);" onchange="changeCombo('descricao_departamento',this.value); refresh();"> -->
+						  			style="width: 100%;"
+						            onkeydown="return tabEnter(event);" onchange="changeCombo('descricao_departamento',this.value); refresh();"/> 
 							</td>
 							<td align="left" colspan="5">
 								<s:select 
@@ -160,8 +158,8 @@
 						  			listKey="codigoDepartamento" 
 						  			listValue="nomeDepartamento" 
 						  			name="departamento.listaDepartamentosOrd"
-						  			style="width: 100%;"/>
-						            <!-- onkeydown="return tabEnter(event);" onchange="changeCombo('descricao_departamento',this.value); refresh();"> -->
+						  			style="width: 100%;"
+						            onkeydown="return tabEnter(event);" onchange="changeCombo('descricao_departamento',this.value); refresh();"/> 
 							</td>
 						
 						
@@ -177,8 +175,8 @@
 						  			listKey="codigoMotivoDeposito" 
 						  			listValue="descricaoBasica" 
 						  			name="motivoDeposito.listaMotivosDepositos"
-						  			style="width: 100%;"/>  
-						  			<!-- onkeydown="return tabEnter(event);" onchange="refresh();"> -->
+						  			style="width: 100%;" 
+						  			onkeydown="return tabEnter(event);" onchange="refresh();"/>
 						</td>
 						<td align="left" colspan="5">
 								<textarea name="descricaoDetalhada" id="descricao_motivo" rows="2" cols="50" class="descricao_motivo" onkeydown="return tabEnter(event);" style="width: 100%; wrap:virtual;" disabled ></textarea>
@@ -225,12 +223,12 @@
 					<td class="td_label" width="8%">Período<span class="obrigatorio">*</span></td>
 
 					
-					   <td>
-							De  &nbsp;
-							<input type="text" id="dataInicial" name="dataInicial" size="13" maxlength="10" onkeypress="formatarData(this, event);" >
-							&nbsp;&nbsp;&nbsp;
-							<img src="${caminhoImagens}ic_sbox_calendario.gif" style="cursor: pointer;" title="Data" >
-
+					   <td>&nbsp;De&nbsp;
+							<input type="text" id="dataInicial" name="dataInicial" size="13" maxlength="10" onkeypress="formatarData(this, event);" style="margin-left: 15px;" >							
+							<img src="${caminhoImagens}ic_sbox_calendario.gif" style="cursor: pointer;" title="Data"  
+								id="inicio" style="cursor: pointer;" title="Data"
+								onmouseover="this.style.background='';"
+								onmouseout="this.style.background='';" />
 
 						<script>
 				    		Calendar.setup({
@@ -245,8 +243,11 @@
 
 					   </td>
 					   <td colspan="5">
-							Até &nbsp;<input type="text" id="dataFinal" name="filtro.propostaVO.dataEntradaAte" size="13" maxlength="10" onkeypress="formatarData(this, event);">
-							&nbsp;&nbsp;&nbsp;<img src="${caminhoImagens}ic_sbox_calendario.gif" style="cursor: pointer;" title="Data" />
+							Até &nbsp;<input type="text" id="dataFinal" name="dataFinal" size="13" maxlength="10" onkeypress="formatarData(this, event);">
+							&nbsp;&nbsp;&nbsp;<img src="${caminhoImagens}ic_sbox_calendario.gif" style="cursor: pointer;" title="Data"
+								id="fim" style="cursor: pointer;" title="Data"
+								onmouseover="this.style.background='';"
+								onmouseout="this.style.background='';" />
 						<script>
 				    		Calendar.setup({
 					        inputField     : "dataFinal",
@@ -340,7 +341,7 @@
 					<td align="center" valign="middle" colspan="3">
 					<div id="tabela_botoes">
 					    <a href="#" title="Consultar"
-						onclick="document.getElementById('formConsultarRelatorio').submit();">
+						onclick="gerarRelatorio();">
 						<img src="${caminhoImagens}bt_consultar.jpg" class="margem_botoes"  />
 						</a> 
 						<a href="#"	title="Limpar" onclick="limpar()"> 

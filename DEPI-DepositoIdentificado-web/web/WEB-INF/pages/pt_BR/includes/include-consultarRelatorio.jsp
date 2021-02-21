@@ -5,8 +5,8 @@
 <script>
 function ajustarPagina() {
 	var titulo = ''; var subtitulo = ''; 
-	
-	var janela = '<s:text name="label.relatorio.consultar.cliente"/><s:text name="label.relatorio.consultar.projeto"/>.'; 
+	//<s:text name="label.relatorio.consultar.cliente"/>
+	var janela = '<s:text name="label.relatorio.consultar.projeto"/>.'; 
 	var acao = 'consultar';
 	var visualizacao = document.forms[0].elements['visualizacao'];
 	var tipoRelatorio = document.forms[0].elements['tipoRelatorio'];
@@ -308,7 +308,8 @@ function refresh() {
 }
 function limpar() {
 	var acao = document.forms[0].acaoOriginal.value;
-	document.location.href = document.forms[0].action + '?acao=' + acao;
+	limpaTela(acao);
+	//document.location.href = document.forms[0].action + '?acao=' + acao;
 	return true;
 }
 function consultar() {
@@ -394,4 +395,186 @@ function validarValores() {
 	}
 	return true;
 }
+
+function gerarRelatorio(){
+	var acao = document.forms[0].acaoOriginal.value;	
+	document.location.href = document.forms[0].action + '?acao=' + acao;
+	//document.getElementById('formConsultarRelatorio').submit();
+}
+
+
+function limpaTela(acao){
+
+		if (acao=="exibirEnvioRetornoAnalitico"){
+			exibirEnvioRetornoAnalitico();			
+		}		
+		if (acao=="exibirEnvioRetornoSintetico"){
+		  	exibirEnvioRetornoSintetico();			
+		}
+		if (acao=="exibirExtratoAnalitico"){
+			exibirExtratoAnalitico();		
+		}
+		if (acao=="exibirExtratoSintetico"){
+			exibirExtratoSintetico();		
+		}		
+		if (acao=="exibirManutencoesAnalitico"){
+		    exibirManutencoesAnalitico();			
+		}		
+		if (acao=="exibirManutencoesSintetico"){
+			exibirManutencoesSintetico();			
+		}					
+		if (acao=="exibirDadosComplementares"){
+			exibirDadosComplementares();			
+		}					
+		
+}
+
+
+function  exibirEnvioRetornoAnalitico() {
+/*
+	var janela = '<s:text name="label.relatorio.consultar.projeto"/>.'; 
+
+	var acao = 'consultar';
+	var visualizacao = document.forms[0].elements['visualizacao'];
+	 document.forms[0].elements['tipoRelatorio'];
+	var situacaoEnvioRetorno = document.forms[0].elements['situacaoEnvioRetorno'];
+	var situacaoManutencoes = document.forms[0].elements['situacaoManutencoes'];
+	var sucu = document.forms[0].sucursal;
+	var apol = document.forms[0].apolice;
+	var cpfC = document.forms[0].cpfCnpj;
+	var end = document.forms[0].endosso;	
+	
+	            var subtitulo = "Envio/Retorno BancoVO - Analítico";
+	           	var subtitulo = "Dados de Envio/Retorno BancoVO - Analítico");
+	            var tipoRelatorio ="ER";
+	            setVisualizacao("A");
+	            carregarComboCompanhia();
+	            carregarComboDepartamentos();
+	            carregarComboMotivos();
+
+*/	       
+}
+	
+function  exibirEnvioRetornoSintetico() {
+/*
+            try {
+                setSubtitulo("Envio/Retorno BancoVO - Sintético");
+                setTituloTabela("Dados de Envio/Retorno BancoVO - Sintético");
+                setTipoRelatorio("ER");
+                setVisualizacao("S");
+	    		carregarComboCompanhia();
+	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
+	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
+             } catch (DEPIIntegrationException e) {
+            	LOGGER.error(e.getMessage());
+            	throw new DEPIIntegrationException(e.getMessage());
+            }
+  */          
+}
+
+function  exibirExtratoAnalitico() {
+/*
+            try {
+
+                setSubtitulo("Extrato BancoVO - Analítico");
+                setTituloTabela("Dados de Extrato BancoVO - Analítico");
+                setTipoRelatorio("EX");
+                setVisualizacao("A");
+	    		carregarComboCompanhia();
+	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
+	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
+
+            } catch (DEPIIntegrationException e) {
+            	LOGGER.error(e.getMessage());
+            	throw new DEPIIntegrationException(e.getMessage());
+            }
+  */
+  }
+
+function  exibirExtratoSintetico() {
+     /*
+		        try {
+		            setSubtitulo("Extrato BancoVO - Sintético");
+		            setTituloTabela("Dados de Extrato BancoVO - Sintético");
+		            setTipoRelatorio("EX");
+		            setVisualizacao("S");
+		    		carregarComboCompanhia();
+		    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
+		    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
+
+		        
+		        } catch (DEPIIntegrationException e) {
+	            	LOGGER.error(e.getMessage());
+	            	throw new DEPIIntegrationException(e.getMessage());
+		        }
+*/
+}
+	  
+function  exibirManutencoesAnalitico() {
+/*
+		    try {
+		    	
+		        setSubtitulo("Manutenções - Analítico");
+		        setTituloTabela("Dados de Manutenções - Analítico");
+		        setTipoRelatorio("MN");
+		        setVisualizacao("A");
+		        setAcaoAnterior("exibirManutencoesAnalitico");
+				carregarComboCompanhia();
+	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
+	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
+		    
+		        } catch (DEPIIntegrationException e) {
+	            	LOGGER.error(e.getMessage());
+	            	throw new DEPIIntegrationException(e.getMessage());
+		        }
+
+*/		       
+	  }
+
+	  function  exibirManutencoesSintetico() {
+/*	
+	
+	       try {
+
+		        setSubtitulo("Manutenções - Sintético");
+		        setTituloTabela("Dados de Manutenções - Sintético");
+		        setTipoRelatorio("MN");
+		        setVisualizacao("S");
+
+		        carregarComboCompanhia();
+  				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
+  				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
+
+		        } catch (DEPIIntegrationException e) {
+		        	LOGGER.error(e.getMessage());
+	            	throw new DEPIIntegrationException(e.getMessage());
+		        }
+*/	
+	  }
+	  
+	  function  exibirDadosComplementares() {
+/*	
+	        try {
+	        	setSubtitulo("Dados Complementares - Analítico");
+		        setTituloTabela("Dados Complementares - Analítico");
+		        setTipoRelatorio("DC");
+		        setVisualizacao("A");
+		        setSituacaoEnvioRetorno("A");
+		        
+
+			  		carregarComboCompanhia();
+	  				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
+	  				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
+
+		        } catch (DEPIIntegrationException e) {
+		        	LOGGER.error(e.getMessage());
+	            	throw new DEPIIntegrationException(e.getMessage());
+		        }
+*/
+	  }	  
+
+
+
+
+
 </script>

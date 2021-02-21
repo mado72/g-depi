@@ -909,27 +909,37 @@ public class ConsultarRelatorioAction extends BaseAction  {
         //request.setAttribute("departamentos", new ArrayList<DepartamentoVO>());
         //request.setAttribute("departamentosOrdenados", new ArrayList<DepartamentoVO>());
     	
-    	if (!BaseUtil.isNZB(this.codigoCompanhia)) {
-            List<DepartamentoVO> listaRetorno = consultarRelatorioFacade.obterComDepositoRestricaoDeDeposito(
-                Integer.valueOf( this.codigoCompanhia) , getUsuarioLogado());
-            if (!BaseUtil.isNZB(listaRetorno)) {
-                List<DepartamentoVO> departamentosOrdenados = new ArrayList<DepartamentoVO>(listaRetorno);
-                Collections.sort(departamentosOrdenados, ordenaDepartamento);
-
-                this.listaDepartamentos = listaRetorno;
-                this.listaDepartamentosOrd = departamentosOrdenados;
-                request.setAttribute("departamentosOrdenados", departamentosOrdenados);
-
-                if (!BaseUtil.isNZB(this.codigoDepartamento)) {
-                    for (DepartamentoVO dep : listaRetorno) {
-                        if (dep.equals(new DepartamentoVO(this.codigoDepartamento , null, null))) {
-                            return;
-                        }
-                    }
-                }
-                this.codigoDepartamento =0;
-            }
+    	try {
+			
+			
+	    	if (!BaseUtil.isNZB(this.codigoCompanhia)) {
+	            List<DepartamentoVO> listaRetorno = consultarRelatorioFacade.obterComDepositoRestricaoDeDeposito(
+	                Integer.valueOf( this.codigoCompanhia) , getUsuarioLogado());
+	            if (!BaseUtil.isNZB(listaRetorno)) {
+	                List<DepartamentoVO> departamentosOrdenados = new ArrayList<DepartamentoVO>(listaRetorno);
+	                Collections.sort(departamentosOrdenados, ordenaDepartamento);
+	
+	                this.listaDepartamentos = listaRetorno;
+	                this.listaDepartamentosOrd = departamentosOrdenados;
+	                request.setAttribute("departamentosOrdenados", departamentosOrdenados);
+	
+	                if (!BaseUtil.isNZB(this.codigoDepartamento)) {
+	                    for (DepartamentoVO dep : listaRetorno) {
+	                        if (dep.equals(new DepartamentoVO(this.codigoDepartamento , null, null))) {
+	                            return;
+	                        }
+	                    }
+	                }
+	                this.codigoDepartamento =0;
+	            }
+	        }
+    	
+    	} catch (DEPIIntegrationException e) {
+        	LOGGER.error(e.getMessage());
+        	//throw new DEPIIntegrationException(e.getMessage());
         }
+    	
+    	
     }
     /**
      * Comparador de DepartamentoVO onde a ordenação será realizada pelo código do departamento.
