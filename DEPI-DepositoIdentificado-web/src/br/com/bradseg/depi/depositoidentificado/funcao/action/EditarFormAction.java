@@ -27,8 +27,6 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EditarFormAction.class);
 	
-	protected static final String VOLTAR = "voltar";
-
 	private final F model;
 	
 	private List<String> codigo;
@@ -141,7 +139,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	 * @return "voltar"
 	 */
 	public String voltar() {
-		return VOLTAR;
+		return "voltar";
 	}
 	
 	/**

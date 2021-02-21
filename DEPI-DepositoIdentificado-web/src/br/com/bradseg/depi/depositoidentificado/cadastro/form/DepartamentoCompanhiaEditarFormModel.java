@@ -26,13 +26,13 @@ public class DepartamentoCompanhiaEditarFormModel extends CrudForm {
 	public void preencherDadosIniciais() {
 		setCodigo(null);
 		if (siglaDepartamentos != null) {
-			siglaDepartamentos.clear();
+			siglaDepartamentos = new ArrayList<>();
 		}
 		if (cias != null) {
-			cias.clear();
+			cias = new ArrayList<>();
 		}
 		if (deptos != null) {
-			deptos.clear();
+			deptos = new ArrayList<>();
 		}
 	}
 

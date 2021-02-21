@@ -314,36 +314,6 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
         }
 	}
 
-	
-    /**
-     * Obtém todos os Motivos.
-     * @return List<MotivoDepositoVO>.
-     */
-	@Override
-	public List<MotivoDepositoVO> obterTodos() {
-		
-		LOGGER.error("obterTodos"); 
-		
-		StringBuilder query = new StringBuilder();
-    	query.append(QuerysDepi.MOTIVODEPOSITO_ALL);
-   	
-		try {
-
-			MapSqlParameterSource params = new MapSqlParameterSource();   		
-
-        	List<MotivoDepositoVO> motivoDepto = getJdbcTemplate().query(query.toString(), params, new MotivoDepositoDataMapper());
-			
-            if (motivoDepto == null || motivoDepto.isEmpty() ) {
-                throw new BusinessException(ConstantesDEPI.ERRO_RELACIONAMENTOS_NAO_CADASTRADOS);
-            }
-                
-            return motivoDepto;
-            
-        } finally {
-        	LOGGER.info("obterTodos"); 
-        }
-	}
-
 	private void queryInsert(MotivoDepositoVO vo) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue(PARAM_PRM1, vo.getDescricaoBasica().trim());

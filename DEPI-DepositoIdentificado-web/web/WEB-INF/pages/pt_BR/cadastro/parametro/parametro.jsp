@@ -56,7 +56,7 @@
 		</td>
 		<td class="text-center">${item.companhia.codigoCompanhia}</td>
 		<td>${item.departamento.nomeDepartamento}</td>
-		<td class="text-center"><c:choose><c:when test="${item.codigoBancoVencimento eq 'S'}">Sim</c:when><c:otherwise>Não</c:otherwise></c:choose></td>
+		<td class="text-center"><c:choose><c:when test="${item.codigoBancoVencimento eq 'S'}">${item.numeroDiasAposVencimento} dia(s)</c:when><c:otherwise>Não</c:otherwise></c:choose></td>
 		<td class="text-center">${item.codigoResponsavelUltimaAtualizacao}</td>
 		<td class="text-center"><fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.ultimaAtualizacao}"/></td>
 		</tr>

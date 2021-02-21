@@ -24,6 +24,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
@@ -95,6 +96,20 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
     		
     	}
     	
+    	for (DepartamentoVO vo : deptos) {
+    		String flag = deptoCiaDAO.obterFlagAtivo(new DepartamentoCompanhiaVO(cia, vo));
+    		
+    		if ("S".equals(flag)) {
+				StringBuilder msg = new StringBuilder("Cia: ")
+						.append(cia.getCodigoCompanhia()).append(", ")
+						.append("Depto: ").append(vo.getCodigoDepartamento());
+				
+				throw new DEPIIntegrationException(
+						ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO,
+						msg.toString());
+    		}
+		}
+    	
     	deptoCiaDAO.persistir(cia, deptos, codUsuario);
 
     	LOGGER.error("Fim - alterar(DepartamentoVO vo)"); 
@@ -112,7 +127,7 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
 	    	try {
 	    		excluirItem(item);
 	    	} catch (DEPIBusinessException e) {
-				String msg = BaseUtil.getTextoFormatado(ConstantesDEPI.ERRO_EXCLUSAO_ITEM, e.getMessage());
+				String msg = BaseUtil.getTextoFormatado(Geral.ERRO_EXCLUSAO_ITEM, e.getMessage());
 	    		msgErros.append(msg);
 	    	}
 	    	
@@ -134,8 +149,8 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
 		try {
 			excluirItem(vo);
 		} catch (DEPIBusinessException e) {
-			String msg = BaseUtil.getTextoFormatado(ConstantesDEPI.ERRO_EXCLUSAO_ITEM, e.getMessage());
-			throw new DEPIBusinessException(ConstantesDEPI.ERRO_EXCLUSAO, msg);
+			String msg = BaseUtil.getTextoFormatado(Geral.ERRO_EXCLUSAO_ITEM, e.getMessage());
+			throw new DEPIBusinessException(Geral.ERRO_EXCLUSAO_LISTA, msg);
 		}
 		
 		LOGGER.error("Fim - excluir(DepartamentoVO vo)");
@@ -232,14 +247,6 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
 			}
 		}
 		return lista;
-    }
-    
-    /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoCompanhiaFacade#obterPorChave(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO)
-     */
-    @Override
-    public DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo) {
-    	return deptoCiaDAO.obterPorChave(vo);
     }
 
     /**

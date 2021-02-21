@@ -60,6 +60,8 @@ public class FuncionarioConsultarAction extends FiltroAction<FuncionarioCampo, F
 	 */
 	@Override
 	protected void validarCriterio(CriterioConsultaVO<FuncionarioCampo> criterio) {
+		super.validarCriterio(criterio);
+		
 		FuncionarioCampo campo = criterio.getCampo();
 		String valor = criterio.getValor();
 
