@@ -58,7 +58,8 @@ public class ParametroDepositosDataMapper implements RowMapper<ParametroDeposito
 		vo.setOutrosDocumentosNecessarios(rs.getString("ROBS_PARMZ_DEP"));
 		vo.setDataHoraInclusao(rs.getDate("DHORA_INCL_REG"));
 		vo.setUltimaAtualizacao(rs.getDate("DHORA_ULT_ATULZ"));
-		vo.setCodigoResponsavelUltimaAtualizacao(rs.getInt("CUSUAR_RESP_ATULZ"));
+		int codUsuario = rs.getInt("CUSUAR_RESP_ATULZ");
+		vo.setCodigoResponsavelUltimaAtualizacao(codUsuario);
 		vo.setCodigoAtivo(rs.getString("CIND_REG_ATIVO"));
 		vo.setReferenciadoDeposito(rs.getBoolean("REFERENCIADO_DEPOSITO"));
 		

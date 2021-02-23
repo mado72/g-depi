@@ -39,8 +39,6 @@ public interface MotivoDepositoDAO{
 
 	public List<MotivoDepositoVO> obterPorFiltro(FiltroUtil filtro);
 
-	public List<MotivoDepositoVO> obterTodos();
-
 	void excluirLista(List<MotivoDepositoVO> listvo);
 
 	/**

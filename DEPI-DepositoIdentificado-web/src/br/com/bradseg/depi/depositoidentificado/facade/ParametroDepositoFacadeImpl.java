@@ -15,13 +15,18 @@ import br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.UsuarioDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
@@ -50,6 +55,9 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
 	
 	@Autowired
 	private MotivoDepositoDAO motivoDAO;
+	
+	@Autowired
+	private UsuarioDAO usuarioDAO;
 
     /**
      * alterar
@@ -109,13 +117,13 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
                     sb.append("; ");
                 }
                 ParametroDepositoVO param = parametroDepositoDAO.obterPorChave(vo);
-                sb.append(" Par�metro de Dep�sito: [Cia: ").append(param.getCompanhia().getCodigoCompanhia()).append(
+                sb.append(" Par\u00e3metro de Dep\u00f3sito: [Cia: ").append(param.getCompanhia().getCodigoCompanhia()).append(
                     " Departamento: ").append(param.getDepartamento().getSiglaDepartamento()).append(" Motivo: ").append(
                     param.getMotivoDeposito().getDescricaoBasica()).append("]");
             }
         }
         if (sb.length() > 0) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO + " - " + sb.toString() + " - " +  "Associa��o de Motivos");
+            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO + " - " + sb.toString() + " - " +  "Associa\u00e7\u00e3o de Motivos");
         }
     }
 
@@ -127,12 +135,20 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     @Override
     public void inserir(ParametroDepositoVO vo) throws IntegrationException {
         validaOperacao(vo);
-        try {
-        	parametroDepositoDAO.inserir(vo);
-        } catch (IntegrationException e) {
-        	LOGGER.error("inserir(ParametroDepositoVO vo)",e);
-            throw new IntegrationException(e);
+        
+/*
+        if (parametroDepositoDAO.obterPorChave(vo) != null) {
+        	
+        	DepartamentoVO depto = deptoDAO.obterPorChave(vo.getDepartamento());
+        	MotivoDepositoVO motv = motivoDAO.obterPorChave(vo.getMotivoDeposito());
+        	
+        	throw new DEPIBusinessException(ConstantesDEPI.ParametroDeposito.DUPLICADO, 
+        			String.valueOf(vo.getCompanhia().getCodigoCompanhia()),
+        			depto.getSiglaDepartamento(),
+        			motv.getDescricaoBasica());
         }
+*/
+        parametroDepositoDAO.inserir(vo);
     }
 
     /**
@@ -150,10 +166,10 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     	List<ParametroDepositoVO> retorno = parametroDepositoDAO
 				.obterPorFiltroComRestricaoDeGrupoAcesso(filtro, codigoUsuario);
 		
-//		for (ParametroDepositoVO p : retorno) {
-//			p.setReferenciadoDeposito(parametroDepositoDAO
-//					.isReferenciadoDeposito(p));
-//		}
+    	if (retorno.isEmpty() && !usuarioDAO.existeGrupoAcessoUsuario(codigoUsuario)) {
+    		throw new DEPIBusinessException(ConstantesDEPI.ParametroDeposito.ERRO_USUARIO_SEM_GRUPO_ASSOCIADO);
+    	}
+
 		return retorno;
     }
 
@@ -228,7 +244,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     }
 
     /**
-     * m�todo que v�lida a chave
+     * método que valida a chave
      * @param vo - objeto que será validado
      * @throws IntegrationException - trata erros
      */
@@ -288,7 +304,15 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
      */
     @Override
     public List<MotivoDepositoVO> obterMotivos() {
-    	return motivoDAO.obterTodos();
+    	FiltroUtil filtro = new FiltroUtil();
+		CriterioConsultaVO<?> criterio = new CriterioConsultaVO<IEntidadeCampo>(
+				MotivoDepositoCampo.Ativo,
+				TipoOperacao.IgualAlfanumericoObrigatorio,
+				ConstantesDEPI.INDICADOR_ATIVO, 
+				"param1");
+		filtro.adicionaCriterio(criterio);
+		
+    	return motivoDAO.obterPorFiltro(filtro);
     }
     
     /* (non-Javadoc)
