@@ -97,7 +97,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
         }
         if (sb.length() > 0) {
 			throw new DEPIBusinessException(
-					"msg.erro.grupoAcesso.registrocomdependencia",
+					"msg.erro.grupoacesso.registrocomdependencia",
 					sb.toString());
         }
     }

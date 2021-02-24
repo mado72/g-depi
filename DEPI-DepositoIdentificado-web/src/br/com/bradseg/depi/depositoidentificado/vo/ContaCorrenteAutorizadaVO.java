@@ -4,6 +4,9 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 /**
  * Classe ContaCorrenteAutorizadaVO
@@ -68,6 +71,31 @@ public final class ContaCorrenteAutorizadaVO implements Serializable {
     private long trps;
     
     private DepositoVO deposito;
+    
+    private Date dataInclusao;
+    
+    private Date dataHoraAtualizacao;
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder("Conta Corrente: [Banco: ");
+    	if (getBanco() != null) {
+    		sb.append(getBanco().getCdBancoExterno());
+    	}
+    	else {
+    		sb.append("null");
+    	}
+    	
+    	sb.append(", Ag.: ").append(getCodigoAgencia())
+    		.append(", Conta Corrente: ")
+    		.append(getContaCorrente())
+    		.append(']');
+    	
+    	return sb.toString();
+    }
 
 	/**
      * Retorna o valor do atributo deposito.
@@ -272,6 +300,38 @@ public final class ContaCorrenteAutorizadaVO implements Serializable {
 	public void setCodigoResponsavelUltimaAtualizacao(
 			int codigoResponsavelUltimaAtualizacao) {
 		this.codigoResponsavelUltimaAtualizacao = codigoResponsavelUltimaAtualizacao;
+	}
+	
+	/**
+	 * Retorna dataInclusao
+	 * @return o dataInclusao
+	 */
+	public Date getDataInclusao() {
+		return BaseUtil.getDate(dataInclusao);
+	}
+	
+	/**
+	 * Define dataInclusao
+	 * @param dataInclusao valor dataInclusao a ser definido
+	 */
+	public void setDataInclusao(Date dataInclusao) {
+		this.dataInclusao = BaseUtil.getDate(dataInclusao);
+	}
+	
+	/**
+	 * Retorna dataHoraAtualizacao
+	 * @return o dataHoraAtualizacao
+	 */
+	public Date getDataHoraAtualizacao() {
+		return BaseUtil.getDate(dataHoraAtualizacao);
+	}
+	
+	/**
+	 * Define dataHoraAtualizacao
+	 * @param dataHoraAtualizacao valor dataHoraAtualizacao a ser definido
+	 */
+	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
+		this.dataHoraAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
 	}
 
 }

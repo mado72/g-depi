@@ -16,6 +16,7 @@ import br.com.bradseg.depi.depositoidentificado.cics.vo.GTAB1412VO;
 import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsUtil;
 import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsUtil.Program;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 
 /**
  * Repositório que reúne operações ao CICS.
@@ -83,6 +84,18 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 		}
 		
 		return retorno;
+	}
+	
+	@Override
+	public ContaCorrenteAutorizadaVO obterContaCorrente(ContaCorrenteAutorizadaVO cc) {
+		// TODO Implementar
+		return null;
+	}
+	
+	@Override
+	public List<ContaCorrenteAutorizadaVO> obterContasCorrente(Collection<ContaCorrenteAutorizadaVO> contas) {
+		// TODO Implementar
+		return null;
 	}
 
 }

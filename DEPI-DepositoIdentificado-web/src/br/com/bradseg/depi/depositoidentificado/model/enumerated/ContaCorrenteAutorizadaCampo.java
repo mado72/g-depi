@@ -1,5 +1,8 @@
 package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
+import java.util.Arrays;
+import java.util.List;
+
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
@@ -43,6 +46,7 @@ public enum ContaCorrenteAutorizadaCampo implements IEntidadeCampo {
     trps(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_TRPS, TipoCampo.NUM, false,
             ConstantesDEPI.SIZE_NAO_DEFINIDO);
 
+    private final static List<ContaCorrenteAutorizadaCampo> CRITERIAS = Arrays.asList(values());
 
     private String nome;
 
@@ -131,10 +135,10 @@ public enum ContaCorrenteAutorizadaCampo implements IEntidadeCampo {
 
     /**
      * Retorna valores da combo de consulta.
-     * @return DepartamentoCampo[].
+     * @return Critérios.
      */
-    public static ContaCorrenteAutorizadaCampo[] valuesForCriteria() {
-        return ContaCorrenteAutorizadaCampo.values();
+    public static List<ContaCorrenteAutorizadaCampo> valuesForCriteria() {
+        return CRITERIAS;
     }
 
 }
