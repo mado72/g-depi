@@ -6,6 +6,7 @@ package br.com.bradseg.depi.depositoidentificado.cics.dao;
 import java.util.Collection;
 import java.util.List;
 
+import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 
@@ -45,5 +46,28 @@ public interface CICSDepiDAO {
 	 */
 	List<ContaCorrenteAutorizadaVO> obterContasCorrente(
 			Collection<ContaCorrenteAutorizadaVO> contas);
+
+	/**
+	 * Obtém informações de um banco do Cics
+	 * @param banco Banco
+	 * @return Banco
+	 */
+	BancoVO obterBanco(BancoVO banco);
+	
+	/**
+	 * Obtém informações de uma lista de bancos do Cics
+	 * @param contas Lista de bancos
+	 * @return Lista com informações do Cics
+	 */
+	List<BancoVO> obterBancos(
+			Collection<BancoVO> contas);
+
+	/**
+	 * Obtém o nome da agência
+	 * @param codigoBanco Banco
+	 * @param codigoAgencia Agência
+	 * @return Nome da Agência
+	 */
+	String obterAgencia(int codigoBanco, int codigoAgencia);
 
 }

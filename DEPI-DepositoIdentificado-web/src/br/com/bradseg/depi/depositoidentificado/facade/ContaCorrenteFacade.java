@@ -74,4 +74,27 @@ public interface ContaCorrenteFacade {
 	 */
 	List<ContaCorrenteAutorizadaVO> obterPorFiltro(int codUsuario, FiltroUtil filtro);
 
+	/**
+	 * Obtém um banco pelo seu código
+	 * @param vo Contém o código do banco (código externo)
+	 * @return Dados do banco
+	 */
+	BancoVO obterBanco(BancoVO vo);
+
+	/**
+	 * Obter descrição da agência com base no código externo do banco e no
+	 * código externo da agência
+	 * 
+	 * @param ccVO Contém os códigos
+	 * @return Descrição da Agência
+	 */
+	String obterAgencia(ContaCorrenteAutorizadaVO ccVO);
+
+	/**
+	 * Obter número da conta interna
+	 * @param ccVO Dados da conta
+	 * @return número da conta interna
+	 */
+	Integer obterContaInterna(ContaCorrenteAutorizadaVO ccVO);
+
 }

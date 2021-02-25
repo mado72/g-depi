@@ -7,14 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.ParametroDepositoEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.ContaCorrenteEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.cadastro.helper.ContaCorrenteCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
-import br.com.bradseg.depi.depositoidentificado.cadastro.helper.ParametroDepositoCrudHelper;
-import br.com.bradseg.depi.depositoidentificado.facade.ParametroDepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.ParametroDepositoCampo;
-import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoPKVO;
-import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.ContaCorrenteAutorizadaCampo;
+import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -23,37 +24,33 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
  */
 @Controller
 @Scope("session")
-public class ContaCorrenteEditarAction extends EditarFormAction<ParametroDepositoCampo, ParametroDepositoVO, ParametroDepositoEditarFormModel> {
+public class ContaCorrenteEditarAction extends EditarFormAction<ContaCorrenteAutorizadaCampo, ContaCorrenteAutorizadaVO, ContaCorrenteEditarFormModel> {
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	private transient ParametroDepositoCrudHelper crudHelper;
+	private transient ContaCorrenteCrudHelper crudHelper;
+	
+	private final static int CODIGO_BANCO_BRADESCO = 237;
 	
 	@Override
-	protected CrudHelper<ParametroDepositoCampo, ParametroDepositoVO, ParametroDepositoEditarFormModel> getCrudHelper() {
+	protected CrudHelper<ContaCorrenteAutorizadaCampo, ContaCorrenteAutorizadaVO, ContaCorrenteEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
-			crudHelper = new ParametroDepositoCrudHelper();
+			crudHelper = new ContaCorrenteCrudHelper();
 		}
 		return crudHelper;
 	}
 	
 	@Autowired
-	public void setFacade(ParametroDepositoFacade facade) {
+	public void setFacade(ContaCorrenteFacade facade) {
 		crudHelper.setFacade(facade);
 	}
-	
+		
 	@Override
-	protected List<ParametroDepositoVO> mapearListaVO(String[] codigos) {
-		List<ParametroDepositoVO> lista = new ArrayList<>();
+	protected List<ContaCorrenteAutorizadaVO> mapearListaVO(String[] codigos) {
+		List<ContaCorrenteAutorizadaVO> lista = new ArrayList<>();
 		
 		for (String codigo : codigos) {
-			ParametroDepositoPKVO pk = new ParametroDepositoPKVO(codigo);
-			ParametroDepositoVO vo = new ParametroDepositoVO();
-			vo.getCompanhia().setCodigoCompanhia(pk.getCodigoCompanhia());
-			vo.getDepartamento().setCodigoDepartamento(pk.getCodigoDepartamento());
-			vo.getMotivoDeposito().setCodigoMotivoDeposito(pk.getCodigoMotivo());
-			
-			vo = crudHelper.obterPorChave(vo);
+			ContaCorrenteAutorizadaVO vo = crudHelper.obterPeloCodigo(codigo);
 			lista.add(vo);
 		}
 		
@@ -69,7 +66,19 @@ public class ContaCorrenteEditarAction extends EditarFormAction<ParametroDeposit
 			int codUsuario = getCodUsuarioLogado();
 			
 			String retorno = super.incluir();
-			crudHelper.prepararFormularioInclusao(codUsuario, getModel());
+			
+			List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias(codUsuario);
+			getModel().setCias(cias);
+			
+			if (cias != null && !cias.isEmpty()) {
+				int codigoCompanhia = cias.get(0).getCodigoCompanhia();
+				getModel().setCodigoCompanhia(String.valueOf(codigoCompanhia));
+			}
+			
+			BancoVO banco = crudHelper.obterBanco(new BancoVO(CODIGO_BANCO_BRADESCO));
+			getModel().setCodigoBanco(String.valueOf(CODIGO_BANCO_BRADESCO));
+			getModel().setDescricaoBanco(banco.getDescricaoBanco());
+			
 			return retorno;
 		} catch (Exception e) {
 			addActionError(e.getMessage());

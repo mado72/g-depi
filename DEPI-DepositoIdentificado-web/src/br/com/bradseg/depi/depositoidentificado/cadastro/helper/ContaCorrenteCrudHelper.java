@@ -39,15 +39,15 @@ public class ContaCorrenteCrudHelper implements
 		this.facade = facade;
 	}
 	
-	private static final String TITLE_CONSULTAR = "title.contacorrente.consultar";
+	private static final String TITLE_CONSULTAR = "title.contacorrenteautorizada.consultar";
 
-	private static final String TITLE_LISTAR = "title.contacorrente.listar";
+	private static final String TITLE_LISTAR = "title.contacorrenteautorizada.listar";
 	
-	private static final String TITLE_ALTERAR = "title.contacorrente.editar";
+	private static final String TITLE_ALTERAR = "title.contacorrenteautorizada.editar";
 	
-	private static final String TITLE_DETALHAR = "title.contacorrente.detalhar";
+	private static final String TITLE_DETALHAR = "title.contacorrenteautorizada.detalhar";
 
-	private static final String TITLE_DEPOSITO_INCLUIR = "title.contacorrente.novo";
+	private static final String TITLE_DEPOSITO_INCLUIR = "title.contacorrenteautorizada.novo";
 	// Métodos para filtrar
 
 	@Override
@@ -131,16 +131,24 @@ public class ContaCorrenteCrudHelper implements
 		model.setCias(Collections.singletonList(companhia));
 		model.setCodigoCompanhia(BaseUtil.blankIfNull(companhia.getCodigoCompanhia()));
 		
-		model.setAgencia(BaseUtil.blankIfNull(vo.getCodigoAgencia()));
-		model.setCodigoBanco(BaseUtil.blankIfNull(vo.getBanco().getCdBancoExterno()));
-		model.setContaCorrente(BaseUtil.blankIfNull(vo.getContaCorrente()));
-		model.setContaInterna(BaseUtil.blankIfNull(vo.getBanco().getCdBancoInterno()));
-		model.setHistorico(vo.getObservacao());
-		model.setTrps(BaseUtil.blankIfNull(vo.getTrps()));
+		model.setAgencia(BaseUtil.getValueMaskFormat("99999", BaseUtil.blankIfNull(vo.getCodigoAgencia()), true));
+		model.setCodigoBanco(BaseUtil.getValueMaskFormat("9999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoExterno()), true));
+		model.setDescricaoBanco(vo.getBanco().getDescricaoBanco());
+		model.setContaCorrente(BaseUtil.getValueMaskFormat("9999999999999", BaseUtil.blankIfNull(vo.getContaCorrente()), true));
+		model.setContaInterna(BaseUtil.getValueMaskFormat("999999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoInterno()), true));
+		model.setObservacao(vo.getObservacao());
+		model.setTrps(BaseUtil.getValueMaskFormat("9999999999999", BaseUtil.blankIfNull(vo.getTrps()), true));
+		model.setDescricaoAgencia(vo.getDescricaoAgencia());
 	}
 
-	private ContaCorrenteAutorizadaVO obterPeloCodigo(String codigo) {
+	public ContaCorrenteAutorizadaVO obterPeloCodigo(String codigo) {
 		ContaCorrenteAutorizadaVO vo = new ContaCorrenteAutorizadaVO();
+		
+		String[] partes = codigo.split(";");
+		vo.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(partes[0])));
+		vo.setBanco(new BancoVO(Integer.parseInt(partes[1])));
+		vo.setCodigoAgencia(Integer.parseInt(partes[2]));
+		vo.setContaCorrente(Long.parseLong(partes[3]));
 		
 		ContaCorrenteAutorizadaVO instancia = facade.obterPorChave(vo);
 		return instancia;
@@ -172,7 +180,7 @@ public class ContaCorrenteCrudHelper implements
 		vo.setBanco(new BancoVO(Integer.parseInt(model.getCodigoBanco())));
 		vo.setCodigoAgencia(Integer.parseInt(model.getAgencia()));
 		vo.setContaCorrente(Long.parseLong(model.getContaCorrente()));
-		vo.setObservacao(model.getHistorico());
+		vo.setObservacao(model.getObservacao());
 		vo.setTrps(Long.parseLong(model.getTrps()));
 		
 		if (novo) {
@@ -204,6 +212,24 @@ public class ContaCorrenteCrudHelper implements
 	 */
 	public List<CompanhiaSeguradoraVO> obterCompanhias(int codUsuario) {
 		return facade.obterCompanhias(codUsuario);
+	}
+	
+	/**
+	 * Lista os bancos associados a uma companhia
+	 * @param cia Companhia
+	 * @return Lista de bancos
+	 */
+	public List<BancoVO> obterBancos(CompanhiaSeguradoraVO cia) {
+		return facade.obterBancos(cia);
+	}
+	
+	/**
+	 * Obtém dados de um banco
+	 * @param vo Contém o código do banco
+	 * @return Banco
+	 */
+	public BancoVO obterBanco(BancoVO vo) {
+		return facade.obterBanco(vo);
 	}
 
 }

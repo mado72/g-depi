@@ -18,6 +18,8 @@ public final class ContaCorrenteAutorizadaVO implements Serializable {
 	private static final long serialVersionUID = -488890761499702708L;
 	
 	private int codigoResponsavelUltimaAtualizacao;
+	
+	private String codigoAtivo;
 
 	/**
      * Construtor
@@ -45,6 +47,8 @@ public final class ContaCorrenteAutorizadaVO implements Serializable {
 
 //	@TableField(name = ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_AGENCIA)
 	private int codigoAgencia;
+	
+	private String descricaoAgencia;
 
 //	@TableField(name = "CDIG_AG")
 	private String digitoAgencia;
@@ -122,6 +126,22 @@ public final class ContaCorrenteAutorizadaVO implements Serializable {
 		sb.append(this.getCia().getCodigoCompanhia()).append(".").append(this.getBanco().getCdBancoExterno()).append(".")
 		    .append(this.getCodigoAgencia()).append(".").append(this.getContaCorrente());
 		return sb.toString();
+	}
+	
+	/**
+	 * Retorna descricaoAgencia
+	 * @return o descricaoAgencia
+	 */
+	public String getDescricaoAgencia() {
+		return descricaoAgencia;
+	}
+	
+	/**
+	 * Define descricaoAgencia
+	 * @param descricaoAgencia valor descricaoAgencia a ser definido
+	 */
+	public void setDescricaoAgencia(String descricaoAgencia) {
+		this.descricaoAgencia = descricaoAgencia;
 	}
 
 	/**
@@ -332,6 +352,22 @@ public final class ContaCorrenteAutorizadaVO implements Serializable {
 	 */
 	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
 		this.dataHoraAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
+	}
+	
+	/**
+	 * Retorna codigoAtivo
+	 * @return o codigoAtivo
+	 */
+	public String getCodigoAtivo() {
+		return codigoAtivo;
+	}
+	
+	/**
+	 * Define codigoAtivo
+	 * @param codigoAtivo valor codigoAtivo a ser definido
+	 */
+	public void setCodigoAtivo(String codigoAtivo) {
+		this.codigoAtivo = codigoAtivo;
 	}
 
 }

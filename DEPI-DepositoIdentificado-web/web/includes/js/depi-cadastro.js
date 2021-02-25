@@ -904,6 +904,85 @@ var fnReady = function ($) {
 	 	
 	};
 	
+	// contaCorrente
+	// ---------------------------------------------------------------------
+	$.namespace('$.contaCorrente');
+	
+	$.contaCorrente.buscarInfoContaInterna = function(url) {
+		$("#contaInternaCC").text("");
+		var data = {
+			codigoCia: $("#AcaoForm_codigoCompanhia").val(),
+			codigoBanco: $("#AcaoForm_codigoBanco").val(),
+			codigoAgencia: $("#AcaoForm_agencia").val(),
+			contaCorrente: $("#AcaoForm_contaCorrente").val()
+		};
+		if (! data.codigoCia || ! data.codigoBanco || ! data.codigoAgencia || ! data.contaCorrente)
+			return;
+		$("#box_loading").show();
+		$.ajax({
+			url : url,
+			type : "POST",
+			dataType : "json",
+			data: data,
+			success : function(data) {
+				$("#box_loading").hide();
+				if (data.response) {
+					if (data.response.contaInterna)
+						$("#contaInternaCC").text(data.response.contaInterna);
+				}
+				else
+					$.alertas.aviso((data.erro && data.erro.erro) || 'Conta não encontrada', $.alertas.ERRO);
+			},
+			error : function(data) {
+				$("#box_loading").hide();
+				console.error(data);
+			}
+		});
+	};
+	
+	$.contaCorrente.buscarInfoAgencia = function(url) {
+		$("#descricaoAgencia").text("");
+		$("#box_loading").show();
+
+		var data = {
+			codigoBanco: $("#AcaoForm_codigoBanco").val(),
+			codigoAgencia: $("#AcaoForm_agencia").val()
+		};
+		$.ajax({
+			url : url,
+			type : "POST",
+			dataType : "json",
+			data: data,
+			success : function(data) {
+				$("#box_loading").hide();
+				if (data.response)
+					if (data.response.agencia)
+						$("#descricaoAgencia").text(data.response.agencia);
+					else
+						$.alertas.aviso('Agência não encontrada', $.alertas.ERRO);
+			},
+			error : function(data) {
+				$("#box_loading").hide();
+				console.error(data);
+			}
+		});
+	};
+	
+	$.contaCorrente.prepararFormulario = function(opcoes) {
+		$("#AcaoForm_codigoBanco,#AcaoForm_agencia,#AcaoForm_contaCorrente,#AcaoForm_trps").on("input keydown keyup mousedown mouseup select", function(ev, t){
+			$(this).val($(this).val().replace(/\D+/g,''));
+		});
+		
+		$("#AcaoForm_agencia").change(function(ev){
+			$.contaCorrente.buscarInfoAgencia(opcoes.urlAgencia);
+		});
+		
+		$("#AcaoForm_codigoCompanhia,AcaoForm_codigoBanco,#AcaoForm_agencia,#AcaoForm_contaCorrente").change(function(ev) {
+			$.contaCorrente.buscarInfoContaInterna(opcoes.urlContaInterna);
+		});
+		
+	};
+	
 	// paginacao
 	// ---------------------------------------------------------------------
 	// definition
@@ -1035,6 +1114,36 @@ var fnReady = function ($) {
 		});
 
 	});
+	
+	// alertas
+	// ---------------------------------------------------------------------
+	// definition
+	$.namespace( '$.alertas' );
+	
+	$.alertas.quantos = 0;
+	$.alertas.INFO = 'INFO';
+	$.alertas.ERRO = 'ERRO';
+	
+	$.alertas.templates = {
+			INFO: '<table class="tabela_sucesso info_temp" id="AVISO_%d"><tr><td>%s</td></tr></table>',
+			ERRO: '<table class="tabela_verm info_temp" id="AVISO_%d"><tr><td>%s</td></tr></table>'
+	};
+	
+	$.alertas.aviso = function(mensagem, tipo, timeout) {
+		var template = tipo == $.alertas.ERRO ? $.alertas.templates.ERRO : $.alertas.templates.INFO,
+				id = ++$.alertas.quantos;
+		
+		template = $(template.replace('%s', mensagem).replace('%d', id));
+		
+		$("#Mensagens").append(template);
+
+		setTimeout(function(){
+			$("#Mensagens #AVISO_"+id).fadeOut("slow", function() {
+				$("#Mensagens #AVISO_"+id).remove();
+			});
+		}, timeout || 3500);
+	};
+	
 };
 
 jQuery(document).ready(fnReady(jQuery));

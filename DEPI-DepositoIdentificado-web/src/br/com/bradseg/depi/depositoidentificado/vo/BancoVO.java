@@ -20,81 +20,32 @@ public class BancoVO implements Serializable {
      */
     private static final long serialVersionUID = -2105399068665061223L;
 
-//    @CicsField(order = 0, size = 4, pattern = QUATRO)
-    private int erroGSBS;
-
-//    @CicsField(order = 1, size = 1)
-    private int tipoErroGSBS;
-
-//    @CicsField(order = 2, size = 8, pattern = "00000000")
-    private int sqlCodeGSBS;
-
-//    @CicsField(order = 3, size = 7)
-    private String filler;
-
-//    @CicsField(order = 4, size = 3, pattern = ConstantesModel.PATTERN_TRES)
-    private int codigoRetorno;
-
-//    @CicsField(order = 5, size = 1)
-    private String sinalSqlCode;
-
-//    @CicsField(order = 6, size = 4, pattern = QUATRO)
-    private int sqlCode;
-
-//    @CicsField(order = 7, size = 4, pattern = QUATRO)
-    private int sqlErrML;
-
-//    @CicsField(order = 8, size = 70)
-    private String sqlErrMC;
-
-//    @CicsField(order = 9, size = 18)
-    private String tabelaErro;
-
     /**
      * Indica se o elemento foi exclu�do ou n�o
      */
-//    @CicsField(order = 10, size = 1)
     private String cdExcluido;
     /**
      * Indica se o elemento foi encontrado ou n�o
      */
-//    @CicsField(order = 11, size = 1)
     private String cdExiste;
 
     /**
      * Campos da entidade
      */
-//    @ConsiderLog(action = ConstantesModel.ATUALIZAR_DEPOSITO)
-//    @CicsField(order = 12, size = 4, pattern = QUATRO)
     private Integer cdBancoExterno;
 
-//    @CicsField(order = 13, size = 4, pattern = QUATRO)
     private Integer cdBancoInterno;
 
-//    @CicsField(order = 14, size = 18, pattern = "000000000000000000", use = UseType.Out)
     private float cdPessoa;
 
-//    @CicsField(order = 15, size = 50, use = UseType.Out)
-    private String nomeBanco;
+    private String descricaoBanco;
 
-//    @CicsField(order = 16, size = 14, pattern = "00000000000000", use = UseType.Out)
     private String cnpjBanco;
 
-//    @CicsField(order = 17, size = 1, use = UseType.Out)
     private String dvBanco;
 
-//    @CicsField(order = 18, size = 15, use = UseType.Out)
     private String siglaBanco;
 
-//    @CicsField(order = 19, size = 44, use = UseType.Out)
-    private String fillerFinal = "";
-
-    /**
-     * Campos que faltam, mas o sistema não precisa deles.
-     */
-    // 05 WS-DATA-CADASTRO-BANCO PIC X(10).
-    // 05 WS-CD-RESP-BANCO PIC X(8).
-    // DATA HORA ULTRIMA ATUALIZACAO (26)
     /**
      * getCdExcluido
      * @return String
@@ -177,19 +128,19 @@ public class BancoVO implements Serializable {
     }
 
     /**
-     * getNomeBanco
-     * @return nomeBanco
+     * getDescricaoBanco
+     * @return descricaoBanco
      */
-    public String getNomeBanco() {
-        return nomeBanco;
+    public String getDescricaoBanco() {
+        return descricaoBanco;
     }
 
     /**
-     * setNomeBanco
-     * @param nomeBanco String
+     * setDescricaoBanco
+     * @param descricaoBanco String
      */
-    public void setNomeBanco(String nomeBanco) {
-        this.nomeBanco = nomeBanco;
+    public void setDescricaoBanco(String descricaoBanco) {
+        this.descricaoBanco = descricaoBanco;
     }
 
     /**
@@ -217,184 +168,7 @@ public class BancoVO implements Serializable {
     }
 
     /**
-     * Retorna o valor do atributo codigoRetorno.
-     * @return o valor do atributo codigoRetorno
-     */
-    public int getCodigoRetorno() {
-        return codigoRetorno;
-    }
-
-    /**
-     * Especifica o valor do atributo codigoRetorno.
-     * @param codigoRetorno - int do codigoRetorno a ser configurado.
-     */
-    public void setCodigoRetorno(int codigoRetorno) {
-        this.codigoRetorno = codigoRetorno;
-    }
-
-    /**
-     * Retorna o valor do atributo erroGSBS.
-     * @return o valor do atributo erroGSBS
-     */
-    public int getErroGSBS() {
-        return erroGSBS;
-    }
-
-    /**
-     * Especifica o valor do atributo erroGSBS.
-     * @param erroGSBS - int do erroGSBS a ser configurado.
-     */
-    public void setErroGSBS(int erroGSBS) {
-        this.erroGSBS = erroGSBS;
-    }
-
-    /**
-     * Retorna o valor do atributo filler.
-     * @return o valor do atributo filler
-     */
-    public String getFiller() {
-        return filler;
-    }
-
-    /**
-     * Especifica o valor do atributo filler.
-     * @param filler - String do filler a ser configurado.
-     */
-    public void setFiller(String filler) {
-        this.filler = filler;
-    }
-
-    /**
-     * Retorna o valor do atributo sinalSqlCode.
-     * @return o valor do atributo sinalSqlCode
-     */
-    public String getSinalSqlCode() {
-        return sinalSqlCode;
-    }
-
-    /**
-     * Especifica o valor do atributo sinalSqlCode.
-     * @param sinalSqlCode - String do sinalSqlCode a ser configurado.
-     */
-    public void setSinalSqlCode(String sinalSqlCode) {
-        this.sinalSqlCode = sinalSqlCode;
-    }
-
-    /**
-     * Retorna o valor do atributo sqlCode.
-     * @return o valor do atributo sqlCode
-     */
-    public int getSqlCode() {
-        return sqlCode;
-    }
-
-    /**
-     * Especifica o valor do atributo sqlCode.
-     * @param sqlCode - int do sqlCode a ser configurado.
-     */
-    public void setSqlCode(int sqlCode) {
-        this.sqlCode = sqlCode;
-    }
-
-    /**
-     * Retorna o valor do atributo sqlCodeGSBS.
-     * @return o valor do atributo sqlCodeGSBS
-     */
-    public int getSqlCodeGSBS() {
-        return sqlCodeGSBS;
-    }
-
-    /**
-     * Especifica o valor do atributo sqlCodeGSBS.
-     * @param sqlCodeGSBS - int do sqlCodeGSBS a ser configurado.
-     */
-    public void setSqlCodeGSBS(int sqlCodeGSBS) {
-        this.sqlCodeGSBS = sqlCodeGSBS;
-    }
-
-    /**
-     * Retorna o valor do atributo sqlErrMC.
-     * @return o valor do atributo sqlErrMC
-     */
-    public String getSqlErrMC() {
-        return sqlErrMC;
-    }
-
-    /**
-     * Especifica o valor do atributo sqlErrMC.
-     * @param sqlErrMC - String do sqlErrMC a ser configurado.
-     */
-    public void setSqlErrMC(String sqlErrMC) {
-        this.sqlErrMC = sqlErrMC;
-    }
-
-    /**
-     * Retorna o valor do atributo sqlErrML.
-     * @return o valor do atributo sqlErrML
-     */
-    public int getSqlErrML() {
-        return sqlErrML;
-    }
-
-    /**
-     * Especifica o valor do atributo sqlErrML.
-     * @param sqlErrML - int do sqlErrML a ser configurado.
-     */
-    public void setSqlErrML(int sqlErrML) {
-        this.sqlErrML = sqlErrML;
-    }
-
-    /**
-     * Retorna o valor do atributo tabelaErro.
-     * @return o valor do atributo tabelaErro
-     */
-    public String getTabelaErro() {
-        return tabelaErro;
-    }
-
-    /**
-     * Especifica o valor do atributo tabelaErro.
-     * @param tabelaErro - String do tabelaErro a ser configurado.
-     */
-    public void setTabelaErro(String tabelaErro) {
-        this.tabelaErro = tabelaErro;
-    }
-
-    /**
-     * Retorna o valor do atributo tipoErroGSBS.
-     * @return o valor do atributo tipoErroGSBS
-     */
-    public int getTipoErroGSBS() {
-        return tipoErroGSBS;
-    }
-
-    /**
-     * Especifica o valor do atributo tipoErroGSBS.
-     * @param tipoErroGSBS - int do tipoErroGSBS a ser configurado.
-     */
-    public void setTipoErroGSBS(int tipoErroGSBS) {
-        this.tipoErroGSBS = tipoErroGSBS;
-    }
-
-    /**
-     * Retorna o valor do atributo fillerFinal.
-     * @return o valor do atributo fillerFinal
-     */
-    public String getFillerFinal() {
-        return fillerFinal;
-    }
-
-    /**
-     * Especifica o valor do atributo fillerFinal.
-     * @param fillerFinal - String do fillerFinal a ser configurado.
-     */
-    public void setFillerFinal(String fillerFinal) {
-        this.fillerFinal = fillerFinal;
-    }
-
-    /**
      * Construtor.
-     * @param cdBancoExterno
      */
     public BancoVO() {
         super();

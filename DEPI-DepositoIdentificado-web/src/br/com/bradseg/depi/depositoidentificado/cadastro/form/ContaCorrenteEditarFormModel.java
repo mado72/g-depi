@@ -15,13 +15,17 @@ public class ContaCorrenteEditarFormModel extends CrudForm {
 
 	private static final long serialVersionUID = 957768938376772158L;
 	
-	private List<CompanhiaSeguradoraVO> cias;
+	private List<CompanhiaSeguradoraVO> cias = new ArrayList<>();
 	
 	private String codigoCompanhia;
 	
 	private String codigoBanco;
 	
+	private String descricaoBanco;
+	
 	private String agencia;
+	
+	private String descricaoAgencia;
 
 	private String contaCorrente;
 
@@ -29,7 +33,7 @@ public class ContaCorrenteEditarFormModel extends CrudForm {
 
 	private String trps;
 
-	private String historico;
+	private String observacao;
 	
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm#limparDados()
@@ -45,7 +49,7 @@ public class ContaCorrenteEditarFormModel extends CrudForm {
 		setCodigoBanco(null);
 		setContaCorrente(null);
 		setContaInterna(null);
-		setHistorico(null);
+		setObservacao(null);
 		setTrps(null);
 	}
 
@@ -98,6 +102,22 @@ public class ContaCorrenteEditarFormModel extends CrudForm {
 	}
 
 	/**
+	 * Retorna nomeBanco
+	 * @return o nomeBanco
+	 */
+	public String getDescricaoBanco() {
+		return descricaoBanco;
+	}
+	
+	/**
+	 * Define nomeBanco
+	 * @param nomeBanco valor nomeBanco a ser definido
+	 */
+	public void setDescricaoBanco(String nomeBanco) {
+		this.descricaoBanco = nomeBanco;
+	}
+	
+	/**
 	 * Retorna agencia
 	 * @return o agencia
 	 */
@@ -111,6 +131,22 @@ public class ContaCorrenteEditarFormModel extends CrudForm {
 	 */
 	public void setAgencia(String agencia) {
 		this.agencia = agencia;
+	}
+	
+	/**
+	 * Retorna descricaoAgencia
+	 * @return o descricaoAgencia
+	 */
+	public String getDescricaoAgencia() {
+		return descricaoAgencia;
+	}
+	
+	/**
+	 * Define descricaoAgencia
+	 * @param descricaoAgencia valor descricaoAgencia a ser definido
+	 */
+	public void setDescricaoAgencia(String descricaoAgencia) {
+		this.descricaoAgencia = descricaoAgencia;
 	}
 
 	/**
@@ -165,16 +201,16 @@ public class ContaCorrenteEditarFormModel extends CrudForm {
 	 * Retorna historico
 	 * @return o historico
 	 */
-	public String getHistorico() {
-		return historico;
+	public String getObservacao() {
+		return observacao;
 	}
 
 	/**
 	 * Define historico
 	 * @param historico valor historico a ser definido
 	 */
-	public void setHistorico(String historico) {
-		this.historico = historico;
+	public void setObservacao(String historico) {
+		this.observacao = historico;
 	}
 
 }

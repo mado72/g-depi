@@ -40,11 +40,18 @@ public interface ContaCorrenteDAO {
 	 * @return true se for referenciada
 	 */
 	boolean isReferenciado(ContaCorrenteAutorizadaVO vo);
+	
+	/**
+	 * Consulta as contas corrente com base nos critérios de filtro.
+	 * @param filtro Critérios de filtro
+	 * @return Lista de Contas corrente
+	 */
+	List<ContaCorrenteAutorizadaVO> obterPorFiltro(FiltroUtil filtro);
 
 	/**
 	 * Consulta as contas corrente que um usuário tem acesso com base nos critérios de filtro.
 	 * @param codUsuario Código do usuário
-	 * @param filtro Criterios de filtro
+	 * @param filtro Critérios de filtro
 	 * @return Lista de Contas corrente
 	 */
 	List<ContaCorrenteAutorizadaVO> obterPorFiltroComRestricao(int codUsuario,

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
+import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.BancoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ContaCorrenteDAO;
@@ -37,6 +38,9 @@ public class ContaCorrenteFacadeImpl implements ContaCorrenteFacade {
 
 	private static final String AGENCIA_STRING = "Ag\u0206ncia";
     private static final String BANCO_STRING = "Banco";
+    
+    @Autowired
+    private CICSDepiDAO cicsDAO;
 
 	@Autowired
 	private CompanhiaSeguradoraDAO ciaDAO;
@@ -60,12 +64,27 @@ public class ContaCorrenteFacadeImpl implements ContaCorrenteFacade {
 	 */
 	@Override
 	public List<CompanhiaSeguradoraVO> obterCompanhias(int codUsuario) {
-		return ciaDAO.obterComRestricaoDeGrupoAcesso(codUsuario);
+		List<CompanhiaSeguradoraVO> cias = ciaDAO.obterComRestricaoDeGrupoAcesso(codUsuario);
+		
+		cias = cicsDAO.obterCias(cias);
+		return cias;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade#obterBanco(br.com.bradseg.depi.depositoidentificado.vo.BancoVO)
+	 */
+	@Override
+	public BancoVO obterBanco(BancoVO vo) {
+		return cicsDAO.obterBanco(vo);
 	}
 
 	@Override
     public List<BancoVO> obterBancos(CompanhiaSeguradoraVO cia) {
-        return bancoDAO.obterBancos(cia);
+        List<BancoVO> bancosDb = bancoDAO.obterBancos(cia);
+        
+        List<BancoVO> bancos = cicsDAO.obterBancos(bancosDb);
+        
+		return bancos;
     }
 
 	/* (non-Javadoc)
@@ -99,15 +118,43 @@ public class ContaCorrenteFacadeImpl implements ContaCorrenteFacade {
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.setCriterios(criterios);
 		
-		List<ContaCorrenteAutorizadaVO> lista = ccDAO
-				.obterPorFiltroComRestricao(
-						vo.getCodigoResponsavelUltimaAtualizacao(), filtro);
+		List<ContaCorrenteAutorizadaVO> lista = ccDAO.obterPorFiltro(filtro);
 		
 		if (lista.isEmpty()) {
 			throw new DEPIBusinessException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
 		}
 		
-		return lista.get(0);
+		ContaCorrenteAutorizadaVO retorno = lista.get(0);
+		CompanhiaSeguradoraVO cia = cicsDAO.obterCiaPorCodigo(retorno.getCia()
+				.getCodigoCompanhia());
+		retorno.setCia(cia);
+		
+		BancoVO banco = cicsDAO.obterBanco(retorno.getBanco());
+		retorno.setBanco(banco);
+		
+		String descricaoAgencia = obterAgencia(retorno);
+		retorno.setDescricaoAgencia(descricaoAgencia);
+		
+		return retorno;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade#obterAgencia(br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO)
+	 */
+	@Override
+	public String obterAgencia(ContaCorrenteAutorizadaVO ccVO) {
+		String descricaoAgencia = cicsDAO.obterAgencia(ccVO.getBanco()
+				.getCdBancoExterno(), ccVO.getCodigoAgencia());
+		return descricaoAgencia;
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade#obterContaInterna(br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO)
+	 */
+	@Override
+	public Integer obterContaInterna(ContaCorrenteAutorizadaVO ccVO) {
+		ContaCorrenteAutorizadaVO vo = cicsDAO.obterContaCorrente(ccVO);
+		return vo.getCodigoInternoCC();
 	}
 
 	/* (non-Javadoc)
@@ -151,7 +198,8 @@ public class ContaCorrenteFacadeImpl implements ContaCorrenteFacade {
 		for (ContaCorrenteAutorizadaVO vo : voList) {
 			if (ccDAO.isReferenciado(vo)) {
 				sb.append(BaseUtil.getTextoFormatado(
-						ConstantesDEPI.Geral.ERRO_EXCLUSAO_ITEM, vo.toString()));
+						ConstantesDEPI.Geral.ERRO_EXCLUSAO_ITEM,
+							BaseUtil.getTextoFormatado(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO, vo.toString(), "Motivo Dep\u00F3sito")));
 			}
 		}
 		
