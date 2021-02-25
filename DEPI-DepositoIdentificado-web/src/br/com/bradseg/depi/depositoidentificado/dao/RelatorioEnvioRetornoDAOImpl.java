@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -16,10 +17,12 @@ import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO
 import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegate;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioEnvioRetornoAnaliticoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioEnvioRetornoSinteticoDataMapper;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoSinteticoVO;
+import br.com.bradseg.depi.depositoidentificado.relatorio.util.RelogioUtil;
 
 /**
  * A(O) Class RelatorioEnvioRetornoDAOImpl.
@@ -47,7 +50,7 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
      * @param filtro do relatï¿½rio
      * @return List<ManutencoesAnaliticoVO>
      */
-    public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro){
+    public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro) throws SQLException{
 
     	List<RelatorioEnvioRetornoAnaliticoVO> relatorio = null;
     	
@@ -57,101 +60,100 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
         
         StringBuilder sb = new StringBuilder();
         
-        try {
-			MapSqlParameterSource params = new MapSqlParameterSource();
-			
-        	params.addValue("dtInicio", filtro.getDataInicio());
-        	params.addValue("dtFim", filtro.getDataFinal());
+        MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		params.addValue("dtInicio", filtro.getDataInicio());
+		params.addValue("dtFim", filtro.getDataFinal());
 
-            if (filtro.getCodigoCia() > 0) {
-                sb.append(" AND DBPROD.DEP_IDTFD.CINTRN_CIA_SEGDR = :codCia ");
-                params.addValue("codCia", filtro.getCodigoCia());
-            }
-            
-            if (filtro.getCodigoDepartamento() > 0) {
-                sb.append(" AND DBPROD.DEP_IDTFD.CDEPTO_DEP_IDTFD = :codDepto ");
-                params.addValue("codDepto", filtro.getCodigoDepartamento());                
-            }
+		if (filtro.getCodigoCia() > 0) {
+		    sb.append(" AND DBPROD.DEP_IDTFD.CINTRN_CIA_SEGDR = :codCia ");
+		    params.addValue("codCia", filtro.getCodigoCia());
+		}
+		
+		if (filtro.getCodigoDepartamento() > 0) {
+		    sb.append(" AND DBPROD.DEP_IDTFD.CDEPTO_DEP_IDTFD = :codDepto ");
+		    params.addValue("codDepto", filtro.getCodigoDepartamento());                
+		}
    
-            if (filtro.getSucursal() > 0) {
-                sb.append(" AND DBPROD.DEP_IDTFD.CSUCUR_EMISR = :sucursal ");
-                params.addValue("sucursal", filtro.getSucursal()); 
-            }
-            
-            if (filtro.getCodigoMotivo() > 0 ) {
-                sb.append(" AND DBPROD.DEP_IDTFD.CMOTVO_DEP_IDTFD = :motivo ");
-                params.addValue("motivo", filtro.getCodigoMotivo()); 
-            }
+		if (filtro.getSucursal() > 0) {
+		    sb.append(" AND DBPROD.DEP_IDTFD.CSUCUR_EMISR = :sucursal ");
+		    params.addValue("sucursal", filtro.getSucursal()); 
+		}
+		
+		if (filtro.getCodigoMotivo() > 0 ) {
+		    sb.append(" AND DBPROD.DEP_IDTFD.CMOTVO_DEP_IDTFD = :motivo ");
+		    params.addValue("motivo", filtro.getCodigoMotivo()); 
+		}
 
-            if (filtro.getApolice() > 0) {
-                sb.append(" AND DBPROD.DEP_IDTFD.NAPOLC = :apolice ");
-                params.addValue("apolice", filtro.getApolice());
-            }
+		if (filtro.getApolice() > 0) {
+		    sb.append(" AND DBPROD.DEP_IDTFD.NAPOLC = :apolice ");
+		    params.addValue("apolice", filtro.getApolice());
+		}
 
-            if (filtro.getEndosso() > 0) {
-                sb.append(" AND DBPROD.DEP_IDTFD.NENDSS = :endosso ");
-                params.addValue("endosso", filtro.getEndosso());
-            }
-            
-            if (filtro.getTipoDeposito() > 0) {
-                sb.append(" AND DBPROD.DEP_IDTFD.CTPO_GRP_RECEB = :tpDeposito ");
-                params.addValue("tpDeposito", filtro.getTipoDeposito());
-            }
+		if (filtro.getEndosso() > 0) {
+		    sb.append(" AND DBPROD.DEP_IDTFD.NENDSS = :endosso ");
+		    params.addValue("endosso", filtro.getEndosso());
+		}
+		
+		if (filtro.getTipoDeposito() > 0) {
+		    sb.append(" AND DBPROD.DEP_IDTFD.CTPO_GRP_RECEB = :tpDeposito ");
+		    params.addValue("tpDeposito", filtro.getTipoDeposito());
+		}
 
-            if (filtro.getSituacaoArquivo() > 0) {
-                sb.append(" AND DBPROD.DEP_IDTFD.CSIT_DEP_ARQ_TRNSF = :sitArquivo ");
-                params.addValue("sitArquivo", filtro.getSituacaoArquivo());
-            }
-            
-            if (filtro.getCodigoAutorizador() > 0) {
-                sb.append(" AND DBPROD.DEP_IDTFD.CDEP_IDTFD = :autorizador ");
-                params.addValue("autorizador", filtro.getCodigoAutorizador());
-            }
+		if (filtro.getSituacaoArquivo() > 0) {
+		    sb.append(" AND DBPROD.DEP_IDTFD.CSIT_DEP_ARQ_TRNSF = :sitArquivo ");
+		    params.addValue("sitArquivo", filtro.getSituacaoArquivo());
+		}
+		
+		if (filtro.getCodigoAutorizador() > 0) {
+		    sb.append(" AND DBPROD.DEP_IDTFD.CDEP_IDTFD = :autorizador ");
+		    params.addValue("autorizador", filtro.getCodigoAutorizador());
+		}
 
-            if (filtro.getValorInicial() > 0 && filtro.getValorFinal() > 0) {
-                sb.append(" AND (DBPROD.DEP_IDTFD.VDEP_IDTFD_ORIGN BETWEEN :vlrInicio AND :vlrFinal) ");
-                params.addValue("vlrInicio", filtro.getValorInicial());
-                params.addValue("vlrFinal", filtro.getValorFinal());
-            }
+		if (filtro.getValorInicial() > 0 && filtro.getValorFinal() > 0) {
+		    sb.append(" AND (DBPROD.DEP_IDTFD.VDEP_IDTFD_ORIGN BETWEEN :vlrInicio AND :vlrFinal) ");
+		    params.addValue("vlrInicio", filtro.getValorInicial());
+		    params.addValue("vlrFinal", filtro.getValorFinal());
+		}
+		
+	    params.addValue("dataInicio",filtro.getDataInicio());
+	    params.addValue("dataFim", filtro.getDataFinal());
+	    
 
-            if (!filtro.getCpfCnpj().isEmpty()) {
-                ListarPessoaPorFiltroEntradaVO f = new ListarPessoaPorFiltroEntradaVO();
-                f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
-                f.setCodigoTipoPesquisa(1);
-                f.setDataNascimento(0);
-                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // ï¿½ cnpj
-                    f.setCodigoTipoPessoa(4);
-                } else {
-                    f.setCodigoTipoPessoa(3);
-                }
+		if (!filtro.getCpfCnpj().isEmpty()) {
+		    ListarPessoaPorFiltroEntradaVO f = new ListarPessoaPorFiltroEntradaVO();
+		    f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
+		    f.setCodigoTipoPesquisa(1);
+		    f.setDataNascimento(0);
+		    if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // ï¿½ cnpj
+		        f.setCodigoTipoPessoa(4);
+		    } else {
+		        f.setCodigoTipoPessoa(3);
+		    }
 
-               List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
-                if (lista.isEmpty()) {
-                    StringBuilder in = new StringBuilder("(");
-                    String token = "";
-                    for (Object obj : lista) {
-                        if (obj instanceof ListarPessoaPorFiltroSaidaVO) {
-                            ListarPessoaPorFiltroSaidaVO pessoa = (ListarPessoaPorFiltroSaidaVO) obj;
-                            in.append(token);
-                            in.append(pessoa.getCodigoPessoa());
-                            token = ",";
-                        }
-                    }
-                    in.append(")");
-                    sb.append(" AND DBPROD.DEP_IDTFD.CPSSOA_DEPST IN ").append(in.toString());
-                }
+		   List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
+		    if (lista.isEmpty()) {
+		        StringBuilder in = new StringBuilder("(");
+		        String token = "";
+		        for (Object obj : lista) {
+		            if (obj instanceof ListarPessoaPorFiltroSaidaVO) {
+		                ListarPessoaPorFiltroSaidaVO pessoa = (ListarPessoaPorFiltroSaidaVO) obj;
+		                in.append(token);
+		                in.append(pessoa.getCodigoPessoa());
+		                token = ",";
+		            }
+		        }
+		        in.append(")");
+		        sb.append(" AND DBPROD.DEP_IDTFD.CPSSOA_DEPST IN ").append(in.toString());
+		    }
 
-            } 
-
-            query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
-            relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoAnaliticoDataMapper());
-
-            
-
-        }  finally {
-        	LOGGER.info("obterDadosAnalitico(FiltroUtil filtro) - termino com sucesso"); 
-        }
-    	
+		} 
+        
+		query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
+		
+		relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoAnaliticoDataMapper()); 
+        
+   
     	return relatorio;
 
     }
@@ -161,7 +163,7 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
      * @param filtro do relatï¿½rio
      * @return List<ManutencoesAnaliticoVO>
      */
-    public List<RelatorioEnvioRetornoSinteticoVO> obterDadosSintetico(FiltroUtil filtro) {
+    public List<RelatorioEnvioRetornoSinteticoVO> obterDadosSintetico(FiltroUtil filtro)throws SQLException {
 
     	BUCBBusinessDelegate bucbDelegate = new BUCBBusinessDelegate (); 
     	List<RelatorioEnvioRetornoSinteticoVO> relatorio = null;
@@ -170,8 +172,7 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
         
         StringBuilder sb = new StringBuilder();
     	
-        try {
-			MapSqlParameterSource params = new MapSqlParameterSource();
+ 			MapSqlParameterSource params = new MapSqlParameterSource();
 			
         	params.addValue("dtInicio", filtro.getDataInicio());
         	params.addValue("dtFim", filtro.getDataFinal());
@@ -256,13 +257,14 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
 
             } 
 
+            params.addValue("dataInicio",filtro.getDataInicio());
+    	    params.addValue("dataFim", filtro.getDataFinal());
+
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
+            
             relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoSinteticoDataMapper());
 
 
-        }  finally {
-        	LOGGER.info("obterDadosAnalitico(FiltroUtil filtro) - termino com sucesso"); 
-        }
     	
     	return relatorio;
     }
