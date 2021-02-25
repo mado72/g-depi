@@ -10,8 +10,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 
 /**
  * 
- * @author Marcelo Damasceno
- * 
+ * Define os métodos para consultar bancos.
+ * @author Marcelo Damasceno 
  */
 public interface BancoDAO {
 

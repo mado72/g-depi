@@ -150,8 +150,7 @@ public class ContaCorrenteCrudHelper implements
 		vo.setCodigoAgencia(Integer.parseInt(partes[2]));
 		vo.setContaCorrente(Long.parseLong(partes[3]));
 		
-		ContaCorrenteAutorizadaVO instancia = facade.obterPorChave(vo);
-		return instancia;
+		return facade.obterPorChave(vo);
 	}
 
 	@Override
