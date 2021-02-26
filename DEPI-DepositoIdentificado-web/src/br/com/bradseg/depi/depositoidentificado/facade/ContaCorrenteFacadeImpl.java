@@ -135,6 +135,8 @@ public class ContaCorrenteFacadeImpl implements ContaCorrenteFacade {
 		String descricaoAgencia = obterAgencia(retorno);
 		retorno.setDescricaoAgencia(descricaoAgencia);
 		
+		retorno.setCodigoInternoCC(obterContaInterna(retorno));
+		
 		return retorno;
 	}
 

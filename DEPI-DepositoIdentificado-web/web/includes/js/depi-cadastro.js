@@ -485,11 +485,11 @@ var fnReady = function ($) {
 			ev.preventDefault();
 			ev.stopPropagation();
 			
-			$("#box_loading").show();
 			var marcados = $.obterMarcados(jqForm);
 			if (marcados.length != 1) {
 				alert(MENSAGEM["msg.selecao.edicao"]);
 			} else {
+				$("#box_loading").show();
 				var action = jqForm.attr("action");
 				action = action.replace(/\/\w+.do/, "/alterar.do");
 				jqForm.attr("action", action);
