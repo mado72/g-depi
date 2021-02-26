@@ -442,7 +442,7 @@ var fnReady = function ($) {
 		var value = jqValor.val();
 
 		if (validacao.t === "NUM") {
-			value = value.replace(/\D+/g, '');
+			value = value.replace(/[^0-9]+/g, '');
 		} else {
 			value = value.toLocaleUpperCase();
 		}
@@ -898,7 +898,7 @@ var fnReady = function ($) {
 	 	var numeroDiasAposVencimento=$("#AcaoForm_numeroDiasAposVencimento");
 		numeroDiasAposVencimento.on("input keydown keyup mousedown mouseup select", function(ev){
 	 		var value = numeroDiasAposVencimento.val();
-	 		value = value.replace(/\D/g, '');
+	 		value = value.replace(/[^0-9]+/g, '');
 	 		numeroDiasAposVencimento.val(value);
 	 	});
 	 	
@@ -969,8 +969,10 @@ var fnReady = function ($) {
 	};
 	
 	$.contaCorrente.prepararFormulario = function(opcoes) {
+		$.dpcoddesc.combinar(['.companhia-codigo-dropbox','.companhia-nome-dropbox']);
+		
 		$("#AcaoForm_codigoBanco,#AcaoForm_agencia,#AcaoForm_contaCorrente,#AcaoForm_trps").on("input keydown keyup mousedown mouseup select", function(ev, t){
-			$(this).val($(this).val().replace(/\D+/g,''));
+			$(this).val($(this).val().replace(/[^0-9]+/g,''));
 		});
 		
 		$("#AcaoForm_agencia").change(function(ev){
