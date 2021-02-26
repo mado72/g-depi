@@ -3,8 +3,8 @@
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:choose>
-<c:when test="${estado == 'INSERIR'}"><c:set var="ACAO_INSERIR" value="true" scope="page"/></c:when>
-<c:otherwise><c:set var="ACAO_INSERIR" value="false" scope="page"/></c:otherwise>
+<c:when test="${estado != 'INSERIR' || detalhar}"><s:set name="DESABILITA_AGCONTA" value="true"/></c:when>
+<c:otherwise><s:set name="DESABILITA_AGCONTA" value="false"/></c:otherwise>
 </c:choose>
 <c:url value="/cadastro/conta-corrente" var="namespaceBase" scope="request"/>
 <s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
@@ -57,8 +57,8 @@
 				<span class="obrigatorio">*</span>
 			</td>
 			<td>
-				<s:textfield key="agencia" size="7" maxlength="5" disabled="%{!ACAO_INSERIR}"/>
-				<c:if test="${!ACAO_INSERIR}"><s:hidden key="agencia"/></c:if>
+				<s:textfield key="agencia" size="7" maxlength="5" disabled="%{DESABILITA_AGCONTA}"/>
+				<s:if test="%{!DESABILITA_AGCONTA}"><s:hidden key="agencia"/></s:if>
 			</td>
 			<td>
 				<span id="descricaoAgencia">${descricaoAgencia}</span>
@@ -70,21 +70,15 @@
 				<span class="obrigatorio">*</span>
 			</td>
 			<td>
-				<s:textfield key="contaCorrente" size="13" maxlength="15" disabled="%{!ACAO_INSERIR}"/>
-				<c:if test="${!ACAO_INSERIR}"><s:hidden key="contaCorrente"/></c:if>
+				<s:textfield key="contaCorrente" size="13" maxlength="15" disabled="%{DESABILITA_AGCONTA}"/>
+				<s:if test="%{!DESABILITA_AGCONTA}"><s:hidden key="contaCorrente"/></s:if>
 			</td>
 			<td></td>
 			<td class="td_label">
 				<s:text name="label.cadastro.contacorrenteautorizada.contaInternaCC" />
 			</td>
 			<td>
-				<span id="contaInternaCC">
-				<s:if test="%{contaInternaCC}">
-					<s:text name="format.contaInterna">
-						<s:param name="value" value="%{contaInternaCC}" />
-					</s:text>
-				</s:if>
-				</span>
+				<span id="contaInternaCC">${contaInterna}</span>
 			</td>
 			<td class="td_label">
 				<s:text name="label.cadastro.contacorrenteautorizada.trps" />

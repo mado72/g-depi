@@ -135,7 +135,7 @@ public class ContaCorrenteCrudHelper implements
 		model.setCodigoBanco(BaseUtil.getValueMaskFormat("9999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoExterno()), true));
 		model.setDescricaoBanco(vo.getBanco().getDescricaoBanco());
 		model.setContaCorrente(BaseUtil.getValueMaskFormat("9999999999999", BaseUtil.blankIfNull(vo.getContaCorrente()), true));
-		model.setContaInterna(BaseUtil.getValueMaskFormat("999999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoInterno()), true));
+		model.setContaInterna(BaseUtil.getValueMaskFormat("999999", BaseUtil.blankIfNull(vo.getCodigoInternoCC()), true));
 		model.setObservacao(vo.getObservacao());
 		model.setTrps(BaseUtil.getValueMaskFormat("9999999999999", BaseUtil.blankIfNull(vo.getTrps()), true));
 		model.setDescricaoAgencia(vo.getDescricaoAgencia());
