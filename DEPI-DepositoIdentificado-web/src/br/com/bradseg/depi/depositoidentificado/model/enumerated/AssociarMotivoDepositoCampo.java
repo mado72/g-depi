@@ -11,7 +11,7 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 /**
  * Filtro AssociarMotivoDepositoCampo
  */
-public enum AssociacaoMotivoDepositoCampo implements IEntidadeCampo {
+public enum AssociarMotivoDepositoCampo implements IEntidadeCampo {
 
     /**
      * Cia.
@@ -19,11 +19,11 @@ public enum AssociacaoMotivoDepositoCampo implements IEntidadeCampo {
     CodigoCia(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, CompanhiaSeguradoraCampo.CodigoCompanhia),
 
     /**
-     * Descrição Cia. DescricaoCia(CompanhiaSeguradoraCampo.DescricaoCompanhia),
+     * Descriï¿½ï¿½o Cia. DescricaoCia(CompanhiaSeguradoraCampo.DescricaoCompanhia),
      */
 
     /**
-     * Código Departamento.
+     * Cï¿½digo Departamento.
      */
     CodigoDepartamento(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, DepartamentoCampo.Codigo),
 
@@ -38,12 +38,12 @@ public enum AssociacaoMotivoDepositoCampo implements IEntidadeCampo {
     NomeDepartamento(DepartamentoCampo.Nome),
 
     /**
-     * Código Motivo.
+     * Cï¿½digo Motivo.
      */
     CodigoMotivo(ConstantesDEPI.TABELA_MOTIVO_ID, MotivoDepositoCampo.Codigo),
 
     /**
-     * Motivo Depósito.
+     * Motivo Depï¿½sito.
      */
     MotivoDepositoDescricaoBasica(MotivoDepositoCampo.DescricaoBasica),
 
@@ -72,7 +72,7 @@ public enum AssociacaoMotivoDepositoCampo implements IEntidadeCampo {
 
     private int size;
     
-	private final static List<AssociacaoMotivoDepositoCampo> CRITERIAS = Arrays
+	private final static List<AssociarMotivoDepositoCampo> CRITERIAS = Arrays
 			.asList(CodigoCia, SiglaDepartamento, NomeDepartamento,
 					MotivoDepositoDescricaoBasica, Banco, Agencia,
 					ContaCorrente);
@@ -81,7 +81,7 @@ public enum AssociacaoMotivoDepositoCampo implements IEntidadeCampo {
      * Construtor.
      * @param campo - IEntidadeCampo.
      */
-    AssociacaoMotivoDepositoCampo(IEntidadeCampo campo) {
+    AssociarMotivoDepositoCampo(IEntidadeCampo campo) {
         this.nome = campo.getNome();
         this.tipoCampo = campo.getTipoCampo();
         this.cics = campo.isCics();
@@ -93,7 +93,7 @@ public enum AssociacaoMotivoDepositoCampo implements IEntidadeCampo {
      * @param nome - String.
      * @param campo - IEntidadeCampo.
      */
-    AssociacaoMotivoDepositoCampo(String nome, IEntidadeCampo campo) {
+    AssociarMotivoDepositoCampo(String nome, IEntidadeCampo campo) {
         this.nome = ConstantesDEPI.SCHEMA_BANCO.concat(ConstantesDEPI.DOT).concat(
             ConstantesDEPI.TABELA_CONTA_CORRENTE_MOTIVO_DEPOSITO).concat(ConstantesDEPI.DOT).concat(nome);
         this.tipoCampo = campo.getTipoCampo();
@@ -102,8 +102,8 @@ public enum AssociacaoMotivoDepositoCampo implements IEntidadeCampo {
     }
 
     /**
-     * retorna a descrição
-     * @return - retorna a descrição do campo
+     * retorna a descriï¿½ï¿½o
+     * @return - retorna a descriï¿½ï¿½o do campo
      */
     public String getDescricao() {
         return descricao;
@@ -172,7 +172,7 @@ public enum AssociacaoMotivoDepositoCampo implements IEntidadeCampo {
      * Retorna valores da combo de consulta.
      * @return AssociarMotivoDepositoCampo[].
      */
-    public static List<AssociacaoMotivoDepositoCampo> valuesForCriteria() {
+    public static List<AssociarMotivoDepositoCampo> valuesForCriteria() {
     	return CRITERIAS;
     }
 

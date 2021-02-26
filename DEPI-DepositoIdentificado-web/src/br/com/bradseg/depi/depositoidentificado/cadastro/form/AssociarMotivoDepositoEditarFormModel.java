@@ -4,18 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
+import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.CodigoValorVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
  * Representa o modelo do formulário da consulta para Conta Corrente
  * 
  * @author Marcelo Damasceno
  */
-public class AssociacaoMotivoDepositoEditarFormModel extends CrudForm {
+public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 
 	private static final long serialVersionUID = 957768938376772158L;
 	
 	private List<CompanhiaSeguradoraVO> cias = new ArrayList<>();
+	
+	private List<DepartamentoVO> deptos = new ArrayList<>();
+	
+	private List<MotivoDepositoVO> motivos = new ArrayList<>();
+	
+	private List<BancoVO> bancos = new ArrayList<>();
+	
+	private List<CodigoValorVO> agencias = new ArrayList<>();
 	
 	private String codigoCompanhia;
 	
@@ -43,6 +55,10 @@ public class AssociacaoMotivoDepositoEditarFormModel extends CrudForm {
 		setCodigoCompanhia(null);
 
 		setCias(new ArrayList<CompanhiaSeguradoraVO>());
+		setDeptos(new ArrayList<DepartamentoVO>());
+		setMotivos(new ArrayList<MotivoDepositoVO>());
+		setBancos(new ArrayList<BancoVO>());
+		setAgencias(new ArrayList<CodigoValorVO>());
 		
 		setAgencia(null);
 		setCodigo(null);
@@ -67,6 +83,70 @@ public class AssociacaoMotivoDepositoEditarFormModel extends CrudForm {
 	 */
 	public void setCias(List<CompanhiaSeguradoraVO> cias) {
 		this.cias = cias;
+	}
+	
+	/**
+	 * Retorna bancos
+	 * @return o bancos
+	 */
+	public List<BancoVO> getBancos() {
+		return bancos;
+	}
+	
+	/**
+	 * Define bancos
+	 * @param bancos valor bancos a ser definido
+	 */
+	public void setBancos(List<BancoVO> bancos) {
+		this.bancos = bancos;
+	}
+	
+	/**
+	 * Retorna agencias
+	 * @return o agencias
+	 */
+	public List<CodigoValorVO> getAgencias() {
+		return agencias;
+	}
+	
+	/**
+	 * Define agencias
+	 * @param agencias valor agencias a ser definido
+	 */
+	public void setAgencias(List<CodigoValorVO> agencias) {
+		this.agencias = agencias;
+	}
+	
+	/**
+	 * Retorna deptos
+	 * @return o deptos
+	 */
+	public List<DepartamentoVO> getDeptos() {
+		return deptos;
+	}
+	
+	/**
+	 * Define deptos
+	 * @param deptos valor deptos a ser definido
+	 */
+	public void setDeptos(List<DepartamentoVO> deptos) {
+		this.deptos = deptos;
+	}
+	
+	/**
+	 * Retorna motivos
+	 * @return o motivos
+	 */
+	public List<MotivoDepositoVO> getMotivos() {
+		return motivos;
+	}
+	
+	/**
+	 * Define motivos
+	 * @param motivos valor motivos a ser definido
+	 */
+	public void setMotivos(List<MotivoDepositoVO> motivos) {
+		this.motivos = motivos;
 	}
 
 	/**

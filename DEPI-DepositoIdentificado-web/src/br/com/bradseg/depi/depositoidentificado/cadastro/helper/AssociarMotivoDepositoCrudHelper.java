@@ -7,32 +7,37 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.AssociacaoMotivoDepositoEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.AssociarMotivoDepositoEditarFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.AssociarMotivoDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
+import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
  * Classe auxiliar para o fluxo de cadastro de conta corrente.
  * 
  * @author Marcelo Damasceno
  */
-public class AssociacaoMotivoDepositoCrudHelper implements
-		CrudHelper<AssociacaoMotivoDepositoCampo, AssociacaoMotivoDepositoVO, AssociacaoMotivoDepositoEditarFormModel> {
+public class AssociarMotivoDepositoCrudHelper implements
+		CrudHelper<AssociarMotivoDepositoCampo, AssociarMotivoDepositoVO, AssociarMotivoDepositoEditarFormModel> {
 
-	private transient AssociacaoMotivoDepositoFacade facade;
+	private transient AssociarMotivoDepositoFacade facade;
 
-	public AssociacaoMotivoDepositoFacade getFacade() {
+	public AssociarMotivoDepositoFacade getFacade() {
 		return facade;
 	}
 	
-	public void setFacade(AssociacaoMotivoDepositoFacade facade) {
+	public void setFacade(AssociarMotivoDepositoFacade facade) {
 		this.facade = facade;
 	}
 	
@@ -75,33 +80,33 @@ public class AssociacaoMotivoDepositoCrudHelper implements
 	}
 
 	@Override
-	public FiltroConsultarForm<AssociacaoMotivoDepositoCampo> criarFiltroModel() {
-		FornecedorObjeto<Collection<AssociacaoMotivoDepositoCampo>> criterios = new FornecedorObjeto<Collection<AssociacaoMotivoDepositoCampo>>() {
+	public FiltroConsultarForm<AssociarMotivoDepositoCampo> criarFiltroModel() {
+		FornecedorObjeto<Collection<AssociarMotivoDepositoCampo>> criterios = new FornecedorObjeto<Collection<AssociarMotivoDepositoCampo>>() {
 
 			@Override
-			public Collection<AssociacaoMotivoDepositoCampo> get() {
-				return AssociacaoMotivoDepositoCampo.valuesForCriteria();
+			public Collection<AssociarMotivoDepositoCampo> get() {
+				return AssociarMotivoDepositoCampo.valuesForCriteria();
 			}
 
 		};
 
-		Funcao<String, AssociacaoMotivoDepositoCampo> obterEntidadeCampo = new Funcao<String, AssociacaoMotivoDepositoCampo>() {
+		Funcao<String, AssociarMotivoDepositoCampo> obterEntidadeCampo = new Funcao<String, AssociarMotivoDepositoCampo>() {
 
 			@Override
-			public AssociacaoMotivoDepositoCampo apply(String source) {
+			public AssociarMotivoDepositoCampo apply(String source) {
 				if (source == null || source.trim().isEmpty()) {
 					return null;
 				}
-				return AssociacaoMotivoDepositoCampo.valueOf(source);
+				return AssociarMotivoDepositoCampo.valueOf(source);
 			}
 		};
 		
-		return new FiltroConsultarForm<AssociacaoMotivoDepositoCampo>(criterios, obterEntidadeCampo);
+		return new FiltroConsultarForm<AssociarMotivoDepositoCampo>(criterios, obterEntidadeCampo);
 	}
 
 	@Override
-	public List<AssociacaoMotivoDepositoVO> processarCriterios(int codUsuario,
-			List<CriterioConsultaVO<AssociacaoMotivoDepositoCampo>> criterios) {
+	public List<AssociarMotivoDepositoVO> processarCriterios(int codUsuario,
+			List<CriterioConsultaVO<AssociarMotivoDepositoCampo>> criterios) {
 		
 		ArrayList<CriterioConsultaVO<?>> aux = new ArrayList<CriterioConsultaVO<?>>(criterios);
 		
@@ -114,15 +119,15 @@ public class AssociacaoMotivoDepositoCrudHelper implements
 	// Métodos para atender ao CRUD
 
 	@Override
-	public AssociacaoMotivoDepositoEditarFormModel criarCrudModel() {
-		return new AssociacaoMotivoDepositoEditarFormModel();
+	public AssociarMotivoDepositoEditarFormModel criarCrudModel() {
+		return new AssociarMotivoDepositoEditarFormModel();
 	}
 
 	@Override
-	public void preencherFormularioEdicao(AssociacaoMotivoDepositoEditarFormModel model)
+	public void preencherFormularioEdicao(AssociarMotivoDepositoEditarFormModel model)
 			throws DEPIIntegrationException {
 		
-		AssociacaoMotivoDepositoVO vo = obterPeloCodigo(model.getCodigo());
+		AssociarMotivoDepositoVO vo = obterPeloCodigo(model.getCodigo());
 		
 		CompanhiaSeguradoraVO companhia = vo.getCia();
 		model.setCias(Collections.singletonList(companhia));
@@ -138,8 +143,8 @@ public class AssociacaoMotivoDepositoCrudHelper implements
 		model.setDescricaoAgencia(vo.getDescricaoAgencia());
 	}
 
-	public AssociacaoMotivoDepositoVO obterPeloCodigo(String codigo) {
-		AssociacaoMotivoDepositoVO vo = new AssociacaoMotivoDepositoVO();
+	public AssociarMotivoDepositoVO obterPeloCodigo(String codigo) {
+		AssociarMotivoDepositoVO vo = new AssociarMotivoDepositoVO();
 		
 		String[] partes = codigo.split(";");
 		vo.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(partes[0])));
@@ -152,18 +157,18 @@ public class AssociacaoMotivoDepositoCrudHelper implements
 
 	@Override
 	public EstadoRegistro persistirDados(
-			AssociacaoMotivoDepositoEditarFormModel model, LoginVo usuarioLogado)
+			AssociarMotivoDepositoEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 
 		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
 		
-		AssociacaoMotivoDepositoVO vo;
+		AssociarMotivoDepositoVO vo;
 
 		final int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
 		final int codCompanhia = Integer.parseInt(model.getCodigoCompanhia());
 		
 		if (novo) {
-			vo = new AssociacaoMotivoDepositoVO();
+			vo = new AssociarMotivoDepositoVO();
 			vo.setDataInclusao(new Date());
 		}
 		else {
@@ -190,14 +195,14 @@ public class AssociacaoMotivoDepositoCrudHelper implements
 	}
 
 	@Override
-	public void excluirRegistros(List<AssociacaoMotivoDepositoVO> voList)
+	public void excluirRegistros(List<AssociarMotivoDepositoVO> voList)
 			throws DEPIIntegrationException {
 		
 		facade.excluirLista(voList);
 	}
 	
 	@Override
-	public AssociacaoMotivoDepositoVO obterPorChave(AssociacaoMotivoDepositoVO vo) {
+	public AssociarMotivoDepositoVO obterPorChave(AssociarMotivoDepositoVO vo) {
 		return facade.obterPorChave(vo);
 	}
 
@@ -208,6 +213,25 @@ public class AssociacaoMotivoDepositoCrudHelper implements
 	 */
 	public List<CompanhiaSeguradoraVO> obterCompanhias(int codUsuario) {
 		return facade.obterCompanhias(codUsuario);
+	}
+	
+	/**
+	 * Lista Departamentos de uma companhia
+	 * @param codUsuario Código do usuário logado
+	 * @param ciaVO Companhia Seguradora
+	 * @return Lista de Departamentos
+	 */
+	public List<DepartamentoVO> obterDepartamentos(int codUsuario, CompanhiaSeguradoraVO ciaVO) {
+		return facade.obterDepartamentos(codUsuario, ciaVO);
+	}
+	
+	/**
+	 * Lista Motivos de Depósito associados a um departamento
+	 * @param codUsuario Código do usuário logado
+	 * @return Lista de Motivos de Depósito
+	 */
+	public List<MotivoDepositoVO> obterMotivosDeposito(int codUsuario, DepartamentoVO depto) {
+		return facade.obterMotivosDeposito(codUsuario, depto);
 	}
 	
 	/**

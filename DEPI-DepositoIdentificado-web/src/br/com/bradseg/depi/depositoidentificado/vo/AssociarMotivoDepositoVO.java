@@ -46,6 +46,21 @@ public class AssociarMotivoDepositoVO implements Serializable {
      * Indicado Registro Ativo.
      */
     private String indicadoRegistroAtivo;
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder(" Associa\u00E7\u00E3o de Motivo: [Cia: ")
+    		.append(getCia().getCodigoCompanhia())
+    		.append("; Departamento: ").append(getDepartamento().getCodigoDepartamento())
+    		.append("; Motivo: ").append(getMotivoDeposito().getCodigoMotivoDeposito())
+    		.append(" Banco: ").append(getBanco().getCdBancoExterno())
+    		.append(", Ag.: ").append(getCodigoAgencia())
+    		.append(", CC.: ").append(getContaCorrente()).append("]");
+        return sb.toString();
+    }
 
 	/**
      * Retorna a chave composta.
