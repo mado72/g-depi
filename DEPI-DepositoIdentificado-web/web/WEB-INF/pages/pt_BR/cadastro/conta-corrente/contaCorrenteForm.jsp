@@ -85,8 +85,8 @@
 				<span class="obrigatorio">*</span>
 			</td>
 			<td>
-				<s:textfield key="trps" size="10" maxlength="10"/>
-				
+				<s:textfield key="trps" size="10" maxlength="10" disabled="%{DESABILITA_AGCONTA}"/>
+				<s:if test="%{!DESABILITA_AGCONTA}"><s:hidden key="trps"/></s:if>
 			</td>
 		</tr>
 		<tr>
