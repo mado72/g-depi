@@ -9,6 +9,8 @@ import java.util.List;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 
 /**
  * Interface para acesso a funções CICS a fim de atender ao DEPI. 
@@ -56,11 +58,11 @@ public interface CICSDepiDAO {
 	
 	/**
 	 * Obtém informações de uma lista de bancos do Cics
-	 * @param contas Lista de bancos
+	 * @param bancos Lista de bancos
 	 * @return Lista com informações do Cics
 	 */
 	List<BancoVO> obterBancos(
-			Collection<BancoVO> contas);
+			Collection<BancoVO> bancos);
 
 	/**
 	 * Obtém o nome da agência
@@ -69,5 +71,21 @@ public interface CICSDepiDAO {
 	 * @return Nome da Agência
 	 */
 	String obterAgencia(int codigoBanco, int codigoAgencia);
+
+	/**
+	 * Obtém um evento contábil
+	 * @param tipoEvento TODO
+	 * @param codigoEvento Código do evento
+	 * @return Evento contábil
+	 */
+	EventoContabilVO obterEventoContabil(int tipoEvento, int codigoEvento);
+
+	/**
+	 * Obtém um item contábil
+	 * @param codigoTipoEventoNegocio Código do tipo de evento
+	 * @param codigoItemContabil Código do item contábil
+	 * @return Item contábil
+	 */
+	ItemContabilVO obterItemContabil(int codigoTipoEventoNegocio, int codigoItemContabil);
 
 }

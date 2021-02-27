@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.ContaCorrenteEditarFormModel;
-import br.com.bradseg.depi.depositoidentificado.cadastro.helper.ContaCorrenteCrudHelper;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.AssociarMotivoDepositoEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.cadastro.helper.AssociarMotivoDepositoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
-import br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade;
+import br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.ContaCorrenteAutorizadaCampo;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.AssociarMotivoDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
-import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -24,33 +24,34 @@ import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
  */
 @Controller
 @Scope("session")
-public class AssociacaoMotivoDepositoEditarAction extends EditarFormAction<ContaCorrenteAutorizadaCampo, ContaCorrenteAutorizadaVO, ContaCorrenteEditarFormModel> {
+public class AssociacaoMotivoDepositoEditarAction
+		extends EditarFormAction<AssociarMotivoDepositoCampo, AssociarMotivoDepositoVO, AssociarMotivoDepositoEditarFormModel> {
 
 	private static final long serialVersionUID = -7675543657126275320L;
 	
-	private transient ContaCorrenteCrudHelper crudHelper;
+	private transient AssociarMotivoDepositoCrudHelper crudHelper;
 	
 	private final static int CODIGO_BANCO_BRADESCO = 237;
 	
 	@Override
-	protected CrudHelper<ContaCorrenteAutorizadaCampo, ContaCorrenteAutorizadaVO, ContaCorrenteEditarFormModel> getCrudHelper() {
+	protected CrudHelper<AssociarMotivoDepositoCampo, AssociarMotivoDepositoVO, AssociarMotivoDepositoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
-			crudHelper = new ContaCorrenteCrudHelper();
+			crudHelper = new AssociarMotivoDepositoCrudHelper();
 		}
 		return crudHelper;
 	}
 	
 	@Autowired
-	public void setFacade(ContaCorrenteFacade facade) {
+	public void setFacade(AssociarMotivoDepositoFacade facade) {
 		crudHelper.setFacade(facade);
 	}
 		
 	@Override
-	protected List<ContaCorrenteAutorizadaVO> mapearListaVO(String[] codigos) {
-		List<ContaCorrenteAutorizadaVO> lista = new ArrayList<>();
+	protected List<AssociarMotivoDepositoVO> mapearListaVO(String[] codigos) {
+		List<AssociarMotivoDepositoVO> lista = new ArrayList<>();
 		
 		for (String codigo : codigos) {
-			ContaCorrenteAutorizadaVO vo = crudHelper.obterPeloCodigo(codigo);
+			AssociarMotivoDepositoVO vo = crudHelper.analisarCodigo(codigo);
 			lista.add(vo);
 		}
 		

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.cics.vo;
+package br.com.bradseg.depi.depositoidentificado.cics.book;
 
 import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.QUATRO;
 import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction.InOut;
@@ -18,7 +18,7 @@ import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsProgram;
  * @author Marcelo Damasceno
  */
 @CicsProgram(programName = "GTAB0032", transactionName = "GT50", commLength = 602)
-public class GTAB1412VO implements Serializable {
+public class GTAB1412 implements Serializable {
 
 	private static final long serialVersionUID = -697466839831643647L;
 

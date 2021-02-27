@@ -2,7 +2,6 @@ package br.com.bradseg.depi.depositoidentificado.cadastro.helper;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.AssociarMotivoDepositoCampo;
-import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
@@ -20,7 +18,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
@@ -128,65 +129,63 @@ public class AssociarMotivoDepositoCrudHelper implements
 			throws DEPIIntegrationException {
 		
 		AssociarMotivoDepositoVO vo = obterPeloCodigo(model.getCodigo());
-		String descricaoAgencia = facade.obterAgencia(vo.getCodigoAgencia());
-		String descricaoBanco = facade.obterBanco(vo.getBanco()).getDescricaoBanco();
+		BancoVO banco = vo.getBanco();
+		
+		String descricaoAgencia = facade.obterAgencia(banco, vo.getCodigoAgencia());
+		String descricaoBanco = facade.obterBanco(banco).getDescricaoBanco();
 		MotivoDepositoVO motivoDepositoVO = facade.obterMotivoDeposito(vo.getMotivoDeposito());
 		
-		EventoContabilVO
-		String descricaoEventoContabil = motivoDepositoVO.get
-		String descricaoItemContabil;
-		model.preencherCampos(vo, descricaoAgencia, descricaoBanco, descricaoEventoContabil, descricaoItemContabil);
-	}
-
-	public AssociarMotivoDepositoVO obterPeloCodigo(String codigo) {
-		AssociarMotivoDepositoVO vo = new AssociarMotivoDepositoVO();
+		EventoContabilVO eventoContabilVO = facade
+				.obterEventoContabil(motivoDepositoVO.getCodigoEventoContabil());
 		
-		String[] partes = codigo.split(";");
-		vo.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(partes[0])));
-		vo.setBanco(new BancoVO(Integer.parseInt(partes[1])));
-		vo.setCodigoAgencia(Integer.parseInt(partes[2]));
-		vo.setAssociacaoMotivoDeposito(Long.parseLong(partes[3]));
+		ItemContabilVO itemContabilVO = facade.obterItemContabil(
+				eventoContabilVO.getCodigoIndicativoTipoEvento(),
+				motivoDepositoVO.getCodigoItemContabil());
+		
+		String descricaoEventoContabil = eventoContabilVO.getDescricaoTipo();
+		String descricaoItemContabil = itemContabilVO.getDescricaoTipo();
+		
+		model.preencherCampos(vo, descricaoAgencia, descricaoBanco,
+				descricaoEventoContabil, descricaoItemContabil);
+	}
+	
+	public AssociarMotivoDepositoVO obterPeloCodigo(String codigo) {
+		AssociarMotivoDepositoVO vo = analisarCodigo(codigo);
 		
 		return facade.obterPorChave(vo);
 	}
 
+	public AssociarMotivoDepositoVO analisarCodigo(String codigo) {
+		AssociarMotivoDepositoVO vo = new AssociarMotivoDepositoVO();
+		
+		String[] partes = codigo.split(";");
+		vo.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(partes[0])));
+		vo.setDepartamento(new DepartamentoVO(Integer.parseInt(partes[1])));
+		vo.setMotivoDeposito(new MotivoDepositoVO(Integer.parseInt(partes[2])));
+		vo.setBanco(new BancoVO(Integer.parseInt(partes[3])));
+		vo.setCodigoAgencia(Integer.parseInt(partes[4]));
+		vo.setContaCorrente(Long.parseLong(partes[5]));
+		return vo;
+	}
+	
 	@Override
 	public EstadoRegistro persistirDados(
 			AssociarMotivoDepositoEditarFormModel model, LoginVo usuarioLogado)
 			throws DEPIIntegrationException {
 
-		boolean novo = model.getCodigo() == null || model.getCodigo().trim().isEmpty();
-		
 		AssociarMotivoDepositoVO vo;
 
 		final int usuarioId = Integer.parseInt(usuarioLogado.getId().replace("\\D", ""));
-		final int codCompanhia = Integer.parseInt(model.getCodigoCompanhia());
 		
-		if (novo) {
-			vo = new AssociarMotivoDepositoVO();
-			vo.setDataInclusao(new Date());
-		}
-		else {
-			vo = obterPeloCodigo(model.getCodigo());
-		}
-		
+		vo = new AssociarMotivoDepositoVO();
+		vo.setDataInclusao(new Date());
+
+		model.obterValores(vo);
 		vo.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 		vo.setDataHoraAtualizacao(new Date());
-		vo.setCia(new CompanhiaSeguradoraVO(codCompanhia));
-		vo.setBanco(new BancoVO(Integer.parseInt(model.getCodigoBanco())));
-		vo.setCodigoAgencia(Integer.parseInt(model.getCodigoAgencia()));
-		vo.setAssociacaoMotivoDeposito(Long.parseLong(model.getAssociacaoMotivoDeposito()));
-		vo.setObservacao(model.getObservacao());
-		vo.setTrps(Long.parseLong(model.getTrps()));
 		
-		if (novo) {
-			facade.inserir(vo);
-			return EstadoRegistro.NOVO;
-		}
-		else {
-			facade.alterar(vo);
-			return EstadoRegistro.PERSISTIDO;
-		}
+		facade.inserir(vo);
+		return EstadoRegistro.NOVO;
 	}
 
 	@Override
@@ -217,16 +216,17 @@ public class AssociarMotivoDepositoCrudHelper implements
 	 * @return Lista de Departamentos
 	 */
 	public List<DepartamentoVO> obterDepartamentos(int codUsuario, CompanhiaSeguradoraVO ciaVO) {
-		return facade.obterDepartamentos(codUsuario, ciaVO);
+		return facade.obterDepartamentosComRestricaoParametroDeposito(codUsuario, ciaVO);
 	}
 	
 	/**
-	 * Lista Motivos de Depósito associados a um departamento
+	 * Lista Motivos de Depósito associados a um departamento x cia
 	 * @param codUsuario Código do usuário logado
+	 * @param deptoCia Associação Depto x Cia
 	 * @return Lista de Motivos de Depósito
 	 */
-	public List<MotivoDepositoVO> obterMotivosDeposito(int codUsuario, DepartamentoVO depto) {
-		return facade.obterMotivosDeposito(codUsuario, depto);
+	public List<MotivoDepositoVO> obterMotivosDeposito(int codUsuario, DepartamentoCompanhiaVO deptoCia) {
+		return facade.obterMotivosDeposito(codUsuario, deptoCia);
 	}
 	
 	/**

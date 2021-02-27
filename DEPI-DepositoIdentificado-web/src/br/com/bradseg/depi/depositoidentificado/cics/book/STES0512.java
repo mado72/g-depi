@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.cics.vo;
+package br.com.bradseg.depi.depositoidentificado.cics.book;
 
 import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.CINCO;
 import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.QUATRO;
@@ -18,7 +18,7 @@ import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsProgram;
  * @author Marcelo Damasceno
  */
 @CicsProgram(programName = "STES0502", transactionName = "ST83", commLength = 226)
-public class STES0512VO implements Serializable {
+public class STES0512 implements Serializable {
 
 	private static final long serialVersionUID = -697466839831643647L;
 

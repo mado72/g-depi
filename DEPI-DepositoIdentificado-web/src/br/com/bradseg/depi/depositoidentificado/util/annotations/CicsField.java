@@ -46,7 +46,7 @@ public @interface CicsField {
 	 */
 	Direction direction() default Direction.Out;
 
-	int size();
+	int size() default 0;
 	
 	String pattern() default "";
 

@@ -5,6 +5,7 @@ package br.com.bradseg.depi.depositoidentificado.cics.dao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.ctg.programapi.support.gateway.CTGJavaGateway;
-import br.com.bradseg.depi.depositoidentificado.cics.vo.GTAB0030VO;
-import br.com.bradseg.depi.depositoidentificado.cics.vo.GTAB1411VO;
-import br.com.bradseg.depi.depositoidentificado.cics.vo.GTAB1412VO;
-import br.com.bradseg.depi.depositoidentificado.cics.vo.STES0512VO;
+import br.com.bradseg.depi.depositoidentificado.cics.book.CTEV0020;
+import br.com.bradseg.depi.depositoidentificado.cics.book.CTEV0021;
+import br.com.bradseg.depi.depositoidentificado.cics.book.GTAB0030;
+import br.com.bradseg.depi.depositoidentificado.cics.book.GTAB1411;
+import br.com.bradseg.depi.depositoidentificado.cics.book.GTAB1412;
+import br.com.bradseg.depi.depositoidentificado.cics.book.STES0512;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsExecutor;
@@ -23,6 +26,8 @@ import br.com.bradseg.depi.depositoidentificado.util.annotations.Program;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 
 /**
  * Repositório que reúne operações ao CICS.
@@ -47,17 +52,17 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 		
 		String ciaInterno = String.format("%04d", codigoCompanhia);
 		
-		GTAB1412VO input = new GTAB1412VO();
+		GTAB1412 input = new GTAB1412();
 		input.setCiaInterno(ciaInterno);
 		
-		Program<GTAB1412VO> program = cicsUtil.construir(javaGateway, GTAB1412VO.class);
-		List<GTAB1412VO> lista = cicsUtil.execute(program, input);
+		Program<GTAB1412> program = cicsUtil.construir(javaGateway, GTAB1412.class);
+		List<GTAB1412> lista = cicsUtil.execute(program, input);
 		
 		if (lista.isEmpty()) {
 			return null;
 		}
 		
-		GTAB1412VO retorno = lista.get(0);
+		GTAB1412 retorno = lista.get(0);
 		CompanhiaSeguradoraVO vo = new CompanhiaSeguradoraVO();
 		vo.setCodigoCompanhia(Integer.parseInt(retorno.getCiaInterno()));
 		vo.setDescricaoCompanhia(retorno.getNome());
@@ -98,20 +103,20 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 	@Override
 	public ContaCorrenteAutorizadaVO obterContaCorrente(ContaCorrenteAutorizadaVO cc) {
 		
-		STES0512VO book = new STES0512VO();
+		STES0512 book = new STES0512();
         book.setCodigoCia(cc.getCia().getCodigoCompanhia());
         book.setCodigoAgencia(cc.getCodigoAgencia());
         book.setCodigoBanco(cc.getBanco().getCdBancoExterno());
         book.setConta(String.format("%013d", cc.getContaCorrente()));
         
-		Program<STES0512VO> program = cicsUtil.construir(javaGateway, STES0512VO.class);
-		List<STES0512VO> lista = cicsUtil.execute(program, book);
+		Program<STES0512> program = cicsUtil.construir(javaGateway, STES0512.class);
+		List<STES0512> lista = cicsUtil.execute(program, book);
 		
 		if (lista.isEmpty()) {
 			return null;
 		}
 		
-		STES0512VO retorno = lista.get(0);
+		STES0512 retorno = lista.get(0);
 		
 		if (retorno.getRetCode() > 0) {
 			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CICS_CUSTOM, retorno.getMensagem());
@@ -150,17 +155,17 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 		
 		String cdExterno = String.format("%04d", banco.getCdBancoExterno());
 		
-		GTAB0030VO input = new GTAB0030VO();
+		GTAB0030 input = new GTAB0030();
 		input.setCdBancoExterno(cdExterno);
 		
-		Program<GTAB0030VO> program = cicsUtil.construir(javaGateway, GTAB0030VO.class);
-		List<GTAB0030VO> lista = cicsUtil.execute(program, input);
+		Program<GTAB0030> program = cicsUtil.construir(javaGateway, GTAB0030.class);
+		List<GTAB0030> lista = cicsUtil.execute(program, input);
 		
 		if (lista.isEmpty()) {
 			return null;
 		}
 		
-		GTAB0030VO retorno = lista.get(0);
+		GTAB0030 retorno = lista.get(0);
 		
 		BancoVO vo = new BancoVO();
 		vo.setCdBancoExterno(Integer.valueOf(retorno.getCdBancoExterno()));
@@ -209,19 +214,80 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 	 */
 	@Override
 	public String obterAgencia(int codigoBanco, int codigoAgencia) {
-		GTAB1411VO input = new GTAB1411VO();
+		GTAB1411 input = new GTAB1411();
 		input.setCdBancoExterno(codigoBanco);
 		input.setCdAgenciaExterno(codigoAgencia);
 		
-		Program<GTAB1411VO> program = cicsUtil.construir(javaGateway, GTAB1411VO.class);
-		List<GTAB1411VO> lista = cicsUtil.execute(program, input);
+		Program<GTAB1411> program = cicsUtil.construir(javaGateway, GTAB1411.class);
+		List<GTAB1411> lista = cicsUtil.execute(program, input);
 		
 		if (lista.isEmpty()) {
 			return null;
 		}
 		
-		GTAB1411VO retorno = lista.get(0);
+		GTAB1411 retorno = lista.get(0);
 		return retorno.getNomeAgencia();
+	}
+
+	public List<EventoContabilVO> obterEventosContabeis(int tipoEvento) {
+		CTEV0020 input = new CTEV0020();
+		input.setCodigoTipoObjetoNegocio(tipoEvento);
+		
+		Program<CTEV0020> program = cicsUtil.construir(javaGateway, CTEV0020.class);
+		List<CTEV0020> lista = cicsUtil.execute(program, input);
+		
+		if (lista.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
+		CTEV0020 retorno = lista.get(0);
+		return retorno.getLista();
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO#obterEventoContabil(int, int)
+	 */
+	@Override
+	public EventoContabilVO obterEventoContabil(int tipoEvento, int codigoEvento) {
+		List<EventoContabilVO> eventos = obterEventosContabeis(tipoEvento);
+		
+		for (EventoContabilVO vo : eventos) {
+			if (vo.getCodigoTipo() == codigoEvento) {
+				return vo;
+			}
+		}
+		
+		return null;
+	}
+	
+	public List<ItemContabilVO> obterItensContabeis(int tipoEvento) {
+		CTEV0021 input = new CTEV0021();
+		input.setCodigoTipoEventoNegocio(tipoEvento);
+		
+		Program<CTEV0021> program = cicsUtil.construir(javaGateway, CTEV0021.class);
+		List<CTEV0021> lista = cicsUtil.execute(program, input);
+		
+		if (lista.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
+		CTEV0021 retorno = lista.get(0);
+		return retorno.getLista();
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO#obterItemContabil(int, int)
+	 */
+	@Override
+	public ItemContabilVO obterItemContabil(int codigoTipoEventoNegocio,
+			int codigoItemContabil) {
+		List<ItemContabilVO> itens = obterItensContabeis(codigoTipoEventoNegocio);
+		for (ItemContabilVO vo : itens) {
+			if (vo.getCodigoTipo() == codigoItemContabil) {
+				return vo;
+			}
+		}
+		return null;
 	}
 
 }

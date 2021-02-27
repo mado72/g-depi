@@ -122,14 +122,12 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	}
 	
 	/**
-	 * Gera uma instância de {@link AssociarMotivoDepositoVO} a partir dos
+	 * Preenche os dados em uma instância de {@link AssociarMotivoDepositoVO} a partir dos
 	 * valores do formulário
-	 * 
-	 * @return {@link AssociarMotivoDepositoVO}
+	 * @param vo Instância de {@link AssociarMotivoDepositoVO}
 	 */
-	public AssociarMotivoDepositoVO obterAssociarMotivoDeposito() {
+	public void obterValores(AssociarMotivoDepositoVO vo) {
 		
-		AssociarMotivoDepositoVO vo = new AssociarMotivoDepositoVO();
 		vo.setCodigoAgencia(Integer.parseInt(getCodigoAgencia()));
 		vo.setBanco(new BancoVO(Integer.parseInt(getCodigoBanco())));
 		vo.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(getCodigoCompanhia())));
@@ -137,7 +135,6 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 		vo.setDepartamento(new DepartamentoVO(Integer.parseInt(getCodigoDepartamento())));
 		vo.setMotivoDeposito(new MotivoDepositoVO(Integer.parseInt(getCodigoMotivo())));
 		
-		return vo;
 	}
 
 	/**

@@ -5,60 +5,40 @@ import java.io.Serializable;
 import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField;
 
 /**
- * Classe EventoContabilVO - Entidade Evento Contábil VO.
- * @author Fábio Henrique
+ * Classe ItemContabilVO - Item Contábil VO.
  */
-public class EventoContabilVO implements Serializable{
-    
-    private static final long serialVersionUID = 8702404275057731521L;
+public class ItemContabilVO implements Serializable{
 
-    @CicsField(order = 10, size = 4, pattern = "0000")
+    private static final long serialVersionUID = 1L;
+        
+    @CicsField(order = 10, size = 4)
     private int codigoTipo;
 
-    @CicsField(order = 20, size = 75)
+    @CicsField(order = 20, size = 50)
     private String descricaoTipo;
 
-    @CicsField(order = 30, size = 1)
-    private int codigoIndicativoTipoEvento;
+    /**
+     * Construtor
+     */
+    public ItemContabilVO() {
+        super();
+    }
 
     /**
      * Construtor
      * @param codigoTipo - int
      */
-    public EventoContabilVO(int codigoTipo) {
+    public ItemContabilVO(int codigoTipo) {
         super();
         this.codigoTipo = codigoTipo;
     }
 
     /**
-     * Retorna o valor do atributo codigoIndicativoTipoEvento.
-     * @return o valor do atributo codigoIndicativoTipoEvento
-     */
-    public int getCodigoIndicativoTipoEvento() {
-        return codigoIndicativoTipoEvento;
-    }
-
-    /**
-     * Especifica o valor do atributo codigoIndicativoTipoEvento.
-     * @param codigoIndicativoTipoEvento - int do codigoIndicativoTipoEvento a ser configurado.
-     */
-    public void setCodigoIndicativoTipoEvento(int codigoIndicativoTipoEvento) {
-        this.codigoIndicativoTipoEvento = codigoIndicativoTipoEvento;
-    }
-
-    /**
      * Construtor
-     */
-    public EventoContabilVO() {
-        super();
-    }
-
-    /**
-     * Contrutor
      * @param codigoTipo - int
-     * @param descricaoTipo - String
+     * @param descricaoTipo - String.
      */
-    public EventoContabilVO(int codigoTipo, String descricaoTipo) {
+    public ItemContabilVO(int codigoTipo, String descricaoTipo) {
         super();
         this.codigoTipo = codigoTipo;
         this.descricaoTipo = descricaoTipo;
@@ -101,7 +81,7 @@ public class EventoContabilVO implements Serializable{
      */
     @Override
     public int hashCode() {
-        return this.getCodigoIndicativoTipoEvento();
+        return this.getCodigoTipo();
     }
 
     /**
@@ -109,9 +89,9 @@ public class EventoContabilVO implements Serializable{
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof EventoContabilVO)) {
+        if (!(o instanceof ItemContabilVO)) {
             return false;
         }
-        return (((EventoContabilVO) o).getCodigoTipo() == this.getCodigoTipo());
+        return (((ItemContabilVO) o).getCodigoTipo() == this.getCodigoTipo());
     }
 }

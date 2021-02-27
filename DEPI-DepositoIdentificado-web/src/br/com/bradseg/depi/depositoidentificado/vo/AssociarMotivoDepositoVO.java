@@ -4,6 +4,9 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 /**
  * Classe Anotada de Mapeamento com a tabela CTA_CORR_MOTVO.
@@ -42,6 +45,10 @@ public class AssociarMotivoDepositoVO implements Serializable {
 	
 	private Integer codigoResponsavelUltimaAtualizacao;
 	
+	private Date dataInclusao;
+	
+	private Date dataHoraAtualizacao;
+	
     /**
      * Indicado Registro Ativo.
      */
@@ -56,7 +63,7 @@ public class AssociarMotivoDepositoVO implements Serializable {
     		.append(getCia().getCodigoCompanhia())
     		.append("; Departamento: ").append(getDepartamento().getCodigoDepartamento())
     		.append("; Motivo: ").append(getMotivoDeposito().getCodigoMotivoDeposito())
-    		.append(" Banco: ").append(getBanco().getCdBancoExterno())
+    		.append("; Banco: ").append(getBanco().getCdBancoExterno())
     		.append(", Ag.: ").append(getCodigoAgencia())
     		.append(", CC.: ").append(getContaCorrente()).append("]");
         return sb.toString();
@@ -211,6 +218,37 @@ public class AssociarMotivoDepositoVO implements Serializable {
 	public void setIndicadoRegistroAtivo(String indicadoRegistroAtivo) {
 		this.indicadoRegistroAtivo = indicadoRegistroAtivo;
 	}
+
+	/**
+	 * Retorna dataInclusao
+	 * @return o dataInclusao
+	 */
+	public Date getDataInclusao() {
+		return BaseUtil.getDate(dataInclusao);
+	}
 	
+	/**
+	 * Define dataInclusao
+	 * @param dataInclusao valor dataInclusao a ser definido
+	 */
+	public void setDataInclusao(Date dataInclusao) {
+		this.dataInclusao = BaseUtil.getDate(dataInclusao);
+	}
+	
+	/**
+	 * Retorna dataHoraAtualizacao
+	 * @return o dataHoraAtualizacao
+	 */
+	public Date getDataHoraAtualizacao() {
+		return BaseUtil.getDate(dataHoraAtualizacao);
+	}
+	
+	/**
+	 * Define dataHoraAtualizacao
+	 * @param dataHoraAtualizacao valor dataHoraAtualizacao a ser definido
+	 */
+	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
+		this.dataHoraAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
+	}
 	
 }

@@ -2,41 +2,66 @@ package br.com.bradseg.depi.depositoidentificado.facade;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.AssociarMotivoDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.BancoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
- *  implementation class for Enterprise Bean: AssociarMotivoDepositoSessionFacade
+ * Implementa a associação de motivo depósito
  */
-/**
- * XXXXXXX
- * @Service
- * */
 @Service
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoFacade {
 
+	private static final int TIPO_EVENTO_CONTABIL = 19;
+	
 	private static final String STR1 = "Identificação Depósitos";
-    protected static final Logger LOGGER = Logger.getLogger(AssociarMotivoDepositoFacadeImpl.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(AssociarMotivoDepositoFacadeImpl.class);
     
 	/**
 	 * Associação Motivo Deposito DAO
 	 */
 	@Autowired
 	private AssociarMotivoDepositoDAO amdDAO;
+	
+	@Autowired
+	private CompanhiaSeguradoraDAO ciaDAO;
+	
+	@Autowired
+	private DepartamentoDAO deptoDAO;
+	
+	@Autowired
+	private MotivoDepositoDAO motDepDAO;
+	
+	@Autowired
+	private BancoDAO bancoDAO;
+		
+	@Autowired
+	private CICSDepiDAO cicsDAO;
 
     /**
      * Excluir AssociarMotivoDepositos
@@ -111,7 +136,22 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 	 */
 	@Override
 	public void excluirLista(List<AssociarMotivoDepositoVO> voList) {
-		// TODO Auto-generated method stub
+		
+		StringBuilder referenciados = new StringBuilder();
+		for (AssociarMotivoDepositoVO vo : voList) {
+			if (amdDAO.isReferenciado(vo)) {
+				referenciados.append(BaseUtil.getTextoFormatado(ConstantesDEPI.Geral.ERRO_EXCLUSAO_ITEM, vo.toString()));
+			}
+		}
+		
+		if (referenciados.length() > 0) {
+			throw new DEPIBusinessException(ConstantesDEPI.ERRO_DEPENDENCIAS,
+					referenciados.toString(), "Dep\u00F3sito Identificado");
+		}
+		
+		for (AssociarMotivoDepositoVO vo : voList) {
+			amdDAO.excluir(vo);
+		}
 		
 	}
 
@@ -120,28 +160,41 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 	 */
 	@Override
 	public List<CompanhiaSeguradoraVO> obterCompanhias(int codUsuario) {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.trace("Obtendo cias com restri\u00E7\u00E3o de Grupo Acesso");
+		List<CompanhiaSeguradoraVO> cias = ciaDAO.obterComRestricaoDeGrupoAcesso(codUsuario);
+		LOGGER.debug("Encontrou {} cias", cias.size());
+		return cicsDAO.obterCias(cias);
 	}
 
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterDepartamentos(int, br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO)
 	 */
 	@Override
-	public List<DepartamentoVO> obterDepartamentos(int codUsuario,
+	public List<DepartamentoVO> obterDepartamentosComRestricaoParametroDeposito(int codUsuario,
 			CompanhiaSeguradoraVO ciaVO) {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.trace("Obtendo departamentos com restri\u00E7\u00E3o de Parametro Dep\u00F3sito");
+		List<DepartamentoVO> deptos = deptoDAO.obterComRestricao(
+				ciaVO.getCodigoCompanhia(), codUsuario,
+				Tabelas.PARAMETRO_DEPOSITO);
+		LOGGER.debug("Encontrou {} deptos", deptos.size());
+		return deptos;
 	}
 
 	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterMotivosDeposito(int, br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterMotivosDeposito(int, br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO)
 	 */
 	@Override
 	public List<MotivoDepositoVO> obterMotivosDeposito(int codUsuario,
-			DepartamentoVO depto) {
-		// TODO Auto-generated method stub
-		return null;
+			DepartamentoCompanhiaVO deptoCia) {
+		LOGGER.trace("Obtendo departamentos com restri\u00E7\u00E3o de Parametro Dep\u00F3sito");
+		List<MotivoDepositoVO> motivos = motDepDAO
+				.obterComRestricaoDeGrupoAcesso(
+						deptoCia.getCompanhia().getCodigoCompanhia(), 
+						deptoCia.getDepartamento().getCodigoDepartamento(), 
+						codUsuario,
+						Tabelas.PARAMETRO_DEPOSITO);
+		LOGGER.debug("Encontrou {} motivos dep\u00F3sitos", motivos.size());
+		return motivos;
 	}
 
 	/* (non-Javadoc)
@@ -149,8 +202,10 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 	 */
 	@Override
 	public List<BancoVO> obterBancos(CompanhiaSeguradoraVO cia) {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.trace("Obtendo bancos");
+		List<BancoVO> bancos = bancoDAO.obterBancos(cia);
+		LOGGER.debug("Encontrou {} bancos", bancos.size());
+		return cicsDAO.obterBancos(bancos);
 	}
 
 	/* (non-Javadoc)
@@ -158,8 +213,39 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 	 */
 	@Override
 	public BancoVO obterBanco(BancoVO vo) {
-		// TODO Auto-generated method stub
-		return null;
+		return cicsDAO.obterBanco(vo);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterAgencia(br.com.bradseg.depi.depositoidentificado.vo.BancoVO, int)
+	 */
+	@Override
+	public String obterAgencia(BancoVO banco, int codigoAgencia) {
+		return cicsDAO.obterAgencia(banco.getCdBancoExterno(), codigoAgencia);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterMotivoDeposito(br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO)
+	 */
+	@Override
+	public MotivoDepositoVO obterMotivoDeposito(MotivoDepositoVO motivoDeposito) {
+		return motDepDAO.obterPorChave(motivoDeposito);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterEventoContabil(int)
+	 */
+	@Override
+	public EventoContabilVO obterEventoContabil(int codigoEvento) {
+		return cicsDAO.obterEventoContabil(TIPO_EVENTO_CONTABIL, codigoEvento);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterItemContabil(int)
+	 */
+	@Override
+	public ItemContabilVO obterItemContabil(int codigoTipoEventoNegocio, int codigoItemContábil) {
+		return cicsDAO.obterItemContabil(codigoTipoEventoNegocio, codigoItemContábil);
 	}
 
 }
