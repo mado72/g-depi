@@ -128,19 +128,14 @@ public class AssociarMotivoDepositoCrudHelper implements
 			throws DEPIIntegrationException {
 		
 		AssociarMotivoDepositoVO vo = obterPeloCodigo(model.getCodigo());
+		String descricaoAgencia = facade.obterAgencia(vo.getCodigoAgencia());
+		String descricaoBanco = facade.obterBanco(vo.getBanco()).getDescricaoBanco();
+		MotivoDepositoVO motivoDepositoVO = facade.obterMotivoDeposito(vo.getMotivoDeposito());
 		
-		CompanhiaSeguradoraVO companhia = vo.getCia();
-		model.setCias(Collections.singletonList(companhia));
-		model.setCodigoCompanhia(BaseUtil.blankIfNull(companhia.getCodigoCompanhia()));
-		
-		model.setAgencia(BaseUtil.getValueMaskFormat("99999", BaseUtil.blankIfNull(vo.getCodigoAgencia()), true));
-		model.setCodigoBanco(BaseUtil.getValueMaskFormat("9999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoExterno()), true));
-		model.setDescricaoBanco(vo.getBanco().getDescricaoBanco());
-		model.setAssociacaoMotivoDeposito(BaseUtil.getValueMaskFormat("9999999999999", BaseUtil.blankIfNull(vo.getAssociacaoMotivoDeposito()), true));
-		model.setContaInterna(BaseUtil.getValueMaskFormat("999999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoInterno()), true));
-		model.setObservacao(vo.getObservacao());
-		model.setTrps(BaseUtil.getValueMaskFormat("9999999999999", BaseUtil.blankIfNull(vo.getTrps()), true));
-		model.setDescricaoAgencia(vo.getDescricaoAgencia());
+		EventoContabilVO
+		String descricaoEventoContabil = motivoDepositoVO.get
+		String descricaoItemContabil;
+		model.preencherCampos(vo, descricaoAgencia, descricaoBanco, descricaoEventoContabil, descricaoItemContabil);
 	}
 
 	public AssociarMotivoDepositoVO obterPeloCodigo(String codigo) {
@@ -179,7 +174,7 @@ public class AssociarMotivoDepositoCrudHelper implements
 		vo.setDataHoraAtualizacao(new Date());
 		vo.setCia(new CompanhiaSeguradoraVO(codCompanhia));
 		vo.setBanco(new BancoVO(Integer.parseInt(model.getCodigoBanco())));
-		vo.setCodigoAgencia(Integer.parseInt(model.getAgencia()));
+		vo.setCodigoAgencia(Integer.parseInt(model.getCodigoAgencia()));
 		vo.setAssociacaoMotivoDeposito(Long.parseLong(model.getAssociacaoMotivoDeposito()));
 		vo.setObservacao(model.getObservacao());
 		vo.setTrps(Long.parseLong(model.getTrps()));

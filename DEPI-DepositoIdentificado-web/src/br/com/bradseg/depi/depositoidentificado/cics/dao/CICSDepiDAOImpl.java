@@ -18,8 +18,8 @@ import br.com.bradseg.depi.depositoidentificado.cics.vo.GTAB1412VO;
 import br.com.bradseg.depi.depositoidentificado.cics.vo.STES0512VO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsUtil;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsUtil.Program;
+import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsExecutor;
+import br.com.bradseg.depi.depositoidentificado.util.annotations.Program;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
@@ -36,7 +36,7 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 	private CTGJavaGateway javaGateway;
 	
 	@Autowired
-	private CicsUtil cicsUtil;
+	private CicsExecutor cicsUtil;
 
 
 	/* (non-Javadoc)

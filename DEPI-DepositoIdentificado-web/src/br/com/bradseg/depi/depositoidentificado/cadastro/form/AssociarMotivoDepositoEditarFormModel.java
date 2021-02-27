@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CodigoValorVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
@@ -31,11 +33,23 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	
 	private String codigoCompanhia;
 	
+	private String codigoDepartamento;
+	
+	private String codigoMotivo;
+	
+	private String codigoEventoContabil;
+	
+	private String descricaoEventoContabil;
+	
+	private String codigoItemContabil;
+	
+	private String descricaoItemContabil;
+	
 	private String codigoBanco;
 	
 	private String descricaoBanco;
 	
-	private String agencia;
+	private String codigoAgencia;
 	
 	private String descricaoAgencia;
 
@@ -43,30 +57,87 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 
 	private String contaInterna;
 
-	private String trps;
-
-	private String observacao;
-	
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm#limparDados()
 	 */
 	@Override
 	public void preencherDadosIniciais() {
-		setCodigoCompanhia(null);
-
 		setCias(new ArrayList<CompanhiaSeguradoraVO>());
 		setDeptos(new ArrayList<DepartamentoVO>());
 		setMotivos(new ArrayList<MotivoDepositoVO>());
 		setBancos(new ArrayList<BancoVO>());
 		setAgencias(new ArrayList<CodigoValorVO>());
 		
-		setAgencia(null);
+		setCodigoAgencia(null);
 		setCodigo(null);
 		setCodigoBanco(null);
+		setCodigoCompanhia(null);
 		setContaCorrente(null);
 		setContaInterna(null);
-		setObservacao(null);
-		setTrps(null);
+		setCodigoDepartamento(null);
+		setCodigoEventoContabil(null);
+		setCodigoItemContabil(null);
+		setCodigoMotivo(null);
+		setDescricaoAgencia(null);
+		setDescricaoBanco(null);
+		setDescricaoEventoContabil(null);
+		setDescricaoItemContabil(null);
+	}
+	
+	/**
+	 * Preenche os valores de acordo com os dados do
+	 * {@link AssociarMotivoDepositoVO} e os outros parâmetros advindos do CICS.
+	 * 
+	 * @param vo
+	 *            AssociarMotivoDepositoVO
+	 * @param descricaoAgencia
+	 *            Descrição da agência (CICS)
+	 * @param descricaoBanco
+	 *            Descrição do banco (CICS)
+	 * @param descricaoEventoContabil
+	 *            Descrição Evento Contábil (CICS)
+	 * @param descricaoItemContabil
+	 *            Descrição Item Contábil (CICS)
+	 */
+	public void preencherCampos(AssociarMotivoDepositoVO vo,
+			String descricaoAgencia, String descricaoBanco,
+			String descricaoEventoContabil, String descricaoItemContabil) {
+		
+		setCodigo(null);
+		setCodigoAgencia(BaseUtil.getValueMaskFormat("99999", BaseUtil.blankIfNull(vo.getCodigoAgencia()), true));
+		setCodigoBanco(BaseUtil.getValueMaskFormat("9999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoExterno()), true));
+		setCodigoCompanhia(String.valueOf(vo.getCia().getCodigoCompanhia()));
+		setContaCorrente(BaseUtil.getValueMaskFormat("0000000000000", BaseUtil.blankIfNull(vo.getContaCorrente()), true));
+		setContaInterna(BaseUtil.getValueMaskFormat("999999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoInterno()), true));
+		setCodigoDepartamento(String.valueOf(vo.getDepartamento().getCodigoDepartamento()));
+		setCodigoEventoContabil(String.valueOf(vo.getMotivoDeposito().getCodigoEventoContabil()));
+		setCodigoItemContabil(String.valueOf(vo.getMotivoDeposito().getCodigoItemContabil()));
+		setCodigoMotivo(String.valueOf(vo.getMotivoDeposito().getCodigoMotivoDeposito()));
+		
+		// Campos que necessitam de consulta ao CICS
+		setDescricaoAgencia(descricaoAgencia);
+		setDescricaoBanco(descricaoBanco);
+		setDescricaoEventoContabil(descricaoEventoContabil);
+		setDescricaoItemContabil(descricaoItemContabil);
+	}
+	
+	/**
+	 * Gera uma instância de {@link AssociarMotivoDepositoVO} a partir dos
+	 * valores do formulário
+	 * 
+	 * @return {@link AssociarMotivoDepositoVO}
+	 */
+	public AssociarMotivoDepositoVO obterAssociarMotivoDeposito() {
+		
+		AssociarMotivoDepositoVO vo = new AssociarMotivoDepositoVO();
+		vo.setCodigoAgencia(Integer.parseInt(getCodigoAgencia()));
+		vo.setBanco(new BancoVO(Integer.parseInt(getCodigoBanco())));
+		vo.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(getCodigoCompanhia())));
+		vo.setContaCorrente(Long.parseLong(getContaCorrente()));
+		vo.setDepartamento(new DepartamentoVO(Integer.parseInt(getCodigoDepartamento())));
+		vo.setMotivoDeposito(new MotivoDepositoVO(Integer.parseInt(getCodigoMotivo())));
+		
+		return vo;
 	}
 
 	/**
@@ -84,39 +155,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	public void setCias(List<CompanhiaSeguradoraVO> cias) {
 		this.cias = cias;
 	}
-	
-	/**
-	 * Retorna bancos
-	 * @return o bancos
-	 */
-	public List<BancoVO> getBancos() {
-		return bancos;
-	}
-	
-	/**
-	 * Define bancos
-	 * @param bancos valor bancos a ser definido
-	 */
-	public void setBancos(List<BancoVO> bancos) {
-		this.bancos = bancos;
-	}
-	
-	/**
-	 * Retorna agencias
-	 * @return o agencias
-	 */
-	public List<CodigoValorVO> getAgencias() {
-		return agencias;
-	}
-	
-	/**
-	 * Define agencias
-	 * @param agencias valor agencias a ser definido
-	 */
-	public void setAgencias(List<CodigoValorVO> agencias) {
-		this.agencias = agencias;
-	}
-	
+
 	/**
 	 * Retorna deptos
 	 * @return o deptos
@@ -124,7 +163,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	public List<DepartamentoVO> getDeptos() {
 		return deptos;
 	}
-	
+
 	/**
 	 * Define deptos
 	 * @param deptos valor deptos a ser definido
@@ -132,7 +171,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	public void setDeptos(List<DepartamentoVO> deptos) {
 		this.deptos = deptos;
 	}
-	
+
 	/**
 	 * Retorna motivos
 	 * @return o motivos
@@ -140,13 +179,45 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	public List<MotivoDepositoVO> getMotivos() {
 		return motivos;
 	}
-	
+
 	/**
 	 * Define motivos
 	 * @param motivos valor motivos a ser definido
 	 */
 	public void setMotivos(List<MotivoDepositoVO> motivos) {
 		this.motivos = motivos;
+	}
+
+	/**
+	 * Retorna bancos
+	 * @return o bancos
+	 */
+	public List<BancoVO> getBancos() {
+		return bancos;
+	}
+
+	/**
+	 * Define bancos
+	 * @param bancos valor bancos a ser definido
+	 */
+	public void setBancos(List<BancoVO> bancos) {
+		this.bancos = bancos;
+	}
+
+	/**
+	 * Retorna agencias
+	 * @return o agencias
+	 */
+	public List<CodigoValorVO> getAgencias() {
+		return agencias;
+	}
+
+	/**
+	 * Define agencias
+	 * @param agencias valor agencias a ser definido
+	 */
+	public void setAgencias(List<CodigoValorVO> agencias) {
+		this.agencias = agencias;
 	}
 
 	/**
@@ -166,6 +237,102 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	}
 
 	/**
+	 * Retorna codigoDepartamento
+	 * @return o codigoDepartamento
+	 */
+	public String getCodigoDepartamento() {
+		return codigoDepartamento;
+	}
+
+	/**
+	 * Define codigoDepartamento
+	 * @param codigoDepartamento valor codigoDepartamento a ser definido
+	 */
+	public void setCodigoDepartamento(String codigoDepartamento) {
+		this.codigoDepartamento = codigoDepartamento;
+	}
+
+	/**
+	 * Retorna codigoMotivo
+	 * @return o codigoMotivo
+	 */
+	public String getCodigoMotivo() {
+		return codigoMotivo;
+	}
+
+	/**
+	 * Define codigoMotivo
+	 * @param codigoMotivo valor codigoMotivo a ser definido
+	 */
+	public void setCodigoMotivo(String codigoMotivo) {
+		this.codigoMotivo = codigoMotivo;
+	}
+
+	/**
+	 * Retorna codigoEventoContabil
+	 * @return o codigoEventoContabil
+	 */
+	public String getCodigoEventoContabil() {
+		return codigoEventoContabil;
+	}
+
+	/**
+	 * Define codigoEventoContabil
+	 * @param codigoEventoContabil valor codigoEventoContabil a ser definido
+	 */
+	public void setCodigoEventoContabil(String codigoEventoContabil) {
+		this.codigoEventoContabil = codigoEventoContabil;
+	}
+
+	/**
+	 * Retorna descricaoEventoContabil
+	 * @return o descricaoEventoContabil
+	 */
+	public String getDescricaoEventoContabil() {
+		return descricaoEventoContabil;
+	}
+
+	/**
+	 * Define descricaoEventoContabil
+	 * @param descricaoEventoContabil valor descricaoEventoContabil a ser definido
+	 */
+	public void setDescricaoEventoContabil(String descricaoEventoContabil) {
+		this.descricaoEventoContabil = descricaoEventoContabil;
+	}
+
+	/**
+	 * Retorna codigoItemContabil
+	 * @return o codigoItemContabil
+	 */
+	public String getCodigoItemContabil() {
+		return codigoItemContabil;
+	}
+
+	/**
+	 * Define codigoItemContabil
+	 * @param codigoItemContabil valor codigoItemContabil a ser definido
+	 */
+	public void setCodigoItemContabil(String codigoItemContabil) {
+		this.codigoItemContabil = codigoItemContabil;
+	}
+
+	/**
+	 * Retorna dscricaoItemContabil
+	 * @return o dscricaoItemContabil
+	 */
+	public String getDescricaoItemContabil() {
+		return descricaoItemContabil;
+	}
+
+	/**
+	 * Define dscricaoItemContabil
+	 * @param dscricaoItemContabil valor dscricaoItemContabil a ser definido
+	 */
+	public void setDescricaoItemContabil(String dscricaoItemContabil) {
+		this.descricaoItemContabil = dscricaoItemContabil;
+	}
+
+	/**
 	 * Retorna codigoBanco
 	 * @return o codigoBanco
 	 */
@@ -182,37 +349,37 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	}
 
 	/**
-	 * Retorna nomeBanco
-	 * @return o nomeBanco
+	 * Retorna descricaoBanco
+	 * @return o descricaoBanco
 	 */
 	public String getDescricaoBanco() {
 		return descricaoBanco;
 	}
-	
+
 	/**
-	 * Define nomeBanco
-	 * @param nomeBanco valor nomeBanco a ser definido
+	 * Define descricaoBanco
+	 * @param descricaoBanco valor descricaoBanco a ser definido
 	 */
-	public void setDescricaoBanco(String nomeBanco) {
-		this.descricaoBanco = nomeBanco;
+	public void setDescricaoBanco(String descricaoBanco) {
+		this.descricaoBanco = descricaoBanco;
 	}
-	
+
 	/**
 	 * Retorna agencia
 	 * @return o agencia
 	 */
-	public String getAgencia() {
-		return agencia;
+	public String getCodigoAgencia() {
+		return codigoAgencia;
 	}
 
 	/**
 	 * Define agencia
 	 * @param agencia valor agencia a ser definido
 	 */
-	public void setAgencia(String agencia) {
-		this.agencia = agencia;
+	public void setCodigoAgencia(String agencia) {
+		this.codigoAgencia = agencia;
 	}
-	
+
 	/**
 	 * Retorna descricaoAgencia
 	 * @return o descricaoAgencia
@@ -220,7 +387,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	public String getDescricaoAgencia() {
 		return descricaoAgencia;
 	}
-	
+
 	/**
 	 * Define descricaoAgencia
 	 * @param descricaoAgencia valor descricaoAgencia a ser definido
@@ -259,38 +426,6 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	 */
 	public void setContaInterna(String contaInterna) {
 		this.contaInterna = contaInterna;
-	}
-
-	/**
-	 * Retorna trps
-	 * @return o trps
-	 */
-	public String getTrps() {
-		return trps;
-	}
-
-	/**
-	 * Define trps
-	 * @param trps valor trps a ser definido
-	 */
-	public void setTrps(String trps) {
-		this.trps = trps;
-	}
-
-	/**
-	 * Retorna historico
-	 * @return o historico
-	 */
-	public String getObservacao() {
-		return observacao;
-	}
-
-	/**
-	 * Define historico
-	 * @param historico valor historico a ser definido
-	 */
-	public void setObservacao(String historico) {
-		this.observacao = historico;
 	}
 
 }

@@ -55,4 +55,10 @@ public @interface CicsField {
 	 * @return decimais
 	 */
 	int decimals() default 0;
+	
+	/**
+	 * Quantidade de ocorrências do campo
+	 * @return Quantidade, 0 default
+	 */
+	int occurrences() default 0;
 }
