@@ -529,6 +529,101 @@
         </action>
         
     </package>
+	<package name="cadastroContaCorrenteConsultar" namespace="/cadastro/conta-corrente/consultar" extends="depi-default">
+	
+		<default-class-ref class="contaCorrenteConsultarAction"/>
+		
+		<global-results>
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/conta-corrente/contaCorrente.jsp</param>
+			</result>
+			<result name="input" type="redirectAction">listar</result>
+		</global-results>
+
+		<action name="index">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+
+		<action name="listar" method="listar">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+			<result name="input">/WEB-INF/pages/pt_BR/cadastro/conta-corrente/contaCorrente.jsp</result>
+		</action>
+        
+		<action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+		</action>
+	</package>
+	
+	<package name="cadastroContaCorrenteEditar" namespace="/cadastro/conta-corrente/editar" extends="depi-default">
+	
+		<default-class-ref class="contaCorrenteEditarAction"></default-class-ref>
+	
+		<global-results>
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/conta-corrente/contaCorrenteForm.jsp</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">retornar</param>
+			    <param name="namespace">/cadastro/conta-corrente/consultar</param>
+			</result>
+			<result name="voltar" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/conta-corrente/consultar</param>
+			</result>			
+		</global-results>
+		
+		<action name="incluir" method="incluir">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+			<result name="input" type="redirectAction">input</result>
+		</action>
+		
+		<action name="alterar" method="alterar">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">input</result>
+		</action>
+        
+        <action name="salvar" class="contaCorrenteSalvarAction">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">input</result>
+        </action>
+        
+        <action name="excluir" method="excluir">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">
+				<param name="namespace">/cadastro/conta-corrente/consultar</param>
+				<param name="actionName">listar</param>
+			</result>
+        </action>
+        
+        <action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+        </action>
+        
+    </package>
 
 	<package name="filtroUsuario" namespace="/filtro/funcionario/consultar" extends="depi-default">
 	
@@ -567,7 +662,99 @@
 
 	</package>
 	
-    <!-- RELATORIOS -->
+	
+	<package name="relatorioConsultar" namespace="/relatorio" extends="depi-default">
+	
+		<default-class-ref class="consultarRelatorioAction"/>
+		
+		<global-results>
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/relatorio/consultarRelatorio.jsp</param>
+			</result>
+			<result name="input" type="redirectAction">consultar</result>
+		</global-results>
+
+		<action name="index">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+        
+		<action name="*" method="{1}"/>
+		<action name="consultarRelatorio" method="consultar">
+			<result name="input">
+			   <param name="location">/WEB-INF/pages/pt_BR/relatorio/consultarRelatorio.jsp</param>
+			</result>
+		</action>
+		 <!-- 
+	    	<result name="cartaAceiteRestricaoMassificadoColetivo.pdf" type="report">  
+	        		<param name="location">cartaAceiteRestricaoMassificadoColetivo.jrxml</param>  
+	        		<param name="dataSource">beanCartas</param>  
+	       			<param name="format">PDF</param>  
+	       			<param name="documentName">Carta_Aceite_Restrição_Massificado_Coletivo</param>
+			   </result>
+		 -->
+		<action name="gerarRelatorio"  method="gerarRelatorio">
+	        <result name="success" type="report">  
+	       		<param name="location">relManutencoesAnalitico.jrxml</param>  
+	       		<param name="dataSource">beans</param>  
+	      			<param name="format">PDF</param>  
+	      			<param name="documentName">Relatorio_Envio</param>
+		    </result> 
+		    		    
+		    <result name="relEnvioRetornoBancoAnalitico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>
+ 			<result name="relEnvioRetornoBancoSintetico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>			
+ 			<result name="relExtratoAnalitico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>							
+ 			<result name="relExtratoSintetico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>				
+		    <result name="relManutencoesAnalitico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>
+		    <result name="relDadosComplementares.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>		    
+			<result name="relManutencoesSintetico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>		    		 
+		    		   		    
+			<result name="error">
+			      <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+		    </result>
+		    
+	   	</action>
+	   			
+	</package>
+	
+	
+	
+    <!-- RELATORIOS 
     
     <package name="relatorioEnvioRetornoBancoAnalitico" namespace="/relatorio/envio-retorno/analitico" extends="depi-default">
    		<default-class-ref class="relatorioEnvioRetornoBancoAnaliticoAction" />
@@ -637,6 +824,7 @@
     	</global-results>
     	<action name="index" method="execute"/>
     	<action name="*" method="*"/>
-    </package>
+    </package> -->
+    
 	
 </struts>

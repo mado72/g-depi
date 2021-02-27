@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import br.com.bradseg.bsad.framework.ctg.programapi.field.AbstractFieldType;
@@ -43,6 +45,8 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
  */
 @Service
 public class CicsUtil {
+	
+	private final static Logger LOGGER = LoggerFactory.getLogger(CicsUtil.class);
 	
 	/**
 	 * Armazena as definições do book CICS 
@@ -181,6 +185,8 @@ public class CicsUtil {
 		CicsProgram programAnnotation = book.getAnnotation(
 				CicsProgram.class);
 		
+		LOGGER.debug("Construindo consulta para {}", book.getName());
+		
 		BeanInfo beanInfo;
 		try {
 			beanInfo = Introspector.getBeanInfo(book);
@@ -226,6 +232,7 @@ public class CicsUtil {
 			}
 		}
 		
+		
 		Program<T> program = new Program<>(
 				javaGateway,
 				programAnnotation.programName(), 
@@ -235,6 +242,14 @@ public class CicsUtil {
 				Collections.unmodifiableSet(commonFieldIn),
 				Collections.unmodifiableSet(commonFieldOut));
 		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(
+					"Programa construido: prog: {}, trans: {}, common area: {}, book: {}",
+					programAnnotation.programName(),
+					programAnnotation.transactionName(),
+					programAnnotation.commLength(), book.getName());
+		}
+
 		return program;
 	}
 	
@@ -250,16 +265,31 @@ public class CicsUtil {
 	 * @param <T> Tipo do BOOK a ser utilizado na execução.
 	 */
 	public <T> List<T> execute(Program<T> program, T input) {
+		LOGGER.debug("Executando programa: pgm: {}, trans: {}", program.getPgmName(), program.getTranName());
 		prepareInputData(program, input);
 		
 		ArrayList<T> result = new ArrayList<>();
-		ResultSet rs = program.execute();
 		
-		do {
-			T vo = readResultSetRow(program, rs);
-			result.add(vo);
-		} while (rs.next());
-		return result;
+		try {
+			ResultSet rs = program.execute();
+			
+			LOGGER.debug(
+					"Processando resultado da consulta ao programa: pgm: {}, trans: {}",
+					program.getPgmName(), program.getTranName());
+			
+			do {
+				T vo = readResultSetRow(program, rs);
+				result.add(vo);
+			} while (rs.next());
+			
+			LOGGER.debug(
+					"Obtever {} registros da consulta ao programa: pgm: {}, trans: {}",
+					result.size(), program.getPgmName(), program.getTranName());
+			
+			return result;
+		} catch (Exception e) {
+			throw new DEPIIntegrationException(e);
+		}
 	}
 
 	private OrderedField mapField(PropertyDescriptor pd, Field javaField) {
@@ -289,22 +319,28 @@ public class CicsUtil {
 				if (type.equals(Integer.class) || type.equals(int.class)) {
 					Integer valor = (Integer) ofd.getter.invoke(vo);
 					inputSet.setInteger(ofd.fieldName, valor);
+					LOGGER.debug("Inserindo inteiro {} = {}", ofd.fieldName, valor);
 				} else if (type.equals(String.class)) {
 					String valor = (String) ofd.getter.invoke(vo);
 					if (ofd.cicsField.pattern().length() > 0) {
 						valor = marshall(ofd.cicsField.pattern(), valor);
 					}
 					inputSet.setString(ofd.fieldName, valor);
+					LOGGER.debug("Inserindo string {} = {}", ofd.fieldName, valor);
 				} else if (type.equals(Long.class) || type.equals(long.class)) {
 					Long valor = (Long) ofd.getter.invoke(vo);
 					inputSet.setLong(ofd.fieldName, valor);
+					LOGGER.debug("Inserindo long {} = {}", ofd.fieldName, valor);
 				} else if (type.equals(Double.class) || type.equals(double.class)) {
 					Double valor = (Double) ofd.getter.invoke(vo);
 					inputSet.setDouble(ofd.fieldName, valor);
+					LOGGER.debug("Inserindo double {} = {}", ofd.fieldName, valor);
 				} else if (type.equals(Date.class)) {
 					Date valor = (Date) ofd.getter.invoke(vo);
 					inputSet.setDate(ofd.fieldName, valor);
+					LOGGER.debug("Inserindo Date {} = {}", ofd.fieldName, valor);
 				} else {
+					LOGGER.warn("Ignorando {}", ofd.fieldName);
 					continue;
 				}
 			} catch (IllegalArgumentException e) {
@@ -326,9 +362,12 @@ public class CicsUtil {
 			return valor;
 		}
 		
-		StringBuilder sb = new StringBuilder(pattern.substring(0, pattern.length() - valor.length()));
+		String patt = pattern.substring(0, pattern.length() - valor.length());
+		StringBuilder sb = new StringBuilder(patt);
 		sb.append(valor);
-		return sb.toString();
+		String resultado = sb.toString();
+		LOGGER.debug("Aplicou pattern \"{}\" em {} => {}", patt, valor, resultado);
+		return resultado;
 	}
 
 	private <T> T readResultSetRow(Program<T> program, ResultSet rs) {
@@ -341,19 +380,31 @@ public class CicsUtil {
 
 				Class<?> type = ofd.type;
 
-				if (type == Integer.class) {
-					ofd.setter.invoke(vo, rs.getInteger(ofd.fieldName));
+				if (type == Integer.class || type.equals(int.class)) {
+					int valor = rs.getInteger(ofd.fieldName);
+					LOGGER.debug("Leu inteiro {} = {}", ofd.fieldName, valor);
+					ofd.setter.invoke(vo, valor);
 				} else if (type == String.class) {
-					ofd.setter.invoke(vo, rs.getString(ofd.fieldName));
-				} else if (type == Long.class) {
-					ofd.setter.invoke(vo, rs.getString(ofd.fieldName));
-				} else if (type == Double.class) {
+					String valor = rs.getString(ofd.fieldName);
+					LOGGER.debug("Leu string {} = {}", ofd.fieldName, valor);
+					ofd.setter.invoke(vo, valor);
+				} else if (type == Long.class || type.equals(long.class)) {
+					long valor = rs.getLong(ofd.fieldName);
+					LOGGER.debug("Leu long {} = {}", ofd.fieldName, valor);
+					ofd.setter.invoke(vo, valor);
+				} else if (type == Double.class || type.equals(double.class)) {
+					double valor = rs.getDouble(ofd.fieldName);
+					LOGGER.debug("Leu double {} = {}", ofd.fieldName, valor);
 					ofd.setter.invoke(vo, rs.getDouble(ofd.fieldName));
 				} else if (type == Date.class) {
+					Date valor = rs.getDate(ofd.fieldName);
+					LOGGER.debug("Leu Date {} = {}", ofd.fieldName, valor);
 					ofd.setter.invoke(vo, rs.getDate(ofd.fieldName));
 				} else {
+					LOGGER.warn("Ignorou leitura de {}", ofd.fieldName);
 					continue;
 				}
+				
 			}
 			
 		} catch (IllegalArgumentException e) {

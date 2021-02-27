@@ -51,7 +51,8 @@
 	<tr>
 		<td>
 			<s:include value="/WEB-INF/pages/layout/menu.jsp"/>
-			<br />
+<%--
+			<div id="Mensagens">
 			<s:if test="hasActionMessages()">
 				<!-- mensagens layout -->
 				<table class="tabela_sucesso" id="msgSucesso">
@@ -89,8 +90,12 @@
 				</table>
 				<depi:clearMessages actionErrors="true"/>
 			</s:if>
-			<br />
+			</div>
+ --%>
+			<div id="logoSistema">
 			<s:include value="/WEB-INF/pages/pt_BR/includes/logo-sistema.jsp"/>
+			</div>
+			<s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
 			<br />
 			<decorator:body />
 		</td>

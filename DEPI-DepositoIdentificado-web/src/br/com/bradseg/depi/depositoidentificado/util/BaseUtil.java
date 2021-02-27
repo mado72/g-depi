@@ -20,12 +20,11 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.beanutils.BeanUtils;
-
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
@@ -425,6 +424,30 @@ public final class BaseUtil {
             }
         }
         return obj;
+    }
+    
+    /**
+     * Método responsável por verificar se uma string é nula, caso sim retorna uma strig vazia.
+     * @param str - string a ser verificado.
+     * @return String - a própria string se for diferente de nulo ou vazio se igual a nulo.
+     */
+    public static String blankIfNull(String str) {
+    	if (str == null) {
+    		return "";
+    	}
+    	return str;
+    }
+    
+    /**
+     * Método responsável por verificar se um número é nulo, caso sim retorna uma string vazia.
+     * @param num - número a ser verificado.
+     * @return String - a própria string se for diferente de nulo ou vazio se igual a nulo.
+     */
+    public static String blankIfNull(Number num) {
+    	if (num == null) {
+    		return "";
+    	}
+    	return num.toString().replace('.', ',');
     }
 
     /**

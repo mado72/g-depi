@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
@@ -18,7 +19,7 @@ public interface RelatorioEnvioRetornoDAO {
      * @throws IntegrationException - trata erro de neg�cio
      * @return List<DadosEnvioRetornoAnaliticoVO>
      */
-    List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro);
+    List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro)throws SQLException;
 
     /**
      * Método obterDadosSintetico
@@ -26,6 +27,6 @@ public interface RelatorioEnvioRetornoDAO {
      * @throws IntegrationException - trata erro de neg�cio
      * @return List<DadosEnvioRetornoSinteticoVO>
      */
-    List<RelatorioEnvioRetornoSinteticoVO> obterDadosSintetico(FiltroUtil filtro);
+    List<RelatorioEnvioRetornoSinteticoVO> obterDadosSintetico(FiltroUtil filtro) throws SQLException;
 
 }

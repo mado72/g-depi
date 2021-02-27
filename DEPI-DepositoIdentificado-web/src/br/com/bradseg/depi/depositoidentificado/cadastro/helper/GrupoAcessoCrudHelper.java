@@ -32,15 +32,15 @@ import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 public class GrupoAcessoCrudHelper implements
 		CrudHelper<GrupoAcessoCampo, GrupoAcessoVO, GrupoAcessoEditarFormModel> {
 	
-	private static final String TITLE_DEPOSITO_CONSULTAR = "title.grupoAcesso.consultar";
+	private static final String TITLE_CONSULTAR = "title.grupoacesso.consultar";
 
-	private static final String TITLE_DEPOSITO_LISTAR = "title.grupoAcesso.listar";
+	private static final String TITLE_LISTAR = "title.grupoacesso.listar";
 	
-	private static final String TITLE_DEPOSITO_ALTERAR = "title.grupoAcesso.editar";
+	private static final String TITLE_ALTERAR = "title.grupoacesso.editar";
 	
-	private static final String TITLE_DEPOSITO_DETALHAR = "title.grupoAcesso.detalhar";
+	private static final String TITLE_DETALHAR = "title.grupoacesso.detalhar";
 
-	private static final String TITLE_DEPOSITO_INCLUIR = "title.grupoAcesso.novo";
+	private static final String TITLE_INCLUIR = "title.grupoacesso.novo";
 
 	private transient GrupoAcessoFacade facade;
 
@@ -56,12 +56,12 @@ public class GrupoAcessoCrudHelper implements
 
 	@Override
 	public String getChaveTituloConsultar() {
-		return TITLE_DEPOSITO_CONSULTAR;
+		return TITLE_CONSULTAR;
 	}
 
 	@Override
 	public String getChaveTituloListar() {
-		return TITLE_DEPOSITO_LISTAR;
+		return TITLE_LISTAR;
 	}
 
 	@Override
@@ -105,17 +105,17 @@ public class GrupoAcessoCrudHelper implements
 
 	@Override
 	public String getChaveTituloDetalhar() {
-		return TITLE_DEPOSITO_DETALHAR;
+		return TITLE_DETALHAR;
 	}
 
 	@Override
 	public String getChaveTituloAlterar() {
-		return TITLE_DEPOSITO_ALTERAR;
+		return TITLE_ALTERAR;
 	}
 
 	@Override
 	public String getChaveTituloIncluir() {
-		return TITLE_DEPOSITO_INCLUIR;
+		return TITLE_INCLUIR;
 	}
 
 	@Override

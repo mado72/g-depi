@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -47,7 +48,7 @@ public class RelatorioDadosComplementaresDAOImpl extends JdbcDao implements Rela
 	 * @return List<RelatorioDadosComplementaresVO>
 	 */
 	@Override
-	public List<RelatorioDadosComplementaresVO> obterDadosComplementaresAnalitico(FiltroUtil filtro) {
+	public List<RelatorioDadosComplementaresVO> obterDadosComplementaresAnalitico(FiltroUtil filtro) throws SQLException {
 
     	List<RelatorioDadosComplementaresVO> relatorio = null;
     	
@@ -56,7 +57,7 @@ public class RelatorioDadosComplementaresDAOImpl extends JdbcDao implements Rela
         StringBuilder sb = new StringBuilder();
         
 
-		try {
+		
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			/*
 			 * FIXME - Remover referências diretas aos campos e utilizar os
@@ -102,10 +103,9 @@ public class RelatorioDadosComplementaresDAOImpl extends JdbcDao implements Rela
             relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioDadosComplementaresDataMapper());
 
 
-        }  finally {
-        	LOGGER.info("obterDadosAnalitico(FiltroUtil filtro) - termino com sucesso"); 
-        }
+       
+        LOGGER.info("obterDadosAnalitico(FiltroUtil filtro) - termino com sucesso"); 
     	
-    	return relatorio;
+        return relatorio;
 	}
 }

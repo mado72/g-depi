@@ -10,21 +10,21 @@
 			<a href="<s:url value="/cadastro/departamento-companhia/consultar/index.do"/>">Associação Departamentos x Cia</a>
 			<a href="<s:url value="/cadastro/grupo-acesso/consultar/index.do"/>">Grupo de Acesso</a>
 			<a href="<s:url value="/cadastro/parametro/consultar/index.do"/>">Parâmetros de Depósito</a>
-			<a href="<s:url value="/cadastro/contaCorrenteAutorizada/consultar/index.do"/>">Conta Corrente</a>	
-			<a href="<s:url value="/cadastro/associarMotivoDeposito/consultar/index.do"/>">Associação de Motivos</a>
+			<a href="<s:url value="/cadastro/conta-corrente/consultar/index.do"/>">Conta Corrente</a>	
+			<a href="<s:url value="/cadastro/associar-motivo/consultar/index.do"/>">Associação de Motivos</a>
 		</div>
 	</div>
 	<div class="itemmenu"><a href="<s:url value="/deposito/ConsultarDeposito.do"/>" class="menu_horizontal">Identificação Depósitos</a></div>
 	<div class="itemmenu" onmouseover="over(2)" onmouseout="out(2)">
 		<a href="<s:url value="/index.do"/>" class="menu_horizontal">Relatórios</a>
 		<div class="dropdown" id="s2">
-			<a href="<s:url value="/relatorio/envio-retorno/analitico/index.do"/>"  >Envio/Retorno Banco - Analítico</a>
-			<a href="<s:url value="/relatorio/envio-retorno/sintetico/index.do"/>">Envio/Retorno Banco - Sintético</a>
-			<a href="<s:url value="/relatorio/extrato/analitico/index.do"/>">Extrato Banco - Analítico</a>
-			<a href="<s:url value="/relatorio/extrato/sintetico/index.do"/>">Extrato Banco - Sintético</a>
-			<a href="<s:url value="/relatorio/manutencoes/analitico/index.do"/>">Manutenções - Analítico</a>
-			<a href="<s:url value="/relatorio/manutencoes/sintetico/index.do"/>">Manutenções - Sintético</a>
-			<a href="<s:url value="/relatorio/dados-complementares/index.do"/>">Dados Complementares - Analítico</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirEnvioRetornoAnalitico"/>"  >Envio/Retorno Banco - Analítico</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirEnvioRetornoSintetico"/>">Envio/Retorno Banco - Sintético</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirExtratoAnalitico"/>">Extrato Banco - Analítico</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirExtratoSintetico"/>">Extrato Banco - Sintético</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirManutencoesAnalitico"/>">Manutenções - Analítico</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirManutencoesSintetico"/>">Manutenções - Sintético</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirDadosComplementares"/>">Dados Complementares - Analítico</a>
 		</div>
 	</div>
 	<div class="itemmenu">

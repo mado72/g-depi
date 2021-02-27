@@ -158,7 +158,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 		} catch (Exception e) {
 			addActionError(e.getMessage());
 			LOGGER.error("Erro ao excluir registros", e);
-			return SUCCESS;
+			return INPUT;
 		}
 	}
 	

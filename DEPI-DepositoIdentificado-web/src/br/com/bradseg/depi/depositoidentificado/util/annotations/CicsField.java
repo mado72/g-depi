@@ -17,7 +17,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CicsField {
 	
+	public static final String TRES = "000";
 	public static final String QUATRO = "0000";
+	public static final String CINCO = "00000";
 	
 	/**
 	 * Determina se o campo é de entrada, saída ou entrada e saída. 

@@ -380,23 +380,6 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	}
 	
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<DepartamentoVO> obterTodos() {
-	
-	    try {
-			
-			return getJdbcTemplate().query(QuerysDepi.DEPARTAMENTO_OBTERTODOS,
-					new MapSqlParameterSource(), new DepartamentoDataMapper());
-			 
-	    } finally {
-	    	LOGGER.info("obterPorTodos() "); 
-	    }
-	
-	}
-
-	/**
      * Obtém registro por sigla departamento.
      * @param vo Contém a sigla a ser pesquisada
      * @return O primeiro item encontrado

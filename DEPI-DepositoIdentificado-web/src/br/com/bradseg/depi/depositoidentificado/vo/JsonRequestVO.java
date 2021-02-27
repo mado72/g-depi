@@ -22,6 +22,12 @@ public class JsonRequestVO implements Serializable {
 	private Object erro;
 	
 	private String codigoCia;
+	
+	private String codigoBanco;
+	
+	private String codigoAgencia;
+
+	private String contaCorrente;
 
 	/**
 	 * Retorna response
@@ -69,6 +75,54 @@ public class JsonRequestVO implements Serializable {
 	 */
 	public void setErro(Object erro) {
 		this.erro = erro;
+	}
+	
+	/**
+	 * Retorna codigoBanco
+	 * @return o codigoBanco
+	 */
+	public String getCodigoBanco() {
+		return codigoBanco;
+	}
+	
+	/**
+	 * Define codigoBanco
+	 * @param codigoBanco valor codigoBanco a ser definido
+	 */
+	public void setCodigoBanco(String codigoBanco) {
+		this.codigoBanco = codigoBanco;
+	}
+	
+	/**
+	 * Retorna codigoAgencia
+	 * @return o codigoAgencia
+	 */
+	public String getCodigoAgencia() {
+		return codigoAgencia;
+	}
+	
+	/**
+	 * Define codigoAgencia
+	 * @param codigoAgencia valor codigoAgencia a ser definido
+	 */
+	public void setCodigoAgencia(String codigoAgencia) {
+		this.codigoAgencia = codigoAgencia;
+	}
+	
+	/**
+	 * Retorna contaCorrente
+	 * @return o contaCorrente
+	 */
+	public String getContaCorrente() {
+		return contaCorrente;
+	}
+	
+	/**
+	 * Define contaCorrente
+	 * @param contaCorrente valor contaCorrente a ser definido
+	 */
+	public void setContaCorrente(String contaCorrente) {
+		this.contaCorrente = contaCorrente;
 	}
 
 }

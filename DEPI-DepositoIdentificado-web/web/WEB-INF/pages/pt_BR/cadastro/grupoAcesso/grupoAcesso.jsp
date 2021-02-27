@@ -18,21 +18,21 @@
 					<th class="selecao"><s:text name="label.todos" /> <br /> <input
 						type="checkbox" class="optionbutton checkTodos" /></th>
 					<th class="codigoGrupoAcesso"><s:text
-							name="label.grid.grupoAcesso.codigoGrupoAcesso" /></th>
+							name="label.grid.grupoacesso.codigoGrupoAcesso" /></th>
 					<th class="nomeGrupoAcesso"><s:text
-							name="label.grid.grupoAcesso.nomeGrupoAcesso" /></th>
+							name="label.grid.grupoacesso.nomeGrupoAcesso" /></th>
 					<th class="codigoCompanhia"><s:text
 							name="label.grid.departamentocompanhia.codigoCompanhia" /></th>
 					<th class="descricaoCompanhia"><s:text
 							name="label.grid.departamentocompanhia.descricaoCompanhia" /></th>
 					<th class="codigoDepartamento"><s:text
-							name="label.grid.grupoAcesso.siglaDepartamento" /></th>
+							name="label.grid.grupoacesso.siglaDepartamento" /></th>
 					<th class="nomeDepartamento"><s:text
-							name="label.grid.grupoAcesso.nomeDepartamento" /></th>
+							name="label.grid.grupoacesso.nomeDepartamento" /></th>
 					<th class="responsavel"><s:text
-							name="label.grid.grupoAcesso.responsavelAtualizacao" /></th>
+							name="label.grid.grupoacesso.responsavelAtualizacao" /></th>
 					<th class="atualizacao"><s:text
-							name="label.grid.grupoAcesso.dataHoraAtualizacao" /></th>
+							name="label.grid.grupoacesso.dataHoraAtualizacao" /></th>
 				</tr>
 			</thead>
 			<tbody class="lista">
