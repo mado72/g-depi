@@ -11,6 +11,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.form.ContaCorrenteEdita
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.ContaCorrenteCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.ContaCorrenteAutorizadaCampo;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
@@ -84,6 +85,11 @@ public class ContaCorrenteEditarAction extends EditarFormAction<ContaCorrenteAut
 			addActionError(e.getMessage());
 			return voltar();
 		}
+	}
+	
+	public boolean isDesabilitaInputAgenciaConta() {
+		ContaCorrenteEditarFormModel model = getModel();
+		return model.isDetalhar() || model.getEstado() != EstadoCrud.INSERIR; 
 	}
 	
 }
