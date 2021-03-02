@@ -19,11 +19,11 @@ public enum AssociarMotivoDepositoCampo implements IEntidadeCampo {
     CodigoCia(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, CompanhiaSeguradoraCampo.CodigoCompanhia),
 
     /**
-     * Descriï¿½ï¿½o Cia. DescricaoCia(CompanhiaSeguradoraCampo.DescricaoCompanhia),
+     * Descrição Cia. DescricaoCia(CompanhiaSeguradoraCampo.DescricaoCompanhia),
      */
 
     /**
-     * Cï¿½digo Departamento.
+     * Código Departamento.
      */
     CodigoDepartamento(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, DepartamentoCampo.Codigo),
 
@@ -38,12 +38,12 @@ public enum AssociarMotivoDepositoCampo implements IEntidadeCampo {
     NomeDepartamento(DepartamentoCampo.Nome),
 
     /**
-     * Cï¿½digo Motivo.
+     * Código Motivo.
      */
     CodigoMotivo(ConstantesDEPI.TABELA_MOTIVO_ID, MotivoDepositoCampo.Codigo),
 
     /**
-     * Motivo Depï¿½sito.
+     * Motivo Depósito.
      */
     MotivoDepositoDescricaoBasica(MotivoDepositoCampo.DescricaoBasica),
 
@@ -61,21 +61,23 @@ public enum AssociarMotivoDepositoCampo implements IEntidadeCampo {
      * Conta Corrente.
      */
     ContaCorrente(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_CONTA_CORRENTE, ContaCorrenteAutorizadaCampo.CodigoContaCorrente);
+    
+    private final static List<AssociarMotivoDepositoCampo> CRITERIAS = Arrays.asList(
+    		CodigoCia,
+    		SiglaDepartamento,
+    		NomeDepartamento,
+    		MotivoDepositoDescricaoBasica,
+    		Banco,
+    		Agencia,
+    		ContaCorrente);
 
     private String nome;
-
-    private String descricao;
 
     private TipoCampo tipoCampo;
 
     private boolean cics;
 
     private int size;
-    
-	private final static List<AssociarMotivoDepositoCampo> CRITERIAS = Arrays
-			.asList(CodigoCia, SiglaDepartamento, NomeDepartamento,
-					MotivoDepositoDescricaoBasica, Banco, Agencia,
-					ContaCorrente);
 
     /**
      * Construtor.
@@ -99,14 +101,6 @@ public enum AssociarMotivoDepositoCampo implements IEntidadeCampo {
         this.tipoCampo = campo.getTipoCampo();
         this.cics = campo.isCics();
         this.size = campo.getSize();
-    }
-
-    /**
-     * retorna a descriï¿½ï¿½o
-     * @return - retorna a descriï¿½ï¿½o do campo
-     */
-    public String getDescricao() {
-        return descricao;
     }
 
     /**
@@ -137,35 +131,18 @@ public enum AssociarMotivoDepositoCampo implements IEntidadeCampo {
     }
 
     /**
-     * Especifica o cics.
-     * @param cics boolean do cics a ser setado
+     * retorna o nome
+     * @param nome - nome do campo de motivo depósito
+     * @return - retorna o nome do campo
      */
-    public void setCics(boolean cics) {
-        this.cics = cics;
-    }
+    public static AssociarMotivoDepositoCampo obterPorNome(String nome) {
 
-    /**
-     * Especifica o descricao.
-     * @param descricao String do descricao a ser setado
-     */
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    /**
-     * Especifica o nome.
-     * @param nome String do nome a ser setado
-     */
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    /**
-     * Especifica o tipoCampo.
-     * @param tipoCampo TipoCampo do tipoCampo a ser setado
-     */
-    public void setTipoCampo(TipoCampo tipoCampo) {
-        this.tipoCampo = tipoCampo;
+        for (AssociarMotivoDepositoCampo campo : AssociarMotivoDepositoCampo.values()) {
+            if (campo.getNome().equals(nome)) {
+                return campo;
+            }
+        }
+        return null;
     }
 
     /**
@@ -173,7 +150,7 @@ public enum AssociarMotivoDepositoCampo implements IEntidadeCampo {
      * @return AssociarMotivoDepositoCampo[].
      */
     public static List<AssociarMotivoDepositoCampo> valuesForCriteria() {
-    	return CRITERIAS;
+        return CRITERIAS;
     }
 
     /**
