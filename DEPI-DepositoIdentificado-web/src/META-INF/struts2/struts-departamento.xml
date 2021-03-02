@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+
+	<package name="cadastroDepartamento" namespace="/cadastro/departamento/consultar" extends="depi-default">
+	
+		<default-class-ref class="departamentoConsultarAction"/>
+		
+		<global-results>
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
+			</result>
+			<result name="input" type="redirectAction">listar</result>
+		</global-results>
+
+		<action name="index">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+		
+		<action name="listar" method="listar">
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
+			</result>
+		</action>
+        
+		<action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+		</action>
+
+	</package>
+	
+	<package name="cadastroDepartamentoEditar" namespace="/cadastro/departamento/editar" extends="depi-default">
+	
+		<default-class-ref class="departamentoEditarAction"></default-class-ref>
+	
+		<global-results>
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoForm.jsp</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">retornar</param>
+			    <param name="namespace">/cadastro/departamento/consultar</param>
+			</result>
+            <result name="voltar" type="redirectAction">
+                <param name="actionName">listar</param>
+                <param name="namespace">/cadastro/departamento/consultar</param>
+            </result>            
+        </global-results>
+        
+		<action name="incluir" method="incluir">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+			<result name="input" type="redirectAction">input</result>
+		</action>
+		
+		<action name="alterar" method="alterar">
+			<result name="input" type="redirectAction">input</result>
+		</action>
+        
+        <action name="excluir" method="excluir">
+			<interceptor-ref name="store">
+				<param name="operationMode">STORE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+        </action>
+        
+        <action name="*" method="{1}">
+        </action>
+        
+        <action name="salvar" class="departamentoSalvarAction">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+        </action>        
+	</package>
+    
+	
+</struts>
