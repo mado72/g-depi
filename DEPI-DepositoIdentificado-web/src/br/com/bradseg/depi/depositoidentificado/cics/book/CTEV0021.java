@@ -17,7 +17,7 @@ public class CTEV0021 {
     private static final long serialVersionUID = 6019176497897596590L;
 
     @CicsField(order = 10, size = 4, pattern = "0000", direction = Direction.InOut)
-    private int codigoTipoEventoNegocio;
+    private String codigoTipoEventoNegocio;
 
     @CicsField(order = 15, size = 3, pattern = "000", direction = Direction.InOut)
     private int numSeqPagEnt = 0;
@@ -67,7 +67,7 @@ public class CTEV0021 {
      * Retorna o valor do atributo codigoTipoEventoNegocio.
      * @return o valor do atributo codigoTipoEventoNegocio
      */
-    public int getCodigoTipoEventoNegocio() {
+    public String getCodigoTipoEventoNegocio() {
         return codigoTipoEventoNegocio;
     }
 
@@ -75,7 +75,7 @@ public class CTEV0021 {
      * Especifica o valor do atributo codigoTipoEventoNegocio.
      * @param codigoTipoEventoNegocio21 - int do codigoTipoEventoNegocio a ser configurado.
      */
-    public void setCodigoTipoEventoNegocio(int codigoTipoEventoNegocio21) {
+    public void setCodigoTipoEventoNegocio(String codigoTipoEventoNegocio21) {
         this.codigoTipoEventoNegocio = codigoTipoEventoNegocio21;
     }
 

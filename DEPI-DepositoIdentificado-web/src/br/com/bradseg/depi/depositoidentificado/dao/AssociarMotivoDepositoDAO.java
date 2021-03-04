@@ -9,14 +9,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
  * Interface de AssociarMotivoDepositoDAODB2
  */
 public interface AssociarMotivoDepositoDAO {
-	/**
-	 * Obter as Associações de Motivos
-	 * 
-	 * @param filtro
-	 *            - CriterioFiltroUtil.
-	 * @return List<AssociarMotivoDepositoVO>.
-	 */
-	List<AssociarMotivoDepositoVO> obterPorFiltro(FiltroUtil filtro);
 
 	/**
 	 * Método de obter por filtro

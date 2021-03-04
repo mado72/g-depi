@@ -21,22 +21,29 @@
 			<input type="checkbox" class="optionbutton checkTodos" />
 		</th>
 		<th>
-			<s:text name="label.grid.departamentocompanhia.codigoCompanhia"/>
+			<s:text name="label.grid.associarmotivodeposito.codigoCia"/>
 		</th>
 		<th>
-			<s:text name="label.grid.departamentocompanhia.descricaoCompanhia"/>
+			<s:text name="label.grid.associarmotivodeposito.siglaDepartamento"/>
 		</th>
 		<th>
-			<s:text name="label.grid.departamentocompanhia.siglaDepartamento"/>
+			<s:text name="label.grid.associarmotivodeposito.codigoMotivoDeposito"/>
 		</th>
 		<th>
-			<s:text name="label.grid.departamentocompanhia.nomeDepartamento"/>
+			<s:text name="label.grid.associarmotivodeposito.codigoBanco"/>
 		</th>
 		<th>
-			<s:text name="label.grid.departamentocompanhia.codResplUltAtualizacao"/>
+			<s:text name="label.grid.associarmotivodeposito.codigoAgencia"/>
 		</th>
 		<th>
-			<s:text name="label.grid.departamentocompanhia.dataHoraAtualizacao"/>
+			<s:text name="label.grid.associarmotivodeposito.contaCorrente"/>
+		</th>
+
+		<th>
+			<s:text name="label.grid.associarmotivodeposito.responsavelIncAlt"/>
+		</th>
+		<th>
+			<s:text name="label.grid.associarmotivodeposito.dataHoraIncAlt"/>
 		</th>
 		</tr>
 	</thead>
@@ -44,23 +51,32 @@
  	<s:iterator value="colecaoDados" var="item" status="status">
 		<tr>
 			<td class="text-center">
-				<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${item.codigoComposto}"/>"/>
+<c:set var="codigo">${item.cia.codigoCompanhia};${item.departamento.codigoDepartamento};${item.motivoDeposito.codigoMotivoDeposito};${item.banco.cdBancoExterno};${item.codigoAgencia};${item.contaCorrente}</c:set>
+				<input type="checkbox" class="optionbutton" name="codigo" value="<c:out value="${codigo}"/>"/>
 			</td>
 			<td class="text-center">
 				<s:url action="exibir" namespace="/cadastro/associar-motivodeposito/editar" var="linkExibir">
-					<s:param name="codigo">${item.codigoComposto}</s:param>
+					<s:param name="codigo">${codigo}</s:param>
 				</s:url>
 				<s:a href="%{linkExibir}">
-					${item.companhia.codigoCompanhia}
+					${item.cia.codigoCompanhia}
 				</s:a>
 			</td>
-			<td>${item.companhia.descricaoCompanhia}</td>
 			<td class="text-center">${item.departamento.siglaDepartamento}</td>
-			<td>${item.departamento.nomeDepartamento}</td>
+			<td class="text-center">${item.motivoDeposito.codigoMotivoDeposito}</td>
+			<td class="text-center">
+				<s:text name="format.banco"><s:param name="value" value="%{banco.cdBancoExterno}"/></s:text>
+			</td>
+			<td class="text-center">
+				<s:text name="format.agencia"><s:param name="value" value="%{codigoAgencia}"/></s:text>
+			</td>
+			<td class="text-center">
+				<s:text name="format.contaCorrente"><s:param name="value" value="%{contaCorrente}"/></s:text>
+			</td>
 			<td class="text-center">${item.codigoResponsavelUltimaAtualizacao}</td>
 			<td class="text-center">
 				<fmt:formatDate type = "both" dateStyle = "medium" timeStyle = "medium" value="${item.dataHoraAtualizacao}"/>
-			</td>
+			</td> 
 		</tr>
 	</s:iterator>
  	</tbody>
@@ -77,7 +93,7 @@ jQuery(document).ready(function($){
 	$.consulta.prepararFormulario("#AcaoForm");
 	<s:if test="colecaoDados">
 	$.paginacao.paginar({
-		tblSeletor: ".DepartamentoCompanhia",
+		tblSeletor: "#tabela_interna.Consulta",
 		pagSeletor: ".paginacao",
 		registros: 7,
 		pattern: ":reg itens encontrados, mostrando :idxIni até :idxFin."

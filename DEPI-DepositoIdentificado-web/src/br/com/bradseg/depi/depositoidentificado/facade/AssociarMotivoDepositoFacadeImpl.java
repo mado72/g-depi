@@ -37,9 +37,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoFacade {
 
-	private static final int TIPO_EVENTO_CONTABIL = 19;
-	
-	private static final String STR1 = "Identificação Depósitos";
+	private static final String MODULO = "Identifica\u00E7\u00E7o Dep\u00F3sitos";
     protected static final Logger LOGGER = LoggerFactory.getLogger(AssociarMotivoDepositoFacadeImpl.class);
     
 	/**
@@ -78,6 +76,7 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 
         for (AssociarMotivoDepositoVO vo : vos) {
             if (amdDAO.isReferenciado(vo)) {
+            	
                 if (codsAssocMotivos.length() > 0) {
                     codsAssocMotivos.append("; ");
                 }
@@ -88,7 +87,7 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
         }
         
         if (codsAssocMotivos.length() > 0) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO + " - " + codsAssocMotivos.toString() + " - " + STR1);
+            throw new DEPIBusinessException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO, codsAssocMotivos.toString(), MODULO);
         }
     }
 
@@ -237,7 +236,7 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 	 */
 	@Override
 	public EventoContabilVO obterEventoContabil(int codigoEvento) {
-		return cicsDAO.obterEventoContabil(TIPO_EVENTO_CONTABIL, codigoEvento);
+		return cicsDAO.obterEventoContabil(codigoEvento);
 	}
 
 	/* (non-Javadoc)

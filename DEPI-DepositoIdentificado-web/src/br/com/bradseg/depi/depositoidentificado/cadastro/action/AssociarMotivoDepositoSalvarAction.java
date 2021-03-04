@@ -5,16 +5,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepartamentoCompanhiaEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.AssociarMotivoDepositoEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.cadastro.helper.AssociarMotivoDepositoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
-import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepartamentoCompanhiaCrudHelper;
-import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoCompanhiaFacade;
+import br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.SalvarAction;
-import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepartamentoCompanhiaCampo;
-import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
-import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.AssociarMotivoDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
+
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.Validations;
+import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 /**
  * Processa a ação de salvar do formulário Departamento
@@ -24,48 +26,39 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 @Controller
 @Scope("request")
 public class AssociarMotivoDepositoSalvarAction extends
-		SalvarAction<DepartamentoCompanhiaCampo, DepartamentoCompanhiaVO, DepartamentoCompanhiaEditarFormModel> {
+		SalvarAction<AssociarMotivoDepositoCampo, AssociarMotivoDepositoVO, AssociarMotivoDepositoEditarFormModel> {
 	
-	private static final String LABEL_CADASTRO_DEPARTAMENTOCOMPANHIA_DEPARTAMENTO = "label.cadastro.departamentocompanhia.departamento";
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(AssociarMotivoDepositoSalvarAction.class);
 
 	private static final long serialVersionUID = -3923052243969907744L;
 	
-	private transient DepartamentoCompanhiaCrudHelper crudHelper;
+	private transient AssociarMotivoDepositoCrudHelper crudHelper;
 	
 	@Autowired
-	protected void setFacade(DepartamentoCompanhiaFacade facade) {
+	protected void setFacade(AssociarMotivoDepositoFacade facade) {
 		crudHelper.setFacade(facade);
 	}
 	
 	@Override
-	protected CrudHelper<DepartamentoCompanhiaCampo, DepartamentoCompanhiaVO, DepartamentoCompanhiaEditarFormModel> getCrudHelper() {
+	protected CrudHelper<AssociarMotivoDepositoCampo, AssociarMotivoDepositoVO, AssociarMotivoDepositoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
-			crudHelper = new DepartamentoCompanhiaCrudHelper();
+			crudHelper = new AssociarMotivoDepositoCrudHelper();
 		}
 		return crudHelper;
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.opensymphony.xwork2.ActionSupport#validate()
-	 */
-	@Override
-	public void validate() {
-		if (CollectionUtils.isEmpty(getModel().getSiglaDepartamentos())) {
-			LOGGER.info("Departamento não informado.");
-			addFieldError(
-					"siglaDepartmentos",
-					getText(ConstantesDEPI.ERRO_CAMPO_REQUERIDO,
-							new String[]{ getText(LABEL_CADASTRO_DEPARTAMENTOCOMPANHIA_DEPARTAMENTO)}));
-		}
-		super.validate();
-	}
-
+	@Validations(
+			requiredStrings={
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="codigoCompanhia", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.contacorrenteautorizada.cia')})}"),
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="codigoBanco", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.contacorrenteautorizada.banco')})}"),
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="agencia", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.contacorrenteautorizada.agencia')})}"),
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="contaCorrente", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.contacorrenteautorizada.contaCorrente')})}"),
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="trps", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.contacorrenteautorizada.trps')})}")
+			}
+		)
 	@Override
 	public String execute() {
 		LOGGER.info("Formulário validado. Chamando método para concluir a operação.");
 		return super.execute();
 	}
-
 }

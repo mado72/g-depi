@@ -74,11 +74,10 @@ public interface CICSDepiDAO {
 
 	/**
 	 * Obtém um evento contábil
-	 * @param tipoEvento TODO
 	 * @param codigoEvento Código do evento
 	 * @return Evento contábil
 	 */
-	EventoContabilVO obterEventoContabil(int tipoEvento, int codigoEvento);
+	EventoContabilVO obterEventoContabil(int codigoEvento);
 
 	/**
 	 * Obtém um item contábil

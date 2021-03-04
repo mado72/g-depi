@@ -4,7 +4,6 @@
 package br.com.bradseg.depi.depositoidentificado.util.annotations;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
@@ -49,7 +48,7 @@ final class BookConfiguration {
 		this.fieldList.add(field);
 	}
 	
-	protected Collection<FieldDefinitions> getCommonFieldIn() {
+	protected List<FieldDefinitions> getCommonFieldIn() {
 		TreeSet<FieldDefinitions> fields = new TreeSet<>(comparator);
 		for (FieldDefinitions field : fieldList) {
 			Direction direction = field.getCicsField().direction();
@@ -57,10 +56,10 @@ final class BookConfiguration {
 				fields.add(field);
 			}
 		}
-		return fields;
+		return new ArrayList<>(fields);
 	}
 
-	protected Collection<FieldDefinitions> getCommonFieldOut() {
+	protected List<FieldDefinitions> getCommonFieldOut() {
 		TreeSet<FieldDefinitions> fields = new TreeSet<>(comparator);
 		for (FieldDefinitions field : fieldList) {
 			Direction direction = field.getCicsField().direction();
@@ -68,7 +67,7 @@ final class BookConfiguration {
 				fields.add(field);
 			}
 		}
-		return fields;
+		return new ArrayList<>(fields);
 	}
 	
 	/**

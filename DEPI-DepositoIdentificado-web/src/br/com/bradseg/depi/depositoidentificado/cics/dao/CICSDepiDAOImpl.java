@@ -37,6 +37,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 @Repository
 public class CICSDepiDAOImpl implements CICSDepiDAO {
 	
+	private static final int TIPO_EVENTO_CONTABIL = 19;
+
 	@Autowired
 	private CTGJavaGateway javaGateway;
 	
@@ -229,27 +231,28 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 		return retorno.getNomeAgencia();
 	}
 
-	public List<EventoContabilVO> obterEventosContabeis(int tipoEvento) {
+	public List<EventoContabilVO> obterEventosContabeis(int tipoEvento, int pagina) {
 		CTEV0020 input = new CTEV0020();
 		input.setCodigoTipoObjetoNegocio(tipoEvento);
+		input.setNumSeqPagEnt(pagina);
 		
 		Program<CTEV0020> program = cicsUtil.construir(javaGateway, CTEV0020.class);
-		List<CTEV0020> lista = cicsUtil.execute(program, input);
+		List<CTEV0020> retorno = cicsUtil.execute(program, input);
 		
-		if (lista.isEmpty()) {
+		if (retorno.isEmpty()) {
 			return Collections.emptyList();
 		}
 		
-		CTEV0020 retorno = lista.get(0);
-		return retorno.getLista();
+		CTEV0020 item = retorno.get(0);
+		return item.getLista();
 	}
 	
 	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO#obterEventoContabil(int, int)
+	 * @see br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO#obterEventoContabil(int)
 	 */
 	@Override
-	public EventoContabilVO obterEventoContabil(int tipoEvento, int codigoEvento) {
-		List<EventoContabilVO> eventos = obterEventosContabeis(tipoEvento);
+	public EventoContabilVO obterEventoContabil(int codigoEvento) {
+		List<EventoContabilVO> eventos = obterEventosContabeis(TIPO_EVENTO_CONTABIL, 0);
 		
 		for (EventoContabilVO vo : eventos) {
 			if (vo.getCodigoTipo() == codigoEvento) {
@@ -262,7 +265,10 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 	
 	public List<ItemContabilVO> obterItensContabeis(int tipoEvento) {
 		CTEV0021 input = new CTEV0021();
-		input.setCodigoTipoEventoNegocio(tipoEvento);
+		String sTipoEvento = new StringBuilder("0000").append(tipoEvento).toString();
+		sTipoEvento = sTipoEvento.substring(sTipoEvento.length() - 4, sTipoEvento.length());
+		input.setCodigoTipoEventoNegocio(sTipoEvento);
+		input.setNumSeqPagEnt(1);
 		
 		Program<CTEV0021> program = cicsUtil.construir(javaGateway, CTEV0021.class);
 		List<CTEV0021> lista = cicsUtil.execute(program, input);
@@ -289,5 +295,5 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 		}
 		return null;
 	}
-
+	
 }

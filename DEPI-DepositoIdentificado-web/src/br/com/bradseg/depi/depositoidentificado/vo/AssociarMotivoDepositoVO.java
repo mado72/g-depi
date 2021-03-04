@@ -73,12 +73,12 @@ public class AssociarMotivoDepositoVO implements Serializable {
      * Retorna a chave composta.
      * @return String - chave composta.
      */
-	public String getChaveComposta() {
-		String dot = ".";
-		return new StringBuilder().append(this.getCia().getCodigoCompanhia()).append(dot).append(
-		    this.getDepartamento().getCodigoDepartamento()).append(dot).append(
-		    this.getMotivoDeposito().getCodigoMotivoDeposito()).append(dot).append(this.getBanco().getCdBancoExterno())
-		    .append(dot).append(this.getCodigoAgencia()).append(dot).append(this.getContaCorrente()).toString();
+	public String getCodigo() {
+		String semicolumn = ";";
+		return new StringBuilder().append(this.getCia().getCodigoCompanhia()).append(semicolumn).append(
+		    this.getDepartamento().getCodigoDepartamento()).append(semicolumn).append(
+		    this.getMotivoDeposito().getCodigoMotivoDeposito()).append(semicolumn).append(this.getBanco().getCdBancoExterno())
+		    .append(semicolumn).append(this.getCodigoAgencia()).append(semicolumn).append(this.getContaCorrente()).toString();
 	}
 
 	/**

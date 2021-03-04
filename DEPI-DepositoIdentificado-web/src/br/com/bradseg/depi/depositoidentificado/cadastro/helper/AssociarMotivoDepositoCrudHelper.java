@@ -42,16 +42,15 @@ public class AssociarMotivoDepositoCrudHelper implements
 		this.facade = facade;
 	}
 	
-	private static final String TITLE_CONSULTAR = "title.AssociacaoMotivoDeposito.consultar";
+	private static final String TITLE_CONSULTAR = "title.associarmotivodeposito.consultar";
 
-	private static final String TITLE_LISTAR = "title.AssociacaoMotivoDeposito.listar";
+	private static final String TITLE_LISTAR = "title.associarmotivodeposito.listar";
 	
-	private static final String TITLE_ALTERAR = "title.AssociacaoMotivoDeposito.editar";
+	private static final String TITLE_ALTERAR = "title.associarmotivodeposito.editar";
 	
-	private static final String TITLE_DETALHAR = "title.AssociacaoMotivoDeposito.detalhar";
+	private static final String TITLE_DETALHAR = "title.associarmotivodeposito.detalhar";
 
-	private static final String TITLE_DEPOSITO_INCLUIR = "title.AssociacaoMotivoDeposito.novo";
-	// Métodos para filtrar
+	private static final String TITLE_INCLUIR = "title.associarmotivodeposito.novo";
 
 	@Override
 	public String getChaveTituloConsultar() {
@@ -77,7 +76,7 @@ public class AssociarMotivoDepositoCrudHelper implements
 
 	@Override
 	public String getChaveTituloIncluir() {
-		return TITLE_DEPOSITO_INCLUIR;
+		return TITLE_INCLUIR;
 	}
 
 	@Override

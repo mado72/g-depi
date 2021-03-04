@@ -12,14 +12,16 @@ import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
 /**
  * BOOK DE COMMAREA CTEV1020
  */
-@CicsProgram(programName = "CTEV0020", transactionName = "TV44", commLength = 16252)
-public class CTEV0020 implements Serializable {
+@CicsProgram(programName = "BSIS0028", transactionName = "TV44", commLength = 16252)
+public class TESTE_BSIS0028 implements Serializable {
 
     private static final long serialVersionUID = 6019176497897596590L;
 
+//    @CicsField(order = 10, size = 4, pattern = "0000", direction = Direction.InOut)
     @CicsField(order = 10, size = 4, direction = Direction.InOut)
     private int codigoTipoObjetoNegocio;
 
+//    @CicsField(order = 15, size = 3, pattern = "000", direction = Direction.InOut)
     @CicsField(order = 15, size = 3, direction = Direction.InOut)
     private int numSeqPagEnt;
 
@@ -55,7 +57,7 @@ public class CTEV0020 implements Serializable {
 
     @CicsField(order = 130, occurrences = 30, size = 30 * 80)
     private List<EventoContabilVO> lista = new ArrayList<EventoContabilVO>();
-    
+
     /**
      * Retorna o valor do atributo serialVersionUID.
      * @return o valor do atributo serialVersionUID

@@ -52,14 +52,17 @@ public class CicsExecutor {
 		
 		BookConfiguration commonArea = parser.parseBook(book);
 		
+		Collection<FieldDefinitions> fieldsIn = Collections.unmodifiableCollection(commonArea.getCommonFieldIn());
+		Collection<FieldDefinitions> fieldsOut = Collections.unmodifiableCollection(commonArea.getCommonFieldOut());
+		
 		Program<T> program = new Program<T>(
 				javaGateway,
 				programAnnotation.programName(), 
 				programAnnotation.transactionName(), 
 				programAnnotation.commLength(), 
 				book,
-				Collections.unmodifiableCollection(commonArea.getCommonFieldIn()),
-				Collections.unmodifiableCollection(commonArea.getCommonFieldOut()));
+				fieldsIn,
+				fieldsOut);
 		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug(
@@ -78,19 +81,20 @@ public class CicsExecutor {
 	 * 
 	 * @param program
 	 *            Programa CICS
-	 * @param input
+	 * @param inputData
 	 *            Dados de entrada para a execução do programa
 	 * @return Lista com dados retornados do CICS
 	 * @param <T> Tipo do BOOK a ser utilizado na execução.
 	 */
-	public <T> List<T> execute(Program<T> program, T input) {
+	public <T> List<T> execute(Program<T> program, T inputData) {
 		LOGGER.debug("Executando programa: pgm: {}, trans: {}", program.getPgmName(), program.getTranName());
-		prepareInputData(program, input);
+		prepareInputData(program, inputData);
 		
 		ArrayList<T> result = new ArrayList<>();
 		
 		try {
 			ResultSet rs = program.execute();
+			LOGGER.trace("Programa {} executado. Processando retorno");
 			return processResultSet(program, result, rs);
 		} catch (Exception e) {
 			throw new DEPIIntegrationException(e);
@@ -109,7 +113,7 @@ public class CicsExecutor {
 		} while (rs.next());
 		
 		LOGGER.debug(
-				"Obtever {} registros da consulta ao programa: pgm: {}, trans: {}",
+				"Obteve {} registros da consulta ao programa: pgm: {}, trans: {}",
 				result.size(), program.getPgmName(), program.getTranName());
 		
 		return result;
@@ -123,6 +127,7 @@ public class CicsExecutor {
 		for (FieldDefinitions ofd : fieldsIn) {
 			prepareFieldInputData(vo, inputSet, ofd);
 		}
+		
 		return inputSet;
 	}
 
@@ -136,27 +141,35 @@ public class CicsExecutor {
 			
 			if (type.equals(Integer.class) || type.equals(int.class)) {
 				Integer valor = (Integer) getter.invoke(vo);
-				inputSet.setInteger(fieldName, valor);
-				LOGGER.debug("Inserindo inteiro {} = {}", fieldName, valor);
+				
+				if (ofd.getCicsField().pattern().length() > 0) {
+					String sValor = marshallData(ofd.getCicsField().pattern(), valor);
+					inputSet.setString(fieldName, sValor);
+					LOGGER.debug("> inteiro {} = {}", fieldName, sValor);
+				}
+				else {
+					inputSet.setInteger(fieldName, valor);
+					LOGGER.debug("> inteiro {} = {}", fieldName, valor);
+				}
 			} else if (type.equals(String.class)) {
 				String valor = (String) getter.invoke(vo);
 				if (ofd.getCicsField().pattern().length() > 0) {
 					valor = marshallData(ofd.getCicsField().pattern(), valor);
 				}
 				inputSet.setString(fieldName, valor);
-				LOGGER.debug("Inserindo string {} = {}", fieldName, valor);
+				LOGGER.debug("> string {} = {}", fieldName, valor);
 			} else if (type.equals(Long.class) || type.equals(long.class)) {
 				Long valor = (Long) getter.invoke(vo);
 				inputSet.setLong(fieldName, valor);
-				LOGGER.debug("Inserindo long {} = {}", fieldName, valor);
+				LOGGER.debug("> long {} = {}", fieldName, valor);
 			} else if (type.equals(Double.class) || type.equals(double.class)) {
 				Double valor = (Double) getter.invoke(vo);
 				inputSet.setDouble(fieldName, valor);
-				LOGGER.debug("Inserindo double {} = {}", fieldName, valor);
+				LOGGER.debug("> double {} = {}", fieldName, valor);
 			} else if (type.equals(Date.class)) {
 				Date valor = (Date) getter.invoke(vo);
 				inputSet.setDate(fieldName, valor);
-				LOGGER.debug("Inserindo Date {} = {}", fieldName, valor);
+				LOGGER.debug("> Date {} = {}", fieldName, valor);
 			} else if (ofd.isCollection()) {
 				LOGGER.debug("Processando cole\u00E7\u00E3o {}", fieldName);
 				
@@ -186,6 +199,21 @@ public class CicsExecutor {
 			throw new DEPIIntegrationException(e);
 		}
 	}
+	
+	private String marshallData(String pattern, Number num) {
+		if (num == null) {
+			return pattern;
+		}
+
+		String value = String.valueOf(num);
+		
+		String patt = pattern.substring(0, pattern.length() - value.length());
+		StringBuilder sb = new StringBuilder(patt);
+		sb.append(value);
+		String resultado = sb.toString();
+		LOGGER.debug("Aplicou pattern \"{}\" em {} => {}", pattern, value, resultado);
+		return resultado;
+	}
 
 	private String marshallData(String pattern, String value) {
 		if (value == null) {
@@ -199,7 +227,7 @@ public class CicsExecutor {
 		StringBuilder sb = new StringBuilder(patt);
 		sb.append(value);
 		String resultado = sb.toString();
-		LOGGER.debug("Aplicou pattern \"{}\" em {} => {}", patt, value, resultado);
+		LOGGER.debug("Aplicou pattern \"{}\" em {} => {}", pattern, value, resultado);
 		return resultado;
 	}
 
@@ -210,7 +238,7 @@ public class CicsExecutor {
 			vo = program.programType.newInstance();
 	
 			for (FieldDefinitions ofd : program.output) {
-				processFieldResultSet(rs, vo, ofd);
+				processFieldResultSet(rs, vo, ofd, ofd.getFieldName());
 			}
 			
 		} catch (IllegalArgumentException e) {
@@ -226,31 +254,30 @@ public class CicsExecutor {
 	}
 
 	private <T> void processFieldResultSet(ResultSet rs, T vo,
-			FieldDefinitions ofd) throws IllegalAccessException,
+			FieldDefinitions ofd, String fieldName) throws IllegalAccessException,
 			InvocationTargetException {
 		final Class<?> type = ofd.getType();
-		final String fieldName = ofd.getFieldName();
 		final Method setter = ofd.getSetter();
 
 		if (type == Integer.class || type.equals(int.class)) {
 			int valor = rs.getInteger(fieldName);
-			LOGGER.debug("Leu inteiro {} = {}", fieldName, valor);
+			LOGGER.debug("< inteiro {} = {}", fieldName, valor);
 			setter.invoke(vo, valor);
 		} else if (type == String.class) {
 			String valor = rs.getString(fieldName);
-			LOGGER.debug("Leu string {} = {}", fieldName, valor);
+			LOGGER.debug("< string {} = {}", fieldName, valor);
 			setter.invoke(vo, valor);
 		} else if (type == Long.class || type.equals(long.class)) {
 			long valor = rs.getLong(fieldName);
-			LOGGER.debug("Leu long {} = {}", fieldName, valor);
+			LOGGER.debug("< long {} = {}", fieldName, valor);
 			setter.invoke(vo, valor);
 		} else if (type == Double.class || type.equals(double.class)) {
 			double valor = rs.getDouble(fieldName);
-			LOGGER.debug("Leu double {} = {}", fieldName, valor);
+			LOGGER.debug("< double {} = {}", fieldName, valor);
 			setter.invoke(vo, rs.getDouble(fieldName));
 		} else if (type == Date.class) {
 			Date valor = rs.getDate(fieldName);
-			LOGGER.debug("Leu Date {} = {}", fieldName, valor);
+			LOGGER.debug("< Date {} = {}", fieldName, valor);
 			setter.invoke(vo, rs.getDate(fieldName));
 		} else if (ofd.isCollection()) {
 			List<Object> values = new ArrayList<>();
@@ -269,7 +296,7 @@ public class CicsExecutor {
 				}
 
 				for (FieldDefinitions fieldOut : commonFieldOut) {
-					processFieldResultSet(rs, child, fieldOut);
+					processFieldResultSet(rs, child, fieldOut, fieldOut.getFieldName() + "_" + i);
 				}
 				
 				values.add(child);

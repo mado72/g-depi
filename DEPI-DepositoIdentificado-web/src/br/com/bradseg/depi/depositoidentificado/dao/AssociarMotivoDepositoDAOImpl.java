@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
@@ -253,11 +254,18 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 
         try {
 
-        	MapSqlParameterSource params = ajustarParametrosQuery(filtro, query); 
-
-    		params.addValue(PARAM_WHR1,codigoUsuario);
+        	MapSqlParameterSource params = filtro.getMapParamFiltro(); 
+        	params.addValue(PARAM_WHR1,codigoUsuario);
+        	
+			if (!filtro.getCriterios().isEmpty()) {
+				String complemento = filtro.getClausulasParciais(" AND ", true);
+				query.append(complemento);
+				params.addValues(filtro.getMapParamFiltro().getValues());
+			}
 			
-    		associarMotivoDeposito = getJdbcTemplate() .query(query.toString(), params, new AssociarMotivoDepositoDataMapper());
+			query.append(QuerysDepi.ASSOCIARMOTIVODEPOSITO_ORDERBY);
+
+    		associarMotivoDeposito = getJdbcTemplate().query(query.toString(), params, new AssociarMotivoDepositoDataMapper());
     		
         } finally {
         	LOGGER.info("obterPorFiltroComRestricaoDeGrupoAcesso(CriterioFiltroUtil filtro, BigDecimal codigoUsuario)");  
@@ -265,44 +273,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
         return associarMotivoDeposito;
     }
 
-
-	private MapSqlParameterSource ajustarParametrosQuery(FiltroUtil filtro,
-			StringBuilder query) {
-		/**
-		 * Parametros.
-		 */
-		if (!filtro.getCriterios().isEmpty()) {
-			// Solicitação do IC - Bradesco
-			final String string = "{0}";
-			query.replace(query.indexOf(string), query.indexOf(string) + 3, filtro.getClausulasParciais());
-		}
-		return filtro.getMapParamFiltro();
-	}
-
-    /**
-     * Obter as Associa��es de Motivos
-     * @param filtro - CriterioFiltroUtil.
-     * @return List<AssociarMotivoDepositoVO>.
-     */
-    @Override
-    public List<AssociarMotivoDepositoVO> obterPorFiltro(FiltroUtil filtro) {
-
-    	StringBuilder query = new StringBuilder(QuerysDepi.ASSOCIARMOTIVODEPOSITO_OBTERPORFILTRO);
-
-        try {
-
-        	MapSqlParameterSource params = ajustarParametrosQuery(filtro, query); 
-
-			List<AssociarMotivoDepositoVO> associarMotivoDeposito = getJdbcTemplate().query(query.toString(), params, new AssociarMotivoDepositoDataMapper());
-			
-            return associarMotivoDeposito;
-            
-        } finally {
-        	LOGGER.info("obterPorFiltro(CriterioFiltroUtil filtro)");  
-        }
-    }
-    
-    /**
+	/**
      * Método de obter por chave
      * @param vo AssociarMotivoDepositoVO
      * @return List<AssociarMotivoDepositoVO>
@@ -312,7 +283,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 		
     	StringBuilder query = new StringBuilder(QuerysDepi.ASSOCIARMOTIVODEPOSITO_OBTERPORCHAVE);
     	
-    	List<AssociarMotivoDepositoVO> associarMotivoDeposito = null;
+    	AssociarMotivoDepositoVO associarMotivoDeposito = null;
 
         try {
 
@@ -325,12 +296,16 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
     		params.addValue(PARAM_WHR5,vo.getCia().getCodigoCompanhia());
     		params.addValue(PARAM_WHR6,vo.getMotivoDeposito().getCodigoMotivoDeposito());
 			
-    		associarMotivoDeposito = getJdbcTemplate().query(query.toString(), params, new AssociarMotivoDepositoDataMapper());
+    		try {
+				associarMotivoDeposito = getJdbcTemplate().queryForObject(query.toString(), params, new AssociarMotivoDepositoDataMapper());
+			} catch (EmptyResultDataAccessException e) {
+				return null;
+			}
     		
         } finally {
         	LOGGER.info("obterPorFiltroComRestricaoDeGrupoAcesso(CriterioFiltroUtil filtro, BigDecimal codigoUsuario)");  
         }
-        return associarMotivoDeposito.get(0);
+        return associarMotivoDeposito;
     }
 
 }

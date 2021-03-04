@@ -50,8 +50,8 @@ public final class Program<T> extends CTGProgramImpl {
 			Collection<FieldDefinitions> input, Collection<FieldDefinitions> output) {
 		
 		super(pPgmName, pTranName, pCommonAreaSize,
-				new CommonAreaMetaData(extractFieldTypeArray(input)),
-				new CommonAreaMetaData(extractFieldTypeArray(output)),
+				new CommonAreaMetaData(extractFieldTypeArray(input, true)),
+				new CommonAreaMetaData(extractFieldTypeArray(output, false)),
 				gateway);
 		
 		this.programType = programType;
@@ -68,23 +68,44 @@ public final class Program<T> extends CTGProgramImpl {
 	}
 
 	private static FieldType[] extractFieldTypeArray(
-			Collection<FieldDefinitions> source) {
+			Collection<FieldDefinitions> source, boolean input) {
 		
 		ArrayList<FieldType> fields = new ArrayList<>();
 		
 		for (FieldDefinitions ofd : source) {
-			fields.add(createFieldType(ofd));
+			if (! ofd.isCollection()) {
+				fields.add(createFieldType(ofd, ofd.getFieldName()));
+			}
+			else {
+				CollectionFieldDefinitions cfd = (CollectionFieldDefinitions) ofd;
+				Collection<FieldDefinitions> childFields;
+				if (input) {
+					childFields = cfd.getInnerConfiguration().getCommonFieldIn();
+				}
+				else {
+					childFields = cfd.getInnerConfiguration().getCommonFieldOut();
+				}
+				
+				ArrayList<FieldType> children = new ArrayList<>();
+				
+				for (int i = 0; i < cfd.getOccurrences(); i++) {
+					for (FieldDefinitions fieldDefinitions : childFields) {
+						children.add(createFieldType(fieldDefinitions, fieldDefinitions.getFieldName() + "_" + i));
+					}
+				}
+				
+				fields.addAll(children);
+			}
 		}
 		
 		return fields.toArray(new FieldType[0]);
 	}
 
-	public static AbstractFieldType createFieldType(FieldDefinitions field) {
+	public static AbstractFieldType createFieldType(FieldDefinitions field, String fieldName) {
 		
 		final CicsField cicsField = field.getCicsField();
 		final int fieldSize = cicsField.size();
 		final Class<?> type = field.getType();
-		final String fieldName = field.getFieldName();
 		
 		if (type.equals(Integer.class) || type.equals(int.class)) {
 			CicsProgramDefinitionParser.LOGGER.trace("Criando campo Integer {} ({})", fieldName, fieldSize);

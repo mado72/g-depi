@@ -114,4 +114,15 @@ public class EventoContabilVO implements Serializable{
         }
         return (((EventoContabilVO) o).getCodigoTipo() == this.getCodigoTipo());
     }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+		StringBuilder sb = new StringBuilder("EventoContabilVO[")
+				.append(codigoTipo).append(',').append(descricaoTipo)
+				.append(',').append(codigoIndicativoTipoEvento).append(']').append(super.toString());
+    	return sb.toString();
+    }
 }
