@@ -3,9 +3,11 @@ package br.com.bradseg.depi.depositoidentificado.facade;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
@@ -117,5 +119,39 @@ public interface AssociarMotivoDepositoFacade {
 	 */
 	ItemContabilVO obterItemContabil(int codigoTipoEventoNegocio,
 			int codigoItemContábil);
+
+	/**
+	 * Consulta o banco de dados e o CICS para obter a companhia seguradora
+	 * @param companhiaSeguradoraVO Fornece o código da Cia
+	 * @return Companhia Seguradora
+	 */
+	CompanhiaSeguradoraVO obterCompanhiaSeguradora(
+			CompanhiaSeguradoraVO companhiaSeguradoraVO);
+
+	/**
+	 * Consulta o banco para obter um departamento
+	 * @param departamentoVO Fornece o código do departamento
+	 * @return Departamento
+	 */
+	DepartamentoVO obterDepartamento(DepartamentoVO departamentoVO);
+
+	/**
+	 * Obtém lista de agências de um banco associadas a um banco
+	 * @param ciaVO Companhia
+	 * @param bancoVO Banco
+	 * @return Agências
+	 */
+	List<AgenciaVO> obterAgencias(CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO);
+
+	/**
+	 * Obtém lista de contas
+	 * @param ciaVO Companhia
+	 * @param bancoVO Banco
+	 * @param agenciaVO Agência
+	 * @return Lista de contas
+	 */
+	List<ContaCorrenteAutorizadaVO> obterContas(CompanhiaSeguradoraVO ciaVO,
+			BancoVO bancoVO, AgenciaVO agenciaVO);
+
 
 }

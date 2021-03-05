@@ -1,9 +1,11 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.util.annotations;
+package br.com.bradseg.depi.depositoidentificado.cics;
 
 import java.beans.PropertyDescriptor;
+
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
 
 /**
  * Classe para mapear campo estruturado repetitivo na definição para o CICS. 

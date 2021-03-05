@@ -13,16 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.ctg.programapi.support.gateway.CTGJavaGateway;
+import br.com.bradseg.depi.depositoidentificado.cics.CicsExecutor;
+import br.com.bradseg.depi.depositoidentificado.cics.ProgramDefinition;
 import br.com.bradseg.depi.depositoidentificado.cics.book.CTEV0020;
 import br.com.bradseg.depi.depositoidentificado.cics.book.CTEV0021;
 import br.com.bradseg.depi.depositoidentificado.cics.book.GTAB0030;
-import br.com.bradseg.depi.depositoidentificado.cics.book.GTAB1411;
+import br.com.bradseg.depi.depositoidentificado.cics.book.GTAB0031;
 import br.com.bradseg.depi.depositoidentificado.cics.book.GTAB1412;
 import br.com.bradseg.depi.depositoidentificado.cics.book.STES0512;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsExecutor;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.Program;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
@@ -57,7 +57,7 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 		GTAB1412 input = new GTAB1412();
 		input.setCiaInterno(ciaInterno);
 		
-		Program<GTAB1412> program = cicsUtil.construir(javaGateway, GTAB1412.class);
+		ProgramDefinition<GTAB1412> program = cicsUtil.construir(javaGateway, GTAB1412.class);
 		List<GTAB1412> lista = cicsUtil.execute(program, input);
 		
 		if (lista.isEmpty()) {
@@ -111,7 +111,7 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
         book.setCodigoBanco(cc.getBanco().getCdBancoExterno());
         book.setConta(String.format("%013d", cc.getContaCorrente()));
         
-		Program<STES0512> program = cicsUtil.construir(javaGateway, STES0512.class);
+		ProgramDefinition<STES0512> program = cicsUtil.construir(javaGateway, STES0512.class);
 		List<STES0512> lista = cicsUtil.execute(program, book);
 		
 		if (lista.isEmpty()) {
@@ -160,7 +160,7 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 		GTAB0030 input = new GTAB0030();
 		input.setCdBancoExterno(cdExterno);
 		
-		Program<GTAB0030> program = cicsUtil.construir(javaGateway, GTAB0030.class);
+		ProgramDefinition<GTAB0030> program = cicsUtil.construir(javaGateway, GTAB0030.class);
 		List<GTAB0030> lista = cicsUtil.execute(program, input);
 		
 		if (lista.isEmpty()) {
@@ -216,18 +216,18 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 	 */
 	@Override
 	public String obterAgencia(int codigoBanco, int codigoAgencia) {
-		GTAB1411 input = new GTAB1411();
+		GTAB0031 input = new GTAB0031();
 		input.setCdBancoExterno(codigoBanco);
 		input.setCdAgenciaExterno(codigoAgencia);
 		
-		Program<GTAB1411> program = cicsUtil.construir(javaGateway, GTAB1411.class);
-		List<GTAB1411> lista = cicsUtil.execute(program, input);
+		ProgramDefinition<GTAB0031> program = cicsUtil.construir(javaGateway, GTAB0031.class);
+		List<GTAB0031> lista = cicsUtil.execute(program, input);
 		
 		if (lista.isEmpty()) {
 			return null;
 		}
 		
-		GTAB1411 retorno = lista.get(0);
+		GTAB0031 retorno = lista.get(0);
 		return retorno.getNomeAgencia();
 	}
 
@@ -236,7 +236,7 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 		input.setCodigoTipoObjetoNegocio(tipoEvento);
 		input.setNumSeqPagEnt(pagina);
 		
-		Program<CTEV0020> program = cicsUtil.construir(javaGateway, CTEV0020.class);
+		ProgramDefinition<CTEV0020> program = cicsUtil.construir(javaGateway, CTEV0020.class);
 		List<CTEV0020> retorno = cicsUtil.execute(program, input);
 		
 		if (retorno.isEmpty()) {
@@ -265,12 +265,9 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 	
 	public List<ItemContabilVO> obterItensContabeis(int tipoEvento) {
 		CTEV0021 input = new CTEV0021();
-		String sTipoEvento = new StringBuilder("0000").append(tipoEvento).toString();
-		sTipoEvento = sTipoEvento.substring(sTipoEvento.length() - 4, sTipoEvento.length());
-		input.setCodigoTipoEventoNegocio(sTipoEvento);
-		input.setNumSeqPagEnt(1);
+		input.setCodigoTipoEventoNegocio(tipoEvento);
 		
-		Program<CTEV0021> program = cicsUtil.construir(javaGateway, CTEV0021.class);
+		ProgramDefinition<CTEV0021> program = cicsUtil.construir(javaGateway, CTEV0021.class);
 		List<CTEV0021> lista = cicsUtil.execute(program, input);
 		
 		if (lista.isEmpty()) {

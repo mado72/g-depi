@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.util.annotations;
+package br.com.bradseg.depi.depositoidentificado.cics;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,7 +11,8 @@ import java.util.TreeSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.Direction;
 
 /**
  * Classe utilizada para mapear a área comum 

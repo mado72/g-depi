@@ -3,20 +3,20 @@
  */
 package br.com.bradseg.depi.depositoidentificado.cics.book;
 
-import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.QUATRO;
-import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction.InOut;
+import static br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.QUATRO;
+import static br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.Direction.InOut;
 
 import java.io.Serializable;
 
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsProgram;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsProgram;
 
 /**
  * Classe que representa o book para o GTAB1412. 
  * @author Marcelo Damasceno
  */
 @CicsProgram(programName = "GTAB0031", transactionName = "GT31", commLength = 398)
-public class GTAB1411 implements Serializable {
+public class GTAB0031 implements Serializable {
 
 	private static final long serialVersionUID = -697466839831643647L;
 

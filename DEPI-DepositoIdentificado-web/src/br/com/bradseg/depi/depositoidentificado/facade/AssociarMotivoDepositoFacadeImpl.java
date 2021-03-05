@@ -14,16 +14,22 @@ import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.AssociarMotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.BancoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.ContaCorrenteDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.ContaCorrenteAutorizadaCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
@@ -57,6 +63,9 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 	
 	@Autowired
 	private BancoDAO bancoDAO;
+	
+	@Autowired
+	private ContaCorrenteDAO contaDAO;
 		
 	@Autowired
 	private CICSDepiDAO cicsDAO;
@@ -247,4 +256,69 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 		return cicsDAO.obterItemContabil(codigoTipoEventoNegocio, codigoItemContábil);
 	}
 
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterCompanhiaSeguradora(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO)
+	 */
+	@Override
+	public CompanhiaSeguradoraVO obterCompanhiaSeguradora(
+			CompanhiaSeguradoraVO companhiaSeguradoraVO) {
+		CompanhiaSeguradoraVO vo = ciaDAO.obterPorChave(companhiaSeguradoraVO);
+		return cicsDAO.obterCiaPorCodigo(vo.getCodigoCompanhia());
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterDepartamento(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO)
+	 */
+	@Override
+	public DepartamentoVO obterDepartamento(DepartamentoVO departamentoVO) {
+		return deptoDAO.obterPorChave(departamentoVO);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterAgencias(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, br.com.bradseg.depi.depositoidentificado.vo.BancoVO)
+	 */
+	@Override
+	public List<AgenciaVO> obterAgencias(CompanhiaSeguradoraVO ciaVO,
+			BancoVO bancoVO) {
+		List<AgenciaVO> agencias = bancoDAO.obterAgencias(ciaVO, bancoVO);
+		for (AgenciaVO vo : agencias) {
+			String nomeAgencia = cicsDAO.obterAgencia(vo.getCdBancoExterno(), vo.getCdAgenciaExterno());
+			vo.setDescricaoAgencia(nomeAgencia);
+		}
+		return agencias;
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterContas(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, br.com.bradseg.depi.depositoidentificado.vo.BancoVO, br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO)
+	 */
+	@Override
+	public List<ContaCorrenteAutorizadaVO> obterContas(
+			CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO, AgenciaVO agenciaVO) {
+
+		CriterioConsultaVO<?> criterioCia = new CriterioConsultaVO<>(
+				ContaCorrenteAutorizadaCampo.CodigoCia,
+				TipoOperacao.IgualNumerico, String.valueOf(ciaVO
+						.getCodigoCompanhia()), "param1");
+		
+		CriterioConsultaVO<?> criterioBanco = new CriterioConsultaVO<>(
+				ContaCorrenteAutorizadaCampo.CodigoBanco,
+				TipoOperacao.IgualNumerico,
+				String.valueOf(bancoVO.getCdBancoExterno()),
+				"param2");
+		
+		CriterioConsultaVO<?> criterioAgencia = new CriterioConsultaVO<>(
+				ContaCorrenteAutorizadaCampo.CodigoAgencia,
+				TipoOperacao.IgualNumerico,
+				String.valueOf(agenciaVO.getCdAgenciaExterno()),
+				"param3");
+
+		FiltroUtil filtro = new FiltroUtil();
+		filtro.adicionaCriterio(criterioCia);
+		filtro.adicionaCriterio(criterioBanco);
+		filtro.adicionaCriterio(criterioAgencia);
+		
+		return contaDAO.obterPorFiltro(filtro);
+	}
+	
+	
 }

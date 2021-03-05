@@ -3,9 +3,9 @@ package br.com.bradseg.depi.depositoidentificado.cics.book;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsProgram;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsProgram;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.Direction;
 import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 
 /**
@@ -16,10 +16,10 @@ public class CTEV0021 {
 
     private static final long serialVersionUID = 6019176497897596590L;
 
-    @CicsField(order = 10, size = 4, pattern = "0000", direction = Direction.InOut)
-    private String codigoTipoEventoNegocio;
+    @CicsField(order = 10, size = 4, direction = Direction.InOut)
+    private int codigoTipoEventoNegocio;
 
-    @CicsField(order = 15, size = 3, pattern = "000", direction = Direction.InOut)
+    @CicsField(order = 15, size = 3, direction = Direction.InOut)
     private int numSeqPagEnt = 0;
 
     @CicsField(order = 20, size = 1)
@@ -67,16 +67,16 @@ public class CTEV0021 {
      * Retorna o valor do atributo codigoTipoEventoNegocio.
      * @return o valor do atributo codigoTipoEventoNegocio
      */
-    public String getCodigoTipoEventoNegocio() {
+    public int getCodigoTipoEventoNegocio() {
         return codigoTipoEventoNegocio;
     }
 
     /**
      * Especifica o valor do atributo codigoTipoEventoNegocio.
-     * @param codigoTipoEventoNegocio21 - int do codigoTipoEventoNegocio a ser configurado.
+     * @param codigoTipoEventoNegocio - int do codigoTipoEventoNegocio a ser configurado.
      */
-    public void setCodigoTipoEventoNegocio(String codigoTipoEventoNegocio21) {
-        this.codigoTipoEventoNegocio = codigoTipoEventoNegocio21;
+    public void setCodigoTipoEventoNegocio(int codigoTipoEventoNegocio) {
+        this.codigoTipoEventoNegocio = codigoTipoEventoNegocio;
     }
 
     /**

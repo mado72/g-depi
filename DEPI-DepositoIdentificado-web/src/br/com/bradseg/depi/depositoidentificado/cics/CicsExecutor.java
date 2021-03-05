@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.util.annotations;
+package br.com.bradseg.depi.depositoidentificado.cics;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import br.com.bradseg.bsad.framework.ctg.programapi.program.InputSet;
 import br.com.bradseg.bsad.framework.ctg.programapi.program.ResultSet;
 import br.com.bradseg.bsad.framework.ctg.programapi.support.gateway.CTGJavaGateway;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsProgram;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 
 /**
@@ -43,7 +45,7 @@ public class CicsExecutor {
 	 * @see CicsField
 	 * @param <T> Classe que representa o book da comunicação.
 	 */
-	public <T> Program<T> construir(CTGJavaGateway javaGateway,
+	public <T> ProgramDefinition<T> construir(CTGJavaGateway javaGateway,
 			Class<T> book) {
 		CicsProgram programAnnotation = book.getAnnotation(
 				CicsProgram.class);
@@ -55,7 +57,7 @@ public class CicsExecutor {
 		Collection<FieldDefinitions> fieldsIn = Collections.unmodifiableCollection(commonArea.getCommonFieldIn());
 		Collection<FieldDefinitions> fieldsOut = Collections.unmodifiableCollection(commonArea.getCommonFieldOut());
 		
-		Program<T> program = new Program<T>(
+		ProgramDefinition<T> program = new ProgramDefinition<T>(
 				javaGateway,
 				programAnnotation.programName(), 
 				programAnnotation.transactionName(), 
@@ -86,7 +88,7 @@ public class CicsExecutor {
 	 * @return Lista com dados retornados do CICS
 	 * @param <T> Tipo do BOOK a ser utilizado na execução.
 	 */
-	public <T> List<T> execute(Program<T> program, T inputData) {
+	public <T> List<T> execute(ProgramDefinition<T> program, T inputData) {
 		LOGGER.debug("Executando programa: pgm: {}, trans: {}", program.getPgmName(), program.getTranName());
 		prepareInputData(program, inputData);
 		
@@ -101,7 +103,7 @@ public class CicsExecutor {
 		}
 	}
 
-	protected <T> List<T> processResultSet(Program<T> program,
+	protected <T> List<T> processResultSet(ProgramDefinition<T> program,
 			List<T> result, ResultSet rs) {
 		LOGGER.debug(
 				"Processando resultado da consulta ao programa: pgm: {}, trans: {}",
@@ -119,7 +121,7 @@ public class CicsExecutor {
 		return result;
 	}
 
-	private <T> InputSet prepareInputData(Program<T> program, T vo) {
+	private <T> InputSet prepareInputData(ProgramDefinition<T> program, T vo) {
 		Collection<FieldDefinitions> fieldsIn = program.input;
 		
 		InputSet inputSet = program.getInputSet();
@@ -141,16 +143,8 @@ public class CicsExecutor {
 			
 			if (type.equals(Integer.class) || type.equals(int.class)) {
 				Integer valor = (Integer) getter.invoke(vo);
-				
-				if (ofd.getCicsField().pattern().length() > 0) {
-					String sValor = marshallData(ofd.getCicsField().pattern(), valor);
-					inputSet.setString(fieldName, sValor);
-					LOGGER.debug("> inteiro {} = {}", fieldName, sValor);
-				}
-				else {
-					inputSet.setInteger(fieldName, valor);
-					LOGGER.debug("> inteiro {} = {}", fieldName, valor);
-				}
+				inputSet.setInteger(fieldName, valor);
+				LOGGER.debug("> inteiro {} = {}", fieldName, valor);
 			} else if (type.equals(String.class)) {
 				String valor = (String) getter.invoke(vo);
 				if (ofd.getCicsField().pattern().length() > 0) {
@@ -200,21 +194,6 @@ public class CicsExecutor {
 		}
 	}
 	
-	private String marshallData(String pattern, Number num) {
-		if (num == null) {
-			return pattern;
-		}
-
-		String value = String.valueOf(num);
-		
-		String patt = pattern.substring(0, pattern.length() - value.length());
-		StringBuilder sb = new StringBuilder(patt);
-		sb.append(value);
-		String resultado = sb.toString();
-		LOGGER.debug("Aplicou pattern \"{}\" em {} => {}", pattern, value, resultado);
-		return resultado;
-	}
-
 	private String marshallData(String pattern, String value) {
 		if (value == null) {
 			return pattern;
@@ -231,7 +210,7 @@ public class CicsExecutor {
 		return resultado;
 	}
 
-	private <T> T processResultSetRow(Program<T> program, ResultSet rs) {
+	private <T> T processResultSetRow(ProgramDefinition<T> program, ResultSet rs) {
 	
 		T vo;
 		try {

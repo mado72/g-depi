@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsProgram;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsProgram;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.Direction;
 import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
 
 /**

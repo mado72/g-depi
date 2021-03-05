@@ -14,9 +14,11 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.AssociarMotivoD
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
+import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
@@ -244,6 +246,76 @@ public class AssociarMotivoDepositoCrudHelper implements
 	 */
 	public BancoVO obterBanco(BancoVO vo) {
 		return facade.obterBanco(vo);
+	}
+
+	/**
+	 * Obtém o evento contábil do motivo depósito
+	 * @param motivo motivo depósito
+	 * @return Evento contábil
+	 */
+	public EventoContabilVO obterEventoContabil(MotivoDepositoVO motivo) {
+		return facade.obterEventoContabil(motivo.getCodigoEventoContabil());
+	}
+
+	/**
+	 * Obtém o item contábil do motivo depósito
+	 * @param motivo motivo depósito
+	 * @return Item contábil
+	 */
+	public ItemContabilVO obterItemContabil(MotivoDepositoVO motivo) {
+		return facade.obterItemContabil(motivo.getCodigoEventoContabil(), motivo.getCodigoItemContabil());
+	}
+
+	/**
+	 * Obtém uma companhia seguradora
+	 * @param companhiaSeguradoraVO Fornece o código da cia
+	 * @return Companhia Seguradora
+	 */
+	public CompanhiaSeguradoraVO obterCompanhia(
+			CompanhiaSeguradoraVO companhiaSeguradoraVO) {
+		return facade.obterCompanhiaSeguradora(companhiaSeguradoraVO);
+	}
+
+	/**
+	 * Obtém um departamento
+	 * @param departamentoVO Fornece o código do departamento
+	 * @return Departamento
+	 */
+	public DepartamentoVO obterDepartamento(DepartamentoVO departamentoVO) {
+		return facade.obterDepartamento(departamentoVO);
+	}
+
+	/**
+	 * Obtém o motivo depósito
+	 * @param motivoDepositoVO Fornece o código do motivo
+	 * @return Motivo Depósito
+	 */
+	public MotivoDepositoVO obterMotivoDeposito(
+			MotivoDepositoVO motivoDepositoVO) {
+		return facade.obterMotivoDeposito(motivoDepositoVO);
+	}
+
+	/**
+	 * Obtém lista de agências de um banco
+	 * @param ciaVO Companhia
+	 * @param bancoVO Banco
+	 * @return Agências
+	 */
+	public List<AgenciaVO> obterAgencias(CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO) {
+		return facade.obterAgencias(ciaVO, bancoVO);
+	}
+
+	/**
+	 * Obtém lista de contas
+	 * @param ciaVO Companhia
+	 * @param bancoVO Banco
+	 * @param agenciaVO Agência
+	 * @return Lista de contas
+	 */
+	public List<ContaCorrenteAutorizadaVO> obterContasCorrente(
+			CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO,
+			AgenciaVO agenciaVO) {
+		return facade.obterContas(ciaVO, bancoVO, agenciaVO);
 	}
 
 }

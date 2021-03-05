@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.util.annotations;
+package br.com.bradseg.depi.depositoidentificado.cics;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -16,6 +16,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsProgram;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 
 /**

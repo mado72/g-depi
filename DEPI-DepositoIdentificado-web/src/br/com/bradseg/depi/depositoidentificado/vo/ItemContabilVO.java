@@ -2,7 +2,7 @@ package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
 
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
 
 /**
  * Classe ItemContabilVO - Item Contábil VO.

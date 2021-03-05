@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.util.annotations;
+package br.com.bradseg.depi.depositoidentificado.cics;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,13 +17,14 @@ import br.com.bradseg.bsad.framework.ctg.programapi.field.StringFieldType;
 import br.com.bradseg.bsad.framework.ctg.programapi.program.CTGProgramImpl;
 import br.com.bradseg.bsad.framework.ctg.programapi.program.CommonAreaMetaData;
 import br.com.bradseg.bsad.framework.ctg.programapi.support.gateway.CTGJavaGateway;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
 
 /**
  * Armazena as definições do book CICS 
  *
  * @param <T> Classe que contém as definições do book
  */
-public final class Program<T> extends CTGProgramImpl {
+public final class ProgramDefinition<T> extends CTGProgramImpl {
 	
 	transient final Class<T> programType;
 	final Collection<FieldDefinitions> output;
@@ -45,7 +46,7 @@ public final class Program<T> extends CTGProgramImpl {
 	 * @param output
 	 *            Output Common Area
 	 */
-	protected Program(CTGJavaGateway gateway, String pPgmName,
+	protected ProgramDefinition(CTGJavaGateway gateway, String pPgmName,
 			String pTranName, int pCommonAreaSize, Class<T> programType,
 			Collection<FieldDefinitions> input, Collection<FieldDefinitions> output) {
 		

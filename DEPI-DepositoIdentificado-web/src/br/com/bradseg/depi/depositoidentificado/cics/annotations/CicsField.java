@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.util.annotations;
+package br.com.bradseg.depi.depositoidentificado.cics.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

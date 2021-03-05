@@ -1,12 +1,12 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.util.annotations;
+package br.com.bradseg.depi.depositoidentificado.cics;
 
-import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.QUATRO;
-import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction.In;
-import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction.InOut;
-import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction.Out;
+import static br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.QUATRO;
+import static br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.Direction.In;
+import static br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.Direction.InOut;
+import static br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.Direction.Out;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -20,6 +20,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
+
+import br.com.bradseg.depi.depositoidentificado.cics.CicsProgramDefinitionParser;
+import br.com.bradseg.depi.depositoidentificado.cics.CollectionFieldDefinitions;
+import br.com.bradseg.depi.depositoidentificado.cics.FieldDefinitions;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsProgram;
 
 /**
  * Teste para analisadores das anotações CICS 
@@ -252,7 +258,7 @@ public class CicsProgramDefinitionParserTest {
 	}
 
 	/**
-	 * Test method for {@link br.com.bradseg.depi.depositoidentificado.util.annotations.CicsProgramDefinitionParser#parseBook(java.lang.Class)}.
+	 * Test method for {@link br.com.bradseg.depi.depositoidentificado.cics.CicsProgramDefinitionParser#parseBook(java.lang.Class)}.
 	 */
 	@Test
 	public void testParseBook_classeSimples() {

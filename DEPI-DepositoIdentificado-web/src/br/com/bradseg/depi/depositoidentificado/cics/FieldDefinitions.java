@@ -1,10 +1,12 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.util.annotations;
+package br.com.bradseg.depi.depositoidentificado.cics;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
 
 /**
  * Classe usada para mapear os campos marcados com tags {@link CicsField}  
