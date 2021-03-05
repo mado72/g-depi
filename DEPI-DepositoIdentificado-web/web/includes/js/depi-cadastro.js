@@ -203,17 +203,38 @@ var fnReady = function ($) {
 		});
 	};
 	
-	$.dpcoddesc.carregar = function(opcoes) {
+	$.dpcoddesc.aninhar = function(opcoes) {
 		var destino = [$(opcoes.destino[0]), $(opcoes.destino[1])],
 			origem = [$(opcoes.origem[0]), $(opcoes.origem[1])];
+
+		$(opcoes.destino.join(',')).on('carregando', function(ev) {
+			$this = $(ev.target);
+			if (! ev.concluiu) {
+				$this.find('option').remove().end();
+				$this.append($('<option>', {text: 'Carregando...', value: ''}));
+			}
+		});
 		
 		var onChange = function(ev){
-			var v = $(ev.currentTarget).val(),
-				url = opcoes.url.replace('%d', v);
+			var v = $(ev.currentTarget).val();
+
+			if (typeof opcoes.onStart === 'function') {
+				opcoes.onStart(origem[0], origem[1], destino[0], destino[1]);
+			}
+
+			var url = typeof opcoes.url === 'function' ? opcoes.url(v) : opcoes.url.replace('%d', v);
 			
-			destino[0].find("option").remove().end();
-			destino[1].find("option").remove().end();
+			$(destino).each(function(i, v){
+				$(v).trigger({type: 'carregando', origem: origem[0], concluiu: false });
+			});
 		
+			if (!v) {
+				$(destino).each(function(i, v){
+					$(v).trigger({type: 'carregando', origem: origem[0], concluiu: true });
+					$(destino).each(function(i, v){$(v).find('option').remove().end();});
+				});
+				return;
+			}
 			// Consulta Ajax para obter códigos e descrições
 			$.ajax({
 				url : url,
@@ -225,11 +246,19 @@ var fnReady = function ($) {
 					$(data.response).each(function(i,v) {
 						var item = opcoes.fn(v);
 						codigos = codigos.add($('<option>', {value: item[0], text: item[1]}));
-						nomes = nomes.add($("<option>", {value: item[0], text: item[2]}));
+						if (item[2])
+						    nomes = nomes.add($("<option>", {value: item[0], text: item[2]}));
 					});
-					
+
+					$(destino).each(function(i, v){$(v).find('option').remove().end();});
 					destino[0].append(codigos);
-					destino[1].append(nomes);
+					destino[1] && destino[1].append(nomes);
+					$(destino).each(function(i, v){
+						$(v).trigger({type: 'carregando', origem: origem[0], concluiu: true });
+					});
+					if (typeof opcoes.onFinish === 'function') {
+						opcoes.onFinish(origem[0], origem[1], destino[0], destino[1], data.response);
+					}
 				},
 				error : function(data) {
 					opcoes.error(data);
@@ -688,7 +717,7 @@ var fnReady = function ($) {
 		checkTodos();
 		$.dpcoddesc.combinar(['.companhia-codigo-dropbox','.companhia-nome-dropbox']);
 		$.dpcoddesc.combinar(['.departamento-codigo-dropbox','.departamento-nome-dropbox']);
-		$.dpcoddesc.carregar({
+		$.dpcoddesc.aninhar({
 			origem: ['.companhia-codigo-dropbox', '.companhia-nome-dropbox'],
 			destino: ['.departamento-codigo-dropbox', '.departamento-nome-dropbox'],
 			url: opcoes.urlDepto,
@@ -872,7 +901,7 @@ var fnReady = function ($) {
 	$.parametro.prepararFormulario = function(opcoes) {
 		$.dpcoddesc.combinar(['.companhia-codigo-dropbox','.companhia-nome-dropbox']);
 		$.dpcoddesc.combinar(['.departamento-codigo-dropbox','.departamento-nome-dropbox']);
-		$.dpcoddesc.carregar({
+		$.dpcoddesc.aninhar({
 			origem: ['.companhia-codigo-dropbox', '.companhia-nome-dropbox'],
 			destino: ['.departamento-codigo-dropbox', '.departamento-nome-dropbox'],
 			url: opcoes.urlDepto,
@@ -983,6 +1012,135 @@ var fnReady = function ($) {
 			$.contaCorrente.buscarInfoContaInterna(opcoes.urlContaInterna);
 		});
 		
+	};
+	
+	// associarMotivos
+	// ---------------------------------------------------------------------
+	$.namespace( '$.associarMotivos' );
+	$.associarMotivos.preencherCompanhias = function(cias) {
+		var codigos = $(), nomes = $();
+		$(cias).each(function(i,v){
+			codigos = codigos.add($('<option>', {text: v.codigoCompanhia, value: v.codigoCompanhia}));
+			nomes = nomes.add($("<option>", {value: v.codigoCompanhia, text: v.descricaoCompanhia}));
+		});
+		
+		$('.companhia-codigo-dropbox').append(codigos);
+		$('.companhia-nome-dropbox').append(nomes);
+	};
+	$.associarMotivos.prepararEditar = function(opcoes) {
+		opcoes.error = opcoes.error || function(erro) { console.error(erro); };
+		var afterInit = false;
+
+		$("#AcaoForm_contaCorrente").change(function() {
+			var conta = $("#AcaoForm_contaCorrente").val(),
+				contaInterna = opcoes.contas[conta];
+			console.log('mudou conta');
+			$("#AcaoForm_contaInterna").val(contaInterna);
+		});
+	 	$("#AcaoForm_codigoMotivoDeposito").change(function(){
+	 		var item = $("#AcaoForm_codigoMotivoDeposito").val();
+	 		console.log('mudou motivo');
+			$("#AcaoForm_descricaoDetalhadaMotivo").val(opcoes.motivos[item]);
+	 	});
+
+		$('.companhia-codigo-dropbox').change(function(){
+			if (! afterInit) return;
+			console.log('mudou companhia');			$('.agencia-codigo-dropbox').change();
+	 		/*
+			$('.agencia-codigo-dropbox, .agencia-descricao-dropbox, #AcaoForm_contaCorrente').find("option").remove();
+			$('.agencia-codigo-dropbox, .agencia-descricao-dropbox, #AcaoForm_contaCorrente').each(function(i,v){
+				$(v).add($("<option>", {text: 'Carregando...'}));
+			});
+			*/
+		});
+		$('.banco-codigo-dropbox, .banco-descricao-dropbox').change(function(){
+			if (! afterInit) return;
+			console.log('mudou banco');
+			/*
+			$('#AcaoForm_contaCorrente').find("option").remove();
+			$('#AcaoForm_contaCorrente').each(function(i,v){
+				$(v).add($("<option>", {text: 'Carregando...'}));
+			});
+			*/
+		});
+		$('.banco-codigo-dropbox').on('carregando', function(ev){
+			if (! afterInit) return;
+			console.log('mudou banco');
+			if (ev && ev.concluiu) {
+				console.log('banco carregado');
+				$('.banco-codigo-dropbox').change();
+			}
+			else {
+				console.log('banco carregando', ev);
+			}
+		});
+		
+		$.dpcoddesc.combinar(['.companhia-codigo-dropbox','.companhia-nome-dropbox']);
+		$.dpcoddesc.combinar(['.departamento-codigo-dropbox','.departamento-nome-dropbox']);
+		$.dpcoddesc.combinar(['.banco-codigo-dropbox','.banco-descricao-dropbox']);
+		$.dpcoddesc.aninhar({
+			origem: ['.companhia-codigo-dropbox', '.companhia-nome-dropbox'],
+			destino: ['.departamento-codigo-dropbox', '.departamento-nome-dropbox'],
+			url: opcoes.urlDepto,
+			fn: function(v) {
+				return [v.codigoDepartamento, v.siglaDepartamento, v.nomeDepartamento];
+			},
+			error: opcoes.error,
+			onFinish: function() {console.log('definiu departamento');}
+		});
+		$.dpcoddesc.aninhar({
+			origem: ['.companhia-codigo-dropbox', '.companhia-nome-dropbox'],
+			destino: ['.banco-codigo-dropbox', '.banco-descricao-dropbox'],
+			url: opcoes.urlBancos,
+			fn: function(v) {
+				return [v.cdBancoExterno, v.cdBancoExterno, v.descricaoBanco];
+			},
+			error: opcoes.error,
+			onFinish: function() {
+				console.log('definiu banco');
+				$('.banco-codigo-dropbox').change();
+			}
+		});
+		$.dpcoddesc.aninhar({
+			origem: ['.banco-codigo-dropbox', '.banco-descricao-dropbox'],
+			destino: ['.agencia-codigo-dropbox', '.agencia-descricao-dropbox'],
+			url: function(v) { return opcoes.urlAgencias.replace('%d', $(".companhia-codigo-dropbox").val()).replace('%d', v);},
+			fn: function(v) {
+				return [v.cdAgenciaExterno, v.cdAgenciaExterno, v.descricaoAgencia];
+			},
+			error: opcoes.error,
+			onFinish: function() {
+				console.log('definiu agencia');
+				$('.agencia-codigo-dropbox').change();
+			}
+		});
+		$.dpcoddesc.aninhar({
+			origem: ['.agencia-codigo-dropbox', '.agencia-descricao-dropbox'],
+			destino: ['#AcaoForm_contaCorrente'],
+			url: function(v) { 
+				var url = opcoes.urlContas.replace('%d', $(".companhia-codigo-dropbox").val())
+					.replace('%d', $('.banco-codigo-dropbox').val())
+					.replace('%d', $('.agencia-codigo-dropbox').val());
+				return url;
+			},
+			fn: function(v) {
+				return [v.contaCorrente, v.contaCorrente, null];
+			},
+			error: opcoes.error,
+			onStart: function() {
+				$('#AcaoForm_contaInterna').val('');
+			},
+			onFinish: function(o1,o2,d1,d2,data) {
+				console.log('definiu agencia');
+				opcoes.contas = {};
+				$(data).each(function(i,v){
+					opcoes.contas[v.contaCorrente] = v.codigoInternoCC;
+				});
+				$("#AcaoForm_contaCorrente").change();
+			}
+		});
+	 	$("#AcaoForm_codigoMotivoDeposito").change();
+	 	afterInit = true;
 	};
 	
 	// paginacao

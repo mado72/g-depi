@@ -84,10 +84,6 @@ public class AssociarMotivoDepositoEditarAction
 				definirCompanhia(codUsuario, ciaVO);
 			}
 			
-			BancoVO banco = crudHelper.obterBanco(new BancoVO(CODIGO_BANCO_BRADESCO));
-			getModel().setCodigoBanco(String.valueOf(CODIGO_BANCO_BRADESCO));
-			getModel().setDescricaoBanco(banco.getDescricaoBanco());
-			
 			return retorno;
 		} catch (Exception e) {
 			addActionError(e.getMessage());
@@ -120,7 +116,7 @@ public class AssociarMotivoDepositoEditarAction
 			definirMotivo(motivo);
 			
 			BancoVO banco = crudHelper.obterBanco(new BancoVO(CODIGO_BANCO_BRADESCO));
-			getModel().setCodigoBanco(String.valueOf(CODIGO_BANCO_BRADESCO));
+			getModel().setCodBanco(String.valueOf(CODIGO_BANCO_BRADESCO));
 			getModel().setDescricaoBanco(banco.getDescricaoBanco());
 			
 			return retorno;
@@ -145,6 +141,8 @@ public class AssociarMotivoDepositoEditarAction
 		}
 		
 		List<BancoVO> bancos = crudHelper.obterBancos(ciaVO);
+		model.setBancos(bancos);
+		
 		if (! bancos.isEmpty()) {
 			BancoVO bancoVO = bancos.get(0);
 			definirBanco(ciaVO, bancoVO);
@@ -153,9 +151,10 @@ public class AssociarMotivoDepositoEditarAction
 
 	private void definirBanco(CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO) {
 		AssociarMotivoDepositoEditarFormModel model = getModel();
-		model.setCodigoBanco(String.valueOf(bancoVO.getCdBancoExterno()));
+		model.setCodBanco(String.valueOf(bancoVO.getCdBancoExterno()));
 
 		List<AgenciaVO> agencias = crudHelper.obterAgencias(ciaVO, bancoVO);
+		model.setAgencias(agencias);
 		
 		if (! agencias.isEmpty()) {
 			AgenciaVO agenciaVO = agencias.get(0);
@@ -169,6 +168,7 @@ public class AssociarMotivoDepositoEditarAction
 		model.setCodigoAgencia(String.valueOf(agenciaVO.getCdAgenciaExterno()));
 		
 		List<ContaCorrenteAutorizadaVO> contas = crudHelper.obterContasCorrente(ciaVO, bancoVO, agenciaVO);
+		model.setContas(contas);
 		
 		if (!contas.isEmpty()) {
 			ContaCorrenteAutorizadaVO contaCorrente = contas.get(0);

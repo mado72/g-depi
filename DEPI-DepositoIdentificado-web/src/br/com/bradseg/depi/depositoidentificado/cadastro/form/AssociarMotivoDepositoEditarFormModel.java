@@ -5,10 +5,11 @@ import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
-import br.com.bradseg.depi.depositoidentificado.vo.CodigoValorVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
@@ -29,7 +30,9 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	
 	private List<BancoVO> bancos = new ArrayList<>();
 	
-	private List<CodigoValorVO> agencias = new ArrayList<>();
+	private List<AgenciaVO> agencias = new ArrayList<>();
+	
+	private List<ContaCorrenteAutorizadaVO> contas = new ArrayList<>();
 	
 	private String codigoCompanhia;
 	
@@ -45,7 +48,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	
 	private String descricaoItemContabil;
 	
-	private String codigoBanco;
+	private String codBanco;
 	
 	private String descricaoBanco;
 	
@@ -66,11 +69,11 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 		setDeptos(new ArrayList<DepartamentoVO>());
 		setMotivos(new ArrayList<MotivoDepositoVO>());
 		setBancos(new ArrayList<BancoVO>());
-		setAgencias(new ArrayList<CodigoValorVO>());
+		setAgencias(new ArrayList<AgenciaVO>());
 		
 		setCodigoAgencia(null);
 		setCodigo(null);
-		setCodigoBanco(null);
+		setCodBanco(null);
 		setCodigoCompanhia(null);
 		setContaCorrente(null);
 		setContaInterna(null);
@@ -105,7 +108,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 		
 		setCodigo(null);
 		setCodigoAgencia(BaseUtil.getValueMaskFormat("99999", BaseUtil.blankIfNull(vo.getCodigoAgencia()), true));
-		setCodigoBanco(BaseUtil.getValueMaskFormat("9999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoExterno()), true));
+		setCodBanco(BaseUtil.getValueMaskFormat("9999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoExterno()), true));
 		setCodigoCompanhia(String.valueOf(vo.getCia().getCodigoCompanhia()));
 		setContaCorrente(BaseUtil.getValueMaskFormat("0000000000000", BaseUtil.blankIfNull(vo.getContaCorrente()), true));
 		setContaInterna(BaseUtil.getValueMaskFormat("999999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoInterno()), true));
@@ -129,7 +132,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	public void obterValores(AssociarMotivoDepositoVO vo) {
 		
 		vo.setCodigoAgencia(Integer.parseInt(getCodigoAgencia()));
-		vo.setBanco(new BancoVO(Integer.parseInt(getCodigoBanco())));
+		vo.setBanco(new BancoVO(Integer.parseInt(getCodBanco())));
 		vo.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(getCodigoCompanhia())));
 		vo.setContaCorrente(Long.parseLong(getContaCorrente()));
 		vo.setDepartamento(new DepartamentoVO(Integer.parseInt(getCodigoDepartamento())));
@@ -205,7 +208,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	 * Retorna agencias
 	 * @return o agencias
 	 */
-	public List<CodigoValorVO> getAgencias() {
+	public List<AgenciaVO> getAgencias() {
 		return agencias;
 	}
 
@@ -213,8 +216,24 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	 * Define agencias
 	 * @param agencias valor agencias a ser definido
 	 */
-	public void setAgencias(List<CodigoValorVO> agencias) {
+	public void setAgencias(List<AgenciaVO> agencias) {
 		this.agencias = agencias;
+	}
+	
+	/**
+	 * Retorna contas
+	 * @return o contas
+	 */
+	public List<ContaCorrenteAutorizadaVO> getContas() {
+		return contas;
+	}
+	
+	/**
+	 * Define contas
+	 * @param contas valor contas a ser definido
+	 */
+	public void setContas(List<ContaCorrenteAutorizadaVO> contas) {
+		this.contas = contas;
 	}
 
 	/**
@@ -333,16 +352,16 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	 * Retorna codigoBanco
 	 * @return o codigoBanco
 	 */
-	public String getCodigoBanco() {
-		return codigoBanco;
+	public String getCodBanco() {
+		return codBanco;
 	}
 
 	/**
 	 * Define codigoBanco
 	 * @param codigoBanco valor codigoBanco a ser definido
 	 */
-	public void setCodigoBanco(String codigoBanco) {
-		this.codigoBanco = codigoBanco;
+	public void setCodBanco(String codigoBanco) {
+		this.codBanco = codigoBanco;
 	}
 
 	/**

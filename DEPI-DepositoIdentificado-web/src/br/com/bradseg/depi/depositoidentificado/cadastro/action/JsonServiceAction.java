@@ -12,10 +12,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
+import br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
+import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
@@ -38,6 +40,9 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 	
 	@Autowired
 	private ContaCorrenteFacade contaCorrenteFacade;
+	
+	@Autowired
+	private AssociarMotivoDepositoFacade associarMotivoFacade;
 	
 	private static final long serialVersionUID = 8999882840693772747L;
 	
@@ -164,6 +169,57 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 		
 		return SUCCESS;
 		
+	}
+	
+	public String ciaBancos() {
+
+		try {
+			int codCia = Integer.parseInt(model.getCodigo().get("cia"));
+			List<BancoVO> bancos = associarMotivoFacade.obterBancos(new CompanhiaSeguradoraVO(codCia));
+			
+			model.setResponse(bancos);		
+
+		} catch (Exception e) {
+			handleException(e);
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String ciaBancoAgencias() {
+		
+		try {
+			int codCia = Integer.parseInt(model.getCodigo().get("cia"));
+			int codBanco = Integer.parseInt(model.getCodigo().get("banco"));
+			
+			List<AgenciaVO> agencias = associarMotivoFacade.obterAgencias(
+					new CompanhiaSeguradoraVO(codCia), new BancoVO(codBanco));
+			model.setResponse(agencias);
+			
+		} catch (Exception e) {
+			handleException(e);
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String ciaBancoAgenciaConta() {
+		
+		try {
+			int codCia = Integer.parseInt(model.getCodigo().get("cia"));
+			int codBanco = Integer.parseInt(model.getCodigo().get("banco"));
+			int codAg = Integer.parseInt(model.getCodigo().get("agencia"));
+			
+			List<ContaCorrenteAutorizadaVO> contas = associarMotivoFacade
+					.obterContas(new CompanhiaSeguradoraVO(codCia),
+							new BancoVO(codBanco), new AgenciaVO(codAg));
+			model.setResponse(contas);
+			
+		} catch (Exception e) {
+			handleException(e);
+		}
+		
+		return SUCCESS;
 	}
 	
 	public String descricaoEventoContabil() {
