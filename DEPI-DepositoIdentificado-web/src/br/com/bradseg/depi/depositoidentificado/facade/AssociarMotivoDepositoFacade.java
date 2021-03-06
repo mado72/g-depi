@@ -91,7 +91,7 @@ public interface AssociarMotivoDepositoFacade {
 	 * @param codigoAgencia Código da agência
 	 * @return Descrição da agência
 	 */
-	String obterAgencia(BancoVO banco, int codigoAgencia);
+	AgenciaVO obterAgencia(BancoVO banco, int codigoAgencia);
 
 	/**
 	 * Consulta um motivo depósito pela chave
@@ -118,7 +118,7 @@ public interface AssociarMotivoDepositoFacade {
 	 * @return Item contábil.
 	 */
 	ItemContabilVO obterItemContabil(int codigoTipoEventoNegocio,
-			int codigoItemContábil);
+			int codigoItemContabil);
 
 	/**
 	 * Consulta o banco de dados e o CICS para obter a companhia seguradora
@@ -145,13 +145,23 @@ public interface AssociarMotivoDepositoFacade {
 
 	/**
 	 * Obtém lista de contas
+	 * @param codUsuario código do usuário
 	 * @param ciaVO Companhia
 	 * @param bancoVO Banco
 	 * @param agenciaVO Agência
 	 * @return Lista de contas
 	 */
-	List<ContaCorrenteAutorizadaVO> obterContas(CompanhiaSeguradoraVO ciaVO,
-			BancoVO bancoVO, AgenciaVO agenciaVO);
+	List<ContaCorrenteAutorizadaVO> obterContas(int codUsuario,
+			CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO, AgenciaVO agenciaVO);
 
+	/**
+	 * Obtém os dados de uma conta
+	 * @param banco Banco
+	 * @param codigoAgencia Agência
+	 * @param contaCorrente Número da Conta
+	 * @return Conta
+	 */
+	ContaCorrenteAutorizadaVO obterConta(
+			BancoVO banco, int codigoAgencia, Long contaCorrente);
 
 }

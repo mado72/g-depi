@@ -83,7 +83,7 @@
 					cssClass="dropbox w-100 banco-codigo-dropbox" disabled="%{detalhar}"/>
 			</td>
 			<td>
-				<s:select list="bancos" key="codBanco" listValue="descricaoBanco" listKey="cdBancoExterno" 
+				<s:select list="bancos" value="codBanco" listValue="descricaoBanco" listKey="cdBancoExterno" 
 					cssClass="dropbox w-100 banco-descricao-dropbox" disabled="%{detalhar}"/>
 			</td>
 		</tr>
@@ -97,7 +97,7 @@
 					cssClass="dropbox w-100 agencia-codigo-dropbox" disabled="%{detalhar}"/>
 			</td>
 			<td>
-				<s:select list="agencias" key="codigoAgencia" listValue="descricaoAgencia" listKey="cdAgenciaExterno" 
+				<s:select list="agencias" value="codigoAgencia" listValue="descricaoAgencia" listKey="cdAgenciaExterno" 
 					cssClass="dropbox w-100 agencia-descricao-dropbox" disabled="%{detalhar}"/>
 			</td>
 		</tr>
@@ -107,7 +107,7 @@
 				<span class="obrigatorio">*</span>
 			</td>
 			<td>
-				<s:select list="contas" key="contaCorrente" listValue="contaCorrente" 
+				<s:select list="contas" key="contaCorrente" listValue="contaCorrente" listKey="contaCorrente"
 					cssClass="dropbox w-100 contacorrente-codigo-dropbox" disabled="%{detalhar}"/>
 			</td>
 			<td>

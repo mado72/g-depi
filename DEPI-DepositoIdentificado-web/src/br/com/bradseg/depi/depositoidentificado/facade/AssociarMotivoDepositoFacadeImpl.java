@@ -228,8 +228,12 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterAgencia(br.com.bradseg.depi.depositoidentificado.vo.BancoVO, int)
 	 */
 	@Override
-	public String obterAgencia(BancoVO banco, int codigoAgencia) {
-		return cicsDAO.obterAgencia(banco.getCdBancoExterno(), codigoAgencia);
+	public AgenciaVO obterAgencia(BancoVO banco, int codigoAgencia) {
+		String descricao = cicsDAO.obterAgencia(banco.getCdBancoExterno(), codigoAgencia);
+		
+		AgenciaVO agVO = new AgenciaVO(codigoAgencia);
+		agVO.setDescricaoAgencia(descricao);
+		return agVO;
 	}
 
 	/* (non-Javadoc)
@@ -252,8 +256,8 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterItemContabil(int)
 	 */
 	@Override
-	public ItemContabilVO obterItemContabil(int codigoTipoEventoNegocio, int codigoItemContábil) {
-		return cicsDAO.obterItemContabil(codigoTipoEventoNegocio, codigoItemContábil);
+	public ItemContabilVO obterItemContabil(int codigoTipoEventoNegocio, int codigoItemContabil) {
+		return cicsDAO.obterItemContabil(codigoTipoEventoNegocio, codigoItemContabil);
 	}
 
 	/* (non-Javadoc)
@@ -293,7 +297,7 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 	 */
 	@Override
 	public List<ContaCorrenteAutorizadaVO> obterContas(
-			CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO, AgenciaVO agenciaVO) {
+			int codUsuario, CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO, AgenciaVO agenciaVO) {
 
 		CriterioConsultaVO<?> criterioCia = new CriterioConsultaVO<>(
 				ContaCorrenteAutorizadaCampo.CodigoCia,
@@ -317,8 +321,45 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
 		filtro.adicionaCriterio(criterioBanco);
 		filtro.adicionaCriterio(criterioAgencia);
 		
-		return contaDAO.obterPorFiltro(filtro);
+		return contaDAO.obterPorFiltroComRestricao(codUsuario, filtro);
 	}
 	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterConta(br.com.bradseg.depi.depositoidentificado.vo.BancoVO, int, java.lang.Long)
+	 */
+	@Override
+	public ContaCorrenteAutorizadaVO obterConta(BancoVO bancoVO,
+			int codigoAgencia, Long contaCorrente) {
+
+		CriterioConsultaVO<?> criterioBanco = new CriterioConsultaVO<>(
+				ContaCorrenteAutorizadaCampo.CodigoBanco,
+				TipoOperacao.IgualNumerico,
+				String.valueOf(bancoVO.getCdBancoExterno()),
+				"param1");
+		
+		CriterioConsultaVO<?> criterioAgencia = new CriterioConsultaVO<>(
+				ContaCorrenteAutorizadaCampo.CodigoAgencia,
+				TipoOperacao.IgualNumerico,
+				String.valueOf(codigoAgencia),
+				"param2");
+		
+		CriterioConsultaVO<?> criterioNumeroConta = new CriterioConsultaVO<>(
+				ContaCorrenteAutorizadaCampo.CodigoContaCorrente,
+				TipoOperacao.IgualNumerico,
+				String.valueOf(contaCorrente),
+				"param3");
+
+		FiltroUtil filtro = new FiltroUtil();
+		filtro.adicionaCriterio(criterioBanco);
+		filtro.adicionaCriterio(criterioAgencia);
+		filtro.adicionaCriterio(criterioNumeroConta);
+		
+		List<ContaCorrenteAutorizadaVO> contas = contaDAO.obterPorFiltro(filtro);
+		if (contas.isEmpty()) {
+			return null;
+		}
+
+		return contas.get(0);
+	}
 	
 }

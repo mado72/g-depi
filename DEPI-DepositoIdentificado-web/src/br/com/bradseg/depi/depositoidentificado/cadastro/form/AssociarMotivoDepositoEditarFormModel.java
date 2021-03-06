@@ -38,7 +38,9 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	
 	private String codigoDepartamento;
 	
-	private String codigoMotivo;
+	private String codigoMotivoDeposito;
+	
+	private String descricaoDetalhadaMotivo;
 	
 	private String codigoEventoContabil;
 	
@@ -80,7 +82,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 		setCodigoDepartamento(null);
 		setCodigoEventoContabil(null);
 		setCodigoItemContabil(null);
-		setCodigoMotivo(null);
+		setCodigoMotivoDeposito(null);
 		setDescricaoAgencia(null);
 		setDescricaoBanco(null);
 		setDescricaoEventoContabil(null);
@@ -115,7 +117,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 		setCodigoDepartamento(String.valueOf(vo.getDepartamento().getCodigoDepartamento()));
 		setCodigoEventoContabil(String.valueOf(vo.getMotivoDeposito().getCodigoEventoContabil()));
 		setCodigoItemContabil(String.valueOf(vo.getMotivoDeposito().getCodigoItemContabil()));
-		setCodigoMotivo(String.valueOf(vo.getMotivoDeposito().getCodigoMotivoDeposito()));
+		setCodigoMotivoDeposito(String.valueOf(vo.getMotivoDeposito().getCodigoMotivoDeposito()));
 		
 		// Campos que necessitam de consulta ao CICS
 		setDescricaoAgencia(descricaoAgencia);
@@ -136,7 +138,7 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 		vo.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(getCodigoCompanhia())));
 		vo.setContaCorrente(Long.parseLong(getContaCorrente()));
 		vo.setDepartamento(new DepartamentoVO(Integer.parseInt(getCodigoDepartamento())));
-		vo.setMotivoDeposito(new MotivoDepositoVO(Integer.parseInt(getCodigoMotivo())));
+		vo.setMotivoDeposito(new MotivoDepositoVO(Integer.parseInt(getCodigoMotivoDeposito())));
 		
 	}
 
@@ -272,16 +274,32 @@ public class AssociarMotivoDepositoEditarFormModel extends CrudForm {
 	 * Retorna codigoMotivo
 	 * @return o codigoMotivo
 	 */
-	public String getCodigoMotivo() {
-		return codigoMotivo;
+	public String getCodigoMotivoDeposito() {
+		return codigoMotivoDeposito;
 	}
 
 	/**
 	 * Define codigoMotivo
 	 * @param codigoMotivo valor codigoMotivo a ser definido
 	 */
-	public void setCodigoMotivo(String codigoMotivo) {
-		this.codigoMotivo = codigoMotivo;
+	public void setCodigoMotivoDeposito(String codigoMotivo) {
+		this.codigoMotivoDeposito = codigoMotivo;
+	}
+	
+	/**
+	 * Retorna descricaoDetalhadaMotivo
+	 * @return o descricaoDetalhadaMotivo
+	 */
+	public String getDescricaoDetalhadaMotivo() {
+		return descricaoDetalhadaMotivo;
+	}
+	
+	/**
+	 * Define descricaoDetalhadaMotivo
+	 * @param descricaoDetalhadaMotivo valor descricaoDetalhadaMotivo a ser definido
+	 */
+	public void setDescricaoDetalhadaMotivo(String descricaoDetalhadaMotivo) {
+		this.descricaoDetalhadaMotivo = descricaoDetalhadaMotivo;
 	}
 
 	/**

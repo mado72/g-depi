@@ -15,6 +15,7 @@ import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.AssociarMotivoDepositoDataMapper;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
@@ -178,11 +179,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
     @Override
     public void excluir(AssociarMotivoDepositoVO vo) {
 
-    	StringBuilder query = new StringBuilder(QuerysDepi.ASSOCIARMOTIVODEPOSITO_INATIVAR);
-
         try {
-
-        	
         	MapSqlParameterSource paramsInativar = new MapSqlParameterSource();
 
             /**
@@ -200,10 +197,10 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
         	paramsInativar.addValue(PARAM_WHR5,vo.getCodigoAgencia());
         	paramsInativar.addValue(PARAM_WHR6,vo.getContaCorrente());
 
-            Integer count = getJdbcTemplate().update(query.toString(), paramsInativar);
+            int count = getJdbcTemplate().update(QuerysDepi.ASSOCIARMOTIVODEPOSITO_INATIVAR, paramsInativar);
 
             if (count == 0) {
-                throw new IntegrationException("\n A exclus�o falhou! \n");
+                throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_EXCLUSAO);
             }
 
         } finally {
@@ -230,9 +227,13 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
     		params.addValue(PARAM_WHR5,vo.getCodigoAgencia());
     		params.addValue(PARAM_WHR6,vo.getContaCorrente());
     		
-        	List<AssociarMotivoDepositoVO> associarMotivoDeposito = getJdbcTemplate().query(query.toString(), params, new AssociarMotivoDepositoDataMapper());
+        	try {
+				Boolean exists = getJdbcTemplate().queryForObject(query.toString(), params, Boolean.class);
 
-            return (!associarMotivoDeposito.isEmpty());
+				return (exists);
+			} catch (EmptyResultDataAccessException e) {
+				return false;
+			}
             
         } finally {
         	LOGGER.info("isReferenciado(AssociarMotivoDepositoVO vo)");            

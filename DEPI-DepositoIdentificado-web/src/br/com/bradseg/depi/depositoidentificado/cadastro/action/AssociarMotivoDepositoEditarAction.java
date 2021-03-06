@@ -14,6 +14,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.AssociarMotivoDepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
@@ -112,7 +113,7 @@ public class AssociarMotivoDepositoEditarAction
 			
 			MotivoDepositoVO motivo = crudHelper
 					.obterMotivoDeposito(new MotivoDepositoVO(Integer
-							.parseInt(getModel().getCodigoMotivo())));
+							.parseInt(getModel().getCodigoMotivoDeposito())));
 			definirMotivo(motivo);
 			
 			BancoVO banco = crudHelper.obterBanco(new BancoVO(CODIGO_BANCO_BRADESCO));
@@ -123,6 +124,29 @@ public class AssociarMotivoDepositoEditarAction
 		} catch (Exception e) {
 			addActionError(e.getMessage());
 			return INPUT;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#excluir()
+	 */
+	@Override
+	public String excluir() {
+		String[] codigos = request.getParameterValues("codigo");
+		List<AssociarMotivoDepositoVO> listaVO = mapearListaVO(codigos);
+		
+		try {
+			int usuarioLogado = getCodUsuarioLogado();
+			for (AssociarMotivoDepositoVO vo : listaVO) {
+				vo.setCodigoResponsavelUltimaAtualizacao(usuarioLogado);
+			}
+			getCrudHelper().excluirRegistros(listaVO);
+			addActionMessage(getText(ConstantesDEPI.MSG_EXCLUIR_EXITO));
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			return voltar();
 		}
 	}
 
@@ -167,7 +191,10 @@ public class AssociarMotivoDepositoEditarAction
 		AssociarMotivoDepositoEditarFormModel model = getModel();
 		model.setCodigoAgencia(String.valueOf(agenciaVO.getCdAgenciaExterno()));
 		
-		List<ContaCorrenteAutorizadaVO> contas = crudHelper.obterContasCorrente(ciaVO, bancoVO, agenciaVO);
+		int codUsuario = getCodUsuarioLogado();
+		
+		List<ContaCorrenteAutorizadaVO> contas = crudHelper
+				.obterContasCorrente(codUsuario, ciaVO, bancoVO, agenciaVO);
 		model.setContas(contas);
 		
 		if (!contas.isEmpty()) {
@@ -197,7 +224,7 @@ public class AssociarMotivoDepositoEditarAction
 	}
 
 	private void definirMotivo(MotivoDepositoVO motivo) {
-		getModel().setCodigoMotivo(String.valueOf(motivo.getCodigoMotivoDeposito()));
+		getModel().setCodigoMotivoDeposito(String.valueOf(motivo.getCodigoMotivoDeposito()));
 		
 		EventoContabilVO eventoContabilVO = crudHelper.obterEventoContabil(motivo);
 		getModel().setCodigoEventoContabil(String.valueOf(eventoContabilVO.getCodigoTipo()));

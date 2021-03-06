@@ -2,6 +2,7 @@ package br.com.bradseg.depi.depositoidentificado.cadastro.helper;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -130,24 +131,36 @@ public class AssociarMotivoDepositoCrudHelper implements
 			throws DEPIIntegrationException {
 		
 		AssociarMotivoDepositoVO vo = obterPeloCodigo(model.getCodigo());
-		BancoVO banco = vo.getBanco();
 		
-		String descricaoAgencia = facade.obterAgencia(banco, vo.getCodigoAgencia());
-		String descricaoBanco = facade.obterBanco(banco).getDescricaoBanco();
+		CompanhiaSeguradoraVO ciaVO = facade.obterCompanhiaSeguradora(vo.getCia());
+		DepartamentoVO depto = facade.obterDepartamento(vo.getDepartamento());
 		MotivoDepositoVO motivoDepositoVO = facade.obterMotivoDeposito(vo.getMotivoDeposito());
 		
 		EventoContabilVO eventoContabilVO = facade
 				.obterEventoContabil(motivoDepositoVO.getCodigoEventoContabil());
 		
 		ItemContabilVO itemContabilVO = facade.obterItemContabil(
-				eventoContabilVO.getCodigoIndicativoTipoEvento(),
+				motivoDepositoVO.getCodigoEventoContabil(),
 				motivoDepositoVO.getCodigoItemContabil());
 		
-		String descricaoEventoContabil = eventoContabilVO.getDescricaoTipo();
-		String descricaoItemContabil = itemContabilVO.getDescricaoTipo();
+		BancoVO banco = facade.obterBanco(vo.getBanco());
+		AgenciaVO agencia = facade.obterAgencia(vo.getBanco(), vo.getCodigoAgencia());
+		ContaCorrenteAutorizadaVO conta = facade.obterConta(vo.getBanco(),
+				vo.getCodigoAgencia(), vo.getContaCorrente());
 		
-		model.preencherCampos(vo, descricaoAgencia, descricaoBanco,
-				descricaoEventoContabil, descricaoItemContabil);
+		model.setCias(Collections.singletonList(ciaVO));
+		model.setDeptos(Collections.singletonList(depto));
+		model.setMotivos(Collections.singletonList(motivoDepositoVO));
+		model.setAgencias(Collections.singletonList(agencia));
+		model.setBancos(Collections.singletonList(banco));
+		model.setContas(Collections.singletonList(conta));
+		model.setDescricaoDetalhadaMotivo(motivoDepositoVO.getDescricaoDetalhada());
+		
+		model.setCodigoEventoContabil(String.valueOf(eventoContabilVO.getCodigoTipo()));
+		model.setDescricaoEventoContabil(eventoContabilVO.getDescricaoTipo());
+		model.setCodigoItemContabil(String.valueOf(itemContabilVO.getCodigoTipo()));
+		model.setDescricaoItemContabil(itemContabilVO.getDescricaoTipo());
+		model.setContaInterna(String.valueOf(conta.getCodigoInternoCC()));
 	}
 	
 	public AssociarMotivoDepositoVO obterPeloCodigo(String codigo) {
@@ -307,15 +320,18 @@ public class AssociarMotivoDepositoCrudHelper implements
 
 	/**
 	 * Obtém lista de contas
+	 * @param codUsuario Usuário logado
 	 * @param ciaVO Companhia
 	 * @param bancoVO Banco
 	 * @param agenciaVO Agência
 	 * @return Lista de contas
 	 */
 	public List<ContaCorrenteAutorizadaVO> obterContasCorrente(
+			int codUsuario,
 			CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO,
 			AgenciaVO agenciaVO) {
-		return facade.obterContas(ciaVO, bancoVO, agenciaVO);
+		
+		return facade.obterContas(codUsuario, ciaVO, bancoVO, agenciaVO);
 	}
 
 }

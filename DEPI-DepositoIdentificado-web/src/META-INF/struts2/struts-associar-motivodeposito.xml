@@ -83,7 +83,7 @@
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
 			<result name="success" type="redirectAction">
-			    <param name="actionName">refrescar</param>
+			    <param name="actionName">retornar</param>
 			    <param name="namespace">/cadastro/associar-motivodeposito/consultar</param>
 			</result>
         </action>

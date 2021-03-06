@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
@@ -47,9 +46,6 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 	private static final long serialVersionUID = 8999882840693772747L;
 	
 	private final JsonRequestVO model = new JsonRequestVO();
-	
-	@Autowired
-	private CICSDepiDAO cicsDAO;
 	
 	/* (non-Javadoc)
 	 * @see com.opensymphony.xwork2.ModelDriven#getModel()
@@ -206,12 +202,13 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 	public String ciaBancoAgenciaConta() {
 		
 		try {
+			int codUsuario = getCodUsuarioLogado();
 			int codCia = Integer.parseInt(model.getCodigo().get("cia"));
 			int codBanco = Integer.parseInt(model.getCodigo().get("banco"));
 			int codAg = Integer.parseInt(model.getCodigo().get("agencia"));
 			
 			List<ContaCorrenteAutorizadaVO> contas = associarMotivoFacade
-					.obterContas(new CompanhiaSeguradoraVO(codCia),
+					.obterContas(codUsuario, new CompanhiaSeguradoraVO(codCia),
 							new BancoVO(codBanco), new AgenciaVO(codAg));
 			model.setResponse(contas);
 			
@@ -225,40 +222,9 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 	public String descricaoEventoContabil() {
 		int codigoEvento = Integer.parseInt(model.getCodigo().get("evento"));
 		
-		EventoContabilVO evento = cicsDAO.obterEventoContabil(codigoEvento);
+		EventoContabilVO evento = associarMotivoFacade.obterEventoContabil(codigoEvento);
 		model.setResponse(evento);
 		return SUCCESS;
 	}
 	
-	// FIXME Retirar isso
-	public String consultaCics() {
-		
-		try {
-			String programaCics = model.getCodigo().get("CICS");
-			String eventoId = model.getCodigo().get("evento");
-			String pagina = model.getCodigo().get("pagina");
-			
-			if (eventoId == null) {
-				eventoId = "361";
-			}
-			
-			if (pagina == null) {
-				pagina = "0";
-			}
-			
-			System.out.println(programaCics);
-			
-//			Object evento = cicsDAO.chamarTesteBSIS0028(Integer.parseInt(eventoId), Integer.parseInt(pagina));
-			EventoContabilVO evento = cicsDAO.obterEventoContabil(Integer.parseInt(eventoId));
-			model.setResponse(evento);
-			
-			
-		}
-		catch (Exception e) {
-			handleException(e);
-		}
-		
-		return SUCCESS;
-	}
-
 }

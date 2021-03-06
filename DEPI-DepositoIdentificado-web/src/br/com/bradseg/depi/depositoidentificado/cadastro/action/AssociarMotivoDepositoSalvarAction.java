@@ -49,11 +49,12 @@ public class AssociarMotivoDepositoSalvarAction extends
 	
 	@Validations(
 			requiredStrings={
-					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="codigoCompanhia", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.contacorrenteautorizada.cia')})}"),
-					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="codigoBanco", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.contacorrenteautorizada.banco')})}"),
-					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="agencia", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.contacorrenteautorizada.agencia')})}"),
-					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="contaCorrente", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.contacorrenteautorizada.contaCorrente')})}"),
-					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="trps", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.contacorrenteautorizada.trps')})}")
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="codigoCompanhia", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.associarmotivodeposito.cia')})}"),
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="codigoDepartamento", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.associarmotivodeposito.departamento')})}"),
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="codigoMotivoDeposito", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.associarmotivodeposito.motivo')})}"),
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="codBanco", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.associarmotivodeposito.banco')})}"),
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="codigoAgencia", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.associarmotivodeposito.agencia')})}"),
+					@RequiredStringValidator(type= ValidatorType.SIMPLE, fieldName="contaCorrente", message="${getText('errors.required', new java.lang.String[] {getText('label.cadastro.associarmotivodeposito.conta')})}")
 			}
 		)
 	@Override
