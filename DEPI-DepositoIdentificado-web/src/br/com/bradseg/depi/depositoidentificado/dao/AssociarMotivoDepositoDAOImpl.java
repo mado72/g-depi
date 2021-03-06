@@ -11,10 +11,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.AssociarMotivoDepositoDataMapper;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -27,6 +27,20 @@ import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
  */
 @Repository
 public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMotivoDepositoDAO {
+
+	private static final String PARAM_PRM1 = "prm1";
+
+	private static final String PARAM_PRM2 = "prm2";
+
+	private static final String PARAM_PRM3 = "prm3";
+
+	private static final String PARAM_PRM4 = "prm4";
+
+	private static final String PARAM_PRM5 = "prm5";
+
+	private static final String PARAM_PRM6 = "prm6";
+
+	private static final String PARAM_PRM7 = "prm7";
 
 	private static final String PARAM_WHR1 = "whr1";
 
@@ -99,78 +113,89 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 
     	validarID(vo);
 
-    	StringBuilder query = new StringBuilder(QuerysDepi.ASSOCIARMOTIVODEPOSITO_EXISTS);
-    	
     	try {
     		
-            MapSqlParameterSource params = new MapSqlParameterSource();
-            params.addValue(PARAM_WHR1,vo.getCia().getCodigoCompanhia());
-            params.addValue(PARAM_WHR2,vo.getDepartamento().getCodigoDepartamento());
-            params.addValue(PARAM_WHR3,vo.getMotivoDeposito().getCodigoMotivoDeposito());
-            params.addValue(PARAM_WHR4,vo.getBanco().getCdBancoExterno());
-            params.addValue(PARAM_WHR5,vo.getCodigoAgencia());
-            params.addValue(PARAM_WHR6,vo.getContaCorrente());
+            String ativo = queryIsAtivo(vo);
             
-
-            List<AssociarMotivoDepositoVO> associarMotivoDeposito = getJdbcTemplate() .query(query.toString(), params, new AssociarMotivoDepositoDataMapper());
-            
-            if (!associarMotivoDeposito.isEmpty()) {
-                if (ConstantesDEPI.INDICADOR_ATIVO.toString().equals(associarMotivoDeposito.get(0).getIndicadoRegistroAtivo())) {
+            if (ativo != null) {
+                if (ConstantesDEPI.INDICADOR_ATIVO.toString().equals(ativo)) {
                 	
                     StringBuilder sb = new StringBuilder();
-                    sb.append(" Associa��o de Motivo: [Cia: ").append(vo.getCia().getCodigoCompanhia());
+                    sb.append(" Associa\u00E7\u00E3o de Motivo: [Cia: ").append(vo.getCia().getCodigoCompanhia());
                     sb.append("; Departamento: ").append(vo.getDepartamento().getCodigoDepartamento());
                     sb.append("; Motivo: ").append(vo.getMotivoDeposito().getCodigoMotivoDeposito());
                     sb.append(" Banco: ").append(vo.getBanco().getCdBancoExterno());
                     sb.append(", Agência: ").append(vo.getCodigoAgencia());
                     sb.append(", Conta Corrente: ").append(vo.getContaCorrente()).append("]");
-                    throw new BusinessException(BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO, sb.toString()));
+                    throw new DEPIBusinessException(ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO, sb.toString());
                     
                 } else {
-                	
-                	StringBuilder queryReativar = new StringBuilder(QuerysDepi.ASSOCIARMOTIVODEPOSITO_REATIVAR);
-
-                    MapSqlParameterSource paramsReativar = new MapSqlParameterSource();
-                    paramsReativar.addValue("prm1",vo.getCodigoResponsavelUltimaAtualizacao());
-                    paramsReativar.addValue(PARAM_WHR1,vo.getCia().getCodigoCompanhia());
-                    paramsReativar.addValue(PARAM_WHR2,vo.getDepartamento().getCodigoDepartamento());
-                    paramsReativar.addValue(PARAM_WHR3,vo.getMotivoDeposito().getCodigoMotivoDeposito());
-                    paramsReativar.addValue(PARAM_WHR4,vo.getBanco().getCdBancoExterno());
-                    paramsReativar.addValue(PARAM_WHR5,vo.getCodigoAgencia());
-                    paramsReativar.addValue(PARAM_WHR6,vo.getContaCorrente());
-                    
-                    Integer count = getJdbcTemplate().update(queryReativar.toString(), paramsReativar);
-
-                    if (count == 0) {
-                        throw new IntegrationException("\n inserir falhou \n");
-                    }
+                    queryReativar(vo);
                 }
             } else {
-
             	
-            	StringBuilder queryInserir = new StringBuilder(QuerysDepi.ASSOCIARMOTIVODEPOSITO_INSERT);
-
-            	MapSqlParameterSource paramsInserir = new MapSqlParameterSource();
-            	paramsInserir.addValue("prm1",vo.getCia().getCodigoCompanhia());
-            	paramsInserir.addValue("prm2",vo.getDepartamento().getCodigoDepartamento());
-            	paramsInserir.addValue("prm3",vo.getMotivoDeposito().getCodigoMotivoDeposito());
-            	paramsInserir.addValue("prm4",vo.getCodigoAgencia());
-            	paramsInserir.addValue("prm5",vo.getBanco().getCdBancoExterno());
-            	paramsInserir.addValue("prm6",vo.getContaCorrente());
-            	paramsInserir.addValue("prm7",vo.getCodigoResponsavelUltimaAtualizacao());
-
-                Integer count = getJdbcTemplate().update(queryInserir.toString(), paramsInserir);
-
-                if (count == 0) {
-                    throw new IntegrationException("\n inserir falhou \n");
-                }
-
+            	queryInsert(vo);
             }
 
         } finally {
         	LOGGER.info("inserir(AssociarMotivoDepositoVO vo)");   
         }
     }
+
+	private void queryReativar(AssociarMotivoDepositoVO vo) {
+		MapSqlParameterSource paramsReativar = new MapSqlParameterSource();
+		paramsReativar.addValue(PARAM_PRM1,vo.getCodigoResponsavelUltimaAtualizacao());
+		paramsReativar.addValue(PARAM_WHR1,vo.getCia().getCodigoCompanhia());
+		paramsReativar.addValue(PARAM_WHR2,vo.getDepartamento().getCodigoDepartamento());
+		paramsReativar.addValue(PARAM_WHR3,vo.getMotivoDeposito().getCodigoMotivoDeposito());
+		paramsReativar.addValue(PARAM_WHR4,vo.getBanco().getCdBancoExterno());
+		paramsReativar.addValue(PARAM_WHR5,vo.getCodigoAgencia());
+		paramsReativar.addValue(PARAM_WHR6,vo.getContaCorrente());
+		
+		Integer count = getJdbcTemplate().update(QuerysDepi.ASSOCIARMOTIVODEPOSITO_REATIVAR, paramsReativar);
+
+		if (count == 0) {
+		    throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_INCLUSAO);
+		}
+	}
+
+	private void queryInsert(AssociarMotivoDepositoVO vo) {
+		MapSqlParameterSource paramsInserir = new MapSqlParameterSource();
+		paramsInserir.addValue(PARAM_PRM1,vo.getCia().getCodigoCompanhia());
+		paramsInserir.addValue(PARAM_PRM2,vo.getDepartamento().getCodigoDepartamento());
+		paramsInserir.addValue(PARAM_PRM3,vo.getMotivoDeposito().getCodigoMotivoDeposito());
+		paramsInserir.addValue(PARAM_PRM4,vo.getBanco().getCdBancoExterno());
+		paramsInserir.addValue(PARAM_PRM5,vo.getCodigoAgencia());
+		paramsInserir.addValue(PARAM_PRM6,vo.getContaCorrente());
+		paramsInserir.addValue(PARAM_PRM7,vo.getCodigoResponsavelUltimaAtualizacao());
+
+		Integer count = getJdbcTemplate().update(QuerysDepi.ASSOCIARMOTIVODEPOSITO_INSERT, paramsInserir);
+
+		if (count == 0) {
+		    throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_INCLUSAO);
+		}
+	}
+
+	private String queryIsAtivo(
+			AssociarMotivoDepositoVO vo) {
+		
+		try {
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			params.addValue(PARAM_WHR1,vo.getCia().getCodigoCompanhia());
+			params.addValue(PARAM_WHR2,vo.getDepartamento().getCodigoDepartamento());
+			params.addValue(PARAM_WHR3,vo.getMotivoDeposito().getCodigoMotivoDeposito());
+			params.addValue(PARAM_WHR4,vo.getBanco().getCdBancoExterno());
+			params.addValue(PARAM_WHR5,vo.getCodigoAgencia());
+			params.addValue(PARAM_WHR6,vo.getContaCorrente());
+			
+
+			return getJdbcTemplate().queryForObject(
+					QuerysDepi.ASSOCIARMOTIVODEPOSITO_EXISTS, params,
+					String.class);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
 
     /**
      * Método responsável por excluir uma Associa��o de Motivo.
@@ -185,7 +210,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
             /**
              * Novos valores
              */
-        	paramsInativar.addValue("prm1",vo.getCodigoResponsavelUltimaAtualizacao());
+        	paramsInativar.addValue(PARAM_PRM1,vo.getCodigoResponsavelUltimaAtualizacao());
 
             /**
              * Where
