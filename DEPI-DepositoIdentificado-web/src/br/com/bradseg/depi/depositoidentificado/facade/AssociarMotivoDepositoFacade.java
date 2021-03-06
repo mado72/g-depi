@@ -113,8 +113,8 @@ public interface AssociarMotivoDepositoFacade {
 
 	/**
 	 * Consulta um item contábil a partir do tipo de evento no CICS.
-	 * @param codigoTipoEventoNegocio Código do tipo de evento 
-	 * @param codigoItemContábil Código do item contábil
+	 * @param codigoTipoEventoNegocio Código do tipo de evento
+	 * @param codigoItemContabil Código do item contábil
 	 * @return Item contábil.
 	 */
 	ItemContabilVO obterItemContabil(int codigoTipoEventoNegocio,

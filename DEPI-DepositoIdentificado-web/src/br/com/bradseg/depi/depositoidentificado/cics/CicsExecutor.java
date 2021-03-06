@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import br.com.bradseg.bsad.framework.ctg.programapi.program.InputSet;
 import br.com.bradseg.bsad.framework.ctg.programapi.program.ResultSet;
 import br.com.bradseg.bsad.framework.ctg.programapi.support.gateway.CTGJavaGateway;
-import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
 import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsProgram;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 
@@ -42,7 +41,7 @@ public class CicsExecutor {
 	 *            Classe com anotações que informam como realizar a chamada
 	 * @return Programa instanciado.
 	 * @see CicsProgram
-	 * @see CicsField
+	 * @see br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField
 	 * @param <T> Classe que representa o book da comunicação.
 	 */
 	public <T> ProgramDefinition<T> construir(CTGJavaGateway javaGateway,

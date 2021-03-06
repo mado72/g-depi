@@ -17,12 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
-import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsProgram;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 
 /**
- * Classe utilizada por {@link CicsProgram} para analisar definições de comunicação ao CICS
- * e preparar o programa para ser chamado.  
+ * Classe utilizada por
+ * {@link br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsProgram}
+ * para analisar definições de comunicação ao CICS e preparar o programa para
+ * ser chamado.
+ * 
  * @author Marcelo Damasceno
  */
 public class CicsProgramDefinitionParser {

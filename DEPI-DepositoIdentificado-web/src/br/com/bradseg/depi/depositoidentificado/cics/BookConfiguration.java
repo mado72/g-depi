@@ -33,7 +33,7 @@ final class BookConfiguration {
 
 	private final List<FieldDefinitions> fieldList = new ArrayList<>();
 	
-	private final static Comparator<FieldDefinitions> comparator = new Comparator<FieldDefinitions>() {
+	private final static Comparator<FieldDefinitions> COMPARATOR = new Comparator<FieldDefinitions>() {
 		
 		@Override
 		public int compare(FieldDefinitions o1, FieldDefinitions o2) {
@@ -49,7 +49,7 @@ final class BookConfiguration {
 	}
 	
 	protected List<FieldDefinitions> getCommonFieldIn() {
-		TreeSet<FieldDefinitions> fields = new TreeSet<>(comparator);
+		TreeSet<FieldDefinitions> fields = new TreeSet<>(COMPARATOR);
 		for (FieldDefinitions field : fieldList) {
 			Direction direction = field.getCicsField().direction();
 			if (direction == Direction.In || direction == Direction.InOut) {
@@ -60,7 +60,7 @@ final class BookConfiguration {
 	}
 
 	protected List<FieldDefinitions> getCommonFieldOut() {
-		TreeSet<FieldDefinitions> fields = new TreeSet<>(comparator);
+		TreeSet<FieldDefinitions> fields = new TreeSet<>(COMPARATOR);
 		for (FieldDefinitions field : fieldList) {
 			Direction direction = field.getCicsField().direction();
 			if (direction == Direction.Out || direction == Direction.InOut) {

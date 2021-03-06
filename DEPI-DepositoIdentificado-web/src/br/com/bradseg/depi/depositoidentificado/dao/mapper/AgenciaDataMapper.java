@@ -13,7 +13,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 /**
  * Mapeia Agencia
  * @author Marcelo Damasceno
- *
  */
 public class AgenciaDataMapper implements RowMapper<AgenciaVO> {
 
