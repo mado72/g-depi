@@ -2,14 +2,13 @@
 	taglib prefix="depi" uri="/depi-tags" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:choose>
-<c:when test="${estado == 'INSERIR'}"><c:set var="ACAO_INSERIR" value="true" scope="page"/></c:when>
-<c:otherwise><c:set var="ACAO_INSERIR" value="false" scope="page"/></c:otherwise>
-</c:choose>
 <c:url value="/cadastro/conta-corrente" var="namespaceBase" scope="request"/>
 <s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
 <s:form action="salvar" id="AcaoForm">
 <input name="codigo" type="hidden" value="${codigo.isEmpty() ? '' : codigo }">
+<c:if test="${desabilitaInputAgenciaConta}">
+<s:hidden key="agencia"/><s:hidden key="contaCorrente"/><s:hidden key="trps"/>
+</c:if>
 	<table id="tabela_interna">
 	<caption>
 		<span class="obrigatorio"><s:text name="label.campos.obrigatorios" /></span>
@@ -57,8 +56,7 @@
 				<span class="obrigatorio">*</span>
 			</td>
 			<td>
-				<s:textfield key="agencia" size="7" maxlength="5" disabled="%{!ACAO_INSERIR}"/>
-				<c:if test="${!ACAO_INSERIR}"><s:hidden key="agencia"/></c:if>
+				<s:textfield key="agencia" size="7" maxlength="5" disabled="desabilitaInputAgenciaConta"/>
 			</td>
 			<td>
 				<span id="descricaoAgencia">${descricaoAgencia}</span>
@@ -70,29 +68,21 @@
 				<span class="obrigatorio">*</span>
 			</td>
 			<td>
-				<s:textfield key="contaCorrente" size="13" maxlength="15" disabled="%{!ACAO_INSERIR}"/>
-				<c:if test="${!ACAO_INSERIR}"><s:hidden key="contaCorrente"/></c:if>
+				<s:textfield key="contaCorrente" size="13" maxlength="15" disabled="desabilitaInputAgenciaConta"/>
 			</td>
 			<td></td>
 			<td class="td_label">
 				<s:text name="label.cadastro.contacorrenteautorizada.contaInternaCC" />
 			</td>
 			<td>
-				<span id="contaInternaCC">
-				<s:if test="%{contaInternaCC}">
-					<s:text name="format.contaInterna">
-						<s:param name="value" value="%{contaInternaCC}" />
-					</s:text>
-				</s:if>
-				</span>
+				<span id="contaInternaCC">${contaInterna}</span>
 			</td>
 			<td class="td_label">
 				<s:text name="label.cadastro.contacorrenteautorizada.trps" />
 				<span class="obrigatorio">*</span>
 			</td>
 			<td>
-				<s:textfield key="trps" size="10" maxlength="10"/>
-				
+				<s:textfield key="trps" size="10" maxlength="10" disabled="desabilitaInputAgenciaConta"/>
 			</td>
 		</tr>
 		<tr>

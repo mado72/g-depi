@@ -11,7 +11,7 @@
 			<a href="<s:url value="/cadastro/grupo-acesso/consultar/index.do"/>">Grupo de Acesso</a>
 			<a href="<s:url value="/cadastro/parametro/consultar/index.do"/>">Parâmetros de Depósito</a>
 			<a href="<s:url value="/cadastro/conta-corrente/consultar/index.do"/>">Conta Corrente</a>	
-			<a href="<s:url value="/cadastro/associar-motivo/consultar/index.do"/>">Associação de Motivos</a>
+			<a href="<s:url value="/cadastro/associar-motivodeposito/consultar/index.do"/>">Associação de Motivos</a>
 		</div>
 	</div>
 	<div class="itemmenu"><a href="<s:url value="/deposito/ConsultarDeposito.do"/>" class="menu_horizontal">Identificação Depósitos</a></div>

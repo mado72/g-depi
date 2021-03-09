@@ -6,62 +6,53 @@ import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 
 /**
- * Interface de AssociarMotivoDepositoDAODB2
+ * Interface para acesso aos dados de AssociarMotivoDeposito
  */
 public interface AssociarMotivoDepositoDAO {
-	/**
-	 * Obter as Associações de Motivos
-	 * 
-	 * @param filtro
-	 *            - CriterioFiltroUtil.
-	 * @return List<AssociarMotivoDepositoVO>.
-	 */
-	List<AssociarMotivoDepositoVO> obterPorFiltro(FiltroUtil filtro);
 
 	/**
-	 * Método de obter por filtro
+	 * Consulta com restrição de acesso
 	 * 
 	 * @param filtro
-	 *            parâmetro depósito com o código do objeto requisitado
+	 *            Critérios de consultas
 	 * @param codigoUsuario
-	 *            - Código do usuário.
-	 * @return List<AssociarMotivoDepositoVO>
+	 *            Código do usuario
+	 * @return Lista de associações
 	 */
 	List<AssociarMotivoDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(
 			FiltroUtil filtro, int codigoUsuario);
 
 	/**
-	 * Método inserir
+	 * Insere um registro
 	 * 
-	 * @param AssociarMotivoDepositoVO
-	 *            - item a ser inserido
+	 * @param vo
+	 *            item a ser inserido
 	 */
 	void inserir(AssociarMotivoDepositoVO vo);
 
 	/**
-	 * Método excluir
+	 * Exclui um registro
 	 * 
-	 * @param AssociarMotivoDepositoVO
-	 *            - item a ser excluído
+	 * @param vo
+	 *            Item a ser excluído
 	 */
 	void excluir(AssociarMotivoDepositoVO vo);
 
 	/**
-	 * Método isReferenciado
+	 * Verifica se o registro é referenciado
 	 * 
-	 * @param AssociarMotivoDepositoVO
-	 *            - item a ser verificado
-	 * @return Boolean - True quando é referenciado, False quando não é, Null
-	 *         quando não disponível
+	 * @param vo
+	 *            Registro a ser verificado
+	 * @return true quando é referenciado
 	 */
 	Boolean isReferenciado(AssociarMotivoDepositoVO vo);
 
 	/**
-	 * Método obterPorChave
+	 * Obtém um registro pela sua chave
 	 * 
-	 * @param AssociarMotivoDepositoVO
-	 *            - Contém a chave de pesquisa
-	 * @return AssociarMotivoDepositoVO - Item encontrado ou nulo.
+	 * @param vo
+	 *            Contém a chave
+	 * @return Registro encontrado ou nulo.
 	 */
 	AssociarMotivoDepositoVO obterPorChave(AssociarMotivoDepositoVO vo);
 

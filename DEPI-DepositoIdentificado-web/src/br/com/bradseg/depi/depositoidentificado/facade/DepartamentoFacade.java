@@ -34,8 +34,6 @@ public interface DepartamentoFacade {
      */
 	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoUsuario, Tabelas e) throws IntegrationException;
 
-	public List<DepartamentoVO> obterTodos() throws IntegrationException;
-
 	public DepartamentoVO obterPorChave(DepartamentoVO vo) throws IntegrationException;
 
 	public void inserir(DepartamentoVO vo) throws IntegrationException;

@@ -147,17 +147,6 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
     }
 
     /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#obterTodos()
-     */
-    @Override
-    public List<DepartamentoVO> obterTodos() throws IntegrationException {
-		
-    	LOGGER.error("Inicio - obterTodos()");
-    	
-        return departamentoDAO.obterTodos();
-    }
-
-    /* (non-Javadoc)
      * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#obterComRestricaoDeGrupoAcesso(int, java.lang.Double, br.com.bradseg.depi.depositoidentificado.enums.Tabelas)
      */
     @Override
@@ -165,7 +154,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
 		
 		LOGGER.error("Inicio - obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e)"); 
 
-    	return departamentoDAO.obterComRestricaoDeGrupoAcesso(codigoCia,codigoUsuario, e);
+    	return departamentoDAO.obterComRestricao(codigoCia,codigoUsuario, e);
     	
     }
 

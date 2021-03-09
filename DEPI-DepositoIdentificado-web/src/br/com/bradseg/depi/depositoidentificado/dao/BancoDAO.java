@@ -5,13 +5,14 @@ package br.com.bradseg.depi.depositoidentificado.dao;
 
 import java.util.List;
 
+import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 
 /**
  * 
- * @author Marcelo Damasceno
- * 
+ * Define os métodos para consultar bancos.
+ * @author Marcelo Damasceno 
  */
 public interface BancoDAO {
 
@@ -22,5 +23,13 @@ public interface BancoDAO {
 	 * @return Lista de bancos
 	 */
 	List<BancoVO> obterBancos(CompanhiaSeguradoraVO cia);
+
+	/**
+	 * Obtém as agências 
+	 * @param ciaVO Companhia
+	 * @param bancoVO Banco
+	 * @return Agências
+	 */
+	List<AgenciaVO> obterAgencias(CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO);
 
 }

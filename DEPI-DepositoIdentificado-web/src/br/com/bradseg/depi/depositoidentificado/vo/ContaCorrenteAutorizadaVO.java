@@ -122,9 +122,11 @@ public final class ContaCorrenteAutorizadaVO implements Serializable {
      * @return o valor do atributo chaveComposta
      */
 	public String getChaveComposta() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.getCia().getCodigoCompanhia()).append(".").append(this.getBanco().getCdBancoExterno()).append(".")
-		    .append(this.getCodigoAgencia()).append(".").append(this.getContaCorrente());
+		final char semicolon = ';';
+		StringBuilder sb = new StringBuilder(this.getCia().getCodigoCompanhia())
+				.append(semicolon).append(this.getBanco().getCdBancoExterno())
+				.append(semicolon).append(this.getCodigoAgencia())
+				.append(semicolon).append(this.getContaCorrente());
 		return sb.toString();
 	}
 	
