@@ -97,7 +97,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
         }
         if (sb.length() > 0) {
 			throw new DEPIBusinessException(
-					"msg.erro.grupoAcesso.registrocomdependencia",
+					"msg.erro.grupoacesso.registrocomdependencia",
 					sb.toString());
         }
     }
@@ -257,7 +257,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 
 	@Override
 	public List<DepartamentoVO> obterDepartamentos(int codigoUsuario, CompanhiaSeguradoraVO vo) {
-		return deptoDAO.obterComRestricaoDeGrupoAcesso(vo.getCodigoCompanhia(), codigoUsuario, Tabelas.GRUPO_ACESSO);
+		return deptoDAO.obterComRestricao(vo.getCodigoCompanhia(), codigoUsuario, Tabelas.GRUPO_ACESSO);
 	}
 	
 	/* (non-Javadoc)

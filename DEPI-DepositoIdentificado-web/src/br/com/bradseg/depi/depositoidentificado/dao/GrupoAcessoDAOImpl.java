@@ -179,16 +179,16 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             // * Proteção da rotina.
             // *
             if (vo.getCodigoGrupoAcesso() <= 0) {
-                throw new DEPIBusinessException("msg.erro.grupoAcesso.codigoinvalido");
+                throw new DEPIBusinessException("msg.erro.grupoacesso.codigoinvalido");
             }
 
             List<UsuarioVO> funcionarios = vo.getFuncionarios();
             if (funcionarios == null) {
-                throw new DEPIBusinessException("msg.erro.grupoAcesso.listausuarioinvalida");
+                throw new DEPIBusinessException("msg.erro.grupoacesso.listausuarioinvalida");
             }
 
             if (vo.getCodigoResponsavelUltimaAtualizacao().doubleValue() <= 0) {
-                throw new DEPIBusinessException("msg.erro.grupoAcesso.codResponsavelInvalido");
+                throw new DEPIBusinessException("msg.erro.grupoacesso.codResponsavelInvalido");
             }
             
             final Funcao<UsuarioVO, ?> extrairCodigoUsuario = new Funcao<UsuarioVO, Object>() {

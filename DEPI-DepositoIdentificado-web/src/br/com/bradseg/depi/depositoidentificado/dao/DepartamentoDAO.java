@@ -31,7 +31,7 @@ public interface DepartamentoDAO {
      * @param e - EQueryJoinForward. 
      * @return List<DepartamentoVO>.
      */
-	public List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, int codigoUsuario, Tabelas e);
+	public List<DepartamentoVO> obterComRestricao(int codigoCia, int codigoUsuario, Tabelas e);
 	//List<DepartamentoVO> obterComRestricaoDeGrupoAcesso(int codigoCia, BigDecimal codigoUsuario, Tabelas e);
 
 	/**
@@ -47,23 +47,55 @@ public interface DepartamentoDAO {
 
 	/**
 	 * Excluir Departamentos. 
+	 * @param vo Departamento a excluir
 	 */
 	public void excluir(DepartamentoVO vo);
 
+	/**
+	 * Verifica se o departamento é referenciado
+	 * @param vo Departamento
+	 * @return true se for referenciado
+	 */
 	public boolean isReferenciado(DepartamentoVO vo);
 
+	/**
+	 * Exclui uma lista de departamentos
+	 * @param vos Lista
+	 */
 	public void excluir(List<DepartamentoVO> vos);
 
+	/**
+	 * Persiste alteração de um departamento
+	 * @param vo Departamento
+	 */
 	public void alterar(DepartamentoVO vo);
 
+	/**
+	 * Insere um novo Departamento
+	 * @param vo Departamento
+	 */
 	public void inserir(DepartamentoVO vo);
 
+	/**
+	 * Obtém um departamento pela sua chave
+	 * @param vo Departamento que possui a chave preenchida
+	 * @return Departamento com dados obtidos do repositório
+	 */
 	public DepartamentoVO obterPorChave(DepartamentoVO vo);
 
-	public List<DepartamentoVO> obterTodos();
-
+	/**
+	 * Lista os Departamentos que atendem aos critérios de consulta  
+	 * @param filtro Filtro com critérios de consulta
+	 * @return Lista de Departamento
+	 */
 	public List<DepartamentoVO>  obterPorFiltro(FiltroUtil filtro);
 
+	/**
+	 * Obtém um departamento pela sua sigla quando associado a uma companhia
+	 * @param vo Companhia
+	 * @param deptoVO Possui a sigla do departamento
+	 * @return Departamento quando existe departamento associado à Companhia Seguradora
+	 */
 	DepartamentoVO obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo,
 			DepartamentoVO deptoVO);
 

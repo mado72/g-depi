@@ -4,15 +4,22 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 /**
  * Classe ContaCorrenteAutorizadaVO
  * @author fabio.pimentel
  */
 //@Table(schema = ConstantesDEPI.SCHEMA_BANCO, table = ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA)
-public final class ContaCorrenteAutorizadaVO implements Serializable{
+public final class ContaCorrenteAutorizadaVO implements Serializable {
 
 	private static final long serialVersionUID = -488890761499702708L;
+	
+	private int codigoResponsavelUltimaAtualizacao;
+	
+	private String codigoAtivo;
 
 	/**
      * Construtor
@@ -21,11 +28,27 @@ public final class ContaCorrenteAutorizadaVO implements Serializable{
 		super();
 	}
 
-//	@TableField(name = ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_BANCO, converter = BancoPersistenceConverter.class)
+	/**
+	 * Construtor que preenche a chave primária
+	 * @param banco Banco
+	 * @param codigoAgencia agencia
+	 * @param contaCorrente Conta corrente
+	 */
+	public ContaCorrenteAutorizadaVO(BancoVO banco, int codigoAgencia,
+			long contaCorrente) {
+		super();
+		this.banco = banco;
+		this.codigoAgencia = codigoAgencia;
+		this.contaCorrente = contaCorrente;
+	}
+
+	//	@TableField(name = ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_BANCO, converter = BancoPersistenceConverter.class)
 	private BancoVO banco = new BancoVO();
 
 //	@TableField(name = ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_AGENCIA)
 	private int codigoAgencia;
+	
+	private String descricaoAgencia;
 
 //	@TableField(name = "CDIG_AG")
 	private String digitoAgencia;
@@ -52,6 +75,31 @@ public final class ContaCorrenteAutorizadaVO implements Serializable{
     private long trps;
     
     private DepositoVO deposito;
+    
+    private Date dataInclusao;
+    
+    private Date dataHoraAtualizacao;
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder("Conta Corrente: [Banco: ");
+    	if (getBanco() != null) {
+    		sb.append(getBanco().getCdBancoExterno());
+    	}
+    	else {
+    		sb.append("null");
+    	}
+    	
+    	sb.append(", Ag.: ").append(getCodigoAgencia())
+    		.append(", Conta Corrente: ")
+    		.append(getContaCorrente())
+    		.append(']');
+    	
+    	return sb.toString();
+    }
 
 	/**
      * Retorna o valor do atributo deposito.
@@ -74,10 +122,28 @@ public final class ContaCorrenteAutorizadaVO implements Serializable{
      * @return o valor do atributo chaveComposta
      */
 	public String getChaveComposta() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.getCia().getCodigoCompanhia()).append(".").append(this.getBanco().getCdBancoExterno()).append(".")
-		    .append(this.getCodigoAgencia()).append(".").append(this.getContaCorrente());
+		final char semicolon = ';';
+		StringBuilder sb = new StringBuilder(this.getCia().getCodigoCompanhia())
+				.append(semicolon).append(this.getBanco().getCdBancoExterno())
+				.append(semicolon).append(this.getCodigoAgencia())
+				.append(semicolon).append(this.getContaCorrente());
 		return sb.toString();
+	}
+	
+	/**
+	 * Retorna descricaoAgencia
+	 * @return o descricaoAgencia
+	 */
+	public String getDescricaoAgencia() {
+		return descricaoAgencia;
+	}
+	
+	/**
+	 * Define descricaoAgencia
+	 * @param descricaoAgencia valor descricaoAgencia a ser definido
+	 */
+	public void setDescricaoAgencia(String descricaoAgencia) {
+		this.descricaoAgencia = descricaoAgencia;
 	}
 
 	/**
@@ -240,5 +306,70 @@ public final class ContaCorrenteAutorizadaVO implements Serializable{
     public void setTrps(long trps) {
         this.trps = trps;
     }
+    
+    /**
+	 * Retorna codigoResponsavelUltimaAtualizacao
+	 * @return o codigoResponsavelUltimaAtualizacao
+	 */
+	public int getCodigoResponsavelUltimaAtualizacao() {
+		return codigoResponsavelUltimaAtualizacao;
+	}
+	
+	/**
+	 * Define codigoResponsavelUltimaAtualizacao
+	 * @param codigoResponsavelUltimaAtualizacao valor codigoResponsavelUltimaAtualizacao a ser definido
+	 */
+	public void setCodigoResponsavelUltimaAtualizacao(
+			int codigoResponsavelUltimaAtualizacao) {
+		this.codigoResponsavelUltimaAtualizacao = codigoResponsavelUltimaAtualizacao;
+	}
+	
+	/**
+	 * Retorna dataInclusao
+	 * @return o dataInclusao
+	 */
+	public Date getDataInclusao() {
+		return BaseUtil.getDate(dataInclusao);
+	}
+	
+	/**
+	 * Define dataInclusao
+	 * @param dataInclusao valor dataInclusao a ser definido
+	 */
+	public void setDataInclusao(Date dataInclusao) {
+		this.dataInclusao = BaseUtil.getDate(dataInclusao);
+	}
+	
+	/**
+	 * Retorna dataHoraAtualizacao
+	 * @return o dataHoraAtualizacao
+	 */
+	public Date getDataHoraAtualizacao() {
+		return BaseUtil.getDate(dataHoraAtualizacao);
+	}
+	
+	/**
+	 * Define dataHoraAtualizacao
+	 * @param dataHoraAtualizacao valor dataHoraAtualizacao a ser definido
+	 */
+	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
+		this.dataHoraAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
+	}
+	
+	/**
+	 * Retorna codigoAtivo
+	 * @return o codigoAtivo
+	 */
+	public String getCodigoAtivo() {
+		return codigoAtivo;
+	}
+	
+	/**
+	 * Define codigoAtivo
+	 * @param codigoAtivo valor codigoAtivo a ser definido
+	 */
+	public void setCodigoAtivo(String codigoAtivo) {
+		this.codigoAtivo = codigoAtivo;
+	}
 
 }

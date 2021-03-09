@@ -380,7 +380,7 @@ public class RelatorioEnvioRetornoAnaliticoVO implements Serializable{
      * @return O atributo vencimento
      */
     public Date getVencimento() {
-        return (Date) vencimento.clone();
+         return vencimento;
     }
 
     /**

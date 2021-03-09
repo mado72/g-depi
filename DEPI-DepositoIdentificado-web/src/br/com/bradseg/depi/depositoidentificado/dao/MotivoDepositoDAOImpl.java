@@ -48,6 +48,10 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 	private static final String PARAM_PRM5 = "prm5";
 
 	private static final String PARAM_WHR1 = "whr1";
+	
+	private static final String PARAM_WHR2 = "whr2";
+	
+	private static final String PARAM_WHR3 = "whr3";
 
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(MovimentoDepositoDAOImpl.class);
@@ -224,9 +228,9 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
             /**
              * Parametros.
              */
-        	params.addValue(PARAM_PRM1, codigoCia);
-            params.addValue(PARAM_PRM2, codigoDep);
-            params.addValue(PARAM_PRM3, codigoUsuario);
+        	params.addValue(PARAM_WHR1, codigoCia);
+            params.addValue(PARAM_WHR2, codigoDep);
+            params.addValue(PARAM_WHR3, codigoUsuario);
 
 			List<MotivoDepositoVO> motivoDepto = getJdbcTemplate().query(query.toString(), params, new MotivoDepositoDataMapper());
 			

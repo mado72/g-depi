@@ -288,7 +288,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     @Override
     public List<DepartamentoVO> obterComRestricaoGrupoAcesso(int codUsuario,
     		CompanhiaSeguradoraVO companhia) {
-    	return deptoDAO.obterComRestricaoDeGrupoAcesso(companhia.getCodigoCompanhia(), codUsuario, Tabelas.GRUPO_ACESSO);
+    	return deptoDAO.obterComRestricao(companhia.getCodigoCompanhia(), codUsuario, Tabelas.GRUPO_ACESSO);
     }
     
     /* (non-Javadoc)

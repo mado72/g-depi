@@ -64,94 +64,15 @@
 		</action> -->
 		
 	</package>
-	
-	<package name="jsonService" namespace="/json" extends="depi-default">
-		<default-class-ref class="jsonServiceAction"/>
-		
-		<global-results>
-			<result name="success" type="json"/>
-		</global-results>
-		
-		<action name="*" method="{1}" />
-	</package>
 
-	<package name="cadastroMotivoDeposito" namespace="/cadastro/motivoDeposito/consultar" extends="depi-default">
-	
-		<default-class-ref class="motivoDepositoConsultarAction"/>
+	<include file="META-INF/struts2/struts-motivodeposito.xml" />
+	<include file="META-INF/struts2/struts-departamento.xml" />
+	<include file="META-INF/struts2/struts-departamento-companhia.xml" />
+	<include file="META-INF/struts2/struts-grupo-acesso.xml" />
+	<include file="META-INF/struts2/struts-parametro.xml" />
+	<include file="META-INF/struts2/struts-conta-corrente.xml" />
+	<include file="META-INF/struts2/struts-associar-motivodeposito.xml" />
 		
-		<global-results>
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
-			</result>
-			<result name="input" type="redirectAction">listar</result>
-		</global-results>
-
-		<action name="index">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-		</action>
-		
-		<action name="listar" method="listar">
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
-			</result>
-		</action>
-        
-		<action name="*" method="{1}">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-		</action>
-
-	</package>
-	
-	<package name="cadastroMotivoDepositoEditar" namespace="/cadastro/motivoDeposito/editar" extends="depi-default">
-	
-		<default-class-ref class="motivoDepositoEditarAction"></default-class-ref>
-	
-		<global-results>
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDepositoForm.jsp</param>
-			</result>
-			<result name="success" type="redirectAction">
-			    <param name="actionName">retornar</param>
-			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
-			</result>
-			<result name="voltar" type="redirectAction">
-			    <param name="actionName">listar</param>
-			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
-			</result>
-		</global-results>
-		
-		<action name="*" method="{1}"/>
-		
-		<action name="incluir" method="incluir">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-			<result name="input" type="redirectAction">input</result>
-		</action>
-		
-		<action name="alterar" method="alterar">
-			<result name="input" type="redirectAction">input</result>
-		</action>
-        
-        <action name="excluir" method="excluir">
-			<interceptor-ref name="store">
-				<param name="operationMode">STORE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-        </action>
-        
-        <action name="salvar" class="motivoDepositoSalvarAction">
-			<interceptor-ref name="store">
-				<param name="operationMode">STORE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-        </action>
-    </package>
-
-	
 	<package name="jsonService" namespace="/json" extends="depi-default">
 		<default-class-ref class="jsonServiceAction"/>
 		
@@ -164,371 +85,6 @@
 		
 		<action name="grupoAcesso/desalocarFuncionarios" method="desalocarFuncionarios" class="grupoAcessoEditarAction" />
 	</package>
-
-	<package name="cadastroDepartamento" namespace="/cadastro/departamento/consultar" extends="depi-default">
-	
-		<default-class-ref class="departamentoConsultarAction"/>
-		
-		<global-results>
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
-			</result>
-			<result name="input" type="redirectAction">listar</result>
-		</global-results>
-
-		<action name="index">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-		</action>
-		
-		<action name="listar" method="listar">
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
-			</result>
-		</action>
-        
-		<action name="*" method="{1}">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-		</action>
-
-	</package>
-	
-	<package name="cadastroDepartamentoEditar" namespace="/cadastro/departamento/editar" extends="depi-default">
-	
-		<default-class-ref class="departamentoEditarAction"></default-class-ref>
-	
-		<global-results>
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamentoForm.jsp</param>
-			</result>
-			<result name="success" type="redirectAction">
-			    <param name="actionName">retornar</param>
-			    <param name="namespace">/cadastro/departamento/consultar</param>
-			</result>
-            <result name="voltar" type="redirectAction">
-                <param name="actionName">listar</param>
-                <param name="namespace">/cadastro/departamento/consultar</param>
-            </result>            
-        </global-results>
-        
-		<action name="incluir" method="incluir">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-			<result name="input" type="redirectAction">input</result>
-		</action>
-		
-		<action name="alterar" method="alterar">
-			<result name="input" type="redirectAction">input</result>
-		</action>
-        
-        <action name="excluir" method="excluir">
-			<interceptor-ref name="store">
-				<param name="operationMode">STORE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-        </action>
-        
-        <action name="*" method="{1}">
-        </action>
-        
-        <action name="salvar" class="departamentoSalvarAction">
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="applicationStack" />
-        </action>        
-	</package>
-
-	<package name="cadastroDeptoCia" namespace="/cadastro/departamento-companhia/consultar" extends="depi-default">
-	
-		<default-class-ref class="departamentoCompanhiaConsultarAction"/>
-		
-		<global-results>
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/deptocia/deptocia.jsp</param>
-			</result>
-			<result name="input" type="redirectAction">listar</result>
-		</global-results>
-
-		<action name="index">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-		</action>
-		
-		<action name="listar" method="listar">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/deptocia/deptocia.jsp</param>
-			</result>
-		</action>
-		
-		<action name="refrescar" method="refrescar">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/deptocia/deptocia.jsp</param>
-			</result>
-		</action>
-        
-		<action name="*" method="{1}">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-		</action>
-
-	</package>
-	
-	<package name="cadastroDeptoCiaEditar" namespace="/cadastro/departamento-companhia/editar" extends="depi-default">
-	
-		<default-class-ref class="departamentoCompanhiaEditarAction"></default-class-ref>
-	
-		<global-results>
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/deptocia/deptociaForm.jsp</param>
-			</result>
-			<result name="success" type="redirectAction">
-			    <param name="actionName">retornar</param>
-			    <param name="namespace">/cadastro/departamento-companhia/consultar</param>
-			</result>
-            <result name="voltar" type="redirectAction">
-                <param name="actionName">listar</param>
-                <param name="namespace">/cadastro/departamento-companhia/consultar</param>
-            </result>            
-        </global-results>
-        
-		<action name="incluir" method="incluir">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-			<result name="input" type="redirectAction">input</result>
-		</action>
-		
-		<action name="alterar" method="alterar">
-			<result name="input" type="redirectAction">input</result>
-		</action>
-        
-        <action name="excluir" method="excluir">
-			<interceptor-ref name="store">
-				<param name="operationMode">STORE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-			<result name="success" type="redirectAction">
-			    <param name="actionName">refrescar</param>
-			    <param name="namespace">/cadastro/departamento-companhia/consultar</param>
-			</result>
-        </action>
-        
-        <action name="salvar" class="departamentoCompanhiaSalvarAction">
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="applicationStack" />
-			<result name="input" type="redirectAction">
-			    <param name="actionName">input</param>
-			</result>
-        </action>        
-        
-        <action name="*" method="{1}">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-        </action>
-
-	</package>
-
-	<package name="cadastroGrupoAcesso" namespace="/cadastro/grupo-acesso/consultar" extends="depi-default">
-	
-		<default-class-ref class="grupoAcessoConsultarAction"/>
-		
-		<global-results>
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcesso.jsp</param>
-			</result>
-			<result name="input" type="redirectAction">listar</result>
-		</global-results>
-
-		<action name="index">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-		</action>
-		
-		<action name="listar" method="listar">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-			<result name="input">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcesso.jsp</result>
-		</action>
-        
-		<action name="*" method="{1}">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-		</action>
-
-	</package>
-	
-	<package name="cadastroGrupoAcessoEditar" namespace="/cadastro/grupo-acesso/editar" extends="depi-default">
-	
-		<default-class-ref class="grupoAcessoEditarAction"></default-class-ref>
-	
-		<global-results>
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/grupoAcesso/grupoAcessoForm.jsp</param>
-			</result>
-			<result name="success" type="redirectAction">
-			    <param name="actionName">retornar</param>
-			    <param name="namespace">/cadastro/grupo-acesso/consultar</param>
-			</result>
-			<result name="voltar" type="redirectAction">
-			    <param name="actionName">listar</param>
-			    <param name="namespace">/cadastro/grupo-acesso/consultar</param>
-			</result>
-		</global-results>
-		
-		<action name="incluir" method="incluir">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-			<result name="input" type="redirectAction">input</result>
-		</action>
-		
-		<action name="alterar" method="alterar">
-			<result name="input" type="redirectAction">input</result>
-		</action>
-        
-        <action name="salvar" class="grupoAcessoSalvarAction">
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="applicationStack" />
-			<result name="input" type="redirectAction">input</result>
-        </action>
-        
-        <action name="excluir" method="excluir">
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="applicationStack" />
-			<result name="input" type="redirectAction">
-				<param name="namespace">/cadastro/grupo-acesso/consultar</param>
-				<param name="actionName">listar</param>
-			</result>
-        </action>
-        
-        <action name="*" method="{1}">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-        </action>
-        
-	</package>
-	
-	<package name="cadastroParametroConsultar" namespace="/cadastro/parametro/consultar" extends="depi-default">
-	
-		<default-class-ref class="parametroConsultarAction"/>
-		
-		<global-results>
-			<result name="success">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/parametro/parametro.jsp</param>
-			</result>
-			<result name="input" type="redirectAction">listar</result>
-		</global-results>
-
-		<action name="index">
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-		</action>
-
-		<action name="listar" method="listar">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-			<result name="input">/WEB-INF/pages/pt_BR/cadastro/parametro/parametro.jsp</result>
-		</action>
-        
-		<action name="*" method="{1}">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-		</action>
-	</package>
-	
-	<package name="cadastroParametroEditar" namespace="/cadastro/parametro/editar" extends="depi-default">
-	
-		<default-class-ref class="parametroEditarAction"></default-class-ref>
-	
-		<global-results>
-			<result name="input">
-			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/parametro/parametroForm.jsp</param>
-			</result>
-			<result name="success" type="redirectAction">
-			    <param name="actionName">retornar</param>
-			    <param name="namespace">/cadastro/parametro/consultar</param>
-			</result>
-			<result name="voltar" type="redirectAction">
-			    <param name="actionName">listar</param>
-			    <param name="namespace">/cadastro/parametro/consultar</param>
-			</result>			
-		</global-results>
-		
-		<action name="incluir" method="incluir">
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="applicationStack" />
-			<interceptor-ref name="limparDados"/>
-			<interceptor-ref name="applicationStack"/>
-			<result name="input" type="redirectAction">input</result>
-		</action>
-		
-		<action name="alterar" method="alterar">
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="applicationStack" />
-			<result name="input" type="redirectAction">input</result>
-		</action>
-        
-        <action name="salvar" class="parametroSalvarAction">
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="applicationStack" />
-			<result name="input" type="redirectAction">input</result>
-        </action>
-        
-        <action name="excluir" method="excluir">
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="applicationStack" />
-			<result name="input" type="redirectAction">
-				<param name="namespace">/cadastro/parametro/consultar</param>
-				<param name="actionName">listar</param>
-			</result>
-        </action>
-        
-        <action name="*" method="{1}">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
-        </action>
-        
-    </package>
 
 	<package name="filtroUsuario" namespace="/filtro/funcionario/consultar" extends="depi-default">
 	
@@ -549,7 +105,7 @@
 
 	</package>
 
-	<package name="filtroDeptoCia" namespace="/filtro/departamento-companhia/consultar" extends="depi-default">
+	<package name="filtroDeptoCia" namespace="/filtro/associar-motivodeposito/consultar" extends="depi-default">
 	
 		<default-class-ref class="departamentoConsultarAction" />
 		
@@ -567,7 +123,99 @@
 
 	</package>
 	
-    <!-- RELATORIOS -->
+	
+	<package name="relatorioConsultar" namespace="/relatorio" extends="depi-default">
+	
+		<default-class-ref class="consultarRelatorioAction"/>
+		
+		<global-results>
+			<result name="success">
+			    <param name="location">/WEB-INF/pages/pt_BR/relatorio/consultarRelatorio.jsp</param>
+			</result>
+			<result name="input" type="redirectAction">consultar</result>
+		</global-results>
+
+		<action name="index">
+			<interceptor-ref name="limparDados"/>
+			<interceptor-ref name="applicationStack"/>
+		</action>
+        
+		<action name="*" method="{1}"/>
+		<action name="consultarRelatorio" method="consultar">
+			<result name="input">
+			   <param name="location">/WEB-INF/pages/pt_BR/relatorio/consultarRelatorio.jsp</param>
+			</result>
+		</action>
+		 <!-- 
+	    	<result name="cartaAceiteRestricaoMassificadoColetivo.pdf" type="report">  
+	        		<param name="location">cartaAceiteRestricaoMassificadoColetivo.jrxml</param>  
+	        		<param name="dataSource">beanCartas</param>  
+	       			<param name="format">PDF</param>  
+	       			<param name="documentName">Carta_Aceite_Restrição_Massificado_Coletivo</param>
+			   </result>
+		 -->
+		<action name="gerarRelatorio"  method="gerarRelatorio">
+	        <result name="success" type="report">  
+	       		<param name="location">relManutencoesAnalitico.jrxml</param>  
+	       		<param name="dataSource">beans</param>  
+	      			<param name="format">PDF</param>  
+	      			<param name="documentName">Relatorio_Envio</param>
+		    </result> 
+		    		    
+		    <result name="relEnvioRetornoBancoAnalitico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>
+ 			<result name="relEnvioRetornoBancoSintetico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>			
+ 			<result name="relExtratoAnalitico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>							
+ 			<result name="relExtratoSintetico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>				
+		    <result name="relManutencoesAnalitico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>
+		    <result name="relDadosComplementares.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>		    
+			<result name="relManutencoesSintetico.pdf" type="stream">  
+					<param name="contentType">${contentTypeReport}</param>
+					<param name="inputName">fileInputStream</param>
+					<param name="contentDisposition">filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>			   
+			</result>		    		 
+		    		   		    
+			<result name="error">
+			      <param name="location">/WEB-INF/pages/layout/erro.jsp</param>
+		    </result>
+		    
+	   	</action>
+	   			
+	</package>
+	
+	
+	
+    <!-- RELATORIOS 
     
     <package name="relatorioEnvioRetornoBancoAnalitico" namespace="/relatorio/envio-retorno/analitico" extends="depi-default">
    		<default-class-ref class="relatorioEnvioRetornoBancoAnaliticoAction" />
@@ -637,6 +285,7 @@
     	</global-results>
     	<action name="index" method="execute"/>
     	<action name="*" method="*"/>
-    </package>
+    </package> -->
+    
 	
 </struts>

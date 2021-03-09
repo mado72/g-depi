@@ -1,24 +1,24 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.cics.vo;
+package br.com.bradseg.depi.depositoidentificado.cics.book;
 
-import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.QUATRO;
-import static br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField.Direction.InOut;
+import static br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.QUATRO;
+import static br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField.Direction.InOut;
 
 import java.io.Serializable;
 import java.util.Date;
 
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsField;
+import br.com.bradseg.depi.depositoidentificado.cics.annotations.CicsProgram;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsField;
-import br.com.bradseg.depi.depositoidentificado.util.annotations.CicsProgram;
 
 /**
  * Classe que representa o book para o GTAB1412. 
  * @author Marcelo Damasceno
  */
 @CicsProgram(programName = "GTAB0032", transactionName = "GT50", commLength = 602)
-public class GTAB1412VO implements Serializable {
+public class GTAB1412 implements Serializable {
 
 	private static final long serialVersionUID = -697466839831643647L;
 
