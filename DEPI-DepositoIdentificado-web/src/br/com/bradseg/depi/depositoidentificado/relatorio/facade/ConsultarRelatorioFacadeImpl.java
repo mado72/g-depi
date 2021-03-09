@@ -95,7 +95,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Override
 	   public  List<DepartamentoVO> obterComDepositoRestricaoDeDeposito(int codigCompanhia, LoginVo loginVO){
 		int usuarioLogadoId =Integer.parseInt(loginVO.getId());  
-		return daoDepartamento.obterComRestricaoDeGrupoAcesso(codigCompanhia, usuarioLogadoId, Tabelas.DEPOSITO);
+		return daoDepartamento.obterComRestricao(codigCompanhia, usuarioLogadoId, Tabelas.DEPOSITO);
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 
 
     /**
-     * Gera lista com dados para o relatório Sintético usando a lista de dados do relatório Análitico.
+     * Gera lista com dados para o relatï¿½rio Sintï¿½tico usando a lista de dados do relatï¿½rio Anï¿½litico.
      * @param dadosAnaliticos - List<ManutencoesSinteticoVO>.
      * @throws DEPIIntegrationException - DEPIIntegrationException.
      * @return List<ManutencoesSinteticoVO>.
@@ -150,7 +150,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
         Set<String> chaves = map.keySet();
         for (String key : chaves) {
             ManutencoesSinteticoVO sintetico = map.get(key);
-            // calcula valores por situação
+            // calcula valores por situaï¿½ï¿½o
             for (ManutencoesAnaliticoVO original : dadosAnaliticos) {
                 String chave = new StringBuilder().append(original.getCodigoBanco()).append(original.getCodigoCia()).append(
                     original.getCodigoAgencia()).append(original.getCodigoConta()).append(original.getCodigoTipoAcao())
@@ -267,7 +267,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	}
 
 	/**
-     * Ordem Situação.
+     * Ordem Situaï¿½ï¿½o.
      * @param situacao - RelatorioExtratoAnaliticoVO.
      * @return String.
      */

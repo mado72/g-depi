@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.com.bradseg.depi.depositoidentificado.util.annotations;
+package br.com.bradseg.depi.depositoidentificado.cics.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -46,7 +46,7 @@ public @interface CicsField {
 	 */
 	Direction direction() default Direction.Out;
 
-	int size();
+	int size() default 0;
 	
 	String pattern() default "";
 
@@ -55,4 +55,10 @@ public @interface CicsField {
 	 * @return decimais
 	 */
 	int decimals() default 0;
+	
+	/**
+	 * Quantidade de ocorrências do campo
+	 * @return Quantidade, 0 default
+	 */
+	int occurrences() default 0;
 }

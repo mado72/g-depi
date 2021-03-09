@@ -154,7 +154,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
 		
 		LOGGER.error("Inicio - obterComRestricaoDeGrupoAcesso(int codigoCia, Double codigoUsuario, Tabelas e)"); 
 
-    	return departamentoDAO.obterComRestricaoDeGrupoAcesso(codigoCia,codigoUsuario, e);
+    	return departamentoDAO.obterComRestricao(codigoCia,codigoUsuario, e);
     	
     }
 

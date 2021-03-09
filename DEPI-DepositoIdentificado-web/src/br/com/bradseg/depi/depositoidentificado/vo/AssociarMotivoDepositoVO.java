@@ -4,6 +4,9 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 /**
  * Classe Anotada de Mapeamento com a tabela CTA_CORR_MOTVO.
@@ -42,21 +45,40 @@ public class AssociarMotivoDepositoVO implements Serializable {
 	
 	private Integer codigoResponsavelUltimaAtualizacao;
 	
+	private Date dataInclusao;
+	
+	private Date dataHoraAtualizacao;
+	
     /**
      * Indicado Registro Ativo.
      */
     private String indicadoRegistroAtivo;
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder(" Associa\u00E7\u00E3o de Motivo: [Cia: ")
+    		.append(getCia().getCodigoCompanhia())
+    		.append("; Departamento: ").append(getDepartamento().getCodigoDepartamento())
+    		.append("; Motivo: ").append(getMotivoDeposito().getCodigoMotivoDeposito())
+    		.append("; Banco: ").append(getBanco().getCdBancoExterno())
+    		.append(", Ag.: ").append(getCodigoAgencia())
+    		.append(", CC.: ").append(getContaCorrente()).append("]");
+        return sb.toString();
+    }
 
 	/**
      * Retorna a chave composta.
      * @return String - chave composta.
      */
-	public String getChaveComposta() {
-		String dot = ".";
-		return new StringBuilder().append(this.getCia().getCodigoCompanhia()).append(dot).append(
-		    this.getDepartamento().getCodigoDepartamento()).append(dot).append(
-		    this.getMotivoDeposito().getCodigoMotivoDeposito()).append(dot).append(this.getBanco().getCdBancoExterno())
-		    .append(dot).append(this.getCodigoAgencia()).append(dot).append(this.getContaCorrente()).toString();
+	public String getCodigo() {
+		String semicolumn = ";";
+		return new StringBuilder().append(this.getCia().getCodigoCompanhia()).append(semicolumn).append(
+		    this.getDepartamento().getCodigoDepartamento()).append(semicolumn).append(
+		    this.getMotivoDeposito().getCodigoMotivoDeposito()).append(semicolumn).append(this.getBanco().getCdBancoExterno())
+		    .append(semicolumn).append(this.getCodigoAgencia()).append(semicolumn).append(this.getContaCorrente()).toString();
 	}
 
 	/**
@@ -196,6 +218,37 @@ public class AssociarMotivoDepositoVO implements Serializable {
 	public void setIndicadoRegistroAtivo(String indicadoRegistroAtivo) {
 		this.indicadoRegistroAtivo = indicadoRegistroAtivo;
 	}
+
+	/**
+	 * Retorna dataInclusao
+	 * @return o dataInclusao
+	 */
+	public Date getDataInclusao() {
+		return BaseUtil.getDate(dataInclusao);
+	}
 	
+	/**
+	 * Define dataInclusao
+	 * @param dataInclusao valor dataInclusao a ser definido
+	 */
+	public void setDataInclusao(Date dataInclusao) {
+		this.dataInclusao = BaseUtil.getDate(dataInclusao);
+	}
+	
+	/**
+	 * Retorna dataHoraAtualizacao
+	 * @return o dataHoraAtualizacao
+	 */
+	public Date getDataHoraAtualizacao() {
+		return BaseUtil.getDate(dataHoraAtualizacao);
+	}
+	
+	/**
+	 * Define dataHoraAtualizacao
+	 * @param dataHoraAtualizacao valor dataHoraAtualizacao a ser definido
+	 */
+	public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
+		this.dataHoraAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
+	}
 	
 }

@@ -4,6 +4,8 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -28,6 +30,8 @@ public class JsonRequestVO implements Serializable {
 	private String codigoAgencia;
 
 	private String contaCorrente;
+	
+	private Map<String,String> codigo = new HashMap<>();
 
 	/**
 	 * Retorna response
@@ -123,6 +127,22 @@ public class JsonRequestVO implements Serializable {
 	 */
 	public void setContaCorrente(String contaCorrente) {
 		this.contaCorrente = contaCorrente;
+	}
+	
+	/**
+	 * Retorna codigo
+	 * @return o codigo
+	 */
+	public Map<String, String> getCodigo() {
+		return codigo;
+	}
+	
+	/**
+	 * Define codigo
+	 * @param codigo valor codigo a ser definido
+	 */
+	public void setCodigo(Map<String, String> codigo) {
+		this.codigo = codigo;
 	}
 
 }
