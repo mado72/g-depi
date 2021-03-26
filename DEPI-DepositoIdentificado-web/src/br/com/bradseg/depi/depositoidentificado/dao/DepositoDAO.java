@@ -12,61 +12,67 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
  * Interface do Objeto DepositoDAO.
- * @author lazaro
  */
 public interface DepositoDAO{
 
     /**
-     * Método repons�vel pela atualizar um registro de Dep�sito sempre que uma insercao/atualizacao for efetuada em manter movimento
-     * ou controle deposito
-     * @param deposito - DepositoVO.
-     * @param param - ParametroDepositoVO.
-     */
+	 * Método responsável por atualizar um registro de Depósito sempre que uma
+	 * inserção/atualização for efetuada em manter movimento ou controle
+	 * deposito
+	 * 
+	 * @param deposito
+	 *            DepositoVO.
+	 * @param param
+	 *            ParametroDepositoVO.
+	 */
     void atualizar(DepositoVO deposito, ParametroDepositoVO param);
 
     /**
-     * Método repons�vel pela inclus�o de um registro de Dep�sito
-     * @param deposito - DepositoVO.
-     * @param param - ParametroDepositoVO.
+     * Inclui um registro de Depósito
+     * @param deposito DepositoVO.
+     * @param param ParametroDepositoVO.
      */
     void inserir(DepositoVO deposito, ParametroDepositoVO param);
 
     /**
-     * Método de obter por filtro
-     * @param filtro par�metro dep�sito com o código do objeto requisitado
-     * @param codigoUsuario - BigDecimal.
+     * Método para consultar por filtro
+     * @param filtro parâmetro depósito com o código do objeto requisitado
+     * @param codigoUsuario Código do usuário
      * @return List<DepositoVO>
      */
     List<DepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Integer codigoUsuario);
 
     /**
-     * Método repons�vel pela atualiza��o normal de um registro de Dep�sito
-     * @param deposito - DepositoVO.
-     */
+	 * Atualiza um registro de Depósito definindo a situação do arquivo e a data
+	 * de prorrogação
+	 * 
+	 * @param deposito
+	 *            DepositoVO.
+	 */
     void prorrogar(DepositoVO deposito);
 
     /**
-     * Cancelar Dep�sito
+     * Cancela um Depósito
      * @param deposito - DepositoVO.
      */
     void cancelar(DepositoVO deposito);
 
     /**
-     * Método de obter dep�sito por motivo
+     * Método de obter depósito por motivo
      * @param vo - MotivoDepositoVO vo
      * @return List<DepositoVO>
      */
     DepositoVO obterPorMotivo(MotivoDepositoVO vo);
     
     /**
-     * Método de obter dep�sito por departamento
+     * Método de obter depósito por departamento
      * @param vo - DepartamentoVO vo 
      * @return DepositoVO
      */
     DepositoVO obterPorContaCorrente(ContaCorrenteAutorizadaVO vo);
     
     /**
-     * Método de obter dep�sito por departamento
+     * Método de obter depósito por departamento
      * @param vo - DepartamentoVO vo 
      * @return DepositoVO
      */
@@ -89,20 +95,20 @@ public interface DepositoDAO{
     long updateLog(DepositoVO deposito);
 
     /**
-     * Método de verificar lan�amento do dep�sito
+     * Método de verificar lançamento do depósito
      * @param deposito - DepositoVO vo 
      * @return Boolean
      */
     long obterSituacaoDeposito(DepositoVO deposito);
     /**
-     * Método de verificar lan�amento do dep�sito
+     * Método de verificar lançamento do depósito
      * @param deposito - DepositoVO vo 
      * @return Boolean
      */
     boolean verificarLancamentoDeposito(DepositoVO deposito);
  
     /**
-     * Método de verificar lan�amento do dep�sito
+     * Método de verificar lançamento do depósito
      * @param deposito - DepositoVO vo 
      * @return boolean
      */
@@ -117,20 +123,20 @@ public interface DepositoDAO{
 
     /**
      * Método inserir deposito 
-     * {@inheritDoc}
-     */
+	 * @param vo Depósito a inserir
+	 */
 	void inserir(DepositoVO vo);
-    /**
-     * Método Alterar deposito 
-     * {@inheritDoc} 
-     */
-	void alterar(DepositoVO vo) ;
+
     /**
      * Método Excluir deposito 
-     * {@inheritDoc}
-     */
+	 * @param vo Depósito a excluir
+	 */
 	void excluir(DepositoVO vo);
 
+	/**
+	 * Método para inserir um DV no depósito inserido
+	 * @param vo Depósito inserido
+	 */
 	void inserirDV(DepositoVO vo);
 
 }

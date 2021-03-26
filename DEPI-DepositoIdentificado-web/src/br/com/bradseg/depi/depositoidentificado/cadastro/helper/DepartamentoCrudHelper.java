@@ -145,7 +145,7 @@ public class DepartamentoCrudHelper implements
 	}
 
 	@Override
-	public void preencherFormularioEdicao(DepartamentoEditarFormModel model)
+	public void preencherFormularioEdicao(DepartamentoEditarFormModel model, int codUsuario, String ipCliente)
 			throws DEPIIntegrationException {
 		
 		DepartamentoVO instancia = obterPeloCodigo(model.getCodigo());
@@ -203,7 +203,7 @@ public class DepartamentoCrudHelper implements
 	}
 
 	@Override
-	public DepartamentoVO obterPorChave(DepartamentoVO vo) {
+	public DepartamentoVO obterPorChave(DepartamentoVO vo, int codUsuario, String ipCliente) {
 		return facade.obterPorChave(vo);
 	}
 

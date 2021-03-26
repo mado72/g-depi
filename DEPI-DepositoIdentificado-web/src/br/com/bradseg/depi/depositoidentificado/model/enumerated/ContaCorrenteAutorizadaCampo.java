@@ -19,32 +19,34 @@ public enum ContaCorrenteAutorizadaCampo implements IEntidadeCampo {
     /**
      * Código Banco
      */
-    CodigoBanco(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_BANCO, TipoCampo.NUM, false,
-        ConstantesDEPI.SIZE_NAO_DEFINIDO),
+	CodigoBanco(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_BANCO,
+			TipoCampo.NUM, false, 5),
 
     /**
      * Código Agência
      */
-    CodigoAgencia(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_AGENCIA, TipoCampo.NUM, false,
-        ConstantesDEPI.SIZE_NAO_DEFINIDO),
+	CodigoAgencia(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_AGENCIA,
+			TipoCampo.NUM, false, 5),
     
     /**
      * Código Conta Corrente
      */
-    CodigoContaCorrente(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_CONTA_CORRENTE, TipoCampo.NUM,
-        false, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+	CodigoContaCorrente(
+			ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_CONTA_CORRENTE,
+			TipoCampo.NUM, false, 13),
 
     /**
      * Numero Interno Conta Corrente.
      */
-    NumeroInternoContaCorrente(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_CONTA_INTERNA, TipoCampo.NUM,
-        false, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+	NumeroInternoContaCorrente(
+			ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_CONTA_INTERNA,
+			TipoCampo.NUM, false, 5),
     
     /**
-     * Numero cliente transacao personalizada
+     * Numero cliente transação personalizada
      */
-    trps(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_TRPS, TipoCampo.NUM, false,
-            ConstantesDEPI.SIZE_NAO_DEFINIDO);
+	trps(ConstantesDEPI.TABELA_CONTA_CORRENTE_AUTORIZADA_TRPS, TipoCampo.NUM,
+			false, 10);
 
     private final static List<ContaCorrenteAutorizadaCampo> CRITERIAS = Arrays.asList(values());
 

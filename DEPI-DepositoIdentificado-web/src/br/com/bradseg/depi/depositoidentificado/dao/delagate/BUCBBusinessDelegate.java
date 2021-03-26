@@ -12,6 +12,7 @@ import br.com.bradseg.bucb.servicos.model.pessoa.vo.InserirPessoaEntradaVO;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.InserirPessoaSaidaVO;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaIDVO;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroEntradaVO;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 
 /**
  * Classe BUCBBusinessDelegate
@@ -41,14 +42,11 @@ public class BUCBBusinessDelegate   {
 	    	try {
 				return pessoaSessionFacade.listarPessoaPorFiltro(ipCliente, userID, pessoa);
 			} catch (br.com.bradseg.bsad.exception.IntegrationException e) {
-				// TODO Auto-generated catch block
-				throw new IntegrationException(e);
+				throw new DEPIIntegrationException(e);
 			} catch (br.com.bradseg.bsad.exception.BusinessException e) {
-				// TODO Auto-generated catch block
-				throw new BusinessException(e);	
+				throw new DEPIIntegrationException(e);
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				throw new IntegrationException(e);
+				throw new DEPIIntegrationException(e);
 			}
 	    }
 

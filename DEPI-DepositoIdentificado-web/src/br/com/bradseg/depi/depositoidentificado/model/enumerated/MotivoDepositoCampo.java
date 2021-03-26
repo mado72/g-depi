@@ -15,11 +15,11 @@ public enum MotivoDepositoCampo implements IEntidadeCampo {
     /**
      * Código
      */
-    Codigo(ConstantesDEPI.TABELA_MOTIVO_ID, TipoCampo.NUM, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    Codigo(ConstantesDEPI.TABELA_MOTIVO_ID, TipoCampo.NUM, 3),
     /**
      * Descrição
      */
-    DescricaoBasica("RMOTVO_DEP_IDTFD", TipoCampo.ALFA_OBRIG, ConstantesDEPI.SIZE_NAO_DEFINIDO),
+    DescricaoBasica("RMOTVO_DEP_IDTFD", TipoCampo.ALFA_OBRIG, 20),
     /**
      * Descrição Detalhada.
      */

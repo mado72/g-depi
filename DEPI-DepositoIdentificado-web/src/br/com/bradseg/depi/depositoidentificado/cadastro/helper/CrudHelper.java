@@ -96,10 +96,12 @@ public interface CrudHelper<C extends IEntidadeCampo, VO, EF extends CrudForm> {
 	 * Preenche formulário para edição de um registro.
 	 * 
 	 * @param model Instância do formulário de edição.
+	 * @param codUsuario Código do usuário
+	 * @param ipCliente Ip do cliente
 	 * 
 	 * @throws DEPIIntegrationException Quando não é possível preencher o formulário.
 	 */
-	void preencherFormularioEdicao(EF model) throws DEPIIntegrationException;
+	void preencherFormularioEdicao(EF model, int codUsuario, String ipCliente) throws DEPIIntegrationException;
 	
 	/**
 	 * Persiste os dados informados no formulário
@@ -133,8 +135,10 @@ public interface CrudHelper<C extends IEntidadeCampo, VO, EF extends CrudForm> {
 	 * 
 	 * @param vo
 	 *            VO que possui as chaves definidas
+	 * @param codUsuario Código do usuário
+	 * @param ipCliente IP do cliente
 	 * @return VO com os dados persistidos.
 	 */
-	VO obterPorChave(VO vo);
+	VO obterPorChave(VO vo, int codUsuario, String ipCliente);
 
 }

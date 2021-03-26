@@ -35,6 +35,8 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	private static final long serialVersionUID = -6643036342809251102L;
 
 	protected transient HttpServletRequest request;
+
+	private String ip;
 	
 	private static final String MSG_LOGIN_USUARIO = "msg.erro.usuario.logado";
 	
@@ -81,6 +83,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 			LOGGER.info(msg.toString());
 		}
 		this.request = request;
+		this.ip = request.getRemoteAddr();
 	}
 
 	//===> Métodos
@@ -110,6 +113,14 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
         LOGGER.error("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		
 		return loginVO;
+	}
+	
+	/**
+	 * Retorna ip
+	 * @return o ip
+	 */
+	protected String getIp() {
+		return ip;
 	}
 	
 	/**

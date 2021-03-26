@@ -14,7 +14,7 @@
 			<a href="<s:url value="/cadastro/associar-motivodeposito/consultar/index.do"/>">Associação de Motivos</a>
 		</div>
 	</div>
-	<div class="itemmenu"><a href="<s:url value="/deposito/ConsultarDeposito.do"/>" class="menu_horizontal">Identificação Depósitos</a></div>
+	<div class="itemmenu"><a href="<s:url value="/deposito/consultar/index.do"/>" class="menu_horizontal">Identificação Depósitos</a></div>
 	<div class="itemmenu" onmouseover="over(2)" onmouseout="out(2)">
 		<a href="<s:url value="/index.do"/>" class="menu_horizontal">Relatórios</a>
 		<div class="dropdown" id="s2">

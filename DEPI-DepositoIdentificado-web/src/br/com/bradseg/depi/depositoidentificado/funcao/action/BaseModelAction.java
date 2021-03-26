@@ -19,7 +19,7 @@ import com.opensymphony.xwork2.ModelDriven;
  * </p>
  * @author Marcelo Damasceno
  *
- * @param <T> Tipo do Modl
+ * @param <T> Tipo do Model
  */
 @Controller
 public abstract class BaseModelAction<T> extends BaseAction implements ModelDriven<T>,

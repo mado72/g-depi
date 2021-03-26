@@ -72,6 +72,7 @@
 	<include file="META-INF/struts2/struts-parametro.xml" />
 	<include file="META-INF/struts2/struts-conta-corrente.xml" />
 	<include file="META-INF/struts2/struts-associar-motivodeposito.xml" />
+	<include file="META-INF/struts2/struts-deposito.xml" />
 		
 	<package name="jsonService" namespace="/json" extends="depi-default">
 		<default-class-ref class="jsonServiceAction"/>

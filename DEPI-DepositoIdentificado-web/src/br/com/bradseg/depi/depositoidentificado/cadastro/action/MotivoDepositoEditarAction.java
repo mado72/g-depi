@@ -50,7 +50,7 @@ public class MotivoDepositoEditarAction
 			MotivoDepositoVO vo = new MotivoDepositoVO();
 			vo.setCodigoMotivoDeposito(new Integer(codigo));
 			
-			vo = crudHelper.obterPorChave(vo);
+			vo = crudHelper.obterPorChave(vo, getCodUsuarioLogado(), getIp());
 			lista.add(vo);
 		}
 		

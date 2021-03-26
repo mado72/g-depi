@@ -1,6 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -13,9 +13,9 @@ public enum DepositoCampo implements IEntidadeCampo {
     /**
      * Cia.
      */
-    CodigoAutorizador(ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO_ID, TipoCampo.NUM, false,
-        ConstantesDEPI.SIZE_NAO_DEFINIDO),
-
+	CodigoAutorizador(ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO_ID,
+			TipoCampo.NUM, false, 5),
+			
     /**
      * Cia.
      */
@@ -70,7 +70,7 @@ public enum DepositoCampo implements IEntidadeCampo {
      */
 	TipoRecebimento(
 			ConstantesDEPI.TABELA_DEPOSITO_IDENTIFICADO_TIPO_GRUPO_RECEBIMENTO,
-			TipoCampo.ALFA_OBRIG, false, ConstantesDEPI.SIZE_NAO_DEFINIDO);
+			TipoCampo.ALFA_OBRIG, false, 1);
 
     private String nome;
 
@@ -80,6 +80,10 @@ public enum DepositoCampo implements IEntidadeCampo {
 
     private int size;
 
+	private final static List<DepositoCampo> CRITERIAS = Arrays.asList(
+			CodigoAutorizador, CodigoCia, SiglaDepartamento, NomeDepartamento,
+			MotivoDepositoDescricaoBasica, Banco, Agencia, ContaCorrente);
+    
     /**
      * Retorna o valor do atributo size.
      * @return o valor do atributo size
@@ -162,18 +166,8 @@ public enum DepositoCampo implements IEntidadeCampo {
      * Retorna valores da combo de consulta.
      * @return DepositoCampo[].
      */
-    public static DepositoCampo[] valuesForCriteria() {
-        List<DepositoCampo> list = new ArrayList<DepositoCampo>();
-        for (DepositoCampo campo : DepositoCampo.values()) {
-            if (!campo.equals(CodigoDepartamento) && !campo.equals(CodigoMotivo) && !campo.equals(TipoRecebimento)) {
-                list.add(campo);
-            }
-        }
-        DepositoCampo[] newList = new DepositoCampo[list.size()];
-        for (int i = 0; i < newList.length; i++) {
-            newList[i] = list.get(i);
-        }
-        return newList;
+    public static List<DepositoCampo> valuesForCriteria() {
+    	return CRITERIAS;
     }
 
     /**

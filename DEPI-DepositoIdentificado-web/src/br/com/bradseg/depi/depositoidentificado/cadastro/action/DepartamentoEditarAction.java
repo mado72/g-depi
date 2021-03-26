@@ -49,7 +49,7 @@ public class DepartamentoEditarAction extends EditarFormAction<DepartamentoCampo
             DepartamentoVO vo = new DepartamentoVO();
             vo.setCodigoDepartamento(new Integer(codigo));
             
-            vo = crudHelper.obterPorChave(vo);
+            vo = crudHelper.obterPorChave(vo, getCodUsuarioLogado(), getIp());
             lista.add(vo);
         }
         

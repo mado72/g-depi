@@ -19,8 +19,8 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
     /**
      * Descrição Companhia.
      */
-    DescricaoCompanhia(ConstantesDEPI.TABELA_CIA_NOME, "Descrição Companhia", TipoCampo.ALFA_OBRIG, true,
-        ConstantesDEPI.SIZE_NAO_DEFINIDO);
+	DescricaoCompanhia(ConstantesDEPI.TABELA_CIA_NOME, "Descrição Companhia",
+			TipoCampo.ALFA_OBRIG, true, 20);
 
     private String nome;
 
@@ -37,7 +37,7 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
      * @param nome Campo no banco
      * @param descricao Descricao do campo
      * @param tipoCampo Tipo do campo
-     * @param cics - se � consultado a partir do cics.
+     * @param cics - se é consultado a partir do cics.
      * @param size - int.
      */
     CompanhiaSeguradoraCampo(String nome, String descricao, TipoCampo tipoCampo, boolean cics, int size) {

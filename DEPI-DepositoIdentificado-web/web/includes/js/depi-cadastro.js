@@ -1078,6 +1078,7 @@ var fnReady = function ($) {
 		$.dpcoddesc.combinar(['.companhia-codigo-dropbox','.companhia-nome-dropbox']);
 		$.dpcoddesc.combinar(['.departamento-codigo-dropbox','.departamento-nome-dropbox']);
 		$.dpcoddesc.combinar(['.banco-codigo-dropbox','.banco-descricao-dropbox']);
+		$.dpcoddesc.combinar(['.agencia-codigo-dropbox', '.agencia-descricao-dropbox']);
 		$.dpcoddesc.aninhar({
 			origem: ['.companhia-codigo-dropbox', '.companhia-nome-dropbox'],
 			destino: ['.departamento-codigo-dropbox', '.departamento-nome-dropbox'],

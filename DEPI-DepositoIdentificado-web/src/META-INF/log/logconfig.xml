@@ -26,11 +26,10 @@
 
 <!--
 	FIXME Deve estar comentado ao fazer commit.
- -->	
 	<logger name="com.opensymphony.xwork2.interceptor" level="DEBUG" />
 	<logger name="com.opensymphony.xwork2.validator" level="DEBUG" />
 	<logger name="br.com.bradseg.depi.depositoidentificado" level="DEBUG" />
-	<logger name="br.com.bradseg.bsad.framework.ctg.programapi.support.gateway" level="DEBUG" />
+ -->	
 	
 	<root level="ERROR">
 		<appender-ref ref="FILE" />

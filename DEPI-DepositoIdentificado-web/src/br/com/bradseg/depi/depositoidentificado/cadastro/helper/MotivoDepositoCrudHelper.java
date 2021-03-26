@@ -25,15 +25,15 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 public class MotivoDepositoCrudHelper implements
 		CrudHelper<MotivoDepositoCampo, MotivoDepositoVO, MotivoDepositoEditarFormModel> {
 
-	private static final String TITLE_DEPOSITO_CONSULTAR = "title.deposito.consultar";
+	private static final String TITLE_DEPOSITO_CONSULTAR = "title.motivodeposito.consultar";
 
-	private static final String TITLE_DEPOSITO_LISTAR = "title.deposito.listar";
+	private static final String TITLE_DEPOSITO_LISTAR = "title.motivodeposito.listar";
 	
-	private static final String TITLE_DEPOSITO_ALTERAR = "title.deposito.editar";
+	private static final String TITLE_DEPOSITO_ALTERAR = "title.motivodeposito.editar";
 	
-	private static final String TITLE_DEPOSITO_DETALHAR = "title.deposito.detalhar";
+	private static final String TITLE_DEPOSITO_DETALHAR = "title.motivodeposito.detalhar";
 
-	private static final String TITLE_DEPOSITO_INCLUIR = "title.deposito.novo";
+	private static final String TITLE_DEPOSITO_INCLUIR = "title.motivodeposito.novo";
 
 	/**
      * código do evento contábil.
@@ -129,7 +129,7 @@ public class MotivoDepositoCrudHelper implements
 	}
 
 	@Override
-	public void preencherFormularioEdicao(MotivoDepositoEditarFormModel model)
+	public void preencherFormularioEdicao(MotivoDepositoEditarFormModel model, int codUsuario, String ipCliente)
 			throws DEPIIntegrationException {
 		
 		MotivoDepositoVO instancia = obterPeloCodigo(Integer.parseInt(model.getCodigo()));
@@ -188,7 +188,7 @@ public class MotivoDepositoCrudHelper implements
 	}
 	
 	@Override
-	public MotivoDepositoVO obterPorChave(MotivoDepositoVO vo) {
+	public MotivoDepositoVO obterPorChave(MotivoDepositoVO vo, int codUsuario, String ipCliente) {
 		return facade.obterPorChave(vo);
 	}
 

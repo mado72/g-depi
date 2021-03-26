@@ -85,7 +85,13 @@
 	
 	<!-- Pegando um objeto URL para CBBS-Pagamento através de um JNDI -->
 	<jee:jndi-lookup id="IBusc2" jndi-name="url/IBusc2" resource-ref="true" lookup-on-startup="true" />
-
+	
+	<jee:remote-slsb id="pessoaSessionFacade"
+		business-interface="br.com.bradseg.bucb.servicos.model.ejb.PessoaSessionFacade"
+		cache-home="true" lookup-home-on-startup="false"
+		jndi-name="cell/persistent/ejb/br/com/bradseg/bucb/servicos/model/ejb/PessoaSessionFacadeHome">
+	</jee:remote-slsb>
+			
 	<!--
 		Habilitar BSAD Mobile
 		

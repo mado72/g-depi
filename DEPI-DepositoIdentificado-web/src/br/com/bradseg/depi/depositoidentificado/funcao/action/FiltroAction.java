@@ -46,8 +46,6 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	
 	protected abstract CrudHelper<C, ?, ?> getFiltroHelper();
 	
-	private boolean consultado;
-
 	@SuppressWarnings("unchecked")
 	public FiltroAction() {
 		this.model = (T) getFiltroHelper().criarFiltroModel();
@@ -215,7 +213,6 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 
 	private String processarCriterios(int codUsuario, List<CriterioConsultaVO<C>> criterios) {
 		
-		consultado = true;
 		try {
 			List<?> lista = getFiltroHelper().processarCriterios(codUsuario, criterios);
 			model.setColecaoDados(lista);
@@ -260,19 +257,7 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	public final T getModel() {
 		return model;
 	}
-	
-	protected String getSimpleName() {
-		String simpleName = this.getClass().getSimpleName().replaceAll("\\$\\$Enhancer.*$", "");
-		LOGGER.debug("SimpleName: {}", simpleName);
-		return simpleName;
-	}
-	
-	protected String getFormName() {
-		String formName = getSimpleName() + "_FORM";
-		LOGGER.debug("FormName: {}", formName);
-		return formName;
-	}
-	
+		
 	private void prepararFiltro() {
 		LOGGER.info("Preparando contexto de filtro da consulta");
 		
@@ -284,16 +269,6 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 				model.clearCriterios();
 			}
 		}
-		
-		consultado = false;
-	}
-	
-	/**
-	 * Retorna consultado
-	 * @return true se consultado
-	 */
-	public boolean isConsultado() {
-		return consultado;
 	}
 	
 	

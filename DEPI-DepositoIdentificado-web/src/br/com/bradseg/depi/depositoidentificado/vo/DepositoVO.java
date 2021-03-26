@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * Classe Anotada de Mapeamento com a tabela DEP_IDTFD - Identificação de Depósito.
- * @author Globality
  */
 @XmlRootElement(name="DepositoVO")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="codigoDepositoIdentificado")
@@ -32,7 +31,7 @@ public class DepositoVO implements Serializable {
     /**
      * Dígito Verificador gerado a partir do Código seqüencial da identificação do depósito.
      */
-    private int codigoDigitodeposito;
+    private int codigoDigitoDeposito;
 
     /**
      * Código (FK) da associação Conta_corrente_motivo_deposito - Companhia Seguradora.
@@ -47,11 +46,11 @@ public class DepositoVO implements Serializable {
     /**
      * Código (FK) da associação Conta_corrente_motivo_deposito - Motivo Deposito.
      */
-    private MotivoDepositoVO motivo = new MotivoDepositoVO();
+    private MotivoDepositoVO motivoDeposito = new MotivoDepositoVO();
 
     private BancoVO banco = new BancoVO();
 
-    private int agencia;
+    private int codigoAgencia;
 
     private String ramo;
 
@@ -229,16 +228,16 @@ public class DepositoVO implements Serializable {
      * Retorna o valor do atributo agencia.
      * @return o valor do atributo agencia
      */
-    public int getAgencia() {
-        return agencia;
+    public int getCodigoAgencia() {
+        return codigoAgencia;
     }
 
     /**
      * Especifica o valor do atributo agencia.
      * @param agencia - int do agencia a ser configurado.
      */
-    public void setAgencia(int agencia) {
-        this.agencia = agencia;
+    public void setCodigoAgencia(int agencia) {
+        this.codigoAgencia = agencia;
     }
 
     /**
@@ -309,16 +308,16 @@ public class DepositoVO implements Serializable {
      * Retorna o valor do atributo codigoDigitodeposito.
      * @return o valor do atributo codigoDigitodeposito
      */
-    public int getCodigoDigitodeposito() {
-        return codigoDigitodeposito;
+    public int getCodigoDigitoDeposito() {
+        return codigoDigitoDeposito;
     }
 
     /**
      * Especifica o valor do atributo codigoDigitodeposito.
      * @param codigoDigitodeposito - int do codigoDigitodeposito a ser configurado.
      */
-    public void setCodigoDigitodeposito(int codigoDigitodeposito) {
-        this.codigoDigitodeposito = codigoDigitodeposito;
+    public void setCodigoDigitoDeposito(int codigoDigitodeposito) {
+        this.codigoDigitoDeposito = codigoDigitodeposito;
     }
 
     /**
@@ -358,7 +357,7 @@ public class DepositoVO implements Serializable {
      * @return o valor do atributo dataProrrogacao
      */
     public Date getDataProrrogacao() {
-        return (Date) dataProrrogacao.clone();
+        return BaseUtil.getDate(dataProrrogacao);
         
         
     }
@@ -368,7 +367,7 @@ public class DepositoVO implements Serializable {
      * @param dataProrrogacao - Date do dataProrrogacao a ser configurado.
      */
     public void setDataProrrogacao(Date dataProrrogacao) {
-        this.dataProrrogacao = (Date) dataProrrogacao.clone();
+        this.dataProrrogacao = BaseUtil.getDate(dataProrrogacao);
     }
 
     /**
@@ -408,7 +407,7 @@ public class DepositoVO implements Serializable {
      * @return o valor do atributo dtCancelamentoDepositoIdentificado
      */
     public Date getDtCancelamentoDepositoIdentificado() {
-        return (Date) dtCancelamentoDepositoIdentificado.clone();
+        return BaseUtil.getDate(dtCancelamentoDepositoIdentificado);
     }
 
     /**
@@ -416,7 +415,7 @@ public class DepositoVO implements Serializable {
      * @param dtCancelamentoDepositoIdentificado - Date do dtCancelamentoDepositoIdentificado a ser configurado.
      */
     public void setDtCancelamentoDepositoIdentificado(Date dtCancelamentoDepositoIdentificado) {
-        this.dtCancelamentoDepositoIdentificado = (Date) dtCancelamentoDepositoIdentificado.clone();
+        this.dtCancelamentoDepositoIdentificado = BaseUtil.getDate(dtCancelamentoDepositoIdentificado);
     }
 
     /**
@@ -424,7 +423,7 @@ public class DepositoVO implements Serializable {
      * @return o valor do atributo dtVencimentoDeposito
      */
     public Date getDtVencimentoDeposito() {
-        return (Date) dtVencimentoDeposito.clone();
+        return BaseUtil.getDate(dtVencimentoDeposito);
     }
 
     /**
@@ -432,7 +431,7 @@ public class DepositoVO implements Serializable {
      * @param dtVencimentoDeposito - Date do dtVencimentoDeposito a ser configurado.
      */
     public void setDtVencimentoDeposito(Date dtVencimentoDeposito) {
-        this.dtVencimentoDeposito = (Date) dtVencimentoDeposito.clone();
+        this.dtVencimentoDeposito = BaseUtil.getDate(dtVencimentoDeposito);
     }
 
     /**
@@ -487,16 +486,16 @@ public class DepositoVO implements Serializable {
      * Retorna o valor do atributo motivo.
      * @return o valor do atributo motivo
      */
-    public MotivoDepositoVO getMotivo() {
-        return motivo;
+    public MotivoDepositoVO getMotivoDeposito() {
+        return motivoDeposito;
     }
 
     /**
      * Especifica o valor do atributo motivo.
      * @param motivo - MotivoDepositoVO do motivo a ser configurado.
      */
-    public void setMotivo(MotivoDepositoVO motivo) {
-        this.motivo = motivo;
+    public void setMotivoDeposito(MotivoDepositoVO motivo) {
+        this.motivoDeposito = motivo;
     }
 
     /**
