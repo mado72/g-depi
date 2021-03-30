@@ -127,8 +127,9 @@ public class AssociarMotivoDepositoCrudHelper implements
 	}
 
 	@Override
-	public void preencherFormularioEdicao(AssociarMotivoDepositoEditarFormModel model)
-			throws DEPIIntegrationException {
+	public void preencherFormularioEdicao(
+			AssociarMotivoDepositoEditarFormModel model, int codUsuario,
+			String ipCliente) throws DEPIIntegrationException {
 		
 		AssociarMotivoDepositoVO vo = obterPeloCodigo(model.getCodigo());
 		
@@ -210,7 +211,8 @@ public class AssociarMotivoDepositoCrudHelper implements
 	}
 	
 	@Override
-	public AssociarMotivoDepositoVO obterPorChave(AssociarMotivoDepositoVO vo) {
+	public AssociarMotivoDepositoVO obterPorChave(AssociarMotivoDepositoVO vo,
+			int codUsuario, String ipCliente) {
 		return facade.obterPorChave(vo);
 	}
 

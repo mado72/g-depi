@@ -100,7 +100,10 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 		model.setEstado(EstadoCrud.EXIBIR);
 		model.setSubtitulo(getText(crudHelper.getChaveTituloDetalhar()));
 		
-		crudHelper.preencherFormularioEdicao(model);
+		int codUsuario = getCodUsuarioLogado();
+		String ipCliente = getIp();
+
+		crudHelper.preencherFormularioEdicao(model, codUsuario, ipCliente);
 		return INPUT;
 	}
 	
@@ -129,7 +132,9 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 		this.model.setEstado(EstadoCrud.ALTERAR);
 		this.model.setSubtitulo(getText(crudHelper.getChaveTituloAlterar()));
 		
-		crudHelper.preencherFormularioEdicao(model);
+		int codUsuario = getCodUsuarioLogado();
+		String ipCliente = getIp();
+		crudHelper.preencherFormularioEdicao(model, codUsuario, ipCliente);
 		
 		return INPUT;
 	}

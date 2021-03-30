@@ -45,6 +45,9 @@ public class ParametroEditarAction extends EditarFormAction<ParametroDepositoCam
 	@Override
 	protected List<ParametroDepositoVO> mapearListaVO(String[] codigos) {
 		List<ParametroDepositoVO> lista = new ArrayList<>();
+
+		int codUsuario = getCodUsuarioLogado();
+		String ipCliente = getIp();
 		
 		for (String codigo : codigos) {
 			ParametroDepositoPKVO pk = new ParametroDepositoPKVO(codigo);
@@ -53,7 +56,7 @@ public class ParametroEditarAction extends EditarFormAction<ParametroDepositoCam
 			vo.getDepartamento().setCodigoDepartamento(pk.getCodigoDepartamento());
 			vo.getMotivoDeposito().setCodigoMotivoDeposito(pk.getCodigoMotivo());
 			
-			vo = crudHelper.obterPorChave(vo);
+			vo = crudHelper.obterPorChave(vo, codUsuario, ipCliente);
 			lista.add(vo);
 		}
 		

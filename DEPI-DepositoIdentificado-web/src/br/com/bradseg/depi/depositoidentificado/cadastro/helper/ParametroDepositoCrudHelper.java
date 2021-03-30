@@ -126,8 +126,9 @@ public class ParametroDepositoCrudHelper implements
 	}
 
 	@Override
-	public void preencherFormularioEdicao(ParametroDepositoEditarFormModel m)
-			throws DEPIIntegrationException {
+	public void preencherFormularioEdicao(
+			ParametroDepositoEditarFormModel m, int codUsuario,
+			String ipCliente) throws DEPIIntegrationException {
 
 		ParametroDepositoVO v = obterPeloCodigo(m.getCodigo());
 		
@@ -328,7 +329,8 @@ public class ParametroDepositoCrudHelper implements
 	}
 	
 	@Override
-	public ParametroDepositoVO obterPorChave(ParametroDepositoVO vo) {
+	public ParametroDepositoVO obterPorChave(ParametroDepositoVO vo,
+			int codUsuario, String ipCliente) {
 		return facade.obterPorChave(vo);
 	}
 

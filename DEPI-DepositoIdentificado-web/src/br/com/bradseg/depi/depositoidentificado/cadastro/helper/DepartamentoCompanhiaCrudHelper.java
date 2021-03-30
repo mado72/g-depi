@@ -118,9 +118,10 @@ public class DepartamentoCompanhiaCrudHelper implements
 	}
 	
 	@Override
-	public void preencherFormularioEdicao(DepartamentoCompanhiaEditarFormModel model)
-			throws DEPIIntegrationException {
-		// TODO obter cias
+	public void preencherFormularioEdicao(
+			DepartamentoCompanhiaEditarFormModel model, int codUsuario,
+			String ipCliente) throws DEPIIntegrationException {
+		
 		List<DepartamentoCompanhiaVO> items = obterPeloCodigo(model.getCodigo());
 		
 		DepartamentoCompanhiaVO instancia = items.get(0);
@@ -148,11 +149,9 @@ public class DepartamentoCompanhiaCrudHelper implements
 		return facade.obterPorCompanhiaSeguradora(new CompanhiaSeguradoraVO(codigoCompanhia));
 	}
 	
-	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper#obterPorChave(java.lang.Object)
-	 */
 	@Override
-	public DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo) {
+	public DepartamentoCompanhiaVO obterPorChave(DepartamentoCompanhiaVO vo,
+			int codUsuario, String ipCliente) {
 		return null;
 	}
 

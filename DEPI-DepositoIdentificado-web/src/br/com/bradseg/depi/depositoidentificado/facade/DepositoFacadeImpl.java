@@ -54,7 +54,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	/*
 	 * FIXME REMOVER CÓDIGO 
 	 */
-	private static final boolean FAKE_COMP = String.valueOf(3).equals("3");
+	private static final boolean FAKE_COMP = String.valueOf(3).equals("2");
 
 	private static final int PESSOA_JURIDICA = 4;
 

@@ -135,8 +135,8 @@ public class FuncionarioCrudHelper implements
 	}
 
 	@Override
-	public void preencherFormularioEdicao(CrudForm model)
-			throws DEPIIntegrationException {
+	public void preencherFormularioEdicao(CrudForm model, int codUsuario,
+			String ipCliente) throws DEPIIntegrationException {
 	}
 
 	@Override
@@ -152,7 +152,8 @@ public class FuncionarioCrudHelper implements
 	}
 
 	@Override
-	public UsuarioVO obterPorChave(UsuarioVO vo) {
+	public UsuarioVO obterPorChave(UsuarioVO vo, int codUsuario,
+			String ipCliente) {
 		FiltroUtil filtro = new FiltroUtil();
 		filtro.getCriterios().add(
 				new CriterioConsultaVO<FuncionarioCampo>(

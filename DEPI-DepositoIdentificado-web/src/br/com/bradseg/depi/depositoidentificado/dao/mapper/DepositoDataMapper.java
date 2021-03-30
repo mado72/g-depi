@@ -26,12 +26,12 @@ public class DepositoDataMapper implements RowMapper<DepositoVO> {
 		DepositoVO depositoVO = new DepositoVO();
 
         depositoVO.setCodigoDepositoIdentificado(Long.valueOf(rs.getString("CDEP_IDTFD")));
-        depositoVO.setCodigoDigitodeposito(Integer.valueOf(rs.getString("CDIG_DEP_IDTFD")));
+        depositoVO.setCodigoDigitoDeposito(Integer.valueOf(rs.getString("CDIG_DEP_IDTFD")));
         depositoVO.setCia(new CompanhiaSeguradoraVO(Integer.valueOf(rs.getString("CINTRN_CIA_SEGDR"))));
         depositoVO.setDepartamento(new DepartamentoVO(Integer.valueOf(rs.getString("CDEPTO_DEP_IDTFD")), null, rs.getString("CSGL_DEPTO_DEP")));
-        depositoVO.setMotivo(new MotivoDepositoVO(Integer.valueOf(rs.getString("CMOTVO_DEP_IDTFD")), rs.getString("RMOTVO_DEP_IDTFD"), null));
+        depositoVO.setMotivoDeposito(new MotivoDepositoVO(Integer.valueOf(rs.getString("CMOTVO_DEP_IDTFD")), rs.getString("RMOTVO_DEP_IDTFD"), null));
         depositoVO.setBanco(new BancoVO(Integer.valueOf(rs.getString("CBCO"))));
-        depositoVO.setAgencia(Integer.valueOf(rs.getString("CAG_BCRIA")));
+        depositoVO.setCodigoAgencia(Integer.valueOf(rs.getString("CAG_BCRIA")));
         depositoVO.setContaCorrente(Long.valueOf(rs.getString("CCTA_CORR")));
         depositoVO.setPessoaDepositante(Long.valueOf(rs.getString("CPSSOA_DEPST")));
         depositoVO.setDtVencimentoDeposito(rs.getTimestamp("DVCTO_DEP_IDTFD"));

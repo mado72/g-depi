@@ -122,8 +122,8 @@ public class ContaCorrenteCrudHelper implements
 	}
 
 	@Override
-	public void preencherFormularioEdicao(ContaCorrenteEditarFormModel model)
-			throws DEPIIntegrationException {
+	public void preencherFormularioEdicao(ContaCorrenteEditarFormModel model,
+			int codUsuario, String ipCliente) throws DEPIIntegrationException {
 		
 		ContaCorrenteAutorizadaVO vo = obterPeloCodigo(model.getCodigo());
 		
@@ -198,9 +198,10 @@ public class ContaCorrenteCrudHelper implements
 		
 		facade.excluirLista(voList);
 	}
-	
+
 	@Override
-	public ContaCorrenteAutorizadaVO obterPorChave(ContaCorrenteAutorizadaVO vo) {
+	public ContaCorrenteAutorizadaVO obterPorChave(
+			ContaCorrenteAutorizadaVO vo, int codUsuario, String ipCliente) {
 		return facade.obterPorChave(vo);
 	}
 

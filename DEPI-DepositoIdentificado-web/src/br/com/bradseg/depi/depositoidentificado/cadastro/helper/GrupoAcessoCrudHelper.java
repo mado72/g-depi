@@ -124,8 +124,8 @@ public class GrupoAcessoCrudHelper implements
 	}
 
 	@Override
-	public void preencherFormularioEdicao(GrupoAcessoEditarFormModel model)
-			throws DEPIIntegrationException {
+	public void preencherFormularioEdicao(GrupoAcessoEditarFormModel model,
+			int codUsuario, String ipCliente) throws DEPIIntegrationException {
 		
 		int codigoGrupoAcesso = Integer.parseInt(model.getCodigo());
 		GrupoAcessoVO instancia = obterPeloCodigo(codigoGrupoAcesso);
@@ -284,7 +284,8 @@ public class GrupoAcessoCrudHelper implements
 	}
 	
 	@Override
-	public GrupoAcessoVO obterPorChave(GrupoAcessoVO vo) {
+	public GrupoAcessoVO obterPorChave(GrupoAcessoVO vo, int codUsuario,
+			String ipCliente) {
 		return facade.obterPorChave(vo);
 	}
 

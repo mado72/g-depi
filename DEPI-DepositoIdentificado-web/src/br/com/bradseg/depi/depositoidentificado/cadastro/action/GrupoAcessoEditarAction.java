@@ -52,11 +52,14 @@ public class GrupoAcessoEditarAction
 	protected List<GrupoAcessoVO> mapearListaVO(String[] codigos) {
 		List<GrupoAcessoVO> lista = new ArrayList<>();
 		
+		int codUsuario = getCodUsuarioLogado();
+		String ipCliente = getIp();
+		
 		for (String codigo : codigos) {
 			GrupoAcessoVO vo = new GrupoAcessoVO();
 			vo.setCodigoGrupoAcesso(new Integer(codigo));
 			
-			vo = crudHelper.obterPorChave(vo);
+			vo = crudHelper.obterPorChave(vo, codUsuario, ipCliente);
 			lista.add(vo);
 		}
 		
@@ -95,7 +98,10 @@ public class GrupoAcessoEditarAction
 	public String alterar() {
 		String retorno = super.alterar();
 		crudHelper.preencherFuncionarios(getModel());
-		crudHelper.preencherFormularioEdicao(getModel());
+
+		int codUsuario = getCodUsuarioLogado();
+		String ipCliente = getIp();
+		crudHelper.preencherFormularioEdicao(getModel(), codUsuario, ipCliente);
 		return retorno;
 	}
 	
