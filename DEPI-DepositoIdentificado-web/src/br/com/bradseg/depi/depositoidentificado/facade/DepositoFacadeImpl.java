@@ -24,6 +24,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.ContaCorrenteDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.ContaCorrenteAutorizadaCampo;
@@ -43,6 +44,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
  * Implementa a associação de motivo depósito
@@ -90,6 +92,9 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	
 	@Autowired
 	private PessoaSessionFacade pessoaFacade;
+	
+	@Autowired
+	private ParametroDepositoDAO parametroDAO;
 
     /**
      * Excluir AssociarMotivoDepositos
@@ -456,6 +461,16 @@ public class DepositoFacadeImpl implements DepositoFacade {
 		}
 
 		return contas.get(0);
+	}
+	
+	@Override
+	public ParametroDepositoVO obterParametro(DepositoVO vo) {
+		ParametroDepositoVO parametro = new ParametroDepositoVO(
+				vo.getDepartamento().getCodigoDepartamento(), 
+				vo.getMotivoDeposito().getCodigoMotivoDeposito());
+		parametro.setCompanhia(vo.getCia());
+		
+		return parametroDAO.obterPorChave(parametro);
 	}
 	
 }

@@ -1217,7 +1217,26 @@ var fnReady = function ($) {
 			$("#nomePessoa").val($(this).text());
 		});
 		
+		$(".companhia-codigo-dropbox, .departamento-codigo-dropbox, .codigo-motivo").change(function(){
+			var cia = $(".companhia-codigo-dropbox").val(), depto = $(".departamento-codigo-dropbox").val(), motivo = $(".codigo-motivo").val();
+			var url = opcoes.urlParametro.replace(/%d/, cia).replace(/%d/, depto).replace(/%d/, motivo);
+			$.ajax({
+				url: url,
+				type: "GET",
+				dataType: "json",
+				success: function(data) {
+					console.log("Parametro: ", data.response);
+				}
+			});
+		});
 		$("#AcaoForm").trigger('pessoas');
+		$.deposito.parametros(opcoes.parametros);
+	};
+	
+	$.deposito.parametros = function(parametros) {
+		$.each(parametros, function(prop, value){
+			$("#"+prop).prop("disabled", value != 'N');
+		});
 	};
 	
 	// paginacao

@@ -12,6 +12,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParcelaCobrancaVO;
 
 /**
@@ -110,6 +111,8 @@ public class DepositoEditarFormModel extends CrudForm {
 	private Integer codigoSituacaoDeposito;
 	
 	private List<ParcelaCobrancaVO> listaParcelas;
+	
+	private ParametroDepositoVO parametro;
 	
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm#limparDados()
@@ -881,6 +884,14 @@ public class DepositoEditarFormModel extends CrudForm {
 	 */
 	public void setDv(Long dv) {
 		this.dv = dv;
+	}
+	
+	public ParametroDepositoVO getParametro() {
+		return parametro;
+	}
+	
+	public void setParametro(ParametroDepositoVO parametro) {
+		this.parametro = parametro;
 	}
 
 }

@@ -14,6 +14,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
  * Interface de serviço para atender ao cadastro para associar motivo depósito.
@@ -176,5 +177,12 @@ public interface DepositoFacade {
 	 */
 	List<ListarPessoaPorFiltroSaidaVO> listarPessoas(String numeroCpfCnpj,
 			String ipCliente, int codUsuario);
+
+	/**
+	 * Retorna parâmetro do Depósito
+	 * @param vo Depósito
+	 * @return Parâmetro
+	 */
+	ParametroDepositoVO obterParametro(DepositoVO vo);
 
 }

@@ -6,6 +6,7 @@ package br.com.bradseg.depi.depositoidentificado.cadastro.action;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,8 +24,11 @@ import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.JsonRequestVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
  * Ação para retornar um JSON com a lista de departamentos de acordo com o
@@ -236,6 +240,23 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 		String cpfCnpj = model.getCodigo().get("cpfCnpj");
 		List<ListarPessoaPorFiltroSaidaVO> pessoas = depositoFacade.listarPessoas(cpfCnpj, getIp(), getCodUsuarioLogado());
 		model.setResponse(pessoas);
+		return SUCCESS;
+	}
+	
+	public String parametro() {
+		Map<String, String> codigo = model.getCodigo();
+		int cia = Integer.parseInt(codigo.get("cia"));
+		int depto = Integer.parseInt(codigo.get("depto"));
+		int motivo = Integer.parseInt(codigo.get("motivo"));
+		
+		DepositoVO vo = new DepositoVO();
+		vo.setCia(new CompanhiaSeguradoraVO(cia));
+		vo.setDepartamento(new DepartamentoVO(depto));
+		vo.setMotivoDeposito(new MotivoDepositoVO(motivo));
+		
+		ParametroDepositoVO parametro = depositoFacade.obterParametro(vo);
+		model.setResponse(parametro);
+		
 		return SUCCESS;
 	}
 	

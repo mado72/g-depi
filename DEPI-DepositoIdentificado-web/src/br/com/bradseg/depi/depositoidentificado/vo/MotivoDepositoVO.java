@@ -3,6 +3,8 @@ package br.com.bradseg.depi.depositoidentificado.vo;
 import java.io.Serializable;
 import java.util.Date;
 
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+
 /**
  * Classe Anotada de Mapeamento com a tabela MOTVO_DEP_CTA_CORR.
  * 
@@ -254,7 +256,7 @@ public class MotivoDepositoVO implements Serializable {
 	 * @return O atributo ultima atualização.
 	 */
 	public Date getUltimaAtualizacao() {
-		return (Date) ultimaAtualizacao.clone();
+		return BaseUtil.getDate(ultimaAtualizacao);
 	}
 
 	/**
@@ -264,7 +266,7 @@ public class MotivoDepositoVO implements Serializable {
 	 *            atualização a ser setado
 	 */
 	public void setUltimaAtualizacao(Date ultimaAtualizacao) {
-		this.ultimaAtualizacao = (Date) ultimaAtualizacao.clone();
+		this.ultimaAtualizacao = BaseUtil.getDate(ultimaAtualizacao);
 	}
 
 }

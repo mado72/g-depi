@@ -49,7 +49,7 @@
 			<td>
 				<!-- combo motivo -->
 				<s:select key="codigoMotivoDeposito" list="motivos" listValue="descricaoBasica" listKey="codigoMotivoDeposito" 
-					cssClass="dropbox w-100" disabled="%{detalhar}"/>
+					cssClass="dropbox w-100 codigo-motivo" disabled="%{detalhar}"/>
 			</td>
 			<td colspan="5">
 				<s:textarea key="descricaoDetalhadaMotivo" rows="5" cols="70" value="%{descricaoDetalhadaMotivo}" readonly="true" disabled="detalhar"/>
@@ -134,50 +134,50 @@
 			<td class="td_label" rowspan="4"><s:text name="label.deposito.docsNecessarios"/></td>
 			<td class="td_label"><s:text name="label.deposito.sucursal"/></td>
 			<td>
-				<s:textfield maxlength="4" key="sucursal" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="sucursal" id="codigoSucursal" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.bloqueto"/></td>
 			<td>
-				<s:textfield maxlength="4" key="bloqueto" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="bloqueto" id="codigoBloqueto" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.tipoDocumento"/></td>
 			<td>
-				<s:textfield maxlength="4" key="tipoDocumento" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="tipoDocumento" id="codigoTipoDocumento" cssClass="w-90 text-right"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.apolice"/></td>
 			<td>
-				<s:textfield maxlength="4" key="apolice" cssClass="w-90 text-right" />
+				<s:textfield maxlength="4" key="apolice" id="codigoApolice" cssClass="w-90 text-right" />
 			</td>
 			<td class="td_label"><s:text name="label.deposito.protocolo"/></td>
 			<td>
-				<s:textfield maxlength="4" key="protocolo" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="protocolo" id="codigoProtocolo" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.ramo"/></td>
 			<td>
-				<s:textfield maxlength="4" key="ramo" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="ramo" id="codigoRamo" cssClass="w-90 text-right"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.endosso"/></td>
 			<td>
-				<s:textfield maxlength="4" key="endosso" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="endosso" id="codigoEndosso" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.dossie"/></td>
 			<td>
-				<s:textfield maxlength="4" key="dossie" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="dossie" id="codigoDossie" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.parcela"/></td>
 			<td>
-				<s:textfield maxlength="4" key="parcela" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="parcela" id="codigoParcela" cssClass="w-90 text-right"/>
 			</td>
 		</tr>
 		<s:if test="detalhar"><s:set var="rowspanDisp" value="8"/></s:if><s:else><s:set var="rowspanDisp" value="5"/></s:else>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.item"/></td>
 			<td>
-				<s:textfield maxlength="4" key="item" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="item" id="codigoItem" cssClass="w-90 text-right"/>
 			</td>
 			<td  colspan="2">&nbsp;</td>
 			<td rowspan="<s:property value="rowspanDisp"/>" colspan="2" class="td_label">&nbsp;</td>
@@ -268,8 +268,11 @@ jQuery(document).ready(function($){
 			urlAgencias : '<c:url value="/json/ciaBancoAgencias.do?codigo.cia=%d&codigo.banco=%d"></c:url>',
 			urlContas : '<c:url value="/json/ciaBancoAgenciaConta.do?codigo.cia=%d&codigo.banco=%d&codigo.agencia=%d"></c:url>',
 			urlPessoasCorporativas: '<c:url value="/json/pessoasCorporativas.do?codigo.cpfCnpj=%d"></c:url>',
+			urlParametro: '<c:url value="/json/parametro.do?codigo.cia=%d&codigo.depto=%d&codigo.motivo=%d"></c:url>',
+			parametros: <depi:json value="%{parametro}"/>, 
 		});
 	}(jQuery));
 </script>
 </c:if>
 </c:set>
+

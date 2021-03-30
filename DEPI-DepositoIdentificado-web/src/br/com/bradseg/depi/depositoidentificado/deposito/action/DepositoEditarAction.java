@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,8 @@ public class DepositoEditarAction
 		extends EditarFormAction<DepositoCampo, DepositoVO, DepositoEditarFormModel> {
 
 	private static final long serialVersionUID = -7675543657126275320L;
+	
+	private final static Logger LOGGER = LoggerFactory.getLogger(DepositoEditarAction.class);
 	
 	private transient DepositoCrudHelper crudHelper;
 	
@@ -104,27 +108,28 @@ public class DepositoEditarAction
 			
 			String retorno = super.alterar();
 			
-			CompanhiaSeguradoraVO ciaVO = crudHelper.obterCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(getModel().getCodigoCompanhia())));
-			getModel().setCias(Collections.singletonList(ciaVO));
+			DepositoEditarFormModel model = getModel();
+			
+			CompanhiaSeguradoraVO ciaVO = crudHelper.obterCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(model.getCodigoCompanhia())));
+			model.setCias(Collections.singletonList(ciaVO));
 			
 			DepartamentoVO depto = crudHelper
 					.obterDepartamento(new DepartamentoVO(Integer
-							.parseInt(getModel().getCodigoDepartamento())));
-			getModel().setDeptos(Collections.singletonList(depto));
+							.parseInt(model.getCodigoDepartamento())));
+			model.setDeptos(Collections.singletonList(depto));
 			
 			MotivoDepositoVO motivo = crudHelper
 					.obterMotivoDeposito(new MotivoDepositoVO(Integer
-							.parseInt(getModel().getCodigoMotivoDeposito())));
+							.parseInt(model.getCodigoMotivoDeposito())));
 			definirMotivo(motivo);
 			
 			BancoVO banco = crudHelper.obterBanco(new BancoVO(CODIGO_BANCO_BRADESCO));
-			getModel().setCodBanco(String.valueOf(CODIGO_BANCO_BRADESCO));
-			getModel().setDescricaoBanco(banco.getDescricaoBanco());
-			
-			
+			model.setCodBanco(String.valueOf(CODIGO_BANCO_BRADESCO));
+			model.setDescricaoBanco(banco.getDescricaoBanco());
 			
 			return retorno;
 		} catch (Exception e) {
+			LOGGER.error("Falha ao preparar formulário", e);
 			addActionError(e.getMessage());
 			return INPUT;
 		}

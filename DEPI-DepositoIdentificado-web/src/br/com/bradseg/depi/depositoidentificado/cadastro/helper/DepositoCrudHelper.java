@@ -163,6 +163,10 @@ public class DepositoCrudHelper implements
 		ContaCorrenteAutorizadaVO conta = facade.obterConta(vo.getBanco(),
 				vo.getCodigoAgencia(), vo.getContaCorrente());
 		
+		model.setCodigoCompanhia(String.valueOf(ciaVO.getCodigoCompanhia()));
+		model.setCodigoDepartamento(String.valueOf(depto.getCodigoDepartamento()));
+		model.setCodigoMotivoDeposito(String.valueOf(motivoDepositoVO.getCodigoMotivoDeposito()));
+		
 		model.setCias(Collections.singletonList(ciaVO));
 		model.setDeptos(Collections.singletonList(depto));
 		model.setMotivos(Collections.singletonList(motivoDepositoVO));
@@ -204,6 +208,8 @@ public class DepositoCrudHelper implements
 		model.setDataProrrogacao(dataFormatada(vo.getDataProrrogacao()));
 		model.setDtCancelamentoDepositoIdentificado(dataFormatada(vo.getDtCancelamentoDepositoIdentificado()));
 		model.setDtVencimentoDeposito(dataFormatada(vo.getDtVencimentoDeposito()));
+		
+		model.setParametro(facade.obterParametro(vo));
 	}
 
 	private List<ListarPessoaPorFiltroSaidaVO> preencheListaPessoasCorporativas(
