@@ -30,6 +30,7 @@
  	
 	<script type="text/javascript" src="<s:url value="/includes/js/jquery-1.9.1.js"/>"></script>
 	<script type="text/javascript" src="<s:url value="/includes/js/jquery-ui.min.js"/>"></script>
+	<script type="text/javascript" src="<s:url value="/includes/js/jquery.mask.js"/>"></script>
 	<script type="text/javascript" src="<s:url value="/includes/js/jquery.dateFormat-1.0.js"/>"></script>
 	<script type="text/javascript" src="<s:url value="/includes/js/calendar.js"/>"></script>
 	<script type="text/javascript" src="<s:url value="/includes/js/calendar-br.js"/>"></script>

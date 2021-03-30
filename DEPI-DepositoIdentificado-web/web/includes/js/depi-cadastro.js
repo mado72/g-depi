@@ -1167,6 +1167,19 @@ var fnReady = function ($) {
 		});
 	};
 	
+	$.deposito.prepararEditar = function(opcoes) {
+		$.associarMotivos.prepararEditar(opcoes);
+		
+		var fnMask = function(value) {
+			var masks = ['000.000.000-009', '00.000.000/0000-00'],
+				mask = (value.length > 14) ? masks[1] : masks[0];
+			return mask;			
+		};
+		
+		$('.cpfOuCnpj').mask(fnMask);
+		
+	};
+	
 	// paginacao
 	// ---------------------------------------------------------------------
 	// definition

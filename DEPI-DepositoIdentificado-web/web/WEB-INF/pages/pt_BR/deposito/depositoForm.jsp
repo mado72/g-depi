@@ -114,7 +114,7 @@
 				<s:text name="label.deposito.cpfCnpj" />
 			</td>
 			<td>
-				<s:textfield size="16" maxlength="14" key="cpfCnpj" id="cpfCnpj"/>
+				<s:textfield size="20" key="cpfCnpj" id="cpfCnpj" class="cpfOuCnpj"/>
 			</td>
 			<td class="td_label">
 				<s:text name="label.deposito.pessoaDepositante" />
@@ -258,7 +258,7 @@
 	</c:url>
 <script>
 jQuery(document).ready(function($){
-		$.associarMotivos.prepararEditar({
+		$.deposito.prepararEditar({
 			contas : ${contas},
 	 		motivos : ${motivos},
 			urlCias : '<c:url value="/json/ciaListar.do"/>',
