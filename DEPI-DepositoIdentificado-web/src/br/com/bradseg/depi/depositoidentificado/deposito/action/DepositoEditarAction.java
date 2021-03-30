@@ -74,14 +74,17 @@ public class DepositoEditarAction
 			int codUsuario = getCodUsuarioLogado();
 			
 			String retorno = super.incluir();
+			DepositoEditarFormModel model = getModel();
 			
 			List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias(codUsuario);
-			getModel().setCias(cias);
+			model.setCias(cias);
 			
 			if (cias != null && !cias.isEmpty()) {
 				CompanhiaSeguradoraVO ciaVO = cias.get(0);
 				definirCompanhia(codUsuario, ciaVO);
 			}
+			
+			model.setPessoasCorporativas(Collections.emptyList());
 			
 			return retorno;
 		} catch (Exception e) {

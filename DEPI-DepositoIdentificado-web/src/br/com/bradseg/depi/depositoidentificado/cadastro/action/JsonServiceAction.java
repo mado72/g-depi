@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO;
 import br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade;
+import br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -42,6 +44,9 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 	
 	@Autowired
 	private AssociarMotivoDepositoFacade associarMotivoFacade;
+	
+	@Autowired
+	private DepositoFacade depositoFacade;
 	
 	private static final long serialVersionUID = 8999882840693772747L;
 	
@@ -224,6 +229,13 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 		
 		EventoContabilVO evento = associarMotivoFacade.obterEventoContabil(codigoEvento);
 		model.setResponse(evento);
+		return SUCCESS;
+	}
+	
+	public String pessoasCorporativas() {
+		String cpfCnpj = model.getCodigo().get("cpfCnpj");
+		List<ListarPessoaPorFiltroSaidaVO> pessoas = depositoFacade.listarPessoas(cpfCnpj, getIp(), getCodUsuarioLogado());
+		model.setResponse(pessoas);
 		return SUCCESS;
 	}
 	

@@ -1177,7 +1177,47 @@ var fnReady = function ($) {
 		};
 		
 		$('.cpfOuCnpj').mask(fnMask);
+		$('.cpfOuCnpj').change(function() {
+			var cpfCnpj=$(this).val().replace(/\D/g,''),
+				url=opcoes.urlPessoasCorporativas.replace('%d', cpfCnpj);
+			console.log(cpfCnpj);
+			$.ajax({
+				url : url,
+				type : "GET",
+				dataType : "json",
+				success : function(data) {
+					console.log(data);
+					$("#AcaoForm").trigger('pessoas', {pessoas: data.response});
+				}
+			});
+		});
 		
+		$("#AcaoForm").on('pessoas', function(ev, data){
+			var pessoaDepositante=$("#pessoaDepositante");
+			var options=pessoaDepositante.find("option");
+			
+			if (data !== undefined) {
+				options.remove();
+				$(data.pessoas).each(function(i,v){
+					pessoaDepositante.append($('<option>', {value: v.codigoPessoa, text: v.nomePessoa}));
+				});
+				options=pessoaDepositante.find("option");
+			}
+			
+			var exibirPessoaDepositante = options.length > 1;
+			pessoaDepositante.toggle(exibirPessoaDepositante);
+			pessoaDepositante.prop("disabled", !exibirPessoaDepositante);
+			$("#nomePessoa").toggle(! exibirPessoaDepositante);
+			$("#nomePessoa").prop("disabled", exibirPessoaDepositante);
+			
+			pessoaDepositante.change();
+		});
+		
+		$("#pessoaDepositante").change(function(ev){
+			$("#nomePessoa").val($(this).text());
+		});
+		
+		$("#AcaoForm").trigger('pessoas');
 	};
 	
 	// paginacao

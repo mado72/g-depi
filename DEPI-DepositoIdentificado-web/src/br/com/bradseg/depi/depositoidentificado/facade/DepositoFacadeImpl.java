@@ -54,7 +54,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	/*
 	 * FIXME REMOVER CÓDIGO 
 	 */
-	private static final boolean FAKE_COMP = String.valueOf(3).equals("2");
+	private static final boolean FAKE_COMP = String.valueOf(3).equals("3");
 
 	private static final int PESSOA_JURIDICA = 4;
 
@@ -155,7 +155,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
         DepositoVO vo = depositoDAO.obterDepositoPorChave(chave);
         try {
         	// FIXME Remover este condicional para publicar
-        	if (FAKE_COMP) {
+        	if (!FAKE_COMP) {
         		ListarPessoaIDVO pessoa = pessoaFacade.listarPessoaPorID(ipCliente,
         				String.valueOf(codUsuario), 1L, vo.getPessoaDepositante(),
         				0L, "");
@@ -201,7 +201,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
         		filtro.getDataNascimento(),
         		filtro.getCodigoTipoPessoa());
 
-        if (FAKE_COMP) {
+        if (! FAKE_COMP) {
         	try {
         		@SuppressWarnings("unchecked")
         		List<ListarPessoaPorFiltroSaidaVO> lista = pessoaFacade.listarPessoaPorFiltro(ipCliente,
@@ -222,10 +222,16 @@ public class DepositoFacadeImpl implements DepositoFacade {
         }
         else {
         	// FIXME Remover codigo fake
-        	List<ListarPessoaPorFiltroSaidaVO> lista = Arrays.asList(
-        			new ListarPessoaPorFiltroSaidaVO(123L, "Pessoa 123", numeroCpfCnpj, 0L, 0L),
-        			new ListarPessoaPorFiltroSaidaVO(1002804669, "Pessoa 234", numeroCpfCnpj, 0L, 0L));
-        	return lista;
+        	List<ListarPessoaPorFiltroSaidaVO> lista;
+        	if (numeroCpfCnpj > 99999999999L) { // CNPJ
+        		lista = Arrays.asList(
+        				new ListarPessoaPorFiltroSaidaVO(123L, "Pessoa 123", numeroCpfCnpj, 0L, 0L),
+        				new ListarPessoaPorFiltroSaidaVO(1002804669, "Pessoa 234", numeroCpfCnpj, 0L, 0L));
+        		return lista;
+        	}
+    		lista = Arrays.asList(
+    				new ListarPessoaPorFiltroSaidaVO(1002804669, "Pessoa 345", numeroCpfCnpj, 0L, 0L));
+    		return lista;
         }
     }
 

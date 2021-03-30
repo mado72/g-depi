@@ -121,11 +121,12 @@
 			</td>
 			<td colspan="3">
 				<s:if test="%{pessoasCorporativas.size lt 2}">
-					<s:textfield size="16" maxlength="50" key="nomePessoa" cssClass="w-100" disabled="true"/>
+					
 				</s:if>
 				<s:else>
-					<s:select key="pessoaDepositante" list="pessoasCorporativas" listValue="nomePessoa" listKey="codigoPessoa" cssClass="w-100"></s:select>
 				</s:else>
+				<s:textfield size="16" maxlength="50" id="nomePessoa" key="nomePessoa" cssClass="w-90" disabled="true"/>
+				<s:select key="pessoaDepositante" id="pessoaDepositante" list="pessoasCorporativas" listValue="nomePessoa" listKey="codigoPessoa" cssClass="w-100"></s:select>
 			</td>
 		</tr>
 		
@@ -133,50 +134,50 @@
 			<td class="td_label" rowspan="4"><s:text name="label.deposito.docsNecessarios"/></td>
 			<td class="td_label"><s:text name="label.deposito.sucursal"/></td>
 			<td>
-				<s:textfield maxlength="4" key="sucursal" cssClass="w-100 text-right"/>
+				<s:textfield maxlength="4" key="sucursal" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.bloqueto"/></td>
 			<td>
-				<s:textfield maxlength="4" key="bloqueto" cssClass="w-100 text-right"/>
+				<s:textfield maxlength="4" key="bloqueto" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.tipoDocumento"/></td>
 			<td>
-				<s:textfield maxlength="4" key="tipoDocumento" cssClass="w-100 text-right"/>
+				<s:textfield maxlength="4" key="tipoDocumento" cssClass="w-90 text-right"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.apolice"/></td>
 			<td>
-				<s:textfield maxlength="4" key="apolice" cssClass="w-100 text-right" />
+				<s:textfield maxlength="4" key="apolice" cssClass="w-90 text-right" />
 			</td>
 			<td class="td_label"><s:text name="label.deposito.protocolo"/></td>
 			<td>
-				<s:textfield maxlength="4" key="protocolo" cssClass="w-100 text-right"/>
+				<s:textfield maxlength="4" key="protocolo" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.ramo"/></td>
 			<td>
-				<s:textfield maxlength="4" key="ramo" cssClass="w-100 text-right"/>
+				<s:textfield maxlength="4" key="ramo" cssClass="w-90 text-right"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.endosso"/></td>
 			<td>
-				<s:textfield maxlength="4" key="endosso" cssClass="w-100 text-right"/>
+				<s:textfield maxlength="4" key="endosso" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.dossie"/></td>
 			<td>
-				<s:textfield maxlength="4" key="dossie" cssClass="w-100 text-right"/>
+				<s:textfield maxlength="4" key="dossie" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.parcela"/></td>
 			<td>
-				<s:textfield maxlength="4" key="parcela" cssClass="w-100 text-right"/>
+				<s:textfield maxlength="4" key="parcela" cssClass="w-90 text-right"/>
 			</td>
 		</tr>
 		<s:if test="detalhar"><s:set var="rowspanDisp" value="8"/></s:if><s:else><s:set var="rowspanDisp" value="5"/></s:else>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.item"/></td>
 			<td>
-				<s:textfield maxlength="4" key="item" cssClass="w-100 text-right"/>
+				<s:textfield maxlength="4" key="item" cssClass="w-90 text-right"/>
 			</td>
 			<td  colspan="2">&nbsp;</td>
 			<td rowspan="<s:property value="rowspanDisp"/>" colspan="2" class="td_label">&nbsp;</td>
@@ -205,13 +206,13 @@
 			</td>
 			<td class="td_label"><s:text name="label.deposito.vencimento"/></td>
 			<td>
-				<s:textfield maxlength="4" key="dtVencimentoDeposito" cssClass="w-100 text-right" disabled="detalhar"/>
+				<s:textfield maxlength="4" key="dtVencimentoDeposito" cssClass="w-90 text-right" disabled="detalhar"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.valor"/></td>
 			<td>
-				<s:textfield maxlength="4" key="vlrDepositoRegistrado" cssClass="w-100 text-right" disabled="detalhar"/>
+				<s:textfield maxlength="4" key="vlrDepositoRegistrado" cssClass="w-90 text-right" disabled="detalhar"/>
 			</td>
 			<td colspan="2"></td> 
 		</tr>
@@ -219,25 +220,25 @@
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.codAutorizador"/></td>
 			<td>
-				<s:textfield key="codigoDepositoIdentificado" cssClass="w-100 text-right" disabled="detalhar"/>
+				<s:textfield key="codigoDepositoIdentificado" cssClass="w-90 text-right" disabled="detalhar"/>
 			</td>
 			<td colspan="2" class="td_label"><s:text name="label.deposito.digAutorizador"/></td>
 			<td>
-				<s:textfield key="dv" cssClass="w-100 text-right" disabled="detalhar"/>
+				<s:textfield key="dv" cssClass="w-90 text-right" disabled="detalhar"/>
 			</td>
 		</tr>
 		<tr>
 			<td rowspan="2" class="td_label"><s:text name="label.deposito.acao"/></td>
 			<td class="td_label"><s:text name="label.deposito.dtProrrogacao"/></td>
 			<td>
-				<s:textfield key="dataProrrogacao" cssClass="w-100 text-right" disabled="detalhar"/>
+				<s:textfield key="dataProrrogacao" cssClass="w-90 text-right" disabled="detalhar"/>
 			</td>
 			<td colspan="2"></td> 
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.dtCancelamento"/></td>
 			<td>
-				<s:textfield key="dtCancelamentoDepositoIdentificado" cssClass="w-100 text-right" disabled="detalhar"/>
+				<s:textfield key="dtCancelamentoDepositoIdentificado" cssClass="w-90 text-right" disabled="detalhar"/>
 			</td>
 			<td colspan="2"></td> 
 		</tr>
@@ -266,6 +267,7 @@ jQuery(document).ready(function($){
 			urlBancos : '<c:url value="/json/ciaBancos.do?codigo.cia=%d"></c:url>',
 			urlAgencias : '<c:url value="/json/ciaBancoAgencias.do?codigo.cia=%d&codigo.banco=%d"></c:url>',
 			urlContas : '<c:url value="/json/ciaBancoAgenciaConta.do?codigo.cia=%d&codigo.banco=%d&codigo.agencia=%d"></c:url>',
+			urlPessoasCorporativas: '<c:url value="/json/pessoasCorporativas.do?codigo.cpfCnpj=%d"></c:url>',
 		});
 	}(jQuery));
 </script>

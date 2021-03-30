@@ -16,6 +16,10 @@ pre.debug {
 	width: 100% !important;
 }
 
+.w-90 {
+	width: 90% !important;
+}
+
 .center {
 	text-align: center !important;
 }
