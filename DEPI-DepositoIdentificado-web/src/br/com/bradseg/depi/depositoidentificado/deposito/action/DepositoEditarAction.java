@@ -99,7 +99,7 @@ public class DepositoEditarAction
 			// Valida se o usuário está logado
 			getCodUsuarioLogado();
 			
-			String retorno = super.incluir();
+			String retorno = super.alterar();
 			
 			CompanhiaSeguradoraVO ciaVO = crudHelper.obterCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(getModel().getCodigoCompanhia())));
 			getModel().setCias(Collections.singletonList(ciaVO));
@@ -117,6 +117,8 @@ public class DepositoEditarAction
 			BancoVO banco = crudHelper.obterBanco(new BancoVO(CODIGO_BANCO_BRADESCO));
 			getModel().setCodBanco(String.valueOf(CODIGO_BANCO_BRADESCO));
 			getModel().setDescricaoBanco(banco.getDescricaoBanco());
+			
+			
 			
 			return retorno;
 		} catch (Exception e) {

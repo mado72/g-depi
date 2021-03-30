@@ -1144,6 +1144,29 @@ var fnReady = function ($) {
 	 	afterInit = true;
 	};
 	
+	// depósito
+	// ---------------------------------------------------------------------
+	$.namespace('$.deposito');
+	$.deposito.prepararFiltro = function(opcoes) {
+		$.consulta.prepararFormulario(opcoes);
+		$("#BtnProrrogar, #BtnMovimento, #BtnLancamento").click(function(ev) {
+			ev.preventDefault();
+			ev.stopImmediatePropagation();
+			var t = $(this), href = t.attr('href'), jqForm = t.closest("form");
+			
+			var marcados = $.obterMarcados(jqForm);
+			if (marcados.length != 1) {
+				alert(MENSAGEM["msg.selecao.edicao"]);
+			} else {
+				$("#box_loading").show();
+				setTimeout(function(){
+					var codigo=$(marcados[0]).val();
+					window.location.href = href + '?codigo=' + codigo;
+				}, 250);
+			}
+		});
+	};
+	
 	// paginacao
 	// ---------------------------------------------------------------------
 	// definition

@@ -99,14 +99,14 @@
 </table>
 <div class="paginacao"></div>
 <c:set var="ocultarAlterar" value="true" scope="request"/>
-<s:include value="/WEB-INF/pages/pt_BR/comum/incluir-alterar-excluir.jsp"></s:include>
+<s:include value="botoes_deposito.jsp"></s:include>
 </form>
 <br/>
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>
 <script>
 jQuery(document).ready(function($){
-	$.consulta.prepararFormulario("#AcaoForm");
+	$.deposito.prepararFiltro("#AcaoForm");
 	<s:if test="colecaoDados">
 	$.paginacao.paginar({
 		tblSeletor: "#tabela_interna.Consulta",
