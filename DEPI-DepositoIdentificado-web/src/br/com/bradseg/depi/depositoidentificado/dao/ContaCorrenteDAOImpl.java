@@ -188,9 +188,13 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 		params.addValue(WHR2, vo.getCodigoAgencia());
 		params.addValue(WHR3, vo.getContaCorrente());
 	
-		return getJdbcTemplate()
-				.queryForObject(QuerysDepi.CONTACORRENTEAUTORIZADA_EXISTS,
-						params, String.class);
+		try {
+			return getJdbcTemplate()
+					.queryForObject(QuerysDepi.CONTACORRENTEAUTORIZADA_EXISTS,
+							params, String.class);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 
 	private void queryAtivar(ContaCorrenteAutorizadaVO vo) {

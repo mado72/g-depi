@@ -106,13 +106,15 @@
 
 	</package>
 
-	<package name="filtroDeptoCia" namespace="/filtro/associar-motivodeposito/consultar" extends="depi-default">
+	<package name="filtroDeptoCia" namespace="/filtro/departamento/consultar" extends="depi-default">
 	
 		<default-class-ref class="departamentoConsultarAction" />
 		
 		<global-results>
 			<result name="success">/WEB-INF/pages/pt_BR/filtro/departamento.jsp</result>
-			<result name="input">/WEB-INF/pages/pt_BR/filtro/departamento.jsp</result>
+			<!-- <result name="input">/WEB-INF/pages/pt_BR/filtro/departamento.jsp</result> -->
+			<!-- <result name="success">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</result> -->
+			<result name="input" type="redirectAction">listar</result>
 		</global-results>
 
 		<action name="index">

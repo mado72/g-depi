@@ -201,10 +201,16 @@ public class CicsExecutor {
 			return value;
 		}
 		
-		String patt = pattern.substring(0, pattern.length() - value.length());
-		StringBuilder sb = new StringBuilder(patt);
-		sb.append(value);
-		String resultado = sb.toString();
+		String resultado;
+		if (pattern.length() > value.length()) {
+			String patt = pattern.substring(0, pattern.length() - value.length());
+			StringBuilder sb = new StringBuilder(patt);
+			sb.append(value);
+			resultado = sb.toString();
+		}
+		else {
+			resultado = value.substring(pattern.length());
+		}
 		LOGGER.debug("Aplicou pattern \"{}\" em {} => {}", pattern, value, resultado);
 		return resultado;
 	}

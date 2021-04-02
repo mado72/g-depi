@@ -126,7 +126,7 @@
 <c:out value="${scriptPage}" default="" escapeXml="false"/>
 <c:if test="${! detalhar}">
 	<c:url value="/cadastro/associar-motivodeposito/editar/selecionar.do" var="urlSelecionar"/>
-	<c:url value="/filtro/associar-motivodeposito/consultar/index.do" var="urlDepartamento">
+	<c:url value="/filtro/departamento/consultar/index.do" var="urlDepartamento">
 		<c:param name="action">${urlSelecionar}</c:param>
 	</c:url>
 <script>

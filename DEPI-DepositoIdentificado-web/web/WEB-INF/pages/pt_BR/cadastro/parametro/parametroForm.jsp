@@ -68,7 +68,7 @@
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.parametros.controle" /></td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.vencto"/><span class="obrigatorio"></span></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoBancoVencimento"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoBancoVencimento"  detalhar="desabilitarParametros"/>
 			</td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.dias" /></td>
 			<td class="control">
@@ -81,53 +81,53 @@
 			<td rowspan="4" class="td_label"><s:text name="label.cadastro.parametrodeposito.documentos" /><span class="obrigatorio"></span></td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.sucursal"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoSucursal"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoSucursal"  detalhar="desabilitarParametros"/>
 			</td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.ramo"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoRamo"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoRamo"  detalhar="desabilitarParametros"/>
 			</td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.apolice"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoApolice"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoApolice"  detalhar="desabilitarParametros"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.tipo"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoTipo"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoTipo"  detalhar="desabilitarParametros"/>
 			</td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.cpf"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoCpfCnpj"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoCpfCnpj"  detalhar="desabilitarParametros"/>
 			</td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.bloqueto"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoBloqueto"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoBloqueto"  detalhar="desabilitarParametros"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.endosso"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoEndosso"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoEndosso"  detalhar="desabilitarParametros"/>
 			</td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.dossie"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoDossie"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoDossie"  detalhar="desabilitarParametros"/>
 			</td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.parcela"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoParcela"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoParcela"  detalhar="desabilitarParametros"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.item"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoItem"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoItem"  detalhar="desabilitarParametros"/>
 			</td>
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.protocolo"></s:text></td>
 			<td class="control">
-				<depi:radioSimNao name="codigoProtocolo"  detalhar="detalhar"/>
+				<depi:radioSimNao name="codigoProtocolo"  detalhar="desabilitarParametros"/>
 			</td>
 			<td colspan="2">&nbsp;</td>
 		</tr>
