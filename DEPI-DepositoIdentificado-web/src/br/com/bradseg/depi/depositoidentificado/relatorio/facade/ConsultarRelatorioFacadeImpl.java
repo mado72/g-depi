@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
+import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
@@ -31,6 +34,7 @@ import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesSinteticoVO;
@@ -69,6 +73,9 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Autowired
 	private RelatorioExtratoDAO daoRelatorioExtrato;
 	
+	@Autowired
+	private CICSDepiDAO cicsDepiDAO;
+	
 	
 	
 
@@ -95,9 +102,42 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Override
 	   public  List<DepartamentoVO> obterComDepositoRestricaoDeDeposito(int codigCompanhia, LoginVo loginVO){
 		int usuarioLogadoId =Integer.parseInt(loginVO.getId());  
-		return daoDepartamento.obterComRestricao(codigCompanhia, usuarioLogadoId, Tabelas.DEPOSITO);
+	
+		
+		return daoDepartamento.obterComRestricao(codigCompanhia, usuarioLogadoId, Tabelas.DEPOSITO );
 	}
 
+     /* (non-Javadoc)
+     * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#obterPorFiltro(br.com.bradseg.depi.depositoidentificado.util.FiltroUtil)
+     */
+    @Override    
+    public List<DepartamentoCompanhiaVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
+		
+    
+    	LOGGER.error("Inicio - obterPorFiltro(FiltroUtil filtro)");
+    	
+        List<DepartamentoCompanhiaVO> lista = new ArrayList<DepartamentoCompanhiaVO>();// daoDepartamento.obterPorFiltro(filtro);
+        
+        HashMap<Integer, String> cache = new HashMap<>();
+        
+        for (DepartamentoCompanhiaVO vo : lista) {
+			int codigoCompanhia = vo.getCompanhia().getCodigoCompanhia();
+			
+			if (! cache.containsKey(codigoCompanhia)) {
+				CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(codigoCompanhia);
+				cache.put(codigoCompanhia, cia.getDescricaoCompanhia());
+			}
+			
+			String descricaoCompanhia = cache.get(codigoCompanhia);
+			vo.getCompanhia().setDescricaoCompanhia(descricaoCompanhia);
+		}
+        
+		return lista;
+    }
+
+
+	
+	
 	@Override
 	public List<ManutencoesAnaliticoVO> obterDadosManutencoesAnalitico(
 			FiltroUtil filtro) {
@@ -127,7 +167,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 
 
     /**
-     * Gera lista com dados para o relatï¿½rio Sintï¿½tico usando a lista de dados do relatï¿½rio Anï¿½litico.
+     * Gera lista com dados para o relatório Sintético usando a lista de dados do relatório Análitico.
      * @param dadosAnaliticos - List<ManutencoesSinteticoVO>.
      * @throws DEPIIntegrationException - DEPIIntegrationException.
      * @return List<ManutencoesSinteticoVO>.
@@ -150,7 +190,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
         Set<String> chaves = map.keySet();
         for (String key : chaves) {
             ManutencoesSinteticoVO sintetico = map.get(key);
-            // calcula valores por situaï¿½ï¿½o
+            // calcula valores por situação
             for (ManutencoesAnaliticoVO original : dadosAnaliticos) {
                 String chave = new StringBuilder().append(original.getCodigoBanco()).append(original.getCodigoCia()).append(
                     original.getCodigoAgencia()).append(original.getCodigoConta()).append(original.getCodigoTipoAcao())
@@ -225,11 +265,34 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	public List<CompanhiaSeguradoraVO> carregarComboCompanhiaUsuLogado(LoginVo loginVO) {
 		// TODO Auto-generated method stub		
 		int usuarioLogadoId =Integer.parseInt(loginVO.getId());  
-		return daoCiaSeg.obterComRestricaoDeGrupoAcesso(usuarioLogadoId);
+	    //;
+		return populaDescricaLstaCompanhia(daoCiaSeg.obterComRestricaoDeGrupoAcesso(usuarioLogadoId));
+		
+		
+
 	}
 	
 	
+	public List<CompanhiaSeguradoraVO> populaDescricaLstaCompanhia( List<CompanhiaSeguradoraVO>  Companhias) {
+		// TODO Auto-generated method stub	
+	
+        for (int i = 0; i < Companhias.size(); i++) {
+        	CompanhiaSeguradoraVO ele = Companhias.get(i);
+            //CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(ele.getCodigoCompanhia());
+        	CompanhiaSeguradoraVO cia  = new CompanhiaSeguradoraVO();
+        	cia.setDescricaoCompanhia(ele.getCodigoCompanhia()+"-descricaoCompanhia");
+        	cia.setCodigoCompanhia(ele.getCodigoCompanhia());        	
+        	Companhias.set(i, cia);
+      
+        	LOGGER.error("Cod.:"+cia.getCodigoCompanhia() + " - "+cia.getDescricaoCompanhia() );	
+        }
+	
+		return Companhias;
 
+	}
+	
+	
+	
 	@Override
 	public void obterTotais(List<RelatorioExtratoAnaliticoVO> lista) {
 	     ordenarPorDeposito(lista);
@@ -267,7 +330,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	}
 
 	/**
-     * Ordem Situaï¿½ï¿½o.
+     * Ordem Situação.
      * @param situacao - RelatorioExtratoAnaliticoVO.
      * @return String.
      */

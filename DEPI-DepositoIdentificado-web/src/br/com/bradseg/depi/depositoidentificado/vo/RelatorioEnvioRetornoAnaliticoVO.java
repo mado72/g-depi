@@ -520,6 +520,34 @@ public class RelatorioEnvioRetornoAnaliticoVO implements Serializable{
         this.digitoCodigoAutorizador = digitoCodigoAutorizador;
     }
     
-    
+    @Override
+	public String toString() {
+		return "RelatorioEnvioRetornoAnaliticoVO ["
+				+ (codigoSituacao != null ? "codigoSituacao=" + codigoSituacao + ", " : "")
+				+ (situacao != null ? "situacao=" + situacao + ", " : "")
+				+ (digitoCodigoAutorizador != null ? "digitoCodigoAutorizador=" + digitoCodigoAutorizador + ", " : "")
+				+ (bloquete != null ? "bloquete=" + bloquete + ", " : "")
+				+ (sucursal != null ? "sucursal=" + sucursal + ", " : "") + (ramo != null ? "ramo=" + ramo + ", " : "")
+				+ (apolice != null ? "apolice=" + apolice + ", " : "") + (item != null ? "item=" + item + ", " : "")
+				+ (tipo != null ? "tipo=" + tipo + ", " : "") + (endosso != null ? "endosso=" + endosso + ", " : "")
+				+ (parcela != null ? "parcela=" + parcela + ", " : "")
+				+ (cpfCnpj != null ? "cpfCnpj=" + cpfCnpj + ", " : "")
+				+ (codigoAutorizador != null ? "codigoAutorizador=" + codigoAutorizador + ", " : "")
+				+ (codigoDigitoIdentificador != null ? "codigoDigitoIdentificador=" + codigoDigitoIdentificador + ", " : "")
+				+ (codigoPessoa != null ? "codigoPessoa=" + codigoPessoa + ", " : "")
+				+ (vencimento != null ? "vencimento=" + vencimento + ", " : "")
+				+ (matricula != null ? "matricula=" + matricula + ", " : "")
+				+ (valorRegistrado != null ? "valorRegistrado=" + valorRegistrado + ", " : "")
+				+ (valorPago != null ? "valorPago=" + valorPago + ", " : "")
+				+ (codigoBanco != null ? "codigoBanco=" + codigoBanco + ", " : "")
+				+ (codigoAgencia != null ? "codigoAgencia=" + codigoAgencia + ", " : "")
+				+ (codigoConta != null ? "codigoConta=" + codigoConta + ", " : "")
+				+ (codigoCia != null ? "codigoCia=" + codigoCia + ", " : "")
+				+ (descricaoBanco != null ? "descricaoBanco=" + descricaoBanco + ", " : "")
+				+ (descricaoCia != null ? "descricaoCia=" + descricaoCia + ", " : "")
+				+ (descricaoConta != null ? "descricaoConta=" + descricaoConta + ", " : "")
+				+ (codigoAutorizadorComDv != null ? "codigoAutorizadorComDv=" + codigoAutorizadorComDv : "") + "]";
+    }
+   
     
 }
