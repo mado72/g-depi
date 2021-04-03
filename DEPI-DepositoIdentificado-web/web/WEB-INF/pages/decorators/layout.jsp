@@ -25,6 +25,7 @@
 	<title><decorator:title default="DEPI-DepositoIdentificado"/></title>
 	<link href="${www3}padroes_web/intranet/css/tabs.css" rel="stylesheet" type="text/css"/>
 	<link href="${www3}padroes_web/intranet/css/css.css" rel="stylesheet" type="text/css"/>
+	<link href="<s:url value="/includes/calendar/theme.css"/>" rel="stylesheet" type="text/css" />
 	<link href="${www3}padroes_web/intranet/css/Menu_horizontal.css" rel="stylesheet" type="text/css" />
 	<link href="<s:url value="/includes/css/depi.css"/>" rel="stylesheet" type="text/css" />
  	

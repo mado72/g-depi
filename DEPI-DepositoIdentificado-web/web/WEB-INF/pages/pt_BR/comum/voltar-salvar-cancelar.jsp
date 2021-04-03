@@ -17,7 +17,7 @@
 					</c:when>
 					<c:otherwise>
 						<button class="btn-img" id="BtnSalvar" type="submit"
-							value="salvar">
+							value="<c:out value="${btnSalvarValue}" default="salvar" escapeXml="false"/>">
 							<img src="${www3}/padroes_web/intranet/imagens/bt_salvar.gif" />
 						</button>
 						<a href="${namespaceBase}/consultar/listar.do"

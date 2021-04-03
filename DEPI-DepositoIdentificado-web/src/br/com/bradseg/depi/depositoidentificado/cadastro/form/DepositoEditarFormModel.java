@@ -24,6 +24,16 @@ public class DepositoEditarFormModel extends CrudForm {
 
 	private static final long serialVersionUID = 957768938376772158L;
 	
+	/**
+	 * Tipo de Ação do formulário para atender opções adicionais 
+	 */
+	public static enum TipoAcao {
+		PADRAO,
+		PRORROGAR_CANCELAR,
+		MOVIMENTO,
+		LANCAMENTO
+	}
+	
 	private Long codigoDepositoIdentificado;
 	
 	private Long dv;
@@ -114,6 +124,8 @@ public class DepositoEditarFormModel extends CrudForm {
 	
 	private ParametroDepositoVO parametro;
 	
+	private TipoAcao tipoAcao = TipoAcao.PADRAO;
+	
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm#limparDados()
 	 */
@@ -179,6 +191,14 @@ public class DepositoEditarFormModel extends CrudForm {
 		vo.setDepartamento(new DepartamentoVO(Integer.parseInt(getCodigoDepartamento())));
 		vo.setMotivoDeposito(new MotivoDepositoVO(Integer.parseInt(getCodigoMotivoDeposito())));
 		
+	}
+	
+	/**
+	 * Método para desabilitar os campos de edição dos parâmetros
+	 * @return true quando o tipo de ação for diferente de PADRAO
+	 */
+	public boolean isDesabilitarEdicao() {
+		return getTipoAcao() != TipoAcao.PADRAO || super.isDetalhar();
 	}
 
 	/**
@@ -886,12 +906,38 @@ public class DepositoEditarFormModel extends CrudForm {
 		this.dv = dv;
 	}
 	
+	/**
+	 * Retorna o tipo de parâmetros do formulário
+	 * @return Parâmetros
+	 */
 	public ParametroDepositoVO getParametro() {
 		return parametro;
 	}
 	
+	/**
+	 * Define a configuração de parâmetros para edição do formulário
+	 * 
+	 * @param parametro
+	 *            Parâmetros
+	 */
 	public void setParametro(ParametroDepositoVO parametro) {
 		this.parametro = parametro;
+	}
+	
+	/**
+	 * Retorna o tipo de ação do formulário
+	 * @return  Tipo de ação
+	 */
+	public TipoAcao getTipoAcao() {
+		return tipoAcao;
+	}
+	
+	/**
+	 * Define o tipo de ação do formulário
+	 * @param tipoAcao Tipo de ação
+	 */
+	public void setTipoAcao(TipoAcao tipoAcao) {
+		this.tipoAcao = tipoAcao;
 	}
 
 }

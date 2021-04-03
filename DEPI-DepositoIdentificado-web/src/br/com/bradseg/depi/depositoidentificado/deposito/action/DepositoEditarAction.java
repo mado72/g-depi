@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepositoEditarFormModel;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepositoEditarFormModel.TipoAcao;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepositoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade;
@@ -25,6 +26,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
  * Realiza consulta com base nos parâmetros de filtro passados
@@ -109,6 +111,7 @@ public class DepositoEditarAction
 			String retorno = super.alterar();
 			
 			DepositoEditarFormModel model = getModel();
+			model.setTipoAcao(TipoAcao.PADRAO);
 			
 			CompanhiaSeguradoraVO ciaVO = crudHelper.obterCompanhia(new CompanhiaSeguradoraVO(Integer.parseInt(model.getCodigoCompanhia())));
 			model.setCias(Collections.singletonList(ciaVO));
@@ -157,6 +160,45 @@ public class DepositoEditarAction
 			return voltar();
 		}
 	}
+	
+	private void desabilitarEdicaoParametros() {
+		ParametroDepositoVO vo = new ParametroDepositoVO();
+		vo.setCodigoApolice(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoBancoVencimento(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoBloqueto(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoCpfCnpj(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoDossie(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoEndosso(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoItem(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoParcela(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoProtocolo(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoRamo(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoSucursal(ConstantesDEPI.INDICADOR_INATIVO);
+		vo.setCodigoTipo(ConstantesDEPI.INDICADOR_INATIVO);
+		
+		getModel().setParametro(vo);
+	}
+
+	public String prorrogar() {
+		String retorno = alterar();
+		desabilitarEdicaoParametros();
+		this.getModel().setTipoAcao(TipoAcao.PRORROGAR_CANCELAR);
+		return retorno;
+	}
+
+	public String movimento() {
+		String retorno = alterar();
+		desabilitarEdicaoParametros();
+		this.getModel().setTipoAcao(TipoAcao.MOVIMENTO);
+		return retorno;
+	}
+
+	public String lancamento() {
+		String retorno = alterar();
+		desabilitarEdicaoParametros();
+		this.getModel().setTipoAcao(TipoAcao.LANCAMENTO);
+		return retorno;
+	}
 
 	private void definirCompanhia(int codUsuario, CompanhiaSeguradoraVO ciaVO) {
 		int codigoCompanhia = ciaVO.getCodigoCompanhia();
@@ -180,7 +222,7 @@ public class DepositoEditarAction
 			definirBanco(ciaVO, bancoVO);
 		}
 	}
-
+	
 	private void definirBanco(CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO) {
 		DepositoEditarFormModel model = getModel();
 		model.setCodBanco(String.valueOf(bancoVO.getCdBancoExterno()));

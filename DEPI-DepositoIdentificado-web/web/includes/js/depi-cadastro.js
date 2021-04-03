@@ -1231,11 +1231,49 @@ var fnReady = function ($) {
 		});
 		$("#AcaoForm").trigger('pessoas');
 		$.deposito.parametros(opcoes.parametros);
+		$("#pessoaDepositante, #nomePessoa").prop("disabled", function(){
+			var t = $(this), disabled = t.prop("disabled") || opcoes.parametros.codigoCpfCnpj == 'N';
+			t.prop("disabled", disabled);
+		});
+		Calendar.setup({
+		    inputField     : "dtVencimentoDeposito",
+		    ifFormat       : "%d/%m/%Y",
+		    button         : "btnVencimentoDeposito",
+		    align          : "bR",
+			showsTime      : false,
+				singleClick    : true
+		});
+	};
+	
+	$.deposito.prorrogar = function() {
+		Calendar.setup({
+			inputField     : "dataProrrogacao",
+			ifFormat       : "%d/%m/%Y",
+			button         : "btnDataProrrogacao",
+			showsTime      : false,
+			singleClick    : true
+		});
+		Calendar.setup({
+			inputField     : "dtCancelamentoDepositoIdentificado",
+			ifFormat       : "%d/%m/%Y",
+			button         : "btnCancelamentoDepositoIdentificado",
+			align          : "bR",
+			showsTime      : false,
+			singleClick    : true
+		});
+
+		$(".acaoProrrogarCancelarOpt").click(function(){
+			var t = $(this), target = t.attr("data-target");
+			$('#'+target).focus();
+		});
+		$(".btnCalendar").click(function(){
+			
+		});
 	};
 	
 	$.deposito.parametros = function(parametros) {
 		$.each(parametros, function(prop, value){
-			$("#"+prop).prop("disabled", value != 'N');
+			$("#"+prop).prop("disabled", value == 'N');
 		});
 	};
 	

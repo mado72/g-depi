@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -205,7 +206,16 @@ public class DepositoCrudHelper implements
 		model.setCodigoDepositoIdentificado(vo.getCodigoDepositoIdentificado());
 		model.setDv(vo.getDv());
 		
-		model.setDataProrrogacao(dataFormatada(vo.getDataProrrogacao()));
+		if (vo.getDataProrrogacao() != null) {
+			model.setDataProrrogacao(SDF.format(vo.getDataProrrogacao()));
+		}
+		else if (vo.getDtVencimentoDeposito() != null) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(vo.getDtVencimentoDeposito());
+			c.add(Calendar.DAY_OF_YEAR, 1);
+			model.setDataProrrogacao(SDF.format(c.getTime()));
+		}
+		
 		model.setDtCancelamentoDepositoIdentificado(dataFormatada(vo.getDtCancelamentoDepositoIdentificado()));
 		model.setDtVencimentoDeposito(dataFormatada(vo.getDtVencimentoDeposito()));
 		
