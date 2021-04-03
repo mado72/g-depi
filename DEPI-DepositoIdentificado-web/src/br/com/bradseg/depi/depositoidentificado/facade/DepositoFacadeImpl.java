@@ -1,6 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bucb.servicos.model.ejb.PessoaSessionFacade;
 import br.com.bradseg.bucb.servicos.model.exception.BucBusinessException;
@@ -471,6 +473,110 @@ public class DepositoFacadeImpl implements DepositoFacade {
 		parametro.setCompanhia(vo.getCia());
 		
 		return parametroDAO.obterPorChave(parametro);
+	}
+	
+	@Override
+	public void prorrogar(DepositoVO vo, String ipCliente) {
+		validarChave(vo);
+		
+		DepositoVO dep = obterPorChave(vo,
+				vo.getCodigoResponsavelUltimaAtualizacao(), ipCliente);
+		
+		dep.setIndicadorDepositoProrrogado(ConstantesDEPI.INDICADOR_ATIVO);
+		dep.setDataProrrogacao(vo.getDataProrrogacao());
+		dep.setCodigoResponsavelUltimaAtualizacao(vo.getCodigoResponsavelUltimaAtualizacao());
+		
+		if (depositoDAO.verificarLancamentoDeposito(dep)) {
+			throw new DEPIBusinessException("msg.erro.deposito.comLancamento");
+		}
+		
+		if (dep.getSituacaoArquivoTransferencia() != ConstantesDEPI.ARQUIVO_A_ENVIAR
+				&& depositoDAO.verificarEnvioArquivoTransferencia(dep)) {
+			
+			dep.setSituacaoArquivoTransferencia(ConstantesDEPI.ARQUIVO_RENVIAR);
+			
+		} else {
+			
+			dep.setSituacaoArquivoTransferencia(ConstantesDEPI.ARQUIVO_A_ENVIAR);
+			
+		}
+		
+		validarProrrogacao(dep);
+		
+		// Recarrega do banco
+		vo = obterPorChave(vo, vo.getCodigoResponsavelUltimaAtualizacao(), ipCliente);
+		try {
+			depositoDAO.registrarLogs(vo, dep, ConstantesDEPI.PRORROGAR_DEPOSITO);
+			depositoDAO.prorrogar(dep);
+		} catch (BusinessException e) {
+			throw new DEPIBusinessException(e, "msg.erro.deposito.prorrogar");
+		}
+
+	}
+	
+	@Override
+	public void cancelar(DepositoVO vo, String ipCliente) {
+		validarChave(vo);
+		
+		DepositoVO dep = obterPorChave(vo,
+				vo.getCodigoResponsavelUltimaAtualizacao(), ipCliente);
+		
+		dep.setIndicadorDepositoCancelado(ConstantesDEPI.INDICADOR_ATIVO);
+		dep.setDtCancelamentoDepositoIdentificado(vo.getDtCancelamentoDepositoIdentificado());
+		dep.setCodigoResponsavelUltimaAtualizacao(vo.getCodigoResponsavelUltimaAtualizacao());
+		
+		if (depositoDAO.verificarLancamentoDeposito(dep)) {
+			throw new DEPIBusinessException("msg.erro.deposito.comLancamento");
+		}
+		
+		if (dep.getSituacaoArquivoTransferencia() != ConstantesDEPI.ARQUIVO_A_ENVIAR
+				&& depositoDAO.verificarEnvioArquivoTransferencia(dep)) {
+			
+			dep.setSituacaoArquivoTransferencia(ConstantesDEPI.ARQUIVO_RENVIAR);
+			
+		} else {
+			
+			dep.setSituacaoArquivoTransferencia(ConstantesDEPI.ARQUIVO_CANCELADO);
+			
+		}
+		
+		// Recarrega do banco
+		vo = obterPorChave(vo, vo.getCodigoResponsavelUltimaAtualizacao(), ipCliente);
+		try {
+			depositoDAO.registrarLogs(vo, dep, ConstantesDEPI.PRORROGAR_DEPOSITO);
+			depositoDAO.cancelar(dep);
+		} catch (BusinessException e) {
+			throw new DEPIBusinessException(e, "msg.erro.deposito.cancelar");
+		}
+	}
+	
+	private void validarChave(DepositoVO vo) {
+		if (BaseUtil.isNZB(vo)) {
+			throw new DEPIBusinessException(ConstantesDEPI.MSG_CUSTOMIZADA,
+                "Dep\u00F3sito: vo - DepositoVO \u00E9 null");
+		}
+		if (BaseUtil.isNZB(vo.getCodigoDepositoIdentificado())) {
+			throw new DEPIBusinessException(ConstantesDEPI.MSG_CUSTOMIZADA,
+					"C\u00F3digo Dep\u00F3sito");
+		}
+	}
+
+	private void validarProrrogacao(DepositoVO dep) {
+        if (BaseUtil.isNZB(dep.getDtVencimentoDeposito())) {
+        	throw new DEPIBusinessException("msg.erro.deposito.obrigatorio", "dtVencimentoDeposito");
+        }
+
+        if (BaseUtil.verificarSeAsDatasSaoIguais(dep.getDataProrrogacao(), dep.getDtVencimentoDeposito())) {
+        	throw new DEPIBusinessException("msg.erro.deposito.dataProrrogacaoIgualDtVencimento");
+        }
+        
+        if (dep.getDtVencimentoDeposito().compareTo(dep.getDataProrrogacao()) > 0) {
+        	throw new DEPIBusinessException("msg.erro.deposito.dataProrrogacaoMenorDtVencimento");
+        }
+
+        if (dep.getDataProrrogacao().compareTo(new Date()) < 0) {
+        	throw new DEPIBusinessException("msg.erro.deposito.dataProrrogacaoMenorDtAtual");
+        }
 	}
 	
 }

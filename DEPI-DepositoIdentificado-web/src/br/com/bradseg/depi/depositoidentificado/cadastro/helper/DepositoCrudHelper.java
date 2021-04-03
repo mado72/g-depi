@@ -22,6 +22,8 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
@@ -417,6 +419,24 @@ public class DepositoCrudHelper implements
 			AgenciaVO agenciaVO) {
 		
 		return facade.obterContas(codUsuario, ciaVO, bancoVO, agenciaVO);
+	}
+
+	public void prorrogar(DepositoEditarFormModel model, int codUsuarioLogado) {
+		DepositoVO vo = new DepositoVO(Long.parseLong(model.getCodigo()));
+		vo.setCodigoResponsavelUltimaAtualizacao(codUsuarioLogado);
+		vo.setIndicadorDepositoProrrogado(ConstantesDEPI.INDICADOR_ATIVO);
+		vo.setDataProrrogacao(BaseUtil.parserStringToSQLDate(model.getDataProrrogacao()));
+		
+		getFacade().prorrogar(vo, null);
+	}
+
+	public void cancelar(DepositoEditarFormModel model, int codUsuarioLogado) {
+		DepositoVO vo = new DepositoVO(Long.parseLong(model.getCodigo()));
+		vo.setCodigoResponsavelUltimaAtualizacao(codUsuarioLogado);
+		vo.setIndicadorDepositoCancelado(ConstantesDEPI.INDICADOR_ATIVO);
+		vo.setDtCancelamentoDepositoIdentificado(BaseUtil.parserStringToSQLDate(model.getDtCancelamentoDepositoIdentificado()));
+		
+		getFacade().cancelar(vo, null);
 	}
 
 }

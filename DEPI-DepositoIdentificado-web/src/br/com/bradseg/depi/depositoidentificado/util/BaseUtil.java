@@ -40,6 +40,8 @@ public final class BaseUtil {
 
 	/** Constante responsavel por armazenar LOGGER. */
 	private static final Logger LOGGER = Logger.getLogger(BaseUtil.class);
+	
+	public static final SimpleDateFormat SDF_DDMMYYYY = new SimpleDateFormat("dd/MM/yyyy"); 
     /**
      * Construtor privado.
      */
@@ -873,4 +875,11 @@ public final class BaseUtil {
     	BeanUtils.copyProperties(newObject, oldObject);
     	return newObject;
    }
+
+	public static boolean verificarSeAsDatasSaoIguais(Date dataProrrogacao,
+			Date dtVencimentoDeposito) {
+		
+		return SDF_DDMMYYYY.format(dataProrrogacao).equals(
+				SDF_DDMMYYYY.format(dtVencimentoDeposito));
+	}
 }

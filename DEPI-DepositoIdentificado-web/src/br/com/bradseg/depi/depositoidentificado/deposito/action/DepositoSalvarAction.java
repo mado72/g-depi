@@ -91,6 +91,13 @@ public class DepositoSalvarAction extends
 	}
 	
 	public String salvarProrrogarCancelar() {
+		DepositoEditarFormModel model = getModel();
+		if ("P".equals(acaoProrrogarCancelar)) {
+			crudHelper.prorrogar(model, getCodUsuarioLogado());
+		}
+		else {
+			crudHelper.cancelar(model, getCodUsuarioLogado());
+		}
 		return SUCCESS;
 	}
 	

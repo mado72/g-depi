@@ -185,4 +185,8 @@ public interface DepositoFacade {
 	 */
 	ParametroDepositoVO obterParametro(DepositoVO vo);
 
+	void prorrogar(DepositoVO vo, String ipCliente);
+
+	void cancelar(DepositoVO vo, String ipCliente);
+
 }
