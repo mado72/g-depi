@@ -17,32 +17,40 @@
     
     
 		
-<s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank">
+<s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank"  onload="loadPage()"   >
     	<input type="hidden" id="acao" name="acao" value="${acao}" />
     	<input type="hidden" id="tituloTabela" name="tituloTabela" value="${tituloTabela}" />
     	<input type="hidden" id="acaoOriginal" name="acaoOriginal" value="${acao}" />
-        <!--    
-    	<input type="hidden" id="hdntipoRelatorio" name="codigoAutorizador" value="" />
-		<input type="hidden" id="hdnvisualizacao" name="visualizacao" value="" />
-	    <input type="hidden" id="hdndeposito" name="deposito" value="1"/>
-	    <input type="hidden" id="hdnsituacaoEnvioRetorno" name="situacaoEnvioRetorno" value="ASC"/>
-	    <input type="hidden" id="hdnsituacaoManutencoes" name="situacaoManutencoes" value=""/>
-	    <input type="hidden" id="hdnsucursal" name="sucursal" value="0"/>
-	    
-	    <input type="hidden" id="hdnapolice" name="apolice" value=""/>
-	    <input type="hidden" id="hdnendosso" name="endosso" value=""/>
-	    
-	    <input type="hidden" id="hdncodigoAutorizador" name="codigoAutorizador" value = "" />
-	    <input type="hidden" id="hdncpfCnpj" name="cpfCnpj" value = "" />
-	    <input type="hidden" id="hdncodigoContaCorrente" name="codigoContaCorrente" value = "" />	
-	        	    
-	    <input type="hidden" id="hdndataInicial" name="dataInicial" value = "" />
-	    <input type="hidden" id="hdndataFinal" name="dataFinal" value = "" />
-	    <input type="hidden" id="hdnvalorInicial" name="valorInicial" value = "" onkeypress="return mascararValor(this, event, 13)"/>		
-	    <input type="hidden" id="hdnvalorFinal" name="valorFinal" value = ""  onkeypress="return mascararValor(this, event, 13)"/>
-	    <input type="hidden" id="hdndescricaoDetalhada" name="descricaoDetalhada" value = "" />	
- 		 -->
+    	
+  		
+        	<input type="hidden" id="acaoFrm" name="filtroVO.acao" value="" />
+	        
+        	<input type="hidden" id="tipoRelatorioFrm" name="filtroVO.tipoRelatorio" value="" />
 
+        	<input type="hidden" id="visualizacaoFrm" name="filtroVO.visualizacao" value="" />
+				
+			<input type="hidden" id="codigoCompanhiaFrm" name="filtroVO.codigoCompanhia" value="0" />
+			<input type="hidden" id="codigoDepartamentoFrm" name="filtroVO.codigoDepartamento" value="0" />
+			<input type="hidden" id="codigoMotivoDepositoFrm" name="filtroVO.codigoMotivoDeposito" value="0" />
+
+		    <input type="hidden" id="depositoFrm" name="filtroVO.deposito" value=""/>
+		    <input type="hidden" id="situacaoEnvioRetornoFrm" name="filtroVO.situacaoEnvioRetorno" value=""/>
+		    <input type="hidden" id="situacaoManutencoesFrm" name="filtroVO.situacaoManutencoes" value=""/>
+				    
+		    <input type="hidden" id="sucursalFrm" name="filtroVO.sucursal" value=""/>		    
+		    <input type="hidden" id="apoliceFrm" name="filtroVO.apolice" value=""/>
+		    <input type="hidden" id="endossoFrm" name="filtroVO.endosso" value=""/>
+		    
+		    <input type="hidden" id="codigoAutorizadorFrm" name="filtroVO.codigoAutorizador" value = "" />
+		    <input type="hidden" id="cpfCnpjFrm" name="filtroVO.cpfCnpj" value = "" />
+		    <input type="hidden" id="codigoContaCorrenteFrm" name="filtroVO.codigoContaCorrente" value = "" />	
+		         	
+		    <input type="hidden" id="dataInicialFrm" name="filtroVO.dataInicial" value = "" />
+		    <input type="hidden" id="dataFinalFrm" name="filtroVO.dataFinal" value = "" />
+		    <input type="hidden" id="valorInicialFrm" name="filtroVO.valorInicial" value = ""/>		
+		    <input type="hidden" id="valorFinalFrm" name="valorFinal" value = "" />
+		    <input type="hidden" id="descricaoDetalhadaFrm" name="filtroVO.descricaoDetalhada" value = "" />
+		  
 
 	<table  class="tabela_principal" align="center">
 		<tr>
@@ -128,7 +136,7 @@
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoCompanhia" 
-						  			listValue="codigoCompanhia" 
+						  			listValue="descricaoCompanhia" 
 						  			name="companhia.listaCompanhiaOrd"
 						  			style="width: 100%;"/>
 						  	</s:if>
@@ -190,7 +198,7 @@
 					     <input type="text" id="sucursal" size="5" onkeypress="return permitirApenasInteiros(event);" maxlength="5"  />
 					<td class="td_label" width="13%">&nbsp; Apólice </td>
 					<td colspan="4">&nbsp;
-						<input type="text" id="apolice"  size="12" onkeypress="return permitirApenasInteiros(event);" maxlength="9"  />
+						<input type="text" name="apolice"  id="apolice"  size="12" onkeypress="return permitirApenasInteiros(event);" maxlength="9"  />
 					</td>					
 				</tr>
 					
@@ -204,13 +212,13 @@
 					</td>
 					<td class="td_label">&nbsp;Código Autorizador</td>
 					<td colspan="4">&nbsp;
-						<input type="text" id="codigoAutorizador" size="12" onkeypress="return permitirApenasInteiros(event);" maxlength="5"  />
+						<input type="text" name="codigoAutorizador" id="codigoAutorizador" size="12" onkeypress="return permitirApenasInteiros(event);" maxlength="5"  />
 					</td>
 				</tr>
 				<tr>
 					<td class="td_label">CPF/CNPJ</td>
 					<td>&nbsp;
-						<input type="hidden" id="hdd_cpfCnpj" value="" /> 
+						<input type="hidden" id="hdd_cpfCnpj"  name="hdd_cpfCnpj" value="" /> 
 						<input type="text" id="cpfCnpj" class="cpfCnpj" size="28" onkeypress="return permitirApenasInteiros(event);" maxlength="18" 
 						onfocus="document.getElementById('hdd_cpfCnpj').value = this.value;" onkeypress="return formatarCPFCNPJ(this, event);" />
 					</td>							
@@ -266,11 +274,11 @@
 				<tr>  
 					<td class="td_label" style="height: 18px;">	Valor Inicial</td>
 					<td>&nbsp;De 
-					    <input type="text" id="valorInicial" class="input" size="35" maxlength="18" maxlength="13" style="margin-left: 15px;" 
+					    <input type="text" name="valorInicial" id="valorInicial" class="input" size="35" maxlength="18" maxlength="13" style="margin-left: 15px;" 
 				        onkeypress="return mascararValor(this, event, 13)"  >					
 					</td>
 					<td colspan="5">&nbsp;Valor Final
-					    <input type="text" id="valorFinal" class="input" size="35" maxlength="18" maxlength="13" style="margin-left: 15px;" 
+					    <input type="text" name="valorFinal" id="valorFinal" class="input" size="35" maxlength="18" maxlength="13" style="margin-left: 15px;" 
 				        onkeypress="return mascararValor(this, event, 13)"  >					
 					</td>
 				</tr>		
@@ -307,18 +315,18 @@
 					'NOT_exibirManutencoesAnalitico_and_NOT_exibirManutencoesSintetico
 					 -->
 					<s:if test="%{#vacao=='exibirManutencoesAnalitico' or #vacao=='exibirManutencoesSintetico' }">
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoesA" value="A" class="optionbutton" onclick = "ajustarPagina();">Aceitos  
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoesT" value="T" class="optionbutton" onclick = "ajustarPagina();">Transferidos
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoesD" value="D" class="optionbutton"onclick = "ajustarPagina();">Devolvidos  
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoesR" value="R" class="optionbutton" onclick = "ajustarPagina();">Rejeitados
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoesVZ" value=""   checked="checked" class="optionbutton" onclick = "ajustarPagina();">Todos
+						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="A" class="optionbutton" onclick = "ajustarPagina();">Aceitos  
+						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="T" class="optionbutton" onclick = "ajustarPagina();">Transferidos
+						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="D" class="optionbutton"onclick = "ajustarPagina();">Devolvidos  
+						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="R" class="optionbutton" onclick = "ajustarPagina();">Rejeitados
+						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value=""   checked="checked" class="optionbutton" onclick = "ajustarPagina();">Todos
 					</s:if>
 					<s:if test="%{#vacao!='exibirManutencoesAnalitico' and #vacao!='exibirManutencoesSintetico' }">
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoesA" value="A" class="optionbutton" onclick = "ajustarPagina();" disabled>Aceitos  
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoesT" value="T" class="optionbutton" onclick = "ajustarPagina();" disabled>Transferidos
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoesD" value="D" class="optionbutton"onclick = "ajustarPagina();" disabled>Devolvidos  
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoesR" value="R" class="optionbutton" onclick = "ajustarPagina();" disabled>Rejeitados
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoesVZ" value=""   checked="checked" class="optionbutton" onclick = "ajustarPagina();"  disabled>Todos
+						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="A" class="optionbutton" onclick = "ajustarPagina();" disabled>Aceitos  
+						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="T" class="optionbutton" onclick = "ajustarPagina();" disabled>Transferidos
+						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="D" class="optionbutton"onclick = "ajustarPagina();" disabled>Devolvidos  
+						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="R" class="optionbutton" onclick = "ajustarPagina();" disabled>Rejeitados
+						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value=""   checked="checked" class="optionbutton" onclick = "ajustarPagina();"  disabled>Todos
 					</s:if>
 	
 
