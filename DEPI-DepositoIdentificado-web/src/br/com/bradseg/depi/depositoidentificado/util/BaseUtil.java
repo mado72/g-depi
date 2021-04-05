@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,6 +52,8 @@ public final class BaseUtil {
 
 	public static final SimpleDateFormat SDF_DDMMYYYY = new SimpleDateFormat(
 			"dd/MM/yyyy");
+	
+	public static final NumberFormat DECIMAL_FMT = NumberFormat.getNumberInstance();
 
 	/**
 	 * Construtor privado.
@@ -1176,5 +1179,19 @@ public final class BaseUtil {
 	    }
 
 	    return mapProps;
+	}
+
+	public static String formatarValor(BigDecimal valor) {
+		if (valor == null) {
+			return null;
+		}
+		return DECIMAL_FMT.format(valor.doubleValue());
+	}
+
+	public static String formatData(Date data) {
+		if (data == null) {
+			return null;
+		}
+		return SDF_DDMMYYYY.format(data);
 	}
 }

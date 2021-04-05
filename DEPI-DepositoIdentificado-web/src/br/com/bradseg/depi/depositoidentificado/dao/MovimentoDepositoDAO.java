@@ -13,4 +13,6 @@ public interface MovimentoDepositoDAO {
 
 	void alterar(MovimentoDepositoVO vo);
 
+	MovimentoDepositoVO obterPorChave(MovimentoDepositoVO chave);
+
 }

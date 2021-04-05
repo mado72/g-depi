@@ -7,11 +7,13 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
+import br.com.bradseg.depi.depositoidentificado.dao.mapper.MovimentoDepositoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.MovimentoDepositoVO;
@@ -39,6 +41,28 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
 	@Override
 	public DataSource getDataSource() {		
 		return dataSource;
+	}
+	
+	/**
+	 * Obtém um movimento pela sua chave
+	 * @param chave Chave do movimento
+	 * @return Movimento encontrado ou null
+	 */
+	@Override
+	public MovimentoDepositoVO obterPorChave(MovimentoDepositoVO chave) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("whr1", chave.getCodigoMovimento());
+		
+		try {
+			MovimentoDepositoVO vo = getJdbcTemplate().queryForObject(
+					QuerysDepi.DEPOSITO_MOVIMENTO_OBTERPORCHAVE, params,
+					new MovimentoDepositoDataMapper());
+			
+			return vo;
+			
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
 	}
 
 	/**

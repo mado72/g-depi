@@ -1277,6 +1277,40 @@ var fnReady = function ($) {
 		});
 	};
 	
+	// movimento
+	// ---------------------------------------------------------------------
+	$.namespace( '$.movimento' );
+	
+	$.movimento.prepararFormulario = function(opcoes) {
+		var actionForm = $(opcoes.idForm), codMovimentoAcao = opcoes.tipoAcao, 
+			BtnSalvar = actionForm.find('#BtnSalvar'), BtnCancelar = actionForm.find("#BtnCancelar");
+		
+		actionForm.find(".codMovimentoAcao").click(function(){
+			var t = $(this), v = t.val();
+			
+			$('.movConta').prop('disabled', true);	
+			$('.movCheque').prop('disabled', true);	
+			
+			switch (v) {
+			case 'D':
+				$('.movCheque').prop('disabled', false);
+			case 'T':
+			case 'R':
+				$('.movConta').prop('disabled', false);
+			}
+		});
+		
+		actionForm.find(".codMovimentoAcao[value='"+codMovimentoAcao+"']").prop('checked', true);
+		
+		BtnSalvar.click(function() {
+			actionForm.submit();
+		});
+		
+		BtnCancelar.click(function() {
+			window.location.href = window.location.href.replace(/\/deposito\/.*/, '/deposito/consultar/index.do');
+		});
+	}
+	
 	// paginacao
 	// ---------------------------------------------------------------------
 	// definition

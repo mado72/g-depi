@@ -26,6 +26,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.ContaCorrenteDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.MovimentoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
@@ -46,6 +47,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MovimentoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
@@ -82,6 +84,9 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	
 	@Autowired
 	private MotivoDepositoDAO motDepDAO;
+	
+	@Autowired
+	private MovimentoDepositoDAO movimentoDAO;
 	
 	@Autowired
 	private BancoDAO bancoDAO;
@@ -180,6 +185,8 @@ public class DepositoFacadeImpl implements DepositoFacade {
         		vo.setCpfCnpj("01234567890");
         		vo.setNomePessoa("Nome Fake");
         	}
+        	
+        	vo.setMotivoDeposito(motDepDAO.obterPorChave(vo.getMotivoDeposito()));
 			
 			return vo;
 		} catch (Exception e) {
@@ -550,6 +557,43 @@ public class DepositoFacadeImpl implements DepositoFacade {
 		}
 	}
 	
+	@Override
+	public MovimentoDepositoVO obterMovimentoDeposito(DepositoVO vo) {
+		return movimentoDAO.obterPorChave(new MovimentoDepositoVO(vo
+				.getCodigoDigitoDeposito()));
+	}
+	
+	@Override
+	public void inserirMovimento(MovimentoDepositoVO vo) {
+		validarInformacoesMovimento(vo);
+		movimentoDAO.inserir(vo);
+	}
+	
+	@Override
+	public void alterarMovimento(MovimentoDepositoVO vo) {
+		validarInformacoesMovimento(vo);
+		movimentoDAO.alterar(vo);
+	}
+
+    private void validarInformacoesMovimento(MovimentoDepositoVO vo) throws DEPIBusinessException {
+    	try {
+			switch (vo.getIndicacaoAcao()) {
+			case "T":
+				BaseUtil.validarParametro(vo.getBancoMovimento(), "Banco");
+				BaseUtil.validarParametro(vo.getAgenciaMovimento(), "Ag\u00EAncia");
+				BaseUtil.validarParametro(vo.getContaMovimento(), "Conta Corrente");
+			case "D":
+				BaseUtil.validarParametro(vo.getNroCheque(), "N\u00FAmero do Cheque");
+				break;
+
+			default:
+				break;
+			}
+		} catch (IntegrationException e) {
+			throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, e.getMessage());
+		}
+    }
+
 	private void validarChave(DepositoVO vo) {
 		if (BaseUtil.isNZB(vo)) {
 			throw new DEPIBusinessException(ConstantesDEPI.MSG_CUSTOMIZADA,

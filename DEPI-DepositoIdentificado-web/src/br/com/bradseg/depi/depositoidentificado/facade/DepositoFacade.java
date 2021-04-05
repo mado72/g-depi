@@ -14,6 +14,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MovimentoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
@@ -184,9 +185,15 @@ public interface DepositoFacade {
 	 * @return Parâmetro
 	 */
 	ParametroDepositoVO obterParametro(DepositoVO vo);
-
+	
 	void prorrogar(DepositoVO vo, String ipCliente);
-
+	
 	void cancelar(DepositoVO vo, String ipCliente);
+
+	MovimentoDepositoVO obterMovimentoDeposito(DepositoVO vo);
+	
+	void inserirMovimento(MovimentoDepositoVO vo);
+	
+	void alterarMovimento(MovimentoDepositoVO vo);
 
 }

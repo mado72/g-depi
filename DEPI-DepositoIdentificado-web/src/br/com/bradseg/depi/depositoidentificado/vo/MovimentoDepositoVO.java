@@ -1,8 +1,9 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
+
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 
 /**
  * Classe Anotada de Mapeamento com a tabela MOVTO_FINCR_DEP - Movimentos dos Dep�sitos Identificados.
@@ -80,7 +81,7 @@ public class MovimentoDepositoVO implements Serializable {
      * código do responsável pela �ltima alteração.
      */
 //    @TableField(name = "CUSUAR_RESP_ATULZ")
-    private BigDecimal codigoResponsavelUltimaAtualizacao;
+    private long codigoResponsavelUltimaAtualizacao;
 
     /**
      * indicador que sinaliza se foi excluido logicamente. 'S' = exclu�da; 'N' = não exclu�da; 'D' = desativado
@@ -212,15 +213,15 @@ public class MovimentoDepositoVO implements Serializable {
      * Retorna o valor do atributo codigoResponsavelUltimaAtualizacao.
      * @return o valor do atributo codigoResponsavelUltimaAtualizacao
      */
-    public BigDecimal getCodigoResponsavelUltimaAtualizacao() {
+    public long getCodigoResponsavelUltimaAtualizacao() {
         return codigoResponsavelUltimaAtualizacao;
     }
 
     /**
      * Especifica o valor do atributo codigoResponsavelUltimaAtualizacao.
-     * @param codigoResponsavelUltimaAtualizacao - BigDecimal do codigoResponsavelUltimaAtualizacao a ser configurado.
+     * @param codigoResponsavelUltimaAtualizacao - long do codigoResponsavelUltimaAtualizacao a ser configurado.
      */
-    public void setCodigoResponsavelUltimaAtualizacao(BigDecimal codigoResponsavelUltimaAtualizacao) {
+    public void setCodigoResponsavelUltimaAtualizacao(long codigoResponsavelUltimaAtualizacao) {
         this.codigoResponsavelUltimaAtualizacao = codigoResponsavelUltimaAtualizacao;
     }
 
@@ -229,7 +230,7 @@ public class MovimentoDepositoVO implements Serializable {
      * @return o valor do atributo dataHoraAtualizacao
      */
     public Date getDataHoraAtualizacao() {
-        return (Date) dataHoraAtualizacao.clone();
+        return BaseUtil.getDate(dataHoraAtualizacao);
     }
 
     /**
@@ -237,7 +238,7 @@ public class MovimentoDepositoVO implements Serializable {
      * @param dataHoraAtualizacao - Date do dataHoraAtualizacao a ser configurado.
      */
     public void setDataHoraAtualizacao(Date dataHoraAtualizacao) {
-        this.dataHoraAtualizacao = (Date) dataHoraAtualizacao.clone();
+        this.dataHoraAtualizacao = BaseUtil.getDate(dataHoraAtualizacao);
     }
 
     /**
