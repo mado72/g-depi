@@ -39,6 +39,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseAction;
 import br.com.bradseg.depi.depositoidentificado.relatorio.facade.ConsultarRelatorioFacade;
 import br.com.bradseg.depi.depositoidentificado.relatorio.util.RelogioUtil;
+import br.com.bradseg.depi.depositoidentificado.relatorio.vo.FiltroVO;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
@@ -144,6 +145,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
     private String valorFinal;
     private String descricaoDetalhada;
     private String subtitulo;
+    private FiltroVO filtroVO;
 	
 	@Autowired
 	private ConsultarRelatorioFacade consultarRelatorioFacade;
@@ -205,8 +207,8 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
 	public void exibirEnvioRetornoAnalitico() throws DEPIIntegrationException {
 	        try {
-	            setSubtitulo("Envio/Retorno BancoVO - Analítico");
-	            setTituloTabela("Dados de Envio/Retorno BancoVO - Analítico");
+	            setSubtitulo("Envio/Retorno Banco - Analítico");
+	            setTituloTabela("Dados de Envio/Retorno Banco - Analítico");
 	            setTipoRelatorio("ER");
 	            setVisualizacao("A");
 	            carregarComboCompanhia();
@@ -225,8 +227,8 @@ public class ConsultarRelatorioAction extends BaseAction  {
     public void exibirEnvioRetornoSintetico() throws DEPIIntegrationException {
 
             try {
-                setSubtitulo("Envio/Retorno BancoVO - Sintético");
-                setTituloTabela("Dados de Envio/Retorno BancoVO - Sintético");
+                setSubtitulo("Envio/Retorno Banco - Sintético");
+                setTituloTabela("Dados de Envio/Retorno Banco - Sintético");
                 setTipoRelatorio("ER");
                 setVisualizacao("S");
 	    		carregarComboCompanhia();
@@ -243,8 +245,8 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
             try {
 
-                setSubtitulo("Extrato BancoVO - Analítico");
-                setTituloTabela("Dados de Extrato BancoVO - Analítico");
+                setSubtitulo("Extrato Banco - Analítico");
+                setTituloTabela("Dados de Extrato Banco - Analítico");
                 setTipoRelatorio("EX");
                 setVisualizacao("A");
 	    		carregarComboCompanhia();
@@ -261,8 +263,8 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	  public void exibirExtratoSintetico() throws DEPIIntegrationException {
 
 		        try {
-		            setSubtitulo("Extrato BancoVO - Sintético");
-		            setTituloTabela("Dados de Extrato BancoVO - Sintético");
+		            setSubtitulo("Extrato Banco - Sintético");
+		            setTituloTabela("Dados de Extrato Banco - Sintético");
 		            setTipoRelatorio("EX");
 		            setVisualizacao("S");
 		    		carregarComboCompanhia();
@@ -342,10 +344,10 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	         }
 	    	
 	         //
-	         filtro.setDataInicio(RelogioUtil.validaData("01/01/2018"));
+	         filtro.setDataInicio(RelogioUtil.validaData("01/01/2013"));
 	    	 //filtro.setDataInicio(BaseUtil.parserStringToDate(filtro.getDataInicio()+ " "+ConstantesDEPI.HORA_INI,ConstantesDEPI.FORMATO_DATO_HORA2));
 	    	// LOGGER.error("setDataInicio2");
-	    	 filtro.setDataFinal(RelogioUtil.validaData("30/12/2018"));
+	    	 filtro.setDataFinal(RelogioUtil.validaData("30/12/2020"));
 	    	 //filtro.setDataFinal(BaseUtil.parserStringToDate(filtro.getDataFinal()+ " "+ConstantesDEPI.HORA_FIM,ConstantesDEPI.FORMATO_DATO_HORA2));
 
 	    	 
@@ -365,15 +367,64 @@ public class ConsultarRelatorioAction extends BaseAction  {
 			 filtro.setCpfCnpj("");
 			 filtro.setSituacaoArquivo(0);
 			 
-			//	private String  ip; 
-			//	private String  usuario; 
-			//	private String  descricaoBasica;
-			//    private String  descricaoDetalhada;
-			//	private String  sigla;
-			//    private String  nome;
 			 
 			 
-			 
+		        if (!BaseUtil.isNZB(filtroVO.getCodigoCompanhia() )) {
+		            filtro.setCodigoCia(new Integer(filtroVO.getCodigoCompanhia()));
+		        }
+
+		        if (!BaseUtil.isNZB(filtroVO.getCodigoAutorizador())) {
+		            filtro.setCodigoAutorizador(Integer.valueOf(filtroVO.getCodigoAutorizador()));
+		        }
+
+		        if (!BaseUtil.isNZB(filtroVO.getCodigoDepartamento())) {
+		            filtro.setCodigoDepartamento(new Integer(filtroVO.getCodigoDepartamento()));
+		        }
+		    	/*
+				
+		        if (!BaseUtil.isNZB(filtroVO.getCodigoMotivoDeposito())) {
+		            filtro.setCodigoMotivo(filtroVO.getCodigoMotivoDeposito());
+		        }
+
+		        if (!BaseUtil.isNZB(filtroVO.getApolice())) {
+		            filtro.setApolice(Integer.valueOf(filtroVO.getApolice()));
+		        }
+
+		        if (!BaseUtil.isNZB(filtroVO.getSucursal())) {
+		            filtro.setSucursal(Integer.valueOf(filtroVO.getSucursal()));
+		        }
+
+		        if (!BaseUtil.isNZB(filtroVO.getEndosso())) {
+		            filtro.setEndosso(Integer.valueOf(filtroVO.getEndosso()));
+		        }
+
+		        filtro.setTipoDeposito(filtroVO.getDeposito());
+
+		        if (!BaseUtil.isNZB(filtroVO.getCpfCnpj())) {
+		            filtro.setCpfCnpj(BaseUtil.retiraMascaraCNPJ(filtroVO.getCpfCnpj()));
+		        }
+		    
+             if (!BaseUtil.isNZB(filtroVO.getDataFinal())) {
+                 filtro.setDataFinal(BaseUtil.parserStringToDate(filtroVO.getDataFinal().concat(" ").concat(ConstantesDEPI.HORA_FIM),
+                 		ConstantesDEPI.FORMATO_DATO_HORA2));
+             }
+
+             if (!BaseUtil.isNZB(filtroVO.getValorInicial())) {
+                 filtro.setValorInicial(new Double(getValorInicial()));
+             }
+
+		        if (!BaseUtil.isNZB(filtroVO.getValorFinal())) {
+		            filtro.setValorFinal(new Double(filtroVO.getValorFinal()));
+		        }
+		        
+		        if (!BaseUtil.isNZB(filtroVO.getCodigoContaCorrente())) {
+		            filtro.setContaCorrente(Integer.valueOf(filtroVO.getCodigoContaCorrente()));
+		        }
+
+		        filtro.setSituacaoArquivo(RelatorioEnvioRetornoUtil.obterCodigoSituacaoPorLetra(filtroVO.getSituacaoEnvioRetorno()));
+               
+		        filtro.setSituacaoManutencao(filtroVO.getSituacaoManutencoes());
+				 */			 
 			 
 			 
 			 
@@ -389,8 +440,8 @@ public class ConsultarRelatorioAction extends BaseAction  {
 		}	
 	  
 	public String gerarRelatorio() {
-
-		//acao = EXIBIRENVIORETORNOANALITICO;
+		LOGGER.error("XXXXXX="+filtroVO.toString());
+		acao = this.filtroVO.getAcao();
 		String retorno = SUCCESS;
 		if(acao.equals(EXIBIRENVIORETORNOANALITICO)){
 			retorno = this.consultarEnvioRetornoAnalitico();
@@ -507,8 +558,8 @@ public class ConsultarRelatorioAction extends BaseAction  {
             try {
                 List<RelatorioDadosComplementaresVO> dados = consultarRelatorioFacade.obterDadosComplementares(filtro);
                 
-                BigDecimal valorTotalPago = null;
-                BigDecimal valorTotalRegistrado = null;
+                BigDecimal valorTotalPago = BigDecimal.ZERO;
+                BigDecimal valorTotalRegistrado =  BigDecimal.ZERO;
                 
                 //Itera lista para obter totais gerais
                 for(RelatorioDadosComplementaresVO relatorio : dados){
@@ -621,9 +672,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
             List<RelatorioEnvioRetornoAnaliticoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
             
             for(RelatorioEnvioRetornoAnaliticoVO t: colRelatorio) {
-            	if(t.getVencimento()== null) {					
-            		LOGGER.error("getVencimento is null");
-            	}
+            	LOGGER.error("RelatorioEnvioRetornoAnaliticoVO:"+t.toString());
             }
          	
             
@@ -1532,6 +1581,24 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
 	public void setFileInputStream(InputStream fileInputStream) {
 		this.fileInputStream = fileInputStream;
+	}
+
+	public FiltroVO getFiltroVO() {
+		return filtroVO;
+	}
+
+	public void setFiltroVO(FiltroVO filtroVO) {
+		
+		try {
+			this.filtroVO = filtroVO;	
+		} catch (Exception e) {
+			LOGGER.error("XXXX-"+e.getMessage());
+			if (filtroVO != null) {
+				LOGGER.error(filtroVO.toString());
+			}	
+			this.filtroVO = new FiltroVO();
+		}
+		
 	}
 
 		

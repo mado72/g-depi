@@ -3,6 +3,10 @@
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script>
+function loadPage(){
+   ajustarPagina();
+}
+
 function ajustarPagina() {
 	var titulo = ''; var subtitulo = ''; 
 	//<s:text name="label.relatorio.consultar.cliente"/>
@@ -312,6 +316,8 @@ function limpar() {
    //alert("acao:"+acao +"  -   acaoOriginal:"+acaoOriginal);
    //document.location.href = '<c:out value="${pageContext.request.contextPath}" />/relatorio/ConsultarRelatorio.do?acao='+acaoOriginal;
    //submitForm2(undefined,  "/DEP-DepositoIdentificado/relatorio/consultarRelatorio.do?acao="+acaoOriginal);
+    limparCampos();
+   
 	limpaTela(acao);
 	return true;
 }
@@ -399,15 +405,291 @@ function validarValores() {
 	return true;
 }
 
-function gerarRelatorio(){
-	var acao = document.forms[0].acaoOriginal.value;	
-	document.location.href = document.forms[0].action + '?acao=' + acao;
-	//document.getElementById('formConsultarRelatorio').submit();
+
+//===========================Obter dados form=================================================// 
+function getTipoRelatorioVal() {
+   var value = '';
+   var tipoRelatorio = document.forms[0].elements['tipoRelatorio'];
+   
+   for (var i = 0; i < tipoRelatorio.length; i++) {
+     if (tipoRelatorio[i].checked ){
+        value = tipoRelatorio[i].value;
+     }
+   }
+   return value;
 }
 
 
+function getVisualizacaoVal(){
+   var visualizacao = document.forms[0].elements['visualizacao'];
+   var value = '';
+   for (var i = 0; i < visualizacao.length; i++) {
+     if (visualizacao[i].checked ){
+        value = visualizacao[i].value;
+     }
+   }
+   return value;
+}
+
+function getSituacaoEnvioRetornoVal() {
+   var situacaoEnvioRetorno = document.forms[0].elements['situacaoEnvioRetorno'];
+
+   var value = '';
+   for (var i = 0; i < situacaoEnvioRetorno.length; i++) {
+     if (situacaoEnvioRetorno[i].checked ){
+        value = situacaoEnvioRetorno[i].value;
+     }
+   }
+   return value;
+}
+
+function getDepositoVal() {
+   var deposito = document.forms[0].elements['deposito'];
+   
+   var value = '';
+   for (var i = 0; i < deposito.length; i++) {
+     if (deposito[i].checked ){
+        value = deposito[i].value;
+     }
+   }
+   return value;
+}
+
+
+function getSituacaoManutencoesVal() {
+   var situacaoManutencoes = document.forms[0].elements['situacaoManutencoes'];
+   
+   var value = '';
+   for (var i = 0; i < situacaoManutencoes.length; i++) {
+     if (situacaoManutencoes[i].checked ){
+        value = situacaoManutencoes[i].value;
+     }
+   }
+   return value;
+}
+
+function getCodigoCompanhiaVal(){
+    var option ='0';
+    var select = document.getElementById('listaCompanhia');
+    option = select.options[select.selectedIndex];
+	return option.value;
+}
+
+function getCodigoDepartamentoVal(){
+    var option ='0';
+    var select = document.getElementById('listaDepartamentos');
+    option = select.options[select.selectedIndex];
+	return option.value;
+}
+
+function getCodigoMotivoDepositoVal(){
+    var option ='0';
+    var select = document.getElementById('listaMotivosDepositos');
+    option = select.options[select.selectedIndex];
+	return option.value; 
+}
+
+function getDepositoVal(){
+   var deposito = document.getElementsByName('deposito');
+   var value = '0';
+   for (var i = 0; i < deposito.length; i++) {
+     if (deposito[i].checked ){
+        value = deposito[i].value;
+     }
+   }
+   return value; 
+}
+
+function getSucursalVal(){
+    var text ='';
+    var sucursal = document.getElementById('sucursal');
+    if(sucursal.value){
+    	text = sucursal.value;
+    }
+ 	return text; 
+}
+
+function getApoliceVal(){
+ 	var text ='';
+ 	var apolice = document.getElementById('apolice');
+    if(apolice.value){
+    	text = apolice.value;
+    }
+ 	return text; 
+}
+
+function getEndossoVal(){
+	var text = '';
+ 	var endosso = document.getElementById('endosso');
+    if(endosso.value){
+    	text = endosso.value;
+    }
+ 	return text;
+}
+
+function getCodigoAutorizadorVal(){
+	var text = '';
+	var codigoAutorizador = document.getElementById('codigoAutorizador');
+    if(codigoAutorizador.value){
+    	text = codigoAutorizador.value;
+    }
+ 	return text;
+}
+
+function getCpfCnpjVal(){
+	var text = '';
+  	var cpfCnpj = document.getElementsByName('cpfCnpj');
+    if(cpfCnpj.value){
+    	text = cpfCnpj.value;
+    }
+    if(!text){
+        var cpfCnpj = document.getElementsByName('hdd_cpfCnpj');
+        if(cpfCnpj.value){        
+    	    text = cpfCnpj.value;
+    	}
+    }
+    
+    
+ 	return text;
+}
+
+function getDataInicialVal(){
+  	var text = '';
+  	var dataInicial = document.getElementsByName('dataInicial');
+    if(dataInicial.text){
+    	text = dataInicial.text;
+    }
+ 	return text;
+}
+
+function getDataFinalVal(){
+    var text = '';
+  	var dataFinal = document.getElementsByName('dataFinal');
+    if(dataFinal.value){
+    	text = dataFinal.value;
+    }
+ 	return text;
+}
+
+function getValorInicialVal(){
+  	var text = '';
+  	var valorInicial = document.getElementsByName('valorInicial');
+    if(valorInicial.text){
+    	text = valorInicial.text;
+    }
+ 	return text;
+}
+
+function getValorFinalVal(){
+    var text = '';
+  	var valorFinal = document.getElementsByName('valorFinal');
+    if(valorFinal.text){
+    	text = valorFinal.text;
+    }
+ 	return text;
+}
+
+function getDescricaoDetalhadaVal(){
+   return '';
+}
+
+function getCodigoContaCorrenteVal(){
+  return '';
+}
+
+
+
+function ObtemDadosForm(){
+ 	var acao = document.forms[0].acaoOriginal.value;
+ 	
+ 	
+ 	document.getElementById('acaoFrm').value = acao;
+    
+    document.getElementById('tipoRelatorioFrm').value = getTipoRelatorioVal();
+   
+    document.getElementById('visualizacaoFrm').value = getVisualizacaoVal();
+     
+    document.getElementById('codigoCompanhiaFrm').value = getCodigoCompanhiaVal();
+    document.getElementById('codigoDepartamentoFrm').value = getCodigoDepartamentoVal();
+    document.getElementById('codigoMotivoDepositoFrm').value = getCodigoMotivoDepositoVal();
+
+   
+    document.getElementById('depositoFrm').value = getDepositoVal();
+    document.getElementById('situacaoEnvioRetornoFrm').value = getSituacaoEnvioRetornoVal();
+    document.getElementById('situacaoManutencoesFrm').value = getSituacaoManutencoesVal();
+
+    document.getElementById('sucursalFrm').value = getSucursalVal();
+    document.getElementById('apoliceFrm').value = getApoliceVal();
+    document.getElementById('endossoFrm').value = getEndossoVal();
+    document.getElementById('codigoAutorizadorFrm').value = getCodigoAutorizadorVal();
+    document.getElementById('cpfCnpjFrm').value = getCpfCnpjVal();
+    document.getElementById('codigoContaCorrenteFrm').value = getCodigoContaCorrenteVal();
+   
+    document.getElementById('dataInicialFrm').value = getDataInicialVal();
+    document.getElementById('dataFinalFrm').value = getDataFinalVal();
+    document.getElementById('valorInicialFrm').value = getValorInicialVal();
+    document.getElementById('valorFinalFrm').value = getValorFinalVal();
+   // document.getElementById('descricaoDetalhadaFrm').value = getDescricaoDetalhadaVal;
+   
+}
+
+function gerarRelatorio(){
+    ObtemDadosForm();
+	var acao = document.forms[0].acaoOriginal.value;	
+	//document.location.href = document.forms[0].action + '?acao=' + acao;
+
+    //ObtemDadosForm();
+    document.getElementById('formConsultarRelatorio').submit();
+}
+
+
+//=================================================================================================================
+
+
+function limparCampos(){
+
+    document.getElementById('acaoFrm').value = document.forms[0].acaoOriginal.value;
+    document.getElementById('codigoCompanhiaFrm').value       = '0';
+    document.getElementById('codigoDepartamentoFrm').value    = '0'; 
+    document.getElementById('codigoMotivoDepositoFrm').value  = '0'; 
+
+    document.getElementById('sucursalFrm').value = '';
+    document.getElementById('apoliceFrm').value = '';
+    document.getElementById('endossoFrm').value = '';
+    document.getElementById('codigoAutorizadorFrm').value = '';
+    document.getElementById('cpfCnpjFrm').value = '';
+    document.getElementById('codigoContaCorrenteFrm').value = '';
+    document.getElementById('dataInicialFrm').value = '';
+    document.getElementById('dataFinalFrm').value = '';
+    document.getElementById('valorInicialFrm').value = '';
+    document.getElementById('valorFinalFrm').value = '';
+    document.getElementById('descricaoDetalhadaFrm').value = '';
+     
+    document.getElementById('acao').value = document.forms[0].acaoOriginal.value;
+    document.getElementById('listaCompanhia').selectedIndex = 0;
+    document.getElementById('listaDepartamentos').selectedIndex = 0;
+    document.getElementById('listaMotivosDepositos').selectedIndex = 0;
+    document.getElementById('sucursal').value = '';
+    document.getElementById('apolice').value = '';
+    document.getElementById('endosso').value = '';
+    document.getElementById('codigoAutorizador').value = '';
+    document.getElementById('cpfCnpj').value = '';
+    document.getElementById('codigoContaCorrente').value = '';
+    document.getElementById('dataInicial').value = '';
+    document.getElementById('dataFinal').value = '';
+    document.getElementById('valorInicial').value = '';
+    document.getElementById('valorFinal').value = '';
+    document.getElementById('descricaoDetalhada').value = ''; 
+
+}
+
+
+
+
+
+
 function limpaTela(acao){
-        //alert(acao);
+
 		if (acao=="exibirEnvioRetornoAnalitico"){
 			exibirEnvioRetornoAnalitico(acao);			
 		}		
@@ -468,14 +750,24 @@ function setSituacaoEnvioRetorno(tp){
 	}	
 }
 
+function setSubtitulo(subtitulo){
+	document.getElementById('subtitulo').innerHTML = subtitulo;
+}
+
+
+function setTituloTabela(titulo){
+	document.getElementById('titulo_tabela').innerHTML = titulo;
+}
+
+
 function  exibirEnvioRetornoAnalitico(acao) {
     //alert(acao);
-    var subtitulo = "Envio/Retorno BancoVO - Analítico";
-    var titulo    = "Dados de Envio/Retorno BancoVO - Analítico";
+    var subtitulo = "Envio/Retorno Banco - Analítico";
+    var titulo    = "Dados de Envio/Retorno Banco - Analítico";
 	setTipoRelatorio("ER");
 	setVisualizacao("A");
-	setSituacaoEnvioRetorno("situacaoEnvioRetornoVZ");
-	setSituacaoManutencoes("situacaoManutencoesVZ");
+	setSituacaoEnvioRetorno("");
+	setSituacaoManutencoes("");
 	            
 	carregarComboCompanhia();
 	carregarComboDepartamentos();
@@ -488,122 +780,71 @@ function  exibirEnvioRetornoAnalitico(acao) {
 }
 	
 function  exibirEnvioRetornoSintetico(acao) {
-/*
-            try {
-                setSubtitulo("Envio/Retorno BancoVO - Sintético");
-                setTituloTabela("Dados de Envio/Retorno BancoVO - Sintético");
-                setTipoRelatorio("ER");
-                setVisualizacao("S");
-	    		carregarComboCompanhia();
-	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
-             } catch (DEPIIntegrationException e) {
-            	LOGGER.error(e.getMessage());
-            	throw new DEPIIntegrationException(e.getMessage());
-            }
-  */          
+    setSubtitulo("Envio/Retorno Banco - Sintético");
+	setTituloTabela("Dados de Envio/Retorno Banco - Sintético");
+    setTipoRelatorio("ER");
+    setVisualizacao("S");
+	carregarComboCompanhia();
+	carregarComboDepartamentos();
+	carregarComboMotivos();
 }
 
 function  exibirExtratoAnalitico(acao) {
-/*
-            try {
 
-                setSubtitulo("Extrato BancoVO - Analítico");
-                setTituloTabela("Dados de Extrato BancoVO - Analítico");
-                setTipoRelatorio("EX");
-                setVisualizacao("A");
-	    		carregarComboCompanhia();
-	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
+      setSubtitulo("Extrato Banco - Analítico");
+      setTituloTabela("Dados de Extrato Banco - Analítico");
+      setTipoRelatorio("EX");
+      setVisualizacao("A");
+      carregarComboCompanhia();
+	  carregarComboDepartamentos();
+	  carregarComboMotivos();
 
-            } catch (DEPIIntegrationException e) {
-            	LOGGER.error(e.getMessage());
-            	throw new DEPIIntegrationException(e.getMessage());
-            }
-  */
   }
 
 function  exibirExtratoSintetico(acao) {
-     /*
-		        try {
-		            setSubtitulo("Extrato BancoVO - Sintético");
-		            setTituloTabela("Dados de Extrato BancoVO - Sintético");
-		            setTipoRelatorio("EX");
-		            setVisualizacao("S");
-		    		carregarComboCompanhia();
-		    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-		    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
-
-		        
-		        } catch (DEPIIntegrationException e) {
-	            	LOGGER.error(e.getMessage());
-	            	throw new DEPIIntegrationException(e.getMessage());
-		        }
-*/
+	  setSubtitulo("Extrato BancoVO - Sintético");
+	  setTituloTabela("Dados de Extrato Banco - Sintético");
+	  setTipoRelatorio("EX");
+	  setVisualizacao("S");
+      carregarComboCompanhia();
+	  carregarComboDepartamentos();
+	  carregarComboMotivos();
 }
 	  
 function  exibirManutencoesAnalitico(acao) {
-/*
-		    try {
-		    	
-		        setSubtitulo("Manutenções - Analítico");
-		        setTituloTabela("Dados de Manutenções - Analítico");
-		        setTipoRelatorio("MN");
-		        setVisualizacao("A");
-		        setAcaoAnterior("exibirManutencoesAnalitico");
-				carregarComboCompanhia();
-	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
-		    
-		        } catch (DEPIIntegrationException e) {
-	            	LOGGER.error(e.getMessage());
-	            	throw new DEPIIntegrationException(e.getMessage());
-		        }
-
-*/		       
-	  }
-
-	  function  exibirManutencoesSintetico(acao) {
-/*	
+	  setSubtitulo("Manutenções - Analítico");
+	  setTituloTabela("Dados de Manutenções - Analítico");
+	  setTipoRelatorio("MN");
+	  setVisualizacao("A");
+	  setAcaoAnterior("exibirManutencoesAnalitico");
+      carregarComboCompanhia();
+	  carregarComboDepartamentos();
+	  carregarComboMotivos();
 	
-	       try {
+}
 
-		        setSubtitulo("Manutenções - Sintético");
-		        setTituloTabela("Dados de Manutenções - Sintético");
-		        setTipoRelatorio("MN");
-		        setVisualizacao("S");
+ function  exibirManutencoesSintetico(acao) {
+	  setSubtitulo("Manutenções - Sintético");
+	  setTituloTabela("Dados de Manutenções - Sintético");
+	  setTipoRelatorio("MN");
+	  setVisualizacao("S");
+      carregarComboCompanhia();
+	  carregarComboDepartamentos();
+	  carregarComboMotivos();
 
-		        carregarComboCompanhia();
-  				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-  				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
-
-		        } catch (DEPIIntegrationException e) {
-		        	LOGGER.error(e.getMessage());
-	            	throw new DEPIIntegrationException(e.getMessage());
-		        }
-*/	
-	  }
+}
 	  
-	  function  exibirDadosComplementares(acao) {
-/*	
-	        try {
-	        	setSubtitulo("Dados Complementares - Analítico");
-		        setTituloTabela("Dados Complementares - Analítico");
-		        setTipoRelatorio("DC");
-		        setVisualizacao("A");
-		        setSituacaoEnvioRetorno("A");
-		        
+function  exibirDadosComplementares(acao) {
+	setSubtitulo("Dados Complementares - Analítico");
+	setTituloTabela("Dados Complementares - Analítico");
+	setTipoRelatorio("DC");
+	setVisualizacao("A");
+	setSituacaoEnvioRetorno("A");
+    carregarComboCompanhia();
+	carregarComboDepartamentos();
+	carregarComboMotivos();
 
-			  		carregarComboCompanhia();
-	  				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-	  				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
-
-		        } catch (DEPIIntegrationException e) {
-		        	LOGGER.error(e.getMessage());
-	            	throw new DEPIIntegrationException(e.getMessage());
-		        }
-*/
-	  }	  
+}	  
 
 function carregarComboCompanhia(){
 }
