@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+import br.com.bradseg.depi.depositoidentificado.util.IgnorarLog;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
@@ -26,11 +27,13 @@ public class DepositoVO implements Serializable {
     /**
      * Código seqüencial da identificação do depósito.
      */
+    @IgnorarLog
     private long codigoDepositoIdentificado;
 
     /**
      * Dígito Verificador gerado a partir do Código seqüencial da identificação do depósito.
      */
+    @IgnorarLog
     private int codigoDigitoDeposito;
 
     /**
@@ -59,6 +62,7 @@ public class DepositoVO implements Serializable {
     /**
      * CPN/CNPJ
      */
+    @IgnorarLog
     private String cpfCnpj;
 
     /**
@@ -104,6 +108,7 @@ public class DepositoVO implements Serializable {
     /**
      * nome
      */
+    @IgnorarLog
     private String nomePessoa;
 
     /**
@@ -153,20 +158,28 @@ public class DepositoVO implements Serializable {
      */
     private Date dtCancelamentoDepositoIdentificado;
 
+    @IgnorarLog
     private int situacaoArquivoTransferencia;
     
+    @IgnorarLog
     private long trps;
     
+    @IgnorarLog
     private Integer codigoSituacaoDeposito;
     
+    @IgnorarLog
     private List<ParcelaCobrancaVO> listaParcelas;
     
+    @IgnorarLog
     private Integer codigoResponsavelUltimaAtualizacao;
     
+    @IgnorarLog
     private String codigoIndicativoAtivo;
     
+    @IgnorarLog
     private Date dataHoraAtualizacao;
     
+    @IgnorarLog
     private Date dataInclusao;
     
     /**
