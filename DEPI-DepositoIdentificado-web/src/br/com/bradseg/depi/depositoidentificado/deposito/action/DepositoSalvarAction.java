@@ -87,16 +87,21 @@ public class DepositoSalvarAction extends
 	}
 	
 	public void validateSalvarProrrogarCancelar() {
-		System.out.println(acaoProrrogarCancelar);
 	}
 	
 	public String salvarProrrogarCancelar() {
 		DepositoEditarFormModel model = getModel();
-		if ("P".equals(acaoProrrogarCancelar)) {
-			crudHelper.prorrogar(model, getCodUsuarioLogado());
-		}
-		else {
-			crudHelper.cancelar(model, getCodUsuarioLogado());
+		try {
+			if ("P".equals(acaoProrrogarCancelar)) {
+				crudHelper.prorrogar(model, getCodUsuarioLogado());
+			}
+			else {
+				crudHelper.cancelar(model, getCodUsuarioLogado());
+			}
+		} catch (Exception e) {
+			LOGGER.error("Falha ao atualizar dep\u00F3sito", e);
+			addActionError(e.getMessage());
+			return INPUT;
 		}
 		return SUCCESS;
 	}
