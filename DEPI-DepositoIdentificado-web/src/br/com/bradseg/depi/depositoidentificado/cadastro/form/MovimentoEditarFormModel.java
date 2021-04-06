@@ -88,6 +88,7 @@ public class MovimentoEditarFormModel extends CrudForm {
 		
 		setChequeMovimento(marshallLong(vo.getNroCheque()));
 		setHistorico(vo.getObservacao());
+		setCodMovimentoAcao(vo.getIndicacaoAcao());
 	}
 
 	public MovimentoDepositoVO obterMovimento() {

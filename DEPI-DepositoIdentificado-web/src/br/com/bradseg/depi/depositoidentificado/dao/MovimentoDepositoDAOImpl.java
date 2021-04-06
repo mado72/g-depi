@@ -51,7 +51,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
 	@Override
 	public MovimentoDepositoVO obterPorChave(MovimentoDepositoVO chave) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("whr1", chave.getCodigoMovimento());
+		BaseUtil.prepararQuery(params, "whr", chave.getCodigoMovimento());
 		
 		try {
 			MovimentoDepositoVO vo = getJdbcTemplate().queryForObject(
@@ -75,27 +75,22 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
         	
 			MapSqlParameterSource params = new MapSqlParameterSource();
 
-			/**
-             * Atentar que s�o regras para incluir na tabela e não regras de negocio.
-             */
-			
-            params.addValue("prm1", vo.getCodigoMovimento());
-            params.addValue("prm2", vo.getIndicacaoAcao());
+			/*
+			 * Atentar que são regras para incluir na tabela e não regras de negocio.
+			 */
+			String indicacaoAcao = vo.getIndicacaoAcao();
+			boolean b = "RDT".contains(indicacaoAcao); // Receita, Devolução e Transferência
+			boolean c = b && "D".equals(indicacaoAcao); // Devolução 
 
-
-            boolean b = !"D".equals(vo.getIndicacaoAcao());
-            params.addValue("prm3", BaseUtil.setNullQuandoOpcional(vo.getNroCheque(), b));
-
-            if (b) {
-                b = !"T".equals(vo.getIndicacaoAcao());
-            }
-
-            params.addValue("prm4", BaseUtil.setNullQuandoOpcional(vo.getBancoMovimento(), b));
-            params.addValue("prm5", BaseUtil.setNullQuandoOpcional(vo.getAgenciaMovimento(), b));
-            params.addValue("prm6", vo.getObservacao());
-            params.addValue("prm7", BaseUtil.setNullQuandoOpcional(vo.getContaMovimento(), b));
-            params.addValue("prm8", vo.getCodigoResponsavelUltimaAtualizacao());
-            
+			BaseUtil.prepararQuery(params, "prm", 
+					vo.getCodigoMovimento(),
+					vo.getIndicacaoAcao(), 
+					BaseUtil.setNullQuandoOpcional(vo.getNroCheque(), c),
+					BaseUtil.setNullQuandoOpcional(vo.getBancoMovimento(), b), 
+					BaseUtil.setNullQuandoOpcional(vo.getAgenciaMovimento(), b), 
+					vo.getObservacao(), 
+					BaseUtil.setNullQuandoOpcional(vo.getContaMovimento(), b), 
+					vo.getCodigoResponsavelUltimaAtualizacao());
             
             Integer num = getJdbcTemplate().update(QuerysDepi.DEPOSITO_MOVIMENTO_INSERT, params);
             
@@ -121,23 +116,22 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
         	
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			
-            /**
-             * Atentar que s�o regras para incluir na tabela e não regras de negocio.
-             */
-            params.addValue("prm1", vo.getIndicacaoAcao());
+			/*
+			 * Atentar que são regras para incluir na tabela e não regras de negocio.
+			 */
+			String indicacaoAcao = vo.getIndicacaoAcao();
+			boolean b = !"RDT".contains(indicacaoAcao); // Receita, Devolução e Transferência
+			boolean c = !"D".equals(indicacaoAcao); // Devolução 
+			
+			BaseUtil.prepararQuery(params, "prm", 
+					indicacaoAcao, 
+					BaseUtil.setNullQuandoOpcional(vo.getNroCheque(), c),
+					BaseUtil.setNullQuandoOpcional(vo.getBancoMovimento(), b), 
+					BaseUtil.setNullQuandoOpcional(vo.getAgenciaMovimento(), b), 
+					vo.getObservacao(), 
+					BaseUtil.setNullQuandoOpcional(vo.getContaMovimento(), b), 
+					vo.getCodigoResponsavelUltimaAtualizacao());
 
-            boolean b = !"D".equals(vo.getIndicacaoAcao());
-            params.addValue("prm2", BaseUtil.setNullQuandoOpcional(vo.getNroCheque(), b));
-
-            if (b) {
-                b = !"T".equals(vo.getIndicacaoAcao());
-            }
-            
-            params.addValue("prm3", BaseUtil.setNullQuandoOpcional(vo.getBancoMovimento(), b));
-            params.addValue("prm4", BaseUtil.setNullQuandoOpcional(vo.getAgenciaMovimento(), b));
-            params.addValue("prm5", vo.getObservacao());
-            params.addValue("prm6", BaseUtil.setNullQuandoOpcional(vo.getContaMovimento(), b));
-            params.addValue("prm7", vo.getCodigoResponsavelUltimaAtualizacao());
             params.addValue("whr1", vo.getCodigoMovimento());
 
             Integer num = getJdbcTemplate().update(QuerysDepi.DEPOSITO_MOVIMENTO_UPDATE, params);

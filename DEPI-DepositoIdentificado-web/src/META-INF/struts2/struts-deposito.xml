@@ -142,12 +142,19 @@
             <result name="voltar" type="redirectAction">
                 <param name="actionName">listar</param>
                 <param name="namespace">/deposito/consultar</param>
-            </result>            
+            </result>
         </global-results>
-        
-        <action name="*" method="{1}">
+
+        <action name="manter" method="manter">
 			<interceptor-ref name="store">
 				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+        </action>
+
+        <action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">STORE</param>
 			</interceptor-ref>
 			<interceptor-ref name="applicationStack" />
         </action>

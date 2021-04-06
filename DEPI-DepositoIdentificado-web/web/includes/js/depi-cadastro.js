@@ -1300,7 +1300,8 @@ var fnReady = function ($) {
 			}
 		});
 		
-		actionForm.find(".codMovimentoAcao[value='"+codMovimentoAcao+"']").prop('checked', true);
+		var opcaoSelecionada = actionForm.find(".codMovimentoAcao[value='"+codMovimentoAcao+"']");
+		opcaoSelecionada.click();
 		
 		BtnSalvar.click(function() {
 			actionForm.submit();
@@ -1309,7 +1310,7 @@ var fnReady = function ($) {
 		BtnCancelar.click(function() {
 			window.location.href = window.location.href.replace(/\/deposito\/.*/, '/deposito/consultar/index.do');
 		});
-	}
+	};
 	
 	// paginacao
 	// ---------------------------------------------------------------------

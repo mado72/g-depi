@@ -13,6 +13,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepositoCrudHelp
 import br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.SalvarAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 
 /**
@@ -98,19 +99,14 @@ public class DepositoSalvarAction extends
 			else {
 				crudHelper.cancelar(model, getCodUsuarioLogado());
 			}
+			
+			addActionMessage(getText(ConstantesDEPI.MSG_ALTERAR_EXITO));
+			
 		} catch (Exception e) {
 			LOGGER.error("Falha ao atualizar dep\u00F3sito", e);
 			addActionError(e.getMessage());
 			return INPUT;
 		}
-		return SUCCESS;
-	}
-	
-	public void validateSalvarMovimento() {
-		System.out.println("salvar Movimento");
-	}
-	
-	public String salvarMovimento() {
 		return SUCCESS;
 	}
 }

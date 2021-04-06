@@ -34,6 +34,7 @@ import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
@@ -1194,4 +1195,12 @@ public final class BaseUtil {
 		}
 		return SDF_DDMMYYYY.format(data);
 	}
+
+    public static void prepararQuery(MapSqlParameterSource params, String prefix, Object... dados) {
+    	int paramIdx = 0;
+    	for (Object dado : dados) {
+			String paramName = new StringBuilder(prefix).append(++paramIdx).toString();
+			params.addValue(paramName, dado);
+		}
+    }
 }

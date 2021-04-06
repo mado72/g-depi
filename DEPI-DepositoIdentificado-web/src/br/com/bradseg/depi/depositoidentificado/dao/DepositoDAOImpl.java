@@ -80,7 +80,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 				query.append(complemento);
 			}
 			
-			prepararQuery(params, PREFIX_WHERE_PARAM, codigoUsuario);
+			BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, codigoUsuario);
 			
     		List<DepositoVO> depositosVo = getJdbcTemplate().query(query.toString(), params, new DepositoDataMapper());
     		
@@ -97,14 +97,6 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
         throw new IntegrationException("O método inserir não foi implementado.");
     }
     
-    private void prepararQuery(MapSqlParameterSource params, String prefix, Object... dados) {
-    	int paramIdx = 0;
-    	for (Object dado : dados) {
-			String paramName = new StringBuilder(prefix).append(++paramIdx).toString();
-			params.addValue(paramName, dado);
-		}
-    }
-
     @Override
     public void inserir(DepositoVO vo, ParametroDepositoVO param) {
     	
@@ -112,7 +104,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     		
         	MapSqlParameterSource params = new MapSqlParameterSource();
         	
-        	prepararQuery(params, PREFIX_PARAM,
+        	BaseUtil.prepararQuery(params, PREFIX_PARAM,
         			0,
         			vo.getCia().getCodigoCompanhia(),
         			vo.getDepartamento().getCodigoDepartamento(),
@@ -165,7 +157,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_INSERIRDV);
 
     	MapSqlParameterSource params = new MapSqlParameterSource();
-    	prepararQuery(params, PREFIX_PARAM, 
+    	BaseUtil.prepararQuery(params, PREFIX_PARAM, 
     			vo.getCodigoDigitoDeposito(), // CDIG_DEP_IDTFD
     			vo.getCodigoDepositoIdentificado()); // CDEP_IDTFD
     	
@@ -187,7 +179,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
         try {
         	
         	MapSqlParameterSource params = new MapSqlParameterSource();
-        	prepararQuery(params, PREFIX_PARAM, 
+        	BaseUtil.prepararQuery(params, PREFIX_PARAM, 
         			vo.getCia().getCodigoCompanhia(), // CCIA_SEGDR
         			vo.getSituacaoArquivoTransferencia(), // CSIT_DEP_ARQ_TRNSF
         			vo.getDepartamento().getCodigoDepartamento(), // CDEPTO_DEP_IDTFD
@@ -233,12 +225,12 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
     	MapSqlParameterSource params = new MapSqlParameterSource();
     	
-    	prepararQuery(params, PREFIX_PARAM, 
+    	BaseUtil.prepararQuery(params, PREFIX_PARAM, 
     			vo.getSituacaoArquivoTransferencia(),
     			vo.getDataProrrogacao(),
     			vo.getCodigoResponsavelUltimaAtualizacao());
     	
-    	prepararQuery(params, PREFIX_WHERE_PARAM, 
+    	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, 
     			vo.getCodigoDepositoIdentificado());  
     	
     	int count = getJdbcTemplate().update(QuerysDepi.DEPOSITO_PRORROGAR, params);
@@ -256,11 +248,11 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     	
     	MapSqlParameterSource params = new MapSqlParameterSource();
     	
-    	prepararQuery(params, PREFIX_PARAM, 
+    	BaseUtil.prepararQuery(params, PREFIX_PARAM, 
     			deposito.getSituacaoArquivoTransferencia(),
     			deposito.getCodigoResponsavelUltimaAtualizacao());
     	
-    	prepararQuery(params, PREFIX_WHERE_PARAM, 
+    	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, 
     			deposito.getCodigoDepositoIdentificado());
     	
     	Integer count = getJdbcTemplate().update(QuerysDepi.DEPOSITO_CANCELAR, params);
@@ -276,7 +268,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
     	MapSqlParameterSource params = new MapSqlParameterSource();
     	
-    	prepararQuery(params, PREFIX_WHERE_PARAM, 
+    	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, 
     			vo.getCodigoResponsavelUltimaAtualizacao(),
     			vo.getCodigoDepositoIdentificado());
     	
@@ -308,10 +300,10 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 	public long updateLog(DepositoVO dep) {
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		prepararQuery(params, PREFIX_PARAM, 
+		BaseUtil.prepararQuery(params, PREFIX_PARAM, 
 				dep.getCodigoResponsavelUltimaAtualizacao());
 		
-		prepararQuery(params, PREFIX_WHERE_PARAM, 
+		BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, 
 				dep.getCodigoDepositoIdentificado());
 		
 		GeneratedKeyHolder key = new GeneratedKeyHolder();
@@ -324,7 +316,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     private long registrarLog(LogDepositoVO log) {    	
     	MapSqlParameterSource params = new MapSqlParameterSource();
     	
-		prepararQuery(params, PREFIX_PARAM,
+		BaseUtil.prepararQuery(params, PREFIX_PARAM,
 				log.getCodigo(), 
 				log.getFieldName(),
                 log.getValorAntigo(), 
@@ -410,7 +402,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
     	MapSqlParameterSource params = new MapSqlParameterSource();
     	
-    	prepararQuery(params, PREFIX_WHERE_PARAM, deposito.getCodigoDepositoIdentificado());
+    	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, deposito.getCodigoDepositoIdentificado());
     	
 		try {
 			DepositoVO vo = getJdbcTemplate().queryForObject(

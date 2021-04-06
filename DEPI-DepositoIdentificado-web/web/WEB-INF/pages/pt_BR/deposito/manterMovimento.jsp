@@ -82,37 +82,37 @@
 			<td rowspan="2" class="td_label">Ações<span class="obrigatorio">*</span></td>
 			<td>
 				<label>
-					<input type="radio" name="codMovimentoAcao" value="A" class="codMovimentoAcao"> Aceite
+					<input type="radio" name="codMovimentoAcao" value="A" class="codMovimentoAcao" tabindex="1"> Aceite
 				</label>
 			</td>
 			<td>
 				<label>
-					<input type="radio" name="codMovimentoAcao" value="T" class="codMovimentoAcao"> Transferência
+					<input type="radio" name="codMovimentoAcao" value="T" class="codMovimentoAcao" tabindex="2"> Transferência
 				</label>
 			</td>
 			<td class="td_label">Banco/AG/Conta</td>
 			<td>
-				<s:textfield key="bancoMovimento" disabled="true" size="4" maxlength="3" cssClass="text-right movConta"/> - 
-				<s:textfield key="agenciaMovimento" disabled="true" size="8" maxlength="6" cssClass="text-right movConta"/> -
-				<s:textfield key="contaMovimento" disabled="true" size="15" maxlength="8" cssClass="text-right movConta"/>
+				<s:textfield key="bancoMovimento" disabled="true" size="4" maxlength="3" cssClass="text-right movConta" placeholder="Banco" tabindex="5"/> - 
+				<s:textfield key="agenciaMovimento" disabled="true" size="8" maxlength="6" cssClass="text-right movConta" placeholder="Agência" tabindex="6"/> -
+				<s:textfield key="contaMovimento" disabled="true" size="15" maxlength="8" cssClass="text-right movConta" placeholder="Conta" tabindex="7"/>
 			</td>
 			<td class="td_label"></td>
 		</tr>
 		<tr>
 			<td>
 				<label>
-					<input type="radio" name="codMovimentoAcao" value="R" class="codMovimentoAcao"> Receita
+					<input type="radio" name="codMovimentoAcao" value="R" class="codMovimentoAcao" tabindex="3"> Receita
 				</label>
 			</td>
 			<td>
 				<label>
-					<input type="radio" name="codMovimentoAcao" value="D" class="codMovimentoAcao"> Devolução
+					<input type="radio" name="codMovimentoAcao" value="D" class="codMovimentoAcao" tabindex="4"> Devolução
 				</label>
 			</td>
 			
 			<td class="td_label">Cheque Número</td>
 			<td>
-				<s:textfield key="chequeMovimento" disabled="true" size="15" maxlength="9" cssClass="text-right movCheque"/>
+				<s:textfield key="chequeMovimento" disabled="true" size="15" maxlength="9" cssClass="text-right movCheque" placeholder="Cheque Nº" tabindex="8"/>
 			</td>
 			<td class="td_label"></td>
 		</tr>

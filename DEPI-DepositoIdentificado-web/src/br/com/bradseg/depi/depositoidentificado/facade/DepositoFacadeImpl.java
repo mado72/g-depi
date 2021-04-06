@@ -560,7 +560,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	@Override
 	public MovimentoDepositoVO obterMovimentoDeposito(DepositoVO vo) {
 		return movimentoDAO.obterPorChave(new MovimentoDepositoVO(vo
-				.getCodigoDigitoDeposito()));
+				.getCodigoDepositoIdentificado()));
 	}
 	
 	@Override

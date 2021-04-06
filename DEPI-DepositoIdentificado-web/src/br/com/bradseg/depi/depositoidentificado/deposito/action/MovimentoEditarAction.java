@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.deposito.action;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.form.MovimentoEditarFor
 import br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.MovimentoAcao;
+import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MovimentoDepositoVO;
 
@@ -60,11 +62,11 @@ public class MovimentoEditarAction
 			
 			model.preencherMovimento(chaveMovimento);
 			model.setDataMovimento("Sem Movimento");
-			model.setSalvarAction("incluir");
+			model.setSalvarAction("salvarIncluir");
 		}
 		else {
 			model.preencherMovimento(movimento);
-			model.setSalvarAction("alterar");
+			model.setSalvarAction("salvarAlterar");
 		}
 		
 		return INPUT;
@@ -101,6 +103,91 @@ public class MovimentoEditarAction
 			LOGGER.error("Falha ao atualizar", e);
 			addActionError(e.getMessage());
 			return INPUT;
+		}
+	}
+	public void validateSalvarAlterar() {
+		validateSalvar();
+	}
+	
+	public void validateSalvarIncluir() {
+		validateSalvar();
+	}
+	
+	private void validateSalvar() {
+		MovimentoAcao acao = MovimentoAcao.obterPorCodigo(model.getCodMovimentoAcao());
+		
+		switch (acao) {
+		case ACEITE:
+			break;
+		case RECEITA:
+		case TRANSFERENCIA:
+			validarBanco();
+			break;
+		case DEVOLUCAO:
+			validarBanco();
+			validarNroCheque();
+			break;
+		}
+	}
+	
+	public String salvarAlterar() {
+		LOGGER.info("Formulário validado. Chamando método para concluir a operação.");
+		
+		MovimentoDepositoVO vo = model.obterMovimento();
+		
+		try {
+			facade.alterarMovimento(vo);
+			addActionMessage(getText(ConstantesDEPI.MSG_ALTERAR_EXITO));
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			LOGGER.error("Falha ao salvar movimento.", e);
+			addActionError(e.getMessage());
+			return INPUT;
+		}
+	}
+
+	public String salvarIncluir() {
+		LOGGER.info("Formulário validado. Chamando método para concluir a operação.");
+		
+		MovimentoDepositoVO vo = model.obterMovimento();
+		
+		try {
+			facade.inserirMovimento(vo);
+			addActionMessage(getText(ConstantesDEPI.MSG_INSERIR_EXITO));
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			LOGGER.error("Falha ao salvar movimento.", e);
+			addActionError(e.getMessage());
+			return INPUT;
+		}
+	}
+
+	private void validarBanco() {
+		validarLong("Banco", model.getBancoMovimento());
+		validarLong("Ag\u00EAngia", model.getAgenciaMovimento());
+		validarLong("Conta", model.getContaMovimento());
+	}
+
+	private void validarNroCheque() {
+		validarLong("Cheque N\u00FAmero", model.getChequeMovimento());
+	}
+
+	private void validarLong(String field, String valor) {
+		if (StringUtils.isEmpty(valor)) {
+			addFieldError(field, getText("errors.required", new String[]{field}));
+			return;
+		}
+		
+		try {
+			long l = Long.parseLong(valor);
+			if (l == 0) {
+				throw new NumberFormatException();
+			}
+		} catch (NumberFormatException e) {
+			addFieldError(field, getText("errors.invalid", new String[]{field}));
+			return;
 		}
 	}
 	
