@@ -63,7 +63,7 @@ public class ParametroDepositoEditarFormModel extends CrudForm {
 
 	private String outrosDocumentosNecessarios;
 
-	private boolean referenciadoDeposito;
+	private String referenciadoDeposito;
 
 	private String descricaoDeposito;
 
@@ -423,7 +423,7 @@ public class ParametroDepositoEditarFormModel extends CrudForm {
 	 * Retorna referenciadoDeposito
 	 * @return o referenciadoDeposito
 	 */
-	public boolean isReferenciadoDeposito() {
+	public String getReferenciadoDeposito() {
 		return referenciadoDeposito;
 	}
 
@@ -431,7 +431,7 @@ public class ParametroDepositoEditarFormModel extends CrudForm {
 	 * Define referenciadoDeposito
 	 * @param referenciadoDeposito valor referenciadoDeposito a ser definido
 	 */
-	public void setReferenciadoDeposito(boolean referenciadoDeposito) {
+	public void setReferenciadoDeposito(String referenciadoDeposito) {
 		this.referenciadoDeposito = referenciadoDeposito;
 	}
 
@@ -512,14 +512,11 @@ public class ParametroDepositoEditarFormModel extends CrudForm {
 		setDescricaoDetalhadaMotivo(null);
 		setNumeroDiasAposVencimento("0");
 		setOutrosDocumentosNecessarios(null);
-		setReferenciadoDeposito(false);
+		setReferenciadoDeposito(null);
 		
 		setCias(new ArrayList<CompanhiaSeguradoraVO>());
 		setDeptos(new ArrayList<DepartamentoVO>());
 		setMotivos(new ArrayList<MotivoDepositoVO>());
 	}
 
-	public boolean isDesabilitarParametros() {
-		return isDetalhar() || isReferenciadoDeposito();
-	}
 }

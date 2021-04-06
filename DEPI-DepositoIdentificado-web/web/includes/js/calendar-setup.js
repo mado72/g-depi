@@ -98,7 +98,8 @@ Calendar.setup = function (params) {
 		}
 	}
 	if (!(params.flat || params.multiple || params.inputField || params.displayArea || params.button)) {
-		console.warn("Calendar.setup:\n  Nothing to setup (no fields found).  Please check your code");
+		alert("Calendar.setup:\n  Nothing to setup (no fields found).  Please check your code");
+		return false;
 	}
 
 	function onSelect(cal) {
