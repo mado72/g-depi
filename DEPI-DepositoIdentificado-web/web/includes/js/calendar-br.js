@@ -13,11 +13,11 @@
 Calendar._DN = new Array
 ("Domingo",
  "Segunda",
- "Terça",
+ "TerÃ§a",
  "Quarta",
  "Quinta",
  "Sexta",
- "Sábado",
+ "SÃ¡bado",
  "Domingo");
 
 // Please note that the following array of short day names (and the same goes
@@ -40,7 +40,7 @@ Calendar._SDN = new Array
  "Qua",
  "Qui",
  "Sex",
- "Sáb",
+ "SÃ¡b",
  "Dom");
 
 // First day of the week. "0" means display Sunday first, "1" means display
@@ -51,7 +51,7 @@ Calendar._FD = 0;
 Calendar._MN = new Array
 ("Janeiro",
  "Fevereiro",
- "Março",
+ "MarÃ§o",
  "Abril",
  "Maio",
  "Junho",
@@ -79,18 +79,18 @@ Calendar._SMN = new Array
 
 // tooltips
 Calendar._TT = {};
-Calendar._TT["INFO"] = "Sobre o calendário";
+Calendar._TT["INFO"] = "Sobre o calendÃ¡rio";
 
 Calendar._TT["ABOUT"] =
 "DHTML Date/Time Selector\n" +
 "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this this ;-)
 "For latest version visit: http://www.dynarch.com/projects/calendar/\n" +
-"Tradução para o português Brasil (pt-BR) por Fernando Dourado (fernando.dourado@ig.com.br)" +
+"TraduÃ§Ã£o para o portuguÃªs Brasil (pt-BR) por Fernando Dourado (fernando.dourado@ig.com.br)" +
 "\n\n" +
 "Selecionar data:\n" +
 "- Use as teclas \xab, \xbb para selecionar o ano\n" +
-"- Use as teclas " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " para selecionar o mês\n" +
-"- Clique e segure com o mouse em qualquer botão para selecionar rapidamente.";
+"- Use as teclas " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " para selecionar o mÃªs\n" +
+"- Clique e segure com o mouse em qualquer botÃ£o para selecionar rapidamente.";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "Selecionar hora:\n" +
 "- Clique em qualquer uma das partes da hora para aumentar\n" +
@@ -98,10 +98,10 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- ou clique e arraste para selecionar rapidamente.";
 
 Calendar._TT["PREV_YEAR"] = "Ano anterior (clique e segure para menu)";
-Calendar._TT["PREV_MONTH"] = "Mês anterior (clique e segure para menu)";
+Calendar._TT["PREV_MONTH"] = "MÃªs anterior (clique e segure para menu)";
 Calendar._TT["GO_TODAY"] = "Ir para a data atual";
-Calendar._TT["NEXT_MONTH"] = "Próximo mês (clique e segure para menu)";
-Calendar._TT["NEXT_YEAR"] = "Próximo ano (clique e segure para menu)";
+Calendar._TT["NEXT_MONTH"] = "PrÃ³ximo mÃªs (clique e segure para menu)";
+Calendar._TT["NEXT_YEAR"] = "PrÃ³ximo ano (clique e segure para menu)";
 Calendar._TT["SEL_DATE"] = "Selecione uma data";
 Calendar._TT["DRAG_TO_MOVE"] = "Clique e segure para mover";
 Calendar._TT["PART_TODAY"] = " (hoje)";

@@ -127,4 +127,31 @@
 
 	</package>
 	
+	<package name="depositoManterMovimento" namespace="/deposito/movimento" extends="depi-default">
+	
+		<default-class-ref class="movimentoEditarAction"></default-class-ref>
+	
+		<global-results>
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/deposito/manterMovimento.jsp</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">retornar</param>
+			    <param name="namespace">/deposito/consultar</param>
+			</result>
+            <result name="voltar" type="redirectAction">
+                <param name="actionName">listar</param>
+                <param name="namespace">/deposito/consultar</param>
+            </result>            
+        </global-results>
+        
+        <action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+        </action>
+
+	</package>
+	
 </struts>

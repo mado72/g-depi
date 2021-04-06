@@ -154,12 +154,7 @@ public class ParametroDepositoCrudHelper implements
 		m.setNumeroDiasAposVencimento(String.valueOf(v.getNumeroDiasAposVencimento()));
 		m.setOutrosDocumentosNecessarios(v.getOutrosDocumentosNecessarios());
 		
-		if (v.isReferenciadoDeposito()) {
-			m.setReferenciadoDeposito(ParametroDepositoEditarFormModel.VALOR_SIM);
-		}
-		else {
-			m.setReferenciadoDeposito(ParametroDepositoEditarFormModel.VALOR_NAO);
-		}
+		m.setReferenciadoDeposito(v.isReferenciadoDeposito());
 
 		v.setCompanhia(obterCompanhia(v));
 		m.setCias(Collections.singletonList(v.getCompanhia()));

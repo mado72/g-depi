@@ -11,7 +11,7 @@
 		<tr>
 			<td align="center">
 				<div class="tabela_botoes">
-					<button class="abtn btnConsultar" id="BtnConsultar" type="submit"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_consultar.gif"/>"></button>
+					<button class="abtn btnConsultar" id="BtnConsultarFiltro" type="submit"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_consultar.gif"/>"></button>
 				</div>
 			</td>
 		</tr>
@@ -27,14 +27,14 @@
 	<s:param name="scriptOff" value="true"/>
 </s:include>
 
-
-<s:if test="!consultado">
+<c:if test="${!consultado}">
 <c:set var="AcaoFormStyle" value="style='display: none'"/>
-</s:if>
+</c:if>
 
 <div ${AcaoFormStyle}>
 <form action="${action}" id="AcaoForm" method="post" target="_opener">
 <c:set var="deptos" value="${colecaoDados}" scope="request"/>
+
 <s:include value="/WEB-INF/pages/pt_BR/filtro/tblDepartamento.jsp"/>
 <div class="paginacao"></div>
 <div class="center">

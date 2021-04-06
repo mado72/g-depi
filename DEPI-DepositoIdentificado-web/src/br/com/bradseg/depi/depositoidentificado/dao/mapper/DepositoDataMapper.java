@@ -41,7 +41,9 @@ public class DepositoDataMapper implements RowMapper<DepositoVO> {
         depositoVO.setCodigoResponsavelUltimaAtualizacao(rs.getInt("CUSUAR_RESP_ATULZ"));
         depositoVO.setCodigoIndicativoAtivo(rs.getString("CIND_REG_ATIVO"));
         depositoVO.setCodigoSituacaoDeposito(rs.getInt("CSIT_DEP_IDTFD"));
-		
+
+        depositoVO.setDataProrrogacao(rs.getDate("DPRROG_DEP_IDTFD"));
+		depositoVO.setDtCancelamentoDepositoIdentificado(rs.getDate("DCANCT_DEP_IDTFD"));
 		
 		return depositoVO;
 	}

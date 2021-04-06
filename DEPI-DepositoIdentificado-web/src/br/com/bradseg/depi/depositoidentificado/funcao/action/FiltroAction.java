@@ -35,7 +35,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  *            Tipo do Model deste formulário
  */
 @Controller
-@Scope("request")
+@Scope("session")
 public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroConsultarForm<C>> extends BaseModelAction<T> {
 
 	private static final long serialVersionUID = 935947361413242271L;
@@ -46,9 +46,19 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	
 	protected abstract CrudHelper<C, ?, ?> getFiltroHelper();
 	
+	private boolean consultado = false;
+	
 	@SuppressWarnings("unchecked")
 	public FiltroAction() {
 		this.model = (T) getFiltroHelper().criarFiltroModel();
+	}
+	
+	/**
+	 * Flag para identificar se houve consulta na requisição
+	 * @return true quando houve consulta
+	 */
+	public boolean isConsultado() {
+		return consultado;
 	}
 	
 	/**
@@ -73,6 +83,7 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 		}
 		clearErrors();
 		model.limparDados();
+		this.consultado = false;
 	}
 	
 	/**
@@ -196,6 +207,7 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 	 */
 	protected String realizarConsulta() {
 		try {
+			this.consultado = true;
 			model.setColecaoDados(new ArrayList<>());
 			
 			int codUsuario = getCodUsuarioLogado();

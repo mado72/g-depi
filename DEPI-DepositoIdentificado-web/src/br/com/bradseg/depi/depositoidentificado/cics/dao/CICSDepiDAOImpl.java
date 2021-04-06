@@ -106,9 +106,9 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 	public ContaCorrenteAutorizadaVO obterContaCorrente(ContaCorrenteAutorizadaVO cc) {
 		
 		STES0512 book = new STES0512();
-        book.setCodigoCia(cc.getCia().getCodigoCompanhia());
-        book.setCodigoAgencia(cc.getCodigoAgencia());
-        book.setCodigoBanco(cc.getBanco().getCdBancoExterno());
+        book.setCodigoCia(String.format("%03d", cc.getCia().getCodigoCompanhia()));
+        book.setCodigoBanco(String.format("%03d", cc.getBanco().getCdBancoExterno()));
+        book.setCodigoAgencia(String.format("%05d", cc.getCodigoAgencia()));
         book.setConta(String.format("%013d", cc.getContaCorrente()));
         
 		ProgramDefinition<STES0512> program = cicsUtil.construir(javaGateway, STES0512.class);
@@ -124,7 +124,9 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CICS_CUSTOM, retorno.getMensagem());
 		}
 		
-		if (retorno.getConta().trim().isEmpty() || retorno.getContaCorrenteInterna() == null) {
+		String contaCorrenteInterna = retorno.getContaCorrenteInterna();
+		
+		if (retorno.getConta().trim().isEmpty() || contaCorrenteInterna == null) {
 			StringBuilder erro = new StringBuilder("Conta corrente n\u00E3o encontrada! ");
 			if (retorno.getMensagem() != null) {
 				erro.append(retorno.getMensagem());
@@ -132,10 +134,16 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 				
 			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CICS_CUSTOM, erro.toString());
 		}
-		long conta = Long.parseLong(retorno.getConta());
-		ContaCorrenteAutorizadaVO vo = new ContaCorrenteAutorizadaVO(new BancoVO(retorno.getCodigoBanco()), retorno.getCodigoAgencia(), conta);
 		
-		vo.setCodigoInternoCC(Integer.parseInt(retorno.getContaCorrenteInterna()));
+		long conta = Long.parseLong(retorno.getConta());
+		int codigoBanco = Integer.parseInt(retorno.getCodigoBanco());
+		int codigoAgencia = Integer.parseInt(retorno.getCodigoAgencia());
+		ContaCorrenteAutorizadaVO vo = new ContaCorrenteAutorizadaVO(new BancoVO(codigoBanco), codigoAgencia, conta);
+		
+		vo.setCodigoInternoCC(Integer.parseInt(contaCorrenteInterna));
+		vo.setPrimeiroDigitoConta(retorno.getPrimeiroDigitoConta());
+		vo.setSegundoDigitoConta(String.valueOf(retorno.getSegundoDigitoConta()));
+		vo.setDigitoAgencia(retorno.getDigitoAgencia());
 		
 		return vo;
 	}

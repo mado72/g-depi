@@ -23,13 +23,13 @@ public class STES0512 implements Serializable {
 	private static final long serialVersionUID = -697466839831643647L;
 
 	@CicsField(order = 1, size = 3, pattern = TRES, direction = InOut)
-	private int codigoCia;
+	private String codigoCia;
 
 	@CicsField(order = 2, size = 3, pattern = TRES, direction = InOut)
-	private int codigoBanco;
+	private String codigoBanco;
 
 	@CicsField(order = 3, size = 5, pattern = CINCO, direction = InOut)
-	private int codigoAgencia;
+	private String codigoAgencia;
 
 	@CicsField(order = 4, size = 13, pattern = "0000000000000", direction = InOut)
 	private String conta;
@@ -80,7 +80,7 @@ public class STES0512 implements Serializable {
 	 * Retorna codigoCia
 	 * @return o codigoCia
 	 */
-	public int getCodigoCia() {
+	public String getCodigoCia() {
 		return codigoCia;
 	}
 
@@ -88,7 +88,7 @@ public class STES0512 implements Serializable {
 	 * Define codigoCia
 	 * @param codigoCia valor codigoCia a ser definido
 	 */
-	public void setCodigoCia(int codigoCia) {
+	public void setCodigoCia(String codigoCia) {
 		this.codigoCia = codigoCia;
 	}
 
@@ -96,7 +96,7 @@ public class STES0512 implements Serializable {
 	 * Retorna codigoBanco
 	 * @return o codigoBanco
 	 */
-	public int getCodigoBanco() {
+	public String getCodigoBanco() {
 		return codigoBanco;
 	}
 
@@ -104,7 +104,7 @@ public class STES0512 implements Serializable {
 	 * Define codigoBanco
 	 * @param codigoBanco valor codigoBanco a ser definido
 	 */
-	public void setCodigoBanco(int codigoBanco) {
+	public void setCodigoBanco(String codigoBanco) {
 		this.codigoBanco = codigoBanco;
 	}
 
@@ -112,7 +112,7 @@ public class STES0512 implements Serializable {
 	 * Retorna codigoAgencia
 	 * @return o codigoAgencia
 	 */
-	public int getCodigoAgencia() {
+	public String getCodigoAgencia() {
 		return codigoAgencia;
 	}
 
@@ -120,7 +120,7 @@ public class STES0512 implements Serializable {
 	 * Define codigoAgencia
 	 * @param codigoAgencia valor codigoAgencia a ser definido
 	 */
-	public void setCodigoAgencia(int codigoAgencia) {
+	public void setCodigoAgencia(String codigoAgencia) {
 		this.codigoAgencia = codigoAgencia;
 	}
 

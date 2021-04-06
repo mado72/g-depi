@@ -51,7 +51,7 @@ public abstract class SalvarAction<C extends IEntidadeCampo,  VO, F extends Crud
 		clearErrorsAndMessages();
 	}
 
-	private void persistirDados() {
+	protected void persistirDados() {
 		LOGGER.info("Persistindo dados do formulário");
 		
 		clearErrorsAndMessages();
