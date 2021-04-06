@@ -171,16 +171,16 @@ public class ConsultarRelatorioAction extends BaseAction  {
 		tpcCiasOrdenadas = "FALSE";
 		
 		
-		DepartamentoVO departamento = new DepartamentoVO();
-		departamento.setCodigoDepartamento(1);
-		departamento.setNomeDepartamento("Juridico");
-		listaDepartamentos.add(departamento);
+		//DepartamentoVO departamento = new DepartamentoVO();
+		//departamento.setCodigoDepartamento(1);
+		//departamento.setNomeDepartamento("Juridico");
+		//listaDepartamentos.add(departamento);
 		
-		MotivoDepositoVO motivoDeposito = new MotivoDepositoVO();
-		motivoDeposito.setCodigoMotivoDeposito(1);
-		motivoDeposito.setDescricaoBasica("Motivo1");	
+		//MotivoDepositoVO motivoDeposito = new MotivoDepositoVO();
+		//motivoDeposito.setCodigoMotivoDeposito(1);
+		//motivoDeposito.setDescricaoBasica("Motivo1");			
+		//listaMotivosDepositos.add(motivoDeposito);
 		
-		listaMotivosDepositos.add(motivoDeposito);
 		if (acao.equals(EXIBIRENVIORETORNOANALITICO)){
 			exibirEnvioRetornoAnalitico();			
 		}		
@@ -207,13 +207,15 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
 	public void exibirEnvioRetornoAnalitico() throws DEPIIntegrationException {
 	        try {
-	            setSubtitulo("Envio/Retorno BancoVO - Analítico");
-	            setTituloTabela("Dados de Envio/Retorno BancoVO - Analítico");
+	            setSubtitulo("Envio/Retorno Banco - Analítico");
+	            setTituloTabela("Dados de Envio/Retorno Banco - Analítico");
 	            setTipoRelatorio("ER");
 	            setVisualizacao("A");
 	            carregarComboCompanhia();
 	            carregarComboDepartamentos();
 	            carregarComboMotivos();
+                setAcao(EXIBIRENVIORETORNOANALITICO);
+                setAcaoAnterior(EXIBIRENVIORETORNOANALITICO);
 //	    		listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 //	    		listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -227,10 +229,13 @@ public class ConsultarRelatorioAction extends BaseAction  {
     public void exibirEnvioRetornoSintetico() throws DEPIIntegrationException {
 
             try {
-                setSubtitulo("Envio/Retorno BancoVO - Sintético");
-                setTituloTabela("Dados de Envio/Retorno BancoVO - Sintético");
+                setSubtitulo("Envio/Retorno Banco - Sintético");
+                setTituloTabela("Dados de Envio/Retorno Banco - Sintético");
                 setTipoRelatorio("ER");
                 setVisualizacao("S");
+                setAcao(EXIBIRENVIORETORNOSINTETICO);
+                setAcaoAnterior(EXIBIRENVIORETORNOSINTETICO);
+                
 	    		carregarComboCompanhia();
 	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
@@ -245,10 +250,13 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
             try {
 
-                setSubtitulo("Extrato BancoVO - Analítico");
-                setTituloTabela("Dados de Extrato BancoVO - Analítico");
+                setSubtitulo("Extrato Banco - Analítico");
+                setTituloTabela("Dados de Extrato Banco - Analítico");
                 setTipoRelatorio("EX");
                 setVisualizacao("A");
+                setAcao(EXIBIREXTRATOANALITICO);
+                setAcaoAnterior(EXIBIREXTRATOANALITICO);
+                
 	    		carregarComboCompanhia();
 	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
@@ -263,11 +271,13 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	  public void exibirExtratoSintetico() throws DEPIIntegrationException {
 
 		        try {
-		            setSubtitulo("Extrato BancoVO - Sintético");
-		            setTituloTabela("Dados de Extrato BancoVO - Sintético");
+		            setSubtitulo("Extrato Banco - Sintético");
+		            setTituloTabela("Dados de Extrato Banco - Sintético");
 		            setTipoRelatorio("EX");
 		            setVisualizacao("S");
 		    		carregarComboCompanhia();
+	                setAcao(EXIBIREXTRATOSINTETICO);
+	                setAcaoAnterior(EXIBIREXTRATOSINTETICO);
 		    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 		    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -288,6 +298,8 @@ public class ConsultarRelatorioAction extends BaseAction  {
 		        setVisualizacao("A");
 		        setAcaoAnterior("exibirManutencoesAnalitico");
 				carregarComboCompanhia();
+                setAcao(EXIBIRMANUTENCOESANALITICO);
+                setAcaoAnterior(EXIBIRMANUTENCOESANALITICO);
 	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 		    
@@ -306,8 +318,10 @@ public class ConsultarRelatorioAction extends BaseAction  {
 		        setTituloTabela("Dados de Manutenções - Sintético");
 		        setTipoRelatorio("MN");
 		        setVisualizacao("S");
-
+		        setAcaoAnterior("exibirManutencoesAnalitico");  
 		        carregarComboCompanhia();
+                setAcao(EXIBIRMANUTENCOESSINTETICO);
+                setAcaoAnterior(EXIBIRMANUTENCOESSINTETICO);
   				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
   				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -325,9 +339,9 @@ public class ConsultarRelatorioAction extends BaseAction  {
 		        setTipoRelatorio("DC");
 		        setVisualizacao("A");
 		        setSituacaoEnvioRetorno("A");
-		        
-
-			  		carregarComboCompanhia();
+		        carregarComboCompanhia();
+                setAcao(EXIBIRDADOSCOMPLEMENTARES);
+                setAcaoAnterior(EXIBIRDADOSCOMPLEMENTARES);
 	  				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 	  				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -338,6 +352,12 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
 	  }	  
 	  
+	  /**
+	  * Retorna valores do form para um nova instância do tipo FiltroUtil
+	  * @param FiltroUtil
+	  * @return FiltroUtil
+	  * @throws DEPIIntegrationException - DEPIIntegrationException
+	  */	  	  
 	  private FiltroUtil montaFiltro(FiltroUtil filtro){
 	         if(filtro == null ){
 	        	  filtro = new FiltroUtil(); 
@@ -671,10 +691,6 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
             List<RelatorioEnvioRetornoAnaliticoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
             
-            for(RelatorioEnvioRetornoAnaliticoVO t: colRelatorio) {
-            	LOGGER.error("RelatorioEnvioRetornoAnaliticoVO:"+t.toString());
-            }
-         	
             
             
             if (BaseUtil.isNZB(colRelatorio)) {
@@ -1000,12 +1016,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
     };   
     
  
-    /**
-     * Retorna valores do form para um nova instância do tipo GeneralFiltroVO
-     * @param frm RelatorioForm
-     * @return GeneralFiltroVO
-     * @throws DEPIIntegrationException - DEPIIntegrationException
-     */
+   
     private Object montaFiltro_lod(Object frm) throws IntegrationException {
 
     	

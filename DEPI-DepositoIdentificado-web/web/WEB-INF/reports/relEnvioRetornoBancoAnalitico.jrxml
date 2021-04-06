@@ -697,7 +697,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 				</textElement>
-				<text><![CDATA[DP06 - COBRANÇA BRADESCO SEGUROS]]></text>
+				<text><![CDATA[DEPÓSITO IDENTIFICADO - COBRANÇA BRADESCO SEGUROS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-87" x="0" y="60" width="786" height="10" isRemoveLineWhenBlank="true"/>

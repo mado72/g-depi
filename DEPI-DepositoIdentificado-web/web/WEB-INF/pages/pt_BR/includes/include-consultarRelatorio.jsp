@@ -317,8 +317,13 @@ function limpar() {
    //document.location.href = '<c:out value="${pageContext.request.contextPath}" />/relatorio/ConsultarRelatorio.do?acao='+acaoOriginal;
    //submitForm2(undefined,  "/DEP-DepositoIdentificado/relatorio/consultarRelatorio.do?acao="+acaoOriginal);
     limparCampos();
-   
-	limpaTela(acao);
+	limpaTela(acaoOriginal);
+	
+	document.forms[0].acao.value = acao;
+	document.getElementById("acaoOriginal").value = acao;
+	
+	
+	ajustarPagina();
 	return true;
 }
 function consultar() {
@@ -643,6 +648,11 @@ function gerarRelatorio(){
 }
 
 
+function voltar(){
+	document.location.href = '/DEPI-DepositoIdentificado/index.do';
+	// window.location.href('/DEPI-DepositoIdentificado/index.do');
+}
+
 //=================================================================================================================
 
 
@@ -674,12 +684,12 @@ function limparCampos(){
     document.getElementById('endosso').value = '';
     document.getElementById('codigoAutorizador').value = '';
     document.getElementById('cpfCnpj').value = '';
-    document.getElementById('codigoContaCorrente').value = '';
+    //document.getElementById('codigoContaCorrente').value = '';
     document.getElementById('dataInicial').value = '';
     document.getElementById('dataFinal').value = '';
     document.getElementById('valorInicial').value = '';
     document.getElementById('valorFinal').value = '';
-    document.getElementById('descricaoDetalhada').value = ''; 
+    //document.getElementById('descricaoDetalhada').value = ''; 
 
 }
 
@@ -762,12 +772,14 @@ function setTituloTabela(titulo){
 
 function  exibirEnvioRetornoAnalitico(acao) {
     //alert(acao);
-    var subtitulo = "Envio/Retorno BancoVO - Analítico";
-    var titulo    = "Dados de Envio/Retorno BancoVO - Analítico";
+
+    var subtitulo = "Envio/Retorno Banco - Analítico";
+    var titulo    = "Dados de Envio/Retorno Banco - Analítico";
 	setTipoRelatorio("ER");
 	setVisualizacao("A");
 	setSituacaoEnvioRetorno("");
 	setSituacaoManutencoes("");
+	
 	            
 	carregarComboCompanhia();
 	carregarComboDepartamentos();
@@ -775,13 +787,18 @@ function  exibirEnvioRetornoAnalitico(acao) {
 	document.getElementById('subtitulo').innerHTML = subtitulo;
 	document.getElementById('titulo_tabela').innerHTML = titulo;
 	document.forms[0].acao.value = acao;
+	document.forms[0].acao.value = acao;
+	document.getElementById("acaoOriginal").value = acao;
             
 	       
 }
 	
 function  exibirEnvioRetornoSintetico(acao) {
-    setSubtitulo("Envio/Retorno BancoVO - Sintético");
-	setTituloTabela("Dados de Envio/Retorno BancoVO - Sintético");
+    document.forms[0].acao.value = acao;
+	document.getElementById("acaoOriginal").value = acao;
+
+    setSubtitulo("Envio/Retorno Banco - Sintético");
+	setTituloTabela("Dados de Envio/Retorno Banco - Sintético");
     setTipoRelatorio("ER");
     setVisualizacao("S");
 	carregarComboCompanhia();
@@ -791,27 +808,36 @@ function  exibirEnvioRetornoSintetico(acao) {
 
 function  exibirExtratoAnalitico(acao) {
 
-      setSubtitulo("Extrato BancoVO - Analítico");
-      setTituloTabela("Dados de Extrato BancoVO - Analítico");
+      setSubtitulo("Extrato Banco - Analítico");
+      setTituloTabela("Dados de Extrato Banco - Analítico");
       setTipoRelatorio("EX");
       setVisualizacao("A");
       carregarComboCompanhia();
 	  carregarComboDepartamentos();
 	  carregarComboMotivos();
 
+    document.forms[0].acao.value = acao;
+	document.getElementById("acaoOriginal").value = acao;
+
   }
 
 function  exibirExtratoSintetico(acao) {
+
 	  setSubtitulo("Extrato BancoVO - Sintético");
-	  setTituloTabela("Dados de Extrato BancoVO - Sintético");
+	  setTituloTabela("Dados de Extrato Banco - Sintético");
 	  setTipoRelatorio("EX");
 	  setVisualizacao("S");
       carregarComboCompanhia();
 	  carregarComboDepartamentos();
 	  carregarComboMotivos();
+
+    document.forms[0].acao.value = acao;
+	document.getElementById("acaoOriginal").value = acao;
+
 }
 	  
 function  exibirManutencoesAnalitico(acao) {
+
 	  setSubtitulo("Manutenções - Analítico");
 	  setTituloTabela("Dados de Manutenções - Analítico");
 	  setTipoRelatorio("MN");
@@ -820,10 +846,14 @@ function  exibirManutencoesAnalitico(acao) {
       carregarComboCompanhia();
 	  carregarComboDepartamentos();
 	  carregarComboMotivos();
+
+    document.forms[0].acao.value = acao;
+	document.getElementById("acaoOriginal").value = acao;
 	
 }
 
  function  exibirManutencoesSintetico(acao) {
+
 	  setSubtitulo("Manutenções - Sintético");
 	  setTituloTabela("Dados de Manutenções - Sintético");
 	  setTipoRelatorio("MN");
@@ -832,9 +862,13 @@ function  exibirManutencoesAnalitico(acao) {
 	  carregarComboDepartamentos();
 	  carregarComboMotivos();
 
+    document.forms[0].acao.value = acao;
+	document.getElementById("acaoOriginal").value = acao;
+
 }
 	  
 function  exibirDadosComplementares(acao) {
+
 	setSubtitulo("Dados Complementares - Analítico");
 	setTituloTabela("Dados Complementares - Analítico");
 	setTipoRelatorio("DC");
@@ -843,6 +877,8 @@ function  exibirDadosComplementares(acao) {
     carregarComboCompanhia();
 	carregarComboDepartamentos();
 	carregarComboMotivos();
+    document.forms[0].acao.value = acao;
+	document.getElementById("acaoOriginal").value = acao;
 
 }	  
 

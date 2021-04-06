@@ -119,12 +119,13 @@
 								<s:select 
 									list="listaCompanhia" 
 									id="listaCompanhia" 
+									onchange="changeCombo('listaCompanhiaOrd',this.value);"
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoCompanhia" 
 						  			listValue="codigoCompanhia" 
 						  			name="companhia.listaCompanhia" 
-						  			style="width: 100%;"/>
+						  			style="width: 100%;"  />
 						  		</s:if>
 							</td>
 							
@@ -133,12 +134,13 @@
 								<s:select 
 									list="listaCompanhiaOrd" 
 									id="listaCompanhiaOrd" 
+									onchange="changeCombo('listaCompanhia',this.value);"
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoCompanhia" 
 						  			listValue="descricaoCompanhia" 
 						  			name="companhia.listaCompanhiaOrd"
-						  			style="width: 100%;"/>
+						  			style="width: 100%;"  />
 						  	</s:if>
 							</td>
 						
@@ -149,25 +151,28 @@
 								<s:select 
 									list="listaDepartamentos" 
 									id="listaDepartamentos" 
+									onchange="changeCombo('listaDepartamentosOrd',this.value);"
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoDepartamento" 
-						  			listValue="nomeDepartamento" 
+						  			listValue="codigoDepartamento" 
 						  			name="departamento.listaDepartamentos"
 						  			style="width: 100%;"
-						            onkeydown="return tabEnter(event);" onchange="changeCombo('descricao_departamento',this.value); refresh();"/> 
+						            onkeydown="return tabEnter(event);"
+						            /> 
 							</td>
 							<td align="left" colspan="5">
 								<s:select 
 									list="listaDepartamentos" 
-									id="listaDepartamentos" 
+									id="listaDepartamentosOrd" 
+									onchange="changeCombo('listaDepartamentos',this.value);"
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoDepartamento" 
 						  			listValue="nomeDepartamento" 
 						  			name="departamento.listaDepartamentosOrd"
 						  			style="width: 100%;"
-						            onkeydown="return tabEnter(event);" onchange="changeCombo('descricao_departamento',this.value); refresh();"/> 
+						           /> 
 							</td>
 						
 						
@@ -178,13 +183,24 @@
 							<s:select 
 									list="listaMotivosDepositos" 
 									id="listaMotivosDepositos" 
+									onchange="changeCombo('listaMotivosDepositosOrd',this.value);"
+									headerKey="0" 
+									headerValue=" -- Todos  -- " 
+						  			listKey="codigoMotivoDeposito" 
+						  			listValue="codigoMotivoDeposito" 
+						  			name="motivoDeposito.listaMotivosDepositos"
+						  			style="width: 100%;" 
+						  			/>
+						  	<s:select 
+									list="listaMotivosDepositos" 
+									id="listaMotivosDepositosOrd" 
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoMotivoDeposito" 
 						  			listValue="descricaoBasica" 
 						  			name="motivoDeposito.listaMotivosDepositos"
-						  			style="width: 100%;" 
-						  			onkeydown="return tabEnter(event);" onchange="refresh();"/>
+						  			style="width: 100%; display:none;" 
+						  			/>		
 						</td>
 						<td align="left" colspan="5">
 								<textarea name="descricaoDetalhada" id="descricao_motivo" rows="2" cols="50" class="descricao_motivo" onkeydown="return tabEnter(event);" style="width: 100%; wrap:virtual;" disabled ></textarea>
@@ -357,7 +373,7 @@
 						</a> 
 						
 						<a href="#" title="Voltar"
-						onclick="window.location.href('/DEPI-DepositoIdentificado/index.do');"> 
+						onclick="voltar();"> 
 						<img src="${caminhoImagens}bt_voltar.gif" class="margem_botoes"  />
 						</a>
 					</div>

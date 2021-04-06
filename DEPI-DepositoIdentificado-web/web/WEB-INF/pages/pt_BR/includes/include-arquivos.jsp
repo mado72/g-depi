@@ -110,6 +110,27 @@ function tabEnter(e){
 //Usada para repassar o value quando outra de outra combo.
 function changeCombo(id, valor){
 	document.getElementById(id).value = valor;
+	
+	if(id == 'listaMotivosDepositosOrd'){
+		var select = document.getElementById('listaMotivosDepositosOrd');
+		var option = select.options[select.selectedIndex];
+		var descricao_motivo = document.getElementById('descricao_motivo');
+		if(select.selectedIndex == 0){
+		   descricao_motivo.value = ''; 
+		}else{
+		   descricao_motivo.value = option.textContent; 
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 function exibirImagemNaAcao() {
 	try {
