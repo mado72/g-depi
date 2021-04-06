@@ -1,6 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bucb.servicos.model.ejb.PessoaSessionFacade;
 import br.com.bradseg.bucb.servicos.model.exception.BucBusinessException;
@@ -24,6 +26,8 @@ import br.com.bradseg.depi.depositoidentificado.dao.ContaCorrenteDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.MovimentoDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.ContaCorrenteAutorizadaCampo;
@@ -43,6 +47,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ItemContabilVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MovimentoDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 /**
  * Implementa a associação de motivo depósito
@@ -80,6 +86,9 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	private MotivoDepositoDAO motDepDAO;
 	
 	@Autowired
+	private MovimentoDepositoDAO movimentoDAO;
+	
+	@Autowired
 	private BancoDAO bancoDAO;
 	
 	@Autowired
@@ -90,6 +99,9 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	
 	@Autowired
 	private PessoaSessionFacade pessoaFacade;
+	
+	@Autowired
+	private ParametroDepositoDAO parametroDAO;
 
     /**
      * Excluir AssociarMotivoDepositos
@@ -173,6 +185,8 @@ public class DepositoFacadeImpl implements DepositoFacade {
         		vo.setCpfCnpj("01234567890");
         		vo.setNomePessoa("Nome Fake");
         	}
+        	
+        	vo.setMotivoDeposito(motDepDAO.obterPorChave(vo.getMotivoDeposito()));
 			
 			return vo;
 		} catch (Exception e) {
@@ -456,6 +470,157 @@ public class DepositoFacadeImpl implements DepositoFacade {
 		}
 
 		return contas.get(0);
+	}
+	
+	@Override
+	public ParametroDepositoVO obterParametro(DepositoVO vo) {
+		ParametroDepositoVO parametro = new ParametroDepositoVO(
+				vo.getDepartamento().getCodigoDepartamento(), 
+				vo.getMotivoDeposito().getCodigoMotivoDeposito());
+		parametro.setCompanhia(vo.getCia());
+		
+		return parametroDAO.obterPorChave(parametro);
+	}
+	
+	@Override
+	public void prorrogar(DepositoVO vo, String ipCliente) {
+		validarChave(vo);
+		
+		DepositoVO dep = obterPorChave(vo,
+				vo.getCodigoResponsavelUltimaAtualizacao(), ipCliente);
+		
+		dep.setIndicadorDepositoProrrogado(ConstantesDEPI.INDICADOR_ATIVO);
+		dep.setDataProrrogacao(vo.getDataProrrogacao());
+		dep.setCodigoResponsavelUltimaAtualizacao(vo.getCodigoResponsavelUltimaAtualizacao());
+		
+		if (depositoDAO.verificarLancamentoDeposito(dep)) {
+			throw new DEPIBusinessException("msg.erro.deposito.comLancamento");
+		}
+		
+		if (dep.getSituacaoArquivoTransferencia() != ConstantesDEPI.ARQUIVO_A_ENVIAR
+				&& depositoDAO.verificarEnvioArquivoTransferencia(dep)) {
+			
+			dep.setSituacaoArquivoTransferencia(ConstantesDEPI.ARQUIVO_RENVIAR);
+			
+		} else {
+			
+			dep.setSituacaoArquivoTransferencia(ConstantesDEPI.ARQUIVO_A_ENVIAR);
+			
+		}
+		
+		validarProrrogacao(dep);
+		
+		// Recarrega do banco
+		vo = obterPorChave(vo, vo.getCodigoResponsavelUltimaAtualizacao(), ipCliente);
+		try {
+			depositoDAO.registrarLogs(vo, dep, ConstantesDEPI.PRORROGAR_DEPOSITO);
+			depositoDAO.prorrogar(dep);
+		} catch (BusinessException e) {
+			throw new DEPIBusinessException(e, "msg.erro.deposito.prorrogar");
+		}
+
+	}
+	
+	@Override
+	public void cancelar(DepositoVO vo, String ipCliente) {
+		validarChave(vo);
+		
+		DepositoVO dep = obterPorChave(vo,
+				vo.getCodigoResponsavelUltimaAtualizacao(), ipCliente);
+		
+		dep.setIndicadorDepositoCancelado(ConstantesDEPI.INDICADOR_ATIVO);
+		dep.setDtCancelamentoDepositoIdentificado(vo.getDtCancelamentoDepositoIdentificado());
+		dep.setCodigoResponsavelUltimaAtualizacao(vo.getCodigoResponsavelUltimaAtualizacao());
+		
+		if (depositoDAO.verificarLancamentoDeposito(dep)) {
+			throw new DEPIBusinessException("msg.erro.deposito.comLancamento");
+		}
+		
+		if (dep.getSituacaoArquivoTransferencia() != ConstantesDEPI.ARQUIVO_A_ENVIAR
+				&& depositoDAO.verificarEnvioArquivoTransferencia(dep)) {
+			
+			dep.setSituacaoArquivoTransferencia(ConstantesDEPI.ARQUIVO_RENVIAR);
+			
+		} else {
+			
+			dep.setSituacaoArquivoTransferencia(ConstantesDEPI.ARQUIVO_CANCELADO);
+			
+		}
+		
+		// Recarrega do banco
+		vo = obterPorChave(vo, vo.getCodigoResponsavelUltimaAtualizacao(), ipCliente);
+		try {
+			depositoDAO.registrarLogs(vo, dep, ConstantesDEPI.PRORROGAR_DEPOSITO);
+			depositoDAO.cancelar(dep);
+		} catch (BusinessException e) {
+			throw new DEPIBusinessException(e, "msg.erro.deposito.cancelar");
+		}
+	}
+	
+	@Override
+	public MovimentoDepositoVO obterMovimentoDeposito(DepositoVO vo) {
+		return movimentoDAO.obterPorChave(new MovimentoDepositoVO(vo
+				.getCodigoDigitoDeposito()));
+	}
+	
+	@Override
+	public void inserirMovimento(MovimentoDepositoVO vo) {
+		validarInformacoesMovimento(vo);
+		movimentoDAO.inserir(vo);
+	}
+	
+	@Override
+	public void alterarMovimento(MovimentoDepositoVO vo) {
+		validarInformacoesMovimento(vo);
+		movimentoDAO.alterar(vo);
+	}
+
+    private void validarInformacoesMovimento(MovimentoDepositoVO vo) throws DEPIBusinessException {
+    	try {
+			switch (vo.getIndicacaoAcao()) {
+			case "T":
+				BaseUtil.validarParametro(vo.getBancoMovimento(), "Banco");
+				BaseUtil.validarParametro(vo.getAgenciaMovimento(), "Ag\u00EAncia");
+				BaseUtil.validarParametro(vo.getContaMovimento(), "Conta Corrente");
+			case "D":
+				BaseUtil.validarParametro(vo.getNroCheque(), "N\u00FAmero do Cheque");
+				break;
+
+			default:
+				break;
+			}
+		} catch (IntegrationException e) {
+			throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, e.getMessage());
+		}
+    }
+
+	private void validarChave(DepositoVO vo) {
+		if (BaseUtil.isNZB(vo)) {
+			throw new DEPIBusinessException(ConstantesDEPI.MSG_CUSTOMIZADA,
+                "Dep\u00F3sito: vo - DepositoVO \u00E9 null");
+		}
+		if (BaseUtil.isNZB(vo.getCodigoDepositoIdentificado())) {
+			throw new DEPIBusinessException(ConstantesDEPI.MSG_CUSTOMIZADA,
+					"C\u00F3digo Dep\u00F3sito");
+		}
+	}
+
+	private void validarProrrogacao(DepositoVO dep) {
+        if (BaseUtil.isNZB(dep.getDtVencimentoDeposito())) {
+        	throw new DEPIBusinessException("msg.erro.deposito.obrigatorio", "dtVencimentoDeposito");
+        }
+
+        if (BaseUtil.verificarSeAsDatasSaoIguais(dep.getDataProrrogacao(), dep.getDtVencimentoDeposito())) {
+        	throw new DEPIBusinessException("msg.erro.deposito.dataProrrogacaoIgualDtVencimento");
+        }
+        
+        if (dep.getDtVencimentoDeposito().compareTo(dep.getDataProrrogacao()) > 0) {
+        	throw new DEPIBusinessException("msg.erro.deposito.dataProrrogacaoMenorDtVencimento");
+        }
+
+        if (dep.getDataProrrogacao().compareTo(new Date()) < 0) {
+        	throw new DEPIBusinessException("msg.erro.deposito.dataProrrogacaoMenorDtAtual");
+        }
 	}
 	
 }
