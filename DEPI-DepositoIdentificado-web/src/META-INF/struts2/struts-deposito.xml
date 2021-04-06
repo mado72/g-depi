@@ -88,11 +88,31 @@
 			</result>
         </action>
         
-        <action name="salvar" class="depositoSalvarAction">
+        <action name="salvar" class="depositoSalvarAction" method="salvar">
             <interceptor-ref name="store">
                 <param name="operationMode">STORE</param>
             </interceptor-ref>
-            <interceptor-ref name="applicationStack" />
+            <interceptor-ref name="applicationStack"/>
+			<result name="input" type="redirectAction">
+			    <param name="actionName">input</param>
+			</result>
+        </action>        
+        
+        <action name="salvarProrrogarCancelar" class="depositoSalvarAction" method="salvarProrrogarCancelar">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack"/>
+			<result name="input" type="redirectAction">
+			    <param name="actionName">input</param>
+			</result>
+        </action>        
+        
+        <action name="salvarMovimento" class="depositoSalvarAction" method="salvarMovimento">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack"/>
 			<result name="input" type="redirectAction">
 			    <param name="actionName">input</param>
 			</result>
