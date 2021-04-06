@@ -4,7 +4,20 @@
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:url value="/deposito" var="namespaceBase" scope="request"/>
 <s:include value="/WEB-INF/pages/pt_BR/comum/action-messages.jsp"/>
-<s:form action="salvar" id="AcaoForm">
+<c:choose>
+<c:when test="${tipoAcao == 'PRORROGAR_CANCELAR'}">
+<s:set var="formAction" value="'salvarProrrogarCancelar'"/>
+<c:set var="colspanProrrogar" value="1"/>
+<c:set var="exibirAcaoProrrogar" value="true" scope="request"/>
+</c:when>
+<c:otherwise>
+<s:set var="formAction" value="'salvar'"/>
+<c:set var="colspanProrrogar" value="2"/>
+<c:set var="exibirAcaoProrrogar" value="false" scope="request"/>
+</c:otherwise>
+</c:choose>
+<s:form action="%{#formAction}" id="AcaoForm">
+<s:hidden key="tipoAcao"/>
 <input name="codigo" type="hidden" value="${codigo.isEmpty() ? '' : codigo }">
 <input name="estado" type="hidden" value="${estado}">
 	<table id="tabela_interna">
@@ -24,12 +37,12 @@
 				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.codigoCompanhia-->
 				<s:select list="cias" value="codigoCompanhia" listValue="codigoCompanhia" 
 					listKey="codigoCompanhia" cssClass="dropbox w-100 companhia-codigo-dropbox" name="codigoCompanhia"
-					disabled="%{detalhar}"/>
+					disabled="desabilitarEdicao"/>
 			</td>
 			<td colspan="5">
 				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
 				<s:select list="cias" value="codigoCompanhia" listValue="descricaoCompanhia" listKey="codigoCompanhia" 
-					cssClass="dropbox w-100 companhia-nome-dropbox" disabled="%{detalhar}"/>
+					cssClass="dropbox w-100 companhia-nome-dropbox" disabled="desabilitarEdicao"/>
 			</td>
 		</tr>
  		<tr>
@@ -37,11 +50,11 @@
 			<td class="td_label" ><s:text name="label.cadastro.parametrodeposito.departamento" /><span class="obrigatorio">*</span></td>
 			<td>
 				<s:select list="deptos" key="codigoDepartamento" listValue="siglaDepartamento" listKey="codigoDepartamento" 
-					cssClass="dropbox w-100 departamento-codigo-dropbox" disabled="%{detalhar}"/>
+					cssClass="dropbox w-100 departamento-codigo-dropbox" disabled="desabilitarEdicao"/>
 			</td>
 			<td colspan="5">
 				<s:select list="deptos" value="codigoDepartamento" listValue="nomeDepartamento" listKey="codigoDepartamento" 
-					cssClass="dropbox w-100 departamento-nome-dropbox" disabled="%{detalhar}"/>
+					cssClass="dropbox w-100 departamento-nome-dropbox" disabled="desabilitarEdicao"/>
 			</td>
 		</tr>
 		<tr>
@@ -49,10 +62,10 @@
 			<td>
 				<!-- combo motivo -->
 				<s:select key="codigoMotivoDeposito" list="motivos" listValue="descricaoBasica" listKey="codigoMotivoDeposito" 
-					cssClass="dropbox w-100" disabled="%{detalhar}"/>
+					cssClass="dropbox w-100 codigo-motivo" disabled="desabilitarEdicao"/>
 			</td>
 			<td colspan="5">
-				<s:textarea key="descricaoDetalhadaMotivo" rows="5" cols="70" value="%{descricaoDetalhadaMotivo}" readonly="true" disabled="detalhar"/>
+				<s:textarea key="descricaoDetalhadaMotivo" rows="5" cols="70" value="%{descricaoDetalhadaMotivo}" readonly="true" disabled="desabilitarEdicao"/>
 			</td>
 		</tr>
 		<tr>
@@ -62,11 +75,11 @@
 			</td>
 			<td>
 				<s:select list="bancos" key="codBanco" listValue="cdBancoExterno" listKey="cdBancoExterno" 
-					cssClass="dropbox w-100 banco-codigo-dropbox" disabled="%{detalhar}"/>
+					cssClass="dropbox w-100 banco-codigo-dropbox" disabled="desabilitarEdicao"/>
 			</td>
 			<td colspan="5">
 				<s:select list="bancos" value="codBanco" listValue="descricaoBanco" listKey="cdBancoExterno" 
-					cssClass="dropbox w-100 banco-descricao-dropbox" disabled="%{detalhar}"/>
+					cssClass="dropbox w-100 banco-descricao-dropbox" disabled="desabilitarEdicao"/>
 			</td>
 		</tr>
 		<tr>
@@ -76,11 +89,11 @@
 			</td>
 			<td>
 				<s:select list="agencias" key="codigoAgencia" listValue="cdAgenciaExterno" listKey="cdAgenciaExterno" 
-					cssClass="dropbox w-100 agencia-codigo-dropbox" disabled="%{detalhar}"/>
+					cssClass="dropbox w-100 agencia-codigo-dropbox" disabled="desabilitarEdicao"/>
 			</td>
 			<td colspan="5">
 				<s:select list="agencias" value="codigoAgencia" listValue="descricaoAgencia" listKey="cdAgenciaExterno" 
-					cssClass="dropbox w-100 agencia-descricao-dropbox" disabled="%{detalhar}"/>
+					cssClass="dropbox w-100 agencia-descricao-dropbox" disabled="desabilitarEdicao"/>
 			</td>
 		</tr>
 		<tr>
@@ -90,7 +103,7 @@
 			</td>
 			<td>
 				<s:select list="contas" key="contaCorrente" listValue="contaCorrente" listKey="contaCorrente"
-					cssClass="dropbox w-100 contacorrente-codigo-dropbox" disabled="%{detalhar}"/>
+					cssClass="dropbox w-100 contacorrente-codigo-dropbox" disabled="desabilitarEdicao"/>
 			</td>
 			<td>
 				<s:textfield size="6" key="contaInterna" disabled="true"/>
@@ -114,7 +127,7 @@
 				<s:text name="label.deposito.cpfCnpj" />
 			</td>
 			<td>
-				<s:textfield size="20" key="cpfCnpj" id="cpfCnpj" class="cpfOuCnpj"/>
+				<s:textfield size="20" key="cpfCnpj" id="codigoCpfCnpj" class="cpfOuCnpj"/>
 			</td>
 			<td class="td_label">
 				<s:text name="label.deposito.pessoaDepositante" />
@@ -134,50 +147,50 @@
 			<td class="td_label" rowspan="4"><s:text name="label.deposito.docsNecessarios"/></td>
 			<td class="td_label"><s:text name="label.deposito.sucursal"/></td>
 			<td>
-				<s:textfield maxlength="4" key="sucursal" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="sucursal" id="codigoSucursal" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.bloqueto"/></td>
 			<td>
-				<s:textfield maxlength="4" key="bloqueto" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="bloqueto" id="codigoBloqueto" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.tipoDocumento"/></td>
 			<td>
-				<s:textfield maxlength="4" key="tipoDocumento" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="tipoDocumento" id="codigoTipo" cssClass="w-90 text-right"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.apolice"/></td>
 			<td>
-				<s:textfield maxlength="4" key="apolice" cssClass="w-90 text-right" />
+				<s:textfield maxlength="4" key="apolice" id="codigoApolice" cssClass="w-90 text-right" />
 			</td>
 			<td class="td_label"><s:text name="label.deposito.protocolo"/></td>
 			<td>
-				<s:textfield maxlength="4" key="protocolo" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="protocolo" id="codigoProtocolo" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.ramo"/></td>
 			<td>
-				<s:textfield maxlength="4" key="ramo" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="ramo" id="codigoRamo" cssClass="w-90 text-right"/>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.endosso"/></td>
 			<td>
-				<s:textfield maxlength="4" key="endosso" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="endosso" id="codigoEndosso" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.dossie"/></td>
 			<td>
-				<s:textfield maxlength="4" key="dossie" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="dossie" id="codigoDossie" cssClass="w-90 text-right"/>
 			</td>
 			<td class="td_label"><s:text name="label.deposito.parcela"/></td>
 			<td>
-				<s:textfield maxlength="4" key="parcela" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="parcela" id="codigoParcela" cssClass="w-90 text-right"/>
 			</td>
 		</tr>
-		<s:if test="detalhar"><s:set var="rowspanDisp" value="8"/></s:if><s:else><s:set var="rowspanDisp" value="5"/></s:else>
+		<s:if test="desabilitarEdicao"><s:set var="rowspanDisp" value="8"/></s:if><s:else><s:set var="rowspanDisp" value="5"/></s:else>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.item"/></td>
 			<td>
-				<s:textfield maxlength="4" key="item" cssClass="w-90 text-right"/>
+				<s:textfield maxlength="4" key="item" id="codigoItem" cssClass="w-90 text-right"/>
 			</td>
 			<td  colspan="2">&nbsp;</td>
 			<td rowspan="<s:property value="rowspanDisp"/>" colspan="2" class="td_label">&nbsp;</td>
@@ -187,14 +200,14 @@
 				<s:text name="label.deposito.outrosDocs" />
 			</td>
 			<td colspan="4">
-				<c:choose><c:when test="${detalhar}"><c:set var="disabled">disabled</c:set></c:when><c:otherwise><c:set var="disabled" value=""/></c:otherwise></c:choose>
-				<textarea readonly="readonly" rows="5" cols="70" ${disabled}></textarea>
+				<c:choose><c:when test="${detalhar}"><c:set var="disabledTextArea">disabled</c:set></c:when><c:otherwise><c:set var="disabledTextArea" value=""/></c:otherwise></c:choose>
+				<textarea readonly="readonly" rows="5" cols="70" ${disabledTextArea}></textarea>
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.observacao" /></td>
 			<td colspan="4">
-				<s:textarea key="observacaoDeposito" rows="5" cols="70" value="%{observacaoDeposito}" disabled="detalhar"/>
+				<s:textarea key="observacaoDeposito" rows="5" cols="70" value="%{observacaoDeposito}" disabled="desabilitarEdicao"/>
 			</td>
 		</tr>
 		<tr>
@@ -206,42 +219,67 @@
 			</td>
 			<td class="td_label"><s:text name="label.deposito.vencimento"/></td>
 			<td>
-				<s:textfield maxlength="4" key="dtVencimentoDeposito" cssClass="w-90 text-right" disabled="detalhar"/>
+				<s:textfield maxlength="4" key="dtVencimentoDeposito" id="dtVencimentoDeposito" cssClass="text-right" disabled="desabilitarEdicao"/>
+				<img src="${caminhoImagens}ic_sbox_calendario.gif" class="btnVencimentoDeposito">
 			</td>
 		</tr>
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.valor"/></td>
 			<td>
-				<s:textfield maxlength="4" key="vlrDepositoRegistrado" cssClass="w-90 text-right" disabled="detalhar"/>
+				<s:textfield maxlength="4" key="vlrDepositoRegistrado" cssClass="w-90 text-right" disabled="desabilitarEdicao"/>
 			</td>
 			<td colspan="2"></td> 
 		</tr>
-<s:if test="detalhar">
+<s:if test="desabilitarEdicao">
 		<tr>
 			<td class="td_label"><s:text name="label.deposito.codAutorizador"/></td>
 			<td>
-				<s:textfield key="codigoDepositoIdentificado" cssClass="w-90 text-right" disabled="detalhar"/>
+				<s:textfield key="codigoDepositoIdentificado" cssClass="w-90 text-right" disabled="desabilitarEdicao"/>
 			</td>
 			<td colspan="2" class="td_label"><s:text name="label.deposito.digAutorizador"/></td>
 			<td>
-				<s:textfield key="dv" cssClass="w-90 text-right" disabled="detalhar"/>
+				<s:textfield key="dv" cssClass="w-90 text-right" disabled="desabilitarEdicao"/>
 			</td>
 		</tr>
 		<tr>
 			<td rowspan="2" class="td_label"><s:text name="label.deposito.acao"/></td>
-			<td class="td_label"><s:text name="label.deposito.dtProrrogacao"/></td>
-			<td>
-				<s:textfield key="dataProrrogacao" cssClass="w-90 text-right" disabled="detalhar"/>
+			<c:if test="${exibirAcaoProrrogar}">
+			<td class="td_label text-center">
+				<label>
+					<input type="radio" name="acaoProrrogarCancelar" value="P" checked class="acaoProrrogarCancelarOpt" data-target="dataProrrogacao"><br/>
+					<s:text name="label.deposito.acaoProrrogar"/>
+				</label>
 			</td>
-			<td colspan="2"></td> 
+			<td class="td_label"><s:text name="label.deposito.dtProrrogacao"/></td>
+			</c:if>
+			<td>
+				<s:textfield key="dataProrrogacao" id="dataProrrogacao" cssClass="text-right" disabled="%{exibirAcaoProrrogar}"/>
+				<s:if test="desabilitarEdicao"><button class="abtn btnCalendar" id="btnDataProrrogacao"><img src="${caminhoImagens}ic_sbox_calendario.gif"></button></s:if>
+			</td>
+			<td colspan="${colspanProrrogar}"></td> 
 		</tr>
 		<tr>
+			<c:if test="${exibirAcaoProrrogar}">
+			<td class="td_label text-center">
+				<label>
+					<input type="radio" name="acaoProrrogarCancelar" value="C" class="acaoProrrogarCancelarOpt" data-target="dtCancelamentoDepositoIdentificado"><br/>
+					<s:text name="label.deposito.acaoCancelar"/>
+				</label>
+			</td>
+			</c:if>
 			<td class="td_label"><s:text name="label.deposito.dtCancelamento"/></td>
 			<td>
-				<s:textfield key="dtCancelamentoDepositoIdentificado" cssClass="w-90 text-right" disabled="detalhar"/>
+				<s:textfield key="dtCancelamentoDepositoIdentificado" id="dtCancelamentoDepositoIdentificado" cssClass="text-right" 
+					disabled="%{exibirAcaoProrrogar}"/>
+				<s:if test="desabilitarEdicao"><button class="abtn btnCalendar" id="btnCancelamentoDepositoIdentificado"><img src="${caminhoImagens}ic_sbox_calendario.gif" class="btnCancelamentoDepositoIdentificado"></button></s:if>
 			</td>
-			<td colspan="2"></td> 
+			<td colspan="${colspanProrrogar}"></td> 
 		</tr>
+<c:if test="${exibirAcaoProrrogar}">
+<c:set var="scriptPage" scope="request">
+<script>$.deposito.prorrogar();</script>
+</c:set>
+</c:if>
 </s:if>		
 		</tbody>
 	</table>
@@ -252,9 +290,9 @@
 <c:set var="contas">{<c:forEach items="${contas}" var="item">"${item.contaCorrente}":"${item.codigoInternoCC}",</c:forEach>"NULL": "NULL"}</c:set>
 <c:set var="scriptPage" scope="request">
 <c:out value="${scriptPage}" default="" escapeXml="false"/>
-<c:if test="${! detalhar}">
+<c:if test="${! detalhar || desabilitarEdicao}">
 	<c:url value="/cadastro/associar-motivodeposito/editar/selecionar.do" var="urlSelecionar"/>
-	<c:url value="/filtro/associar-motivodeposito/consultar/index.do" var="urlDepartamento">
+	<c:url value="/filtro/departamento/consultar/index.do" var="urlDepartamento">
 		<c:param name="action">${urlSelecionar}</c:param>
 	</c:url>
 <script>
@@ -268,8 +306,11 @@ jQuery(document).ready(function($){
 			urlAgencias : '<c:url value="/json/ciaBancoAgencias.do?codigo.cia=%d&codigo.banco=%d"></c:url>',
 			urlContas : '<c:url value="/json/ciaBancoAgenciaConta.do?codigo.cia=%d&codigo.banco=%d&codigo.agencia=%d"></c:url>',
 			urlPessoasCorporativas: '<c:url value="/json/pessoasCorporativas.do?codigo.cpfCnpj=%d"></c:url>',
+			urlParametro: '<c:url value="/json/parametro.do?codigo.cia=%d&codigo.depto=%d&codigo.motivo=%d"></c:url>',
+			parametros: <depi:json value="%{parametro}"/>, 
 		});
 	}(jQuery));
 </script>
 </c:if>
 </c:set>
+

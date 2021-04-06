@@ -1,7 +1,12 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import java.lang.reflect.Field;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -11,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
@@ -21,6 +27,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.util.IgnorarLog;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
@@ -228,10 +235,10 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     	
     	prepararQuery(params, PREFIX_PARAM, 
     			vo.getSituacaoArquivoTransferencia(),
-    			vo.getDataProrrogacao());
+    			vo.getDataProrrogacao(),
+    			vo.getCodigoResponsavelUltimaAtualizacao());
     	
     	prepararQuery(params, PREFIX_WHERE_PARAM, 
-    			vo.getCodigoResponsavelUltimaAtualizacao(),
     			vo.getCodigoDepositoIdentificado());  
     	
     	int count = getJdbcTemplate().update(QuerysDepi.DEPOSITO_PRORROGAR, params);
@@ -250,10 +257,10 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     	MapSqlParameterSource params = new MapSqlParameterSource();
     	
     	prepararQuery(params, PREFIX_PARAM, 
-    			deposito.getSituacaoArquivoTransferencia());
+    			deposito.getSituacaoArquivoTransferencia(),
+    			deposito.getCodigoResponsavelUltimaAtualizacao());
     	
     	prepararQuery(params, PREFIX_WHERE_PARAM, 
-    			deposito.getCodigoResponsavelUltimaAtualizacao(),
     			deposito.getCodigoDepositoIdentificado());
     	
     	Integer count = getJdbcTemplate().update(QuerysDepi.DEPOSITO_CANCELAR, params);
@@ -285,11 +292,10 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
     	try {
             List<LogDepositoVO> logs = gerarLogs(oldObj, newObj, actionName);
-/* FIXME Código comentado porque estava dando erro de compilação ao acessar métodos da LogDepositoVO
             for (LogDepositoVO log : logs) {
-                log.setIdLog(registrarLog(log));
+            	log.setIdLog(registrarLog(log));
             }
-*/            
+
         	LOGGER.info("registrarLogs(DepositoVO oldObj, DepositoVO newObj, String actionName)"); 
             return logs;
         } finally {
@@ -314,9 +320,25 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 		
 		return key.getKey().longValue();
 	}
-
     
-    /**
+    private long registrarLog(LogDepositoVO log) {    	
+    	MapSqlParameterSource params = new MapSqlParameterSource();
+    	
+		prepararQuery(params, PREFIX_PARAM,
+				log.getCodigo(), 
+				log.getFieldName(),
+                log.getValorAntigo(), 
+                log.getValorNovo(), 
+                log.getUsuarioAntigo(), 
+                log.getUsuarioNovo());
+		
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		getJdbcTemplate().update(QuerysDepi.DEPOSITO_LOGS_INSERT, params, keyHolder);
+		
+		return keyHolder.getKey().longValue();
+	}
+
+	/**
 	 * @param oldObj -
 	 *            DepositoVO
 	 * @param newObj -
@@ -326,31 +348,63 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 	 * @return Generated Key - long
 	 */
     private List<LogDepositoVO> gerarLogs(DepositoVO oldObj, DepositoVO newObj, String actionName) {
-/*    	beginMethod(LOGGER, "gerarLogs(DepositoVO oldObj, DepositoVO newObj, String actionName)");
         List<LogDepositoVO> logs = new ArrayList<LogDepositoVO>();
+        
         List<LogDepositoVO> logsDeposito = new ArrayList<LogDepositoVO>();
+        
         extractModifiedValues(oldObj, newObj, actionName, logs);
-        try{
-          for (LogDepositoVO log : logs) {              
-        	  LogDepositoVO logDep = log;
-              logDep.setCodigo(newObj.getCodigoDepositoIdentificado());
-              if (log.getFieldName().length() > 20) {
-                  log.setFieldName(log.getFieldName().substring(1, 20));
-              }
-              log.setUsuarioAntigo(newObj.getCodigoResponsavelUltimaAtualizacao());
-              log.setUsuarioNovo(oldObj.getCodigoResponsavelUltimaAtualizacao());
-              logsDeposito.add(logDep);
-          }
-        }catch (Exception e) {
-        	LOGGER.error(e);
-        	tratarExcecao(e);
-		}  finally {
-    	   endMethod(LOGGER, "gerarLogs(DepositoVO oldObj, DepositoVO newObj, String actionName)");
-		}
-        return logsDeposito; */
-    	 return null;
+        
+        for (LogDepositoVO log : logs) {
+        	LogDepositoVO logDep = log;
+        	logDep.setCodigo(newObj.getCodigoDepositoIdentificado());
+        	if (log.getFieldName().length() > 20) {
+        		log.setFieldName(log.getFieldName().substring(1, 20));
+        	}
+        	log.setUsuarioAntigo(newObj.getCodigoResponsavelUltimaAtualizacao());
+        	log.setUsuarioNovo(oldObj.getCodigoResponsavelUltimaAtualizacao());
+        	logsDeposito.add(logDep);
+        }
+        
+        return logsDeposito; 
     }
-
+    
+    private void extractModifiedValues(final Object oldObj, final Object newObj, final String actionName,
+            final List<LogDepositoVO> logs) {
+    	
+    	Set<String> propertyNamesToAvoid = new HashSet<String>();
+    	propertyNamesToAvoid.add("codigoResponsavelUltimaAtualizacao");
+    	
+    	Field[] fields = oldObj.getClass().getDeclaredFields();
+    	for (Field field : fields) {
+			if (field.getAnnotation(IgnorarLog.class) != null) {
+				propertyNamesToAvoid.add(field.getName());
+			}
+		}
+		Map<String, Object[]> difProps = BaseUtil.compararObjects(oldObj, newObj, propertyNamesToAvoid, 1L);
+		
+		for (String propName : difProps.keySet()) {
+			LogDepositoVO log = new LogDepositoVO();
+			log.setFieldName(propName);
+			
+			Object[] valores = difProps.get(propName);
+			if (valores[0] == null) {
+				log.setValorAntigo("");
+			}
+			else {
+				log.setValorAntigo(String.valueOf(valores[0]));
+			}
+			
+			if (valores[1] == null) {
+				log.setValorNovo("");
+			}
+			else {
+				log.setValorNovo(String.valueOf(valores[1]));
+			}
+			
+			logs.add(log);
+		}
+    }
+    
     @Override
 	public DepositoVO obterDepositoPorChave(DepositoVO deposito)  {
 
@@ -366,8 +420,6 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 		} catch (EmptyResultDataAccessException e) {
 			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
 		}
-    	
-    	
 	}
 
     @Override

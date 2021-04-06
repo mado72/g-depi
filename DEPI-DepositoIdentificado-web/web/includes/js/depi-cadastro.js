@@ -1217,8 +1217,99 @@ var fnReady = function ($) {
 			$("#nomePessoa").val($(this).text());
 		});
 		
+		$(".companhia-codigo-dropbox, .departamento-codigo-dropbox, .codigo-motivo").change(function(){
+			var cia = $(".companhia-codigo-dropbox").val(), depto = $(".departamento-codigo-dropbox").val(), motivo = $(".codigo-motivo").val();
+			var url = opcoes.urlParametro.replace(/%d/, cia).replace(/%d/, depto).replace(/%d/, motivo);
+			$.ajax({
+				url: url,
+				type: "GET",
+				dataType: "json",
+				success: function(data) {
+					console.log("Parametro: ", data.response);
+				}
+			});
+		});
 		$("#AcaoForm").trigger('pessoas');
+		$.deposito.parametros(opcoes.parametros);
+		$("#pessoaDepositante, #nomePessoa").prop("disabled", function(){
+			var t = $(this), disabled = t.prop("disabled") || opcoes.parametros.codigoCpfCnpj == 'N';
+			t.prop("disabled", disabled);
+		});
+		Calendar.setup({
+		    inputField     : "dtVencimentoDeposito",
+		    ifFormat       : "%d/%m/%Y",
+		    button         : "btnVencimentoDeposito",
+		    align          : "bR",
+			showsTime      : false,
+				singleClick    : true
+		});
 	};
+	
+	$.deposito.prorrogar = function() {
+		Calendar.setup({
+			inputField     : "dataProrrogacao",
+			ifFormat       : "%d/%m/%Y",
+			button         : "btnDataProrrogacao",
+			showsTime      : false,
+			singleClick    : true
+		});
+		Calendar.setup({
+			inputField     : "dtCancelamentoDepositoIdentificado",
+			ifFormat       : "%d/%m/%Y",
+			button         : "btnCancelamentoDepositoIdentificado",
+			align          : "bR",
+			showsTime      : false,
+			singleClick    : true
+		});
+
+		$(".acaoProrrogarCancelarOpt").click(function(){
+			var t = $(this), target = t.attr("data-target");
+			$('#'+target).focus();
+		});
+		$(".btnCalendar").click(function(){
+			
+		});
+	};
+	
+	$.deposito.parametros = function(parametros) {
+		$.each(parametros, function(prop, value){
+			$("#"+prop).prop("disabled", value == 'N');
+		});
+	};
+	
+	// movimento
+	// ---------------------------------------------------------------------
+	$.namespace( '$.movimento' );
+	
+	$.movimento.prepararFormulario = function(opcoes) {
+		var actionForm = $(opcoes.idForm), codMovimentoAcao = opcoes.tipoAcao, 
+			BtnSalvar = actionForm.find('#BtnSalvar'), BtnCancelar = actionForm.find("#BtnCancelar");
+		
+		actionForm.find(".codMovimentoAcao").click(function(){
+			var t = $(this), v = t.val();
+			
+			$('.movConta').prop('disabled', true);	
+			$('.movCheque').prop('disabled', true);	
+			
+			switch (v) {
+			case 'D':
+				$('.movCheque').prop('disabled', false);
+			case 'T':
+			case 'R':
+				$('.movConta').prop('disabled', false);
+			}
+		});
+		
+		actionForm.find(".codMovimentoAcao[value='"+codMovimentoAcao+"']").prop('checked', true);
+		
+		BtnSalvar.click(function() {
+			actionForm.submit();
+		});
+		
+		BtnCancelar.click(function() {
+			window.location.href = window.location.href.replace(/\/deposito\/.*/, '/deposito/consultar/index.do');
+		});
+	}
 	
 	// paginacao
 	// ---------------------------------------------------------------------

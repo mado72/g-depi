@@ -33,8 +33,9 @@ public class InputRadioSimNaoTag extends StrutsBodyTagSupport {
 	@Override
 	public int doEndTag() throws JspException {
 		String value = findString(name);
-		String expr = findString(new StringBuilder("%{").append(detalhar).append("}").toString());
-		boolean paraDetalhar = "true".equalsIgnoreCase(expr);
+		String expr = new StringBuilder("%{").append(detalhar).append("}").toString();
+		String exprValue = findString(expr);
+		boolean paraDetalhar = "true".equalsIgnoreCase(exprValue);
 		
 		if (! (value.startsWith("%{") && value.endsWith("}"))) {
 			StringBuilder sb = new StringBuilder("%{").append(value).append('}');

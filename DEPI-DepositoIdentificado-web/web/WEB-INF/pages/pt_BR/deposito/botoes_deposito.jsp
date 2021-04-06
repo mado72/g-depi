@@ -9,7 +9,7 @@
 			<td align="center">
 				<div id="tabela_botoes"><c:url var="btnIncluirUrl" value="${namespaceBase}/incluir.do"/><c:url 
 						var="btnProrrogarUrl" value="${namespaceBase}/prorrogar.do"/><c:url 
-						var="btnMovimentoUrl" value="${namespaceBase}/movimento.do"/><c:url 
+						var="btnMovimentoUrl" value="${namespaceBase}/../movimento/manter.do"/><c:url 
 						var="btnLancamentoUrl" value="${namespaceBase}/lancamento.do"/>
 					<button class="abtn btnIncluir" id="BtnIncluirRodape" href="${btnIncluirUrl}"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.gif"/>"></button>
 					<button class="abtn" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></button>
