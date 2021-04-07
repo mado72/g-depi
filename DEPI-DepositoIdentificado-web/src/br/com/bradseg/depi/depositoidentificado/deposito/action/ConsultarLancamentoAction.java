@@ -55,7 +55,7 @@ public class ConsultarLancamentoAction
 	}
 	
 	public String consultar() {
-		model.setSubtitulo("Dep\u00F3sito - Manter Movimento");
+		model.setSubtitulo("Dep\u00F3sito - Consultar Lan\u00E7amento.");
 		
 		try {
 			DepositoVO vo = facade.obterPorChave(
@@ -68,13 +68,13 @@ public class ConsultarLancamentoAction
 			
 			if (lancamento == null) {
 				addActionError(getText("msg.consulta.lancamento.vazio"));
-				return "voltar";
+				return ERROR;
 			}
 			
 			model.preencherDeposito(vo);
 			model.preencherLancamento(lancamento);
 			
-			return SUCCESS;
+			return INPUT;
 		} catch (Exception e) {
 			LOGGER.error("Erro ao consultar lançamento.", e);
 			addActionError(e.getMessage());

@@ -161,4 +161,31 @@
 
 	</package>
 	
+	<package name="depositoLancamento" namespace="/deposito/lancamento" extends="depi-default">
+	
+		<default-class-ref class="consultarLancamentoAction"></default-class-ref>
+	
+		<global-results>
+			<result name="input">
+			    <param name="location">/WEB-INF/pages/pt_BR/deposito/consultarLancamento.jsp</param>
+			</result>
+			<result name="success" type="redirectAction">
+			    <param name="actionName">retornar</param>
+			    <param name="namespace">/deposito/consultar</param>
+			</result>
+            <result name="error" type="redirectAction">
+                <param name="actionName">listar</param>
+                <param name="namespace">/deposito/consultar</param>
+            </result>
+        </global-results>
+
+        <action name="*" method="{1}">
+			<interceptor-ref name="store">
+				<param name="operationMode">STORE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
+        </action>
+
+	</package>
+	
 </struts>
