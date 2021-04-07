@@ -65,7 +65,7 @@ public class MovimentoEditarFormModel extends CrudForm {
 		setCodFuncionario(String.valueOf(vo.getCodigoResponsavelUltimaAtualizacao()));
 		setMotivo(vo.getMotivoDeposito().getDescricaoBasica());
 		setCodBanco(String.valueOf(vo.getBanco().getCdBancoExterno()));
-		setCodAgencia(String.valueOf(vo.getCodigoAgencia()));
+		setCodAgencia(String.valueOf(vo.getAgencia().getCdAgenciaExterno()));
 		setConta(String.valueOf(vo.getContaCorrente()));
 		setNomePessoa(vo.getNomePessoa());
 		setDataDeposito(BaseUtil.SDF_DDMMYYYY.format(vo.getDtVencimentoDeposito()));

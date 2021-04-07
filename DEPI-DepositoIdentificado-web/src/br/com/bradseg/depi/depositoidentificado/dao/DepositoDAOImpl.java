@@ -110,7 +110,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
         			vo.getDepartamento().getCodigoDepartamento(),
         			vo.getMotivoDeposito().getCodigoMotivoDeposito(),
         			vo.getBanco().getCdBancoExterno(),
-        			vo.getCodigoAgencia(),
+        			vo.getAgencia().getCdAgenciaExterno(),
         			BaseUtil.setNullQuandoOpcional(vo.getRamo(), param.getCodigoRamo()),
         			vo.getContaCorrente(),
         			BaseUtil.setNullQuandoOpcional(vo.getSucursal(), param.getCodigoSucursal()),
@@ -185,7 +185,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
         			vo.getDepartamento().getCodigoDepartamento(), // CDEPTO_DEP_IDTFD
         			vo.getMotivoDeposito().getCodigoMotivoDeposito(), // CMOTVO_DEP_IDTFD
         			vo.getBanco().getCdBancoExterno(), // CBCO
-        			vo.getCodigoAgencia(), // CAG_BCRIA
+        			vo.getAgencia().getCdAgenciaExterno(), // CAG_BCRIA
         			BaseUtil.setNullQuandoOpcional(vo.getRamo(), param.getCodigoRamo()), // CRAMO_SEGUR
         			vo.getContaCorrente(), // CCTA_CORR
         			BaseUtil.setNullQuandoOpcional(vo.getSucursal(), param.getCodigoSucursal()), // CSUCUR_EMISR

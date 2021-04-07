@@ -53,7 +53,7 @@ public class DepositoVO implements Serializable {
 
     private BancoVO banco = new BancoVO();
 
-    private int codigoAgencia;
+    private AgenciaVO agencia;
 
     private String ramo;
 
@@ -241,16 +241,16 @@ public class DepositoVO implements Serializable {
      * Retorna o valor do atributo agencia.
      * @return o valor do atributo agencia
      */
-    public int getCodigoAgencia() {
-        return codigoAgencia;
+    public AgenciaVO getAgencia() {
+        return agencia;
     }
 
     /**
      * Especifica o valor do atributo agencia.
      * @param agencia - int do agencia a ser configurado.
      */
-    public void setCodigoAgencia(int agencia) {
-        this.codigoAgencia = agencia;
+    public void setAgencia(AgenciaVO agencia) {
+        this.agencia = agencia;
     }
 
     /**

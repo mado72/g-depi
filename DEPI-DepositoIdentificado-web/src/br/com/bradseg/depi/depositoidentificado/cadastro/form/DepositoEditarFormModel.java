@@ -164,7 +164,7 @@ public class DepositoEditarFormModel extends CrudForm {
 			String descricaoAgencia, String descricaoBanco) {
 		
 		setCodigo(null);
-		setCodigoAgencia(BaseUtil.getValueMaskFormat("99999", BaseUtil.blankIfNull(vo.getCodigoAgencia()), true));
+		setCodigoAgencia(BaseUtil.getValueMaskFormat("99999", BaseUtil.blankIfNull(vo.getAgencia().getCdBancoExterno()), true));
 		setCodBanco(BaseUtil.getValueMaskFormat("9999", BaseUtil.blankIfNull(vo.getBanco().getCdBancoExterno()), true));
 		setCodigoCompanhia(String.valueOf(vo.getCia().getCodigoCompanhia()));
 		setContaCorrente(BaseUtil.getValueMaskFormat("0000000000000", BaseUtil.blankIfNull(vo.getContaCorrente()), true));
@@ -184,7 +184,7 @@ public class DepositoEditarFormModel extends CrudForm {
 	 */
 	public void obterValores(DepositoVO vo) {
 		
-		vo.setCodigoAgencia(Integer.parseInt(getCodigoAgencia()));
+		vo.setAgencia(new AgenciaVO(Integer.parseInt(getCodigoAgencia())));
 		vo.setBanco(new BancoVO(Integer.parseInt(getCodBanco())));
 		vo.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(getCodigoCompanhia())));
 		vo.setContaCorrente(Long.parseLong(getContaCorrente()));

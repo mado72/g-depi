@@ -162,9 +162,11 @@ public class DepositoCrudHelper implements
 		model.setPessoaDepositante(vo.getPessoaDepositante());
 		
 		BancoVO banco = facade.obterBanco(vo.getBanco());
-		AgenciaVO agencia = facade.obterAgencia(vo.getBanco(), vo.getCodigoAgencia());
+		Integer codAgencia = vo.getAgencia().getCdAgenciaExterno();
+		
+		AgenciaVO agencia = facade.obterAgencia(vo.getBanco(), codAgencia);
 		ContaCorrenteAutorizadaVO conta = facade.obterConta(vo.getBanco(),
-				vo.getCodigoAgencia(), vo.getContaCorrente());
+				codAgencia, vo.getContaCorrente());
 		
 		model.setCodigoCompanhia(String.valueOf(ciaVO.getCodigoCompanhia()));
 		model.setCodigoDepartamento(String.valueOf(depto.getCodigoDepartamento()));
