@@ -21,7 +21,7 @@ public class LancamentoDepositoVO implements Serializable{
     /**
      * CAG_BCRIA_ACOLH
      */
-    private int agenciaAcolhedora;
+    private AgenciaVO agenciaAcolhedora;
 
     /**
      * CDIG_AG_ACOLH 
@@ -51,12 +51,12 @@ public class LancamentoDepositoVO implements Serializable{
     /**
      * CBCO_CHEQ_LCTO
      */
-    private int bancoCheque;
+    private BancoVO bancoCheque;
 
     /**
      * CAG_BCRIA_CHEQ
      */
-    private int agenciaCheque;
+    private AgenciaVO agenciaCheque;
 
     /**
      * CCHEQ_LCTO_DEP
@@ -151,7 +151,7 @@ public class LancamentoDepositoVO implements Serializable{
      * Retorna o valor do atributo agenciaCheque.
      * @return o valor do atributo agenciaCheque
      */
-    public int getAgenciaCheque() {
+    public AgenciaVO getAgenciaCheque() {
         return agenciaCheque;
     }
 
@@ -159,7 +159,7 @@ public class LancamentoDepositoVO implements Serializable{
      * Especifica o valor do atributo agenciaCheque.
      * @param agenciaCheque - int do agenciaCheque a ser configurado.
      */
-    public void setAgenciaCheque(int agenciaCheque) {
+    public void setAgenciaCheque(AgenciaVO agenciaCheque) {
         this.agenciaCheque = agenciaCheque;
     }
 
@@ -167,7 +167,7 @@ public class LancamentoDepositoVO implements Serializable{
      * Retorna o valor do atributo bancoCheque.
      * @return o valor do atributo bancoCheque
      */
-    public int getBancoCheque() {
+    public BancoVO getBancoCheque() {
         return bancoCheque;
     }
 
@@ -175,7 +175,7 @@ public class LancamentoDepositoVO implements Serializable{
      * Especifica o valor do atributo bancoCheque.
      * @param bancoCheque - int do bancoCheque a ser configurado.
      */
-    public void setBancoCheque(int bancoCheque) {
+    public void setBancoCheque(BancoVO bancoCheque) {
         this.bancoCheque = bancoCheque;
     }
 
@@ -263,7 +263,7 @@ public class LancamentoDepositoVO implements Serializable{
      * Retorna o valor do atributo agenciaAcolhedora.
      * @return o valor do atributo agenciaAcolhedora
      */
-    public int getAgenciaAcolhedora() {
+    public AgenciaVO getAgenciaAcolhedora() {
         return agenciaAcolhedora;
     }
 
@@ -271,7 +271,7 @@ public class LancamentoDepositoVO implements Serializable{
      * Especifica o valor do atributo agenciaAcolhedora.
      * @param agenciaAcolhedora - int do agenciaAcolhedora a ser configurado.
      */
-    public void setAgenciaAcolhedora(int agenciaAcolhedora) {
+    public void setAgenciaAcolhedora(AgenciaVO agenciaAcolhedora) {
         this.agenciaAcolhedora = agenciaAcolhedora;
     }
 

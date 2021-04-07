@@ -1,5 +1,8 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.LancamentoDepositoVO;
+
 
 /**
  * Interface do Objeto LancamentoDepositoDAO.
@@ -7,5 +10,7 @@ package br.com.bradseg.depi.depositoidentificado.dao;
  *
  */
 public interface LancamentoDepositoDAO {
+
+	LancamentoDepositoVO obterPorDeposito(DepositoVO vo);
 
 }

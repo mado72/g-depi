@@ -1203,4 +1203,13 @@ public final class BaseUtil {
 			params.addValue(paramName, dado);
 		}
     }
+
+	public static String formatarValor(long numero, String mask) {
+		String valor = String.valueOf(numero);
+		if (valor.length() < mask.length()) {
+			valor = new StringBuilder(mask).append(valor).substring(
+					mask.length() - valor.length());
+		}
+		return valor;
+	}
 }
