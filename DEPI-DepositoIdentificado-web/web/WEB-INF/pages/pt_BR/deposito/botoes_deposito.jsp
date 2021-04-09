@@ -10,7 +10,7 @@
 				<div id="tabela_botoes"><c:url var="btnIncluirUrl" value="${namespaceBase}/incluir.do"/><c:url 
 						var="btnProrrogarUrl" value="${namespaceBase}/prorrogar.do"/><c:url 
 						var="btnMovimentoUrl" value="${namespaceBase}/../movimento/manter.do"/><c:url 
-						var="btnLancamentoUrl" value="${namespaceBase}/lancamento.do"/>
+						var="btnLancamentoUrl" value="${namespaceBase}/../lancamento/consultar.do"/>
 					<button class="abtn btnIncluir" id="BtnIncluirRodape" href="${btnIncluirUrl}"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_incluir.gif"/>"></button>
 					<button class="abtn" id="BtnAlterar"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_alterar.jpg"/>"></button>
 					<button class="abtn" id="BtnProrrogar" style="width:auto" href="${btnProrrogarUrl}"><img src="<c:url value="${www3}padroes_web/intranet/imagens/bt_prorrogar-cancelar.gif"/>"></button>

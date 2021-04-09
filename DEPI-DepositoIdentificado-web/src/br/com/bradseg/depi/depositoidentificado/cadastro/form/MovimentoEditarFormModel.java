@@ -57,6 +57,7 @@ public class MovimentoEditarFormModel extends CrudForm {
 
 	@Override
 	public void preencherDadosIniciais() {
+		// Não preenche dados iniciais
 	}
 
 	public void preencherDeposito(DepositoVO vo) {
@@ -68,7 +69,7 @@ public class MovimentoEditarFormModel extends CrudForm {
 		setCodAgencia(String.valueOf(vo.getAgencia().getCdAgenciaExterno()));
 		setConta(String.valueOf(vo.getContaCorrente()));
 		setNomePessoa(vo.getNomePessoa());
-		setDataDeposito(BaseUtil.SDF_DDMMYYYY.format(vo.getDtVencimentoDeposito()));
+		setDataDeposito(BaseUtil.formatData(vo.getDtVencimentoDeposito()));
 		setVlrDepositoRegistrado(BaseUtil.formatarValor(vo.getVlrDepositoRegistrado()));
 		setVlrDepositado("Sem Lan\u00E7amento");
 		

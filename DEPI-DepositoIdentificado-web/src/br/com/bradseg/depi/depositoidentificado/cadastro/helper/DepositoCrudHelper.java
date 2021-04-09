@@ -51,7 +51,7 @@ public class DepositoCrudHelper implements
 
 	private transient DepositoFacade facade;
 	
-	private final static SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
+	private transient final SimpleDateFormat ddmmmyyyy = new SimpleDateFormat("dd/MM/yyyy");
 
 	public DepositoFacade getFacade() {
 		return facade;
@@ -199,7 +199,7 @@ public class DepositoCrudHelper implements
 		model.setObservacaoDeposito(vo.getObservacaoDeposito());
 		model.setTipoGrupoRecebimento(vo.getTipoGrupoRecebimento());
 		if (vo.getDtVencimentoDeposito() != null) {
-			model.setDtVencimentoDeposito(SDF.format(vo.getDtVencimentoDeposito()));
+			model.setDtVencimentoDeposito(ddmmmyyyy.format(vo.getDtVencimentoDeposito()));
 		}
 		
 		if (vo.getVlrDepositoRegistrado() != null) {
@@ -211,13 +211,13 @@ public class DepositoCrudHelper implements
 		model.setDv(vo.getDv());
 		
 		if (vo.getDataProrrogacao() != null) {
-			model.setDataProrrogacao(SDF.format(vo.getDataProrrogacao()));
+			model.setDataProrrogacao(ddmmmyyyy.format(vo.getDataProrrogacao()));
 		}
 		else if (vo.getDtVencimentoDeposito() != null) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(vo.getDtVencimentoDeposito());
 			c.add(Calendar.DAY_OF_YEAR, 1);
-			model.setDataProrrogacao(SDF.format(c.getTime()));
+			model.setDataProrrogacao(ddmmmyyyy.format(c.getTime()));
 		}
 		
 		model.setDtCancelamentoDepositoIdentificado(dataFormatada(vo.getDtCancelamentoDepositoIdentificado()));
@@ -260,7 +260,7 @@ public class DepositoCrudHelper implements
 	
 	private String dataFormatada(Date dt) {
 		if (dt != null) {
-			return SDF.format(dt);
+			return ddmmmyyyy.format(dt);
 		}
 		return null;
 	}

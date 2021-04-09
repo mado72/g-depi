@@ -114,10 +114,14 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	public String incluir() {
 		LOGGER.debug("Preparando formulário para inclusão de um novo registro");
 
-		this.model.setEstado(EstadoCrud.INSERIR);
-		this.model.setSubtitulo(getText(getCrudHelper().getChaveTituloIncluir()));
+		prepararFormularioIncluir();
 		
 		return INPUT;
+	}
+
+	protected void prepararFormularioIncluir() {
+		this.model.setEstado(EstadoCrud.INSERIR);
+		this.model.setSubtitulo(getText(getCrudHelper().getChaveTituloIncluir()));
 	}
 	
 	/**
@@ -127,6 +131,12 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	public String alterar() {
 		LOGGER.debug("Preparando formulário para alterar um registro");
 
+		prepararFormularioAlterar();
+		
+		return INPUT;
+	}
+
+	protected void prepararFormularioAlterar() {
 		CrudHelper<C, VO, F> crudHelper = getCrudHelper();
 
 		this.model.setEstado(EstadoCrud.ALTERAR);
@@ -135,8 +145,6 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 		int codUsuario = getCodUsuarioLogado();
 		String ipCliente = getIp();
 		crudHelper.preencherFormularioEdicao(model, codUsuario, ipCliente);
-		
-		return INPUT;
 	}
 	
 	/**

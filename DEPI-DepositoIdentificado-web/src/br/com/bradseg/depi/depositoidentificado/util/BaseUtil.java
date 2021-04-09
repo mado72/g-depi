@@ -51,9 +51,6 @@ public final class BaseUtil {
 	/** Constante responsavel por armazenar LOGGER. */
 	private static final Logger LOGGER = Logger.getLogger(BaseUtil.class);
 
-	public static final SimpleDateFormat SDF_DDMMYYYY = new SimpleDateFormat(
-			"dd/MM/yyyy");
-	
 	public static final NumberFormat DECIMAL_FMT = NumberFormat.getNumberInstance();
 
 	/**
@@ -1079,8 +1076,9 @@ public final class BaseUtil {
 	public static boolean verificarSeAsDatasSaoIguais(Date dataProrrogacao,
 			Date dtVencimentoDeposito) {
 
-		return SDF_DDMMYYYY.format(dataProrrogacao).equals(
-				SDF_DDMMYYYY.format(dtVencimentoDeposito));
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		return sdf.format(dataProrrogacao).equals(
+				sdf.format(dtVencimentoDeposito));
 	}
 
 	/**
@@ -1193,7 +1191,8 @@ public final class BaseUtil {
 		if (data == null) {
 			return null;
 		}
-		return SDF_DDMMYYYY.format(data);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		return sdf.format(data);
 	}
 
     public static void prepararQuery(MapSqlParameterSource params, String prefix, Object... dados) {

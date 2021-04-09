@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %><%@ 
 	taglib prefix="s" uri="/struts-tags" %><%@ 
 	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@
+	taglib prefix="depi" uri="/depi-tags" %><%@ 
 	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="namespaceBase" scope="request">/deposito/editar</c:set>
@@ -82,7 +83,7 @@
 				<s:text name="format.banco"><s:param name="value" value="%{banco.cdBancoExterno}"/></s:text>
 			</td>
 			<td class="text-center">
-				<s:text name="format.agencia"><s:param name="value" value="%{codigoAgencia}"/></s:text>
+				<s:text name="format.agencia"><s:param name="value" value="%{agencia.cdAgenciaExterno}"/></s:text>
 			</td>
 			<td class="text-center">
 				<s:text name="format.contaCorrente"><s:param name="value" value="%{contaCorrente}"/></s:text>

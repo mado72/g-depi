@@ -31,7 +31,7 @@ public class MovimentoEditarAction
 	
 	private final MovimentoEditarFormModel model = new MovimentoEditarFormModel();
 	
-	private DepositoFacade facade;
+	private transient DepositoFacade facade;
 	
 	@Override
 	public MovimentoEditarFormModel getModel() {

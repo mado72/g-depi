@@ -49,6 +49,9 @@ public class ConsultarLancamentoAction
 	}
 	
 	public void validateConsultar() {
+		clearActionErrors();
+		clearFieldErrors();
+		
 		if (StringUtils.isEmpty(model.getCodigo())) {
 			addFieldError("codigo", getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{"codigo"}));
 		}

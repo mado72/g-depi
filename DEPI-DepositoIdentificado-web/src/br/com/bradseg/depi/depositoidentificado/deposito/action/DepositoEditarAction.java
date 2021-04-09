@@ -108,7 +108,7 @@ public class DepositoEditarAction
 			// Valida se o usuário está logado
 			getCodUsuarioLogado();
 			
-			String retorno = super.alterar();
+			prepararFormularioAlterar();
 			
 			DepositoEditarFormModel model = getModel();
 			model.setTipoAcao(TipoAcao.PADRAO);
@@ -130,7 +130,7 @@ public class DepositoEditarAction
 			model.setCodBanco(String.valueOf(CODIGO_BANCO_BRADESCO));
 			model.setDescricaoBanco(banco.getDescricaoBanco());
 			
-			return retorno;
+			return INPUT;
 		} catch (Exception e) {
 			LOGGER.error("Falha ao preparar formulário", e);
 			addActionError(e.getMessage());
@@ -190,13 +190,6 @@ public class DepositoEditarAction
 		String retorno = alterar();
 		desabilitarEdicaoParametros();
 		this.getModel().setTipoAcao(TipoAcao.MOVIMENTO);
-		return retorno;
-	}
-
-	public String lancamento() {
-		String retorno = alterar();
-		desabilitarEdicaoParametros();
-		this.getModel().setTipoAcao(TipoAcao.LANCAMENTO);
 		return retorno;
 	}
 

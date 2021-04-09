@@ -135,6 +135,10 @@
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/deposito/manterMovimento.jsp</param>
 			</result>
+			<result name="lancamento" type="redirectAction">
+			    <param name="actionName">consultar</param>
+			    <param name="namespace">/deposito/lancamento</param>
+			</result>
 			<result name="success" type="redirectAction">
 			    <param name="actionName">retornar</param>
 			    <param name="namespace">/deposito/consultar</param>
