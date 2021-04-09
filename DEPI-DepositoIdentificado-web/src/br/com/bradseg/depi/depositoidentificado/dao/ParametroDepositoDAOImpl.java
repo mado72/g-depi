@@ -22,7 +22,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.Geral;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
@@ -102,10 +102,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
         
         try {
 			StringBuilder query = new StringBuilder(
-					QuerysDepi.PARAMETRODEPOSITO_SELECT_FROM_ALOC_USUARIO)
-					.append(QuerysDepi.PARAMETRODEPOSITO_WHERE_JOIN_ALOC_USUARIO)
+					QueriesDepi.PARAMETRODEPOSITO_SELECT_FROM_ALOC_USUARIO)
+					.append(QueriesDepi.PARAMETRODEPOSITO_WHERE_JOIN_ALOC_USUARIO)
 					.append(filtro.getClausulasParciais(" AND ", true))
-					.append(QuerysDepi.PARAMETRODEPOSITO_ORDERBY_DHORA_ULT_ATULZ_DESC);
+					.append(QueriesDepi.PARAMETRODEPOSITO_ORDERBY_DHORA_ULT_ATULZ_DESC);
         	
 			MapSqlParameterSource params = new MapSqlParameterSource();
             params.addValue("codusuario", codigoUsuario);
@@ -231,12 +231,12 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
             }
             
             if (referenciado) {
-    			int count = getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_UPDATEREFERENCIADO, params);
+    			int count = getJdbcTemplate().update(QueriesDepi.PARAMETRODEPOSITO_UPDATEREFERENCIADO, params);
     			if (count != 1) {
     				throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_ALTERACAO, String.valueOf(count));
     			}
             } else {
-    			int count = getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_UPDATENAOREFERENCIADO, params);
+    			int count = getJdbcTemplate().update(QueriesDepi.PARAMETRODEPOSITO_UPDATENAOREFERENCIADO, params);
     			if (count != 1) {
     				throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_ALTERACAO, String.valueOf(count));
     			}
@@ -270,7 +270,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
             params.addValue(PARAM_WHR2, vo.getDepartamento().getCodigoDepartamento());
             params.addValue(PARAM_WHR3, vo.getMotivoDeposito().getCodigoMotivoDeposito());
 
-            int count = getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_INATIVAR, params);
+            int count = getJdbcTemplate().update(QueriesDepi.PARAMETRODEPOSITO_INATIVAR, params);
             
             if (count != 1) {
             	throw new DEPIBusinessException(Geral.ERRO_EXCLUSAO, String.valueOf(count));
@@ -291,7 +291,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
     @Override
     public synchronized Boolean isReferenciado(ParametroDepositoVO vo)  {
 
-        StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_ASSOCIACAOMOTIVODEPOSITO_REFERENCIADO);
+        StringBuilder query = new StringBuilder(QueriesDepi.PARAMETRODEPOSITO_ASSOCIACAOMOTIVODEPOSITO_REFERENCIADO);
     	
         try {
 
@@ -324,7 +324,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
     public synchronized Boolean isReferenciadoDeposito(ParametroDepositoVO vo) {
 
 
-        StringBuilder query = new StringBuilder(QuerysDepi.PARAMETRODEPOSITO_DEPOSITO_REFERENCIADO);
+        StringBuilder query = new StringBuilder(QueriesDepi.PARAMETRODEPOSITO_DEPOSITO_REFERENCIADO);
     	
     	
     	try {
@@ -409,7 +409,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 
 		try {
 			return getJdbcTemplate().queryForObject(
-					QuerysDepi.PARAMETRODEPOSITO_EXISTS, params, String.class);
+					QueriesDepi.PARAMETRODEPOSITO_EXISTS, params, String.class);
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
@@ -447,7 +447,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 		paramsInsert.addValue(PARAM_PRM17, parametro.getOutrosDocumentosNecessarios());
 		paramsInsert.addValue(PARAM_PRM18, parametro.getCodigoResponsavelUltimaAtualizacao());
 
-		int count = getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_INSERT, paramsInsert);
+		int count = getJdbcTemplate().update(QueriesDepi.PARAMETRODEPOSITO_INSERT, paramsInsert);
 		if (count != 1) {
 			throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_INCLUSAO, String.valueOf(count));
 		}
@@ -487,7 +487,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 		paramsReativar.addValue(PARAM_WHR2, parametro.getDepartamento().getCodigoDepartamento());
 		paramsReativar.addValue(PARAM_WHR3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
 		
-		int count = getJdbcTemplate().update(QuerysDepi.PARAMETRODEPOSITO_REATIVAR, paramsReativar);
+		int count = getJdbcTemplate().update(QueriesDepi.PARAMETRODEPOSITO_REATIVAR, paramsReativar);
 		
 		if (count != 1) {
 		    throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_INCLUSAO, String.valueOf(count));
@@ -502,7 +502,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 		DepartamentoVO dep;
 		try {
 			dep = getJdbcTemplate().queryForObject(
-					QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE, paramsDepto,
+					QueriesDepi.DEPARTAMENTO_OBTERPORCHAVE, paramsDepto,
 					new DepartamentoDataMapper());
 		} catch (EmptyResultDataAccessException e) {
 			throw new DEPIIntegrationException(e);
@@ -514,7 +514,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 		MotivoDepositoVO mot;
 		try {
 			mot = getJdbcTemplate().queryForObject(
-					QuerysDepi.MOTIVODEPOSITO_OBTERPORCHAVE, paramsMotDepto,
+					QueriesDepi.MOTIVODEPOSITO_OBTERPORCHAVE, paramsMotDepto,
 					new MotivoDepositoDataMapper());
 		} catch (EmptyResultDataAccessException e) {
 			throw new DEPIIntegrationException(e);
@@ -542,7 +542,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
         params.addValue(PARAM_PRM3, parametro.getMotivoDeposito().getCodigoMotivoDeposito());
 
 		try {
-			return getJdbcTemplate().queryForObject(QuerysDepi.PARAMETRODEPOSITO_OBTERPORCHAVE, params,
+			return getJdbcTemplate().queryForObject(QueriesDepi.PARAMETRODEPOSITO_OBTERPORCHAVE, params,
 					new ParametroDepositosDataMapper(false, false));
 		} catch (EmptyResultDataAccessException e) {
 			return null;
@@ -564,7 +564,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
     	try {
 			
 			getJdbcTemplate().queryForObject(
-					QuerysDepi.PARAMETRODEPOSITO_REFERENCIADO_DEPTO_CIA,
+					QueriesDepi.PARAMETRODEPOSITO_REFERENCIADO_DEPTO_CIA,
 					params, Integer.class);
 			return true;
 			

@@ -3,7 +3,7 @@ package br.com.bradseg.depi.depositoidentificado.util;
 /**
  * A(O) Class Querys.
  */
-public class QuerysDepi {
+public class QueriesDepi {
 
 	private static final String CAMPOS_SELECT_DEPARTAMENTO = "SELECT DISTINCT D.IDEPTO_DEP_IDTFD, D.DHORA_ULT_ATULZ, D.DHORA_INCL_REG, D.CUSUAR_RESP_ATULZ, D.CSGL_DEPTO_DEP, D.CIND_REG_ATIVO, D.CDEPTO_DEP_IDTFD ";
 

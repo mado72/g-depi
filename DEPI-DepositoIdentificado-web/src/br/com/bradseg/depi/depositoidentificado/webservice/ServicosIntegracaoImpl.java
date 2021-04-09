@@ -72,18 +72,6 @@ public class ServicosIntegracaoImpl {
     }
 
     /**
-     * método que exclui o motivo depósito
-     * @param vo - motivo depósito que será excluido
-     * @throws IntegrationException - trata erros de nogócio
-     */
-	@POST
-	@Path("/motivodeposito/excluir")
-	@Consumes({ MediaType.APPLICATION_JSON} )	
-    public void excluirMotivoDeposito(MotivoDepositoVO vo) throws IntegrationException {
-		// TODO Não implementado
-    }
-
-    /**
      * método que exclui os motivos depósitos
      * @param listvo - motivos depósitos que serão excluidos
      * @throws IntegrationException - trata erros de negócio

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.LancamentoDepositoDataMapper;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.LancamentoDepositoVO;
 
@@ -47,7 +47,7 @@ public class LancamentoDepositoDAOImpl extends JdbcDao implements LancamentoDepo
 			params.addValue("whr1", vo.getCodigoDepositoIdentificado());
 			
 			return getJdbcTemplate().queryForObject(
-					QuerysDepi.DEPOSITO_LANCAMENTO_OBTERPORCHAVE, params,
+					QueriesDepi.DEPOSITO_LANCAMENTO_OBTERPORCHAVE, params,
 					new LancamentoDepositoDataMapper());
 		} catch (EmptyResultDataAccessException e) {
 			return null;

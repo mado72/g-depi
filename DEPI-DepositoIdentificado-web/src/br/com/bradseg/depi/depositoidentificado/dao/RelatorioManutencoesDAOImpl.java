@@ -17,7 +17,7 @@ import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO
 import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegate;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.ManutencoesAnaliticoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
 
 	/**
@@ -56,7 +56,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
     	BUCBBusinessDelegate bucbDelegate = new BUCBBusinessDelegate ();
     	List<ManutencoesAnaliticoVO> manutencoes = null;
     	
-        StringBuilder query = new StringBuilder(QuerysDepi.RELATORIOENVIORETORNO_OBTERDADOSANALITICO);
+        StringBuilder query = new StringBuilder(QueriesDepi.RELATORIOENVIORETORNO_OBTERDADOSANALITICO);
         
         StringBuilder sb = new StringBuilder();
 

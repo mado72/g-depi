@@ -33,9 +33,6 @@ public class BUCBBusinessDelegate   {
 	     * @param userID - String.
 	     * @param pessoa - ListarPessoaPorFiltroEntradaVO.
 	     * @return List.
-	     * @throws RemoteException 
-	     * @throws br.com.bradseg.bsad.exception.IntegrationException 
-	     * @throws br.com.bradseg.bsad.exception.BusinessException 
 	     */
 		@SuppressWarnings("deprecation")
 		public List<?> listarPessoaPorFiltro(String ipCliente, String userID, ListarPessoaPorFiltroEntradaVO pessoa) {
@@ -56,9 +53,6 @@ public class BUCBBusinessDelegate   {
 	     * @param userID - String.
 	     * @param pessoa - InserirPessoaSaidaVO.
 	     * @return InserirPessoaSaidaVO.
-	     * @throws br.com.bradseg.bsad.exception.BusinessException 
-	     * @throws br.com.bradseg.bsad.exception.IntegrationException
-         * @throws BucValidacaoCamposException - BucValidacaoCamposException.
 	     */
 		@SuppressWarnings("deprecation")
 		public InserirPessoaSaidaVO inserirPessoa(String ipCliente, String userID, InserirPessoaEntradaVO pessoa)  {
@@ -67,10 +61,8 @@ public class BUCBBusinessDelegate   {
 			} catch (RemoteException e) {
 				throw new IntegrationException(e);
 			} catch (br.com.bradseg.bsad.exception.IntegrationException e) {
-				// TODO Auto-generated catch block
 				throw new IntegrationException(e);
 			} catch (br.com.bradseg.bsad.exception.BusinessException e) {
-				// TODO Auto-generated catch block
 				throw new BusinessException(e);
 			}
 	    }
@@ -81,8 +73,6 @@ public class BUCBBusinessDelegate   {
 	     * @param userID - String
 	     * @param codigoPessoa - long
 	     * @return ListarPessoaIDVO
-	     * @throws br.com.bradseg.bsad.exception.IntegrationException 
-	     * @throws br.com.bradseg.bsad.exception.BusinessException 
 	     */
 		@SuppressWarnings("deprecation")
 		public ListarPessoaIDVO listarDadosPessoa(String ipCliente, String userID, long codigoPessoa)  {
@@ -93,10 +83,8 @@ public class BUCBBusinessDelegate   {
 	        } catch (RemoteException e) {
 	            throw new IntegrationException(e);
 	        } catch (br.com.bradseg.bsad.exception.IntegrationException e) {
-				// TODO Auto-generated catch block
 	            throw new IntegrationException(e);
 			} catch (br.com.bradseg.bsad.exception.BusinessException e) {
-				// TODO Auto-generated catch block
 				throw new BusinessException(e);
 			}
 	    }	

@@ -15,7 +15,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  */
 public class FiltroUtil {
 
-	// FIXME Remover referências diretas aos campos. Utilizar a lista de critérios.
 	private Date    dataInicio;
 	private Date    dataFinal;
 	private Integer codigoCia;

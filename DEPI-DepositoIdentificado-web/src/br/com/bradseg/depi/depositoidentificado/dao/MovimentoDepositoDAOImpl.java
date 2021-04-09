@@ -15,7 +15,7 @@ import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.MovimentoDepositoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.MovimentoDepositoVO;
 
 /**
@@ -55,7 +55,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
 		
 		try {
 			MovimentoDepositoVO vo = getJdbcTemplate().queryForObject(
-					QuerysDepi.DEPOSITO_MOVIMENTO_OBTERPORCHAVE, params,
+					QueriesDepi.DEPOSITO_MOVIMENTO_OBTERPORCHAVE, params,
 					new MovimentoDepositoDataMapper());
 			
 			return vo;
@@ -92,7 +92,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
 					BaseUtil.setNullQuandoOpcional(vo.getContaMovimento(), b), 
 					vo.getCodigoResponsavelUltimaAtualizacao());
             
-            Integer num = getJdbcTemplate().update(QuerysDepi.DEPOSITO_MOVIMENTO_INSERT, params);
+            Integer num = getJdbcTemplate().update(QueriesDepi.DEPOSITO_MOVIMENTO_INSERT, params);
             
             if (num == 0) {
                 throw new BusinessException("A atualiza��o não afetou nenhum registro.");
@@ -134,7 +134,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
 
             params.addValue("whr1", vo.getCodigoMovimento());
 
-            Integer num = getJdbcTemplate().update(QuerysDepi.DEPOSITO_MOVIMENTO_UPDATE, params);
+            Integer num = getJdbcTemplate().update(QueriesDepi.DEPOSITO_MOVIMENTO_UPDATE, params);
             
             if (num == 0) {
                 throw new BusinessException("A atualiza��o não afetou nenhum registro.");

@@ -45,10 +45,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoSintetic
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
-
-
-
-
+/**
+ * AÃ§Ã£o para consultar relatÃ³rios.
+ * @author Globality
+ */
 @Controller
 @Scope("request")
 public class ConsultarRelatorioAction extends BaseAction  {
@@ -339,7 +339,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	  * @throws DEPIIntegrationException - DEPIIntegrationException
 	  */	  	  
 	  /**
-	  * Retorna valores do form para um nova instância do tipo FiltroUtil
+	  * Retorna valores do form para um nova instï¿½ncia do tipo FiltroUtil
 	  * @param FiltroUtil
 	  * @return FiltroUtil
 	  * @throws DEPIIntegrationException - DEPIIntegrationException
@@ -475,7 +475,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	}
 	
 	/**
-     * Processa a ação consultar
+     * Processa a aï¿½ï¿½o consultar
      * @return ActionForward
      * @throws DEPIIntegrationException Exception
      */

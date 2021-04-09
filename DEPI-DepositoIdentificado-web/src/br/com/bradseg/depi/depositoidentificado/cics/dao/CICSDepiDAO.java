@@ -42,14 +42,6 @@ public interface CICSDepiDAO {
 	ContaCorrenteAutorizadaVO obterContaCorrente(ContaCorrenteAutorizadaVO cc);
 
 	/**
-	 * Obtém informações de uma lista de contas corrente do Cics
-	 * @param contas Lista de contas corrente
-	 * @return Lista com informações do Cics
-	 */
-	List<ContaCorrenteAutorizadaVO> obterContasCorrente(
-			Collection<ContaCorrenteAutorizadaVO> contas);
-
-	/**
 	 * Obtém informações de um banco do Cics
 	 * @param banco Banco
 	 * @return Banco

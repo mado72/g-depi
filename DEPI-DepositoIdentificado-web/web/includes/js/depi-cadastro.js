@@ -1232,7 +1232,7 @@ var fnReady = function ($) {
 		$("#AcaoForm").trigger('pessoas');
 		$.deposito.parametros(opcoes.parametros);
 		$("#pessoaDepositante, #nomePessoa").prop("disabled", function(){
-			var t = $(this), disabled = t.prop("disabled") || opcoes.parametros.codigoCpfCnpj == 'N';
+			var t = $(this), disabled = t.prop("disabled") || (!!opcoes.parametros && opcoes.parametros.codigoCpfCnpj == 'N');
 			t.prop("disabled", disabled);
 		});
 		Calendar.setup({
@@ -1272,9 +1272,10 @@ var fnReady = function ($) {
 	};
 	
 	$.deposito.parametros = function(parametros) {
-		$.each(parametros, function(prop, value){
-			$("#"+prop).prop("disabled", value == 'N');
-		});
+		if (parametros)
+			$.each(parametros, function(prop, value){
+				$("#"+prop).prop("disabled", value == 'N');
+			});
 	};
 	
 	// movimento

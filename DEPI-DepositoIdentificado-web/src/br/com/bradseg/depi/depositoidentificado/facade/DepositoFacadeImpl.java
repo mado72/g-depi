@@ -60,9 +60,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 public class DepositoFacadeImpl implements DepositoFacade {
 
 	/*
-	 * FIXME REMOVER CÓDIGO 
+	 * TODO Verificar CÓDIGO para simular acesso EJB 
 	 */
-	private static final boolean FAKE_COMP = String.valueOf(3).equals("3");
+	private static final boolean FAKE_COMP = String.valueOf(2).equals("3");
 
 	private static final int PESSOA_JURIDICA = 4;
 
@@ -171,7 +171,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
     	
         DepositoVO vo = depositoDAO.obterDepositoPorChave(chave);
         try {
-        	// FIXME Remover este condicional para publicar
+        	// TODO Remover este condicional para publicar
         	if (!FAKE_COMP) {
         		ListarPessoaIDVO pessoa = pessoaFacade.listarPessoaPorID(ipCliente,
         				String.valueOf(codUsuario), 1L, vo.getPessoaDepositante(),
@@ -186,7 +186,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
         		}
         	}
         	else {
-        		// FIXME Remover este código antes de publicar.
+        		// TODO Remover este código antes de publicar.
         		vo.setCpfCnpj("01234567890");
         		vo.setNomePessoa("Nome Fake");
         	}
@@ -584,10 +584,10 @@ public class DepositoFacadeImpl implements DepositoFacade {
     	try {
 			switch (vo.getIndicacaoAcao()) {
 			case "T":
-				BaseUtil.validarParametro(vo.getBancoMovimento(), "Banco");
-				BaseUtil.validarParametro(vo.getAgenciaMovimento(), "Ag\u00EAncia");
-				BaseUtil.validarParametro(vo.getContaMovimento(), "Conta Corrente");
+				validarBancoAgenciaConta(vo);
+				break;
 			case "D":
+				validarBancoAgenciaConta(vo);
 				BaseUtil.validarParametro(vo.getNroCheque(), "N\u00FAmero do Cheque");
 				break;
 
@@ -598,6 +598,12 @@ public class DepositoFacadeImpl implements DepositoFacade {
 			throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, e.getMessage());
 		}
     }
+
+	private void validarBancoAgenciaConta(MovimentoDepositoVO vo) {
+		BaseUtil.validarParametro(vo.getBancoMovimento(), "Banco");
+		BaseUtil.validarParametro(vo.getAgenciaMovimento(), "Ag\u00EAncia");
+		BaseUtil.validarParametro(vo.getContaMovimento(), "Conta Corrente");
+	}
     
     @Override
     public LancamentoDepositoVO obterLancamentoDeposito(DepositoVO vo) {

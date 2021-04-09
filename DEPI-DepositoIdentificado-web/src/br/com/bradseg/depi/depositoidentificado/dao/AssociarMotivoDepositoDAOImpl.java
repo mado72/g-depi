@@ -19,7 +19,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 
 /**
@@ -152,7 +152,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 		paramsReativar.addValue(PARAM_WHR5,vo.getCodigoAgencia());
 		paramsReativar.addValue(PARAM_WHR6,vo.getContaCorrente());
 		
-		Integer count = getJdbcTemplate().update(QuerysDepi.ASSOCIARMOTIVODEPOSITO_REATIVAR, paramsReativar);
+		Integer count = getJdbcTemplate().update(QueriesDepi.ASSOCIARMOTIVODEPOSITO_REATIVAR, paramsReativar);
 
 		if (count == 0) {
 		    throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_INCLUSAO);
@@ -169,7 +169,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 		paramsInserir.addValue(PARAM_PRM6,vo.getContaCorrente());
 		paramsInserir.addValue(PARAM_PRM7,vo.getCodigoResponsavelUltimaAtualizacao());
 
-		Integer count = getJdbcTemplate().update(QuerysDepi.ASSOCIARMOTIVODEPOSITO_INSERT, paramsInserir);
+		Integer count = getJdbcTemplate().update(QueriesDepi.ASSOCIARMOTIVODEPOSITO_INSERT, paramsInserir);
 
 		if (count == 0) {
 		    throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_INCLUSAO);
@@ -190,7 +190,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 			
 
 			return getJdbcTemplate().queryForObject(
-					QuerysDepi.ASSOCIARMOTIVODEPOSITO_EXISTS, params,
+					QueriesDepi.ASSOCIARMOTIVODEPOSITO_EXISTS, params,
 					String.class);
 		} catch (EmptyResultDataAccessException e) {
 			return null;
@@ -222,7 +222,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
         	paramsInativar.addValue(PARAM_WHR5,vo.getCodigoAgencia());
         	paramsInativar.addValue(PARAM_WHR6,vo.getContaCorrente());
 
-            int count = getJdbcTemplate().update(QuerysDepi.ASSOCIARMOTIVODEPOSITO_INATIVAR, paramsInativar);
+            int count = getJdbcTemplate().update(QueriesDepi.ASSOCIARMOTIVODEPOSITO_INATIVAR, paramsInativar);
 
             if (count == 0) {
                 throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_EXCLUSAO);
@@ -239,7 +239,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
     @Override
     public Boolean isReferenciado(AssociarMotivoDepositoVO vo) {
 
-    	StringBuilder query = new StringBuilder(QuerysDepi.ASSOCIARMOTIVODEPOSITO_REFERENCIADO_DEPOSITO);
+    	StringBuilder query = new StringBuilder(QueriesDepi.ASSOCIARMOTIVODEPOSITO_REFERENCIADO_DEPOSITO);
     	
     	try {
             
@@ -274,7 +274,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 	@Override
     public List<AssociarMotivoDepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, int codigoUsuario) {
 		
-    	StringBuilder query = new StringBuilder(QuerysDepi.ASSOCIARMOTIVODEPOSITO_OBTERPORFILTROCOMRESTRICAODEGRUPOACESSO);
+    	StringBuilder query = new StringBuilder(QueriesDepi.ASSOCIARMOTIVODEPOSITO_OBTERPORFILTROCOMRESTRICAODEGRUPOACESSO);
     	
     	List<AssociarMotivoDepositoVO> associarMotivoDeposito = null;
 
@@ -289,7 +289,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 				params.addValues(filtro.getMapParamFiltro().getValues());
 			}
 			
-			query.append(QuerysDepi.ASSOCIARMOTIVODEPOSITO_ORDERBY);
+			query.append(QueriesDepi.ASSOCIARMOTIVODEPOSITO_ORDERBY);
 
     		associarMotivoDeposito = getJdbcTemplate().query(query.toString(), params, new AssociarMotivoDepositoDataMapper());
     		
@@ -307,7 +307,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 	@Override
     public AssociarMotivoDepositoVO obterPorChave(AssociarMotivoDepositoVO vo) {
 		
-    	StringBuilder query = new StringBuilder(QuerysDepi.ASSOCIARMOTIVODEPOSITO_OBTERPORCHAVE);
+    	StringBuilder query = new StringBuilder(QueriesDepi.ASSOCIARMOTIVODEPOSITO_OBTERPORCHAVE);
     	
     	AssociarMotivoDepositoVO associarMotivoDeposito = null;
 

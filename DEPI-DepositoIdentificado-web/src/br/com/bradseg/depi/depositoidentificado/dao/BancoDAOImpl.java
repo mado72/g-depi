@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.AgenciaDataMapper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
@@ -49,7 +49,7 @@ public class BancoDAOImpl extends JdbcDao implements BancoDAO {
 			params.addValue("whr1", cia.getCodigoCompanhia());
 
 			List<Integer> codigosBanco = getJdbcTemplate().queryForList(
-					QuerysDepi.CONTACORRENTEAUTORIZADA_OBTERBANCOS, params,
+					QueriesDepi.CONTACORRENTEAUTORIZADA_OBTERBANCOS, params,
 					Integer.class);
 			
 			ArrayList<BancoVO> bancos = new ArrayList<>();
@@ -79,7 +79,7 @@ public class BancoDAOImpl extends JdbcDao implements BancoDAO {
 		params.addValue("whr2", bancoVO.getCdBancoExterno());
 		
 		return getJdbcTemplate().query(
-				QuerysDepi.CONTACORRENTEAUTORIZADA_OBTERAGENCIAS, params,
+				QueriesDepi.CONTACORRENTEAUTORIZADA_OBTERAGENCIAS, params,
 				new AgenciaDataMapper());
 	}
 }

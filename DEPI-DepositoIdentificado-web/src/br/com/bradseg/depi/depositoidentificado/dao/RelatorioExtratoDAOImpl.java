@@ -18,7 +18,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegat
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioEnvioRetornoAnaliticoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioExtratoSinteticoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
@@ -54,7 +54,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
     	List<RelatorioEnvioRetornoAnaliticoVO> relatorio = null;
     	
-        StringBuilder query = new StringBuilder(QuerysDepi.RELATORIO_EXTRATO_ANALITICO);
+        StringBuilder query = new StringBuilder(QueriesDepi.RELATORIO_EXTRATO_ANALITICO);
         
         StringBuilder sb = new StringBuilder();
     	
@@ -158,7 +158,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
     	
     	List<RelatorioExtratoSinteticoVO> relatorio = null;
     	
-        StringBuilder query = new StringBuilder(QuerysDepi.RELATORIO_EXTRATO_SINTETICO);
+        StringBuilder query = new StringBuilder(QueriesDepi.RELATORIO_EXTRATO_SINTETICO);
         
         StringBuilder sb = new StringBuilder();
         

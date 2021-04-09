@@ -18,7 +18,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 
 /**
@@ -128,7 +128,7 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 		params.addValue(WHR3, vo.getContaCorrente());
 		
 		try {
-			Boolean existe = getJdbcTemplate().queryForObject(QuerysDepi.CONTACORRENTEAUTORIZADA_REFERENCIADO_CONTACORRENTEMOTIVODEPOSITO, params, Boolean.class);
+			Boolean existe = getJdbcTemplate().queryForObject(QueriesDepi.CONTACORRENTEAUTORIZADA_REFERENCIADO_CONTACORRENTEMOTIVODEPOSITO, params, Boolean.class);
 			return existe != null && existe.booleanValue();
 		} catch (EmptyResultDataAccessException e) {
 			return false;
@@ -143,7 +143,7 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		
-		StringBuilder query = new StringBuilder(QuerysDepi.CONTACORRENTEAUTORIZADA_OBTERPORFILTRO);
+		StringBuilder query = new StringBuilder(QueriesDepi.CONTACORRENTEAUTORIZADA_OBTERPORFILTRO);
 		
 		return consultarPorFiltro(filtro, query, params);
 	}
@@ -158,7 +158,7 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue(WHR1, codUsuario);
 		
-		StringBuilder query = new StringBuilder(QuerysDepi.CONTACORRENTEAUTORIZADA_OBTERPORFILTROCOMRESTRICAODEGRUPOACESSO);
+		StringBuilder query = new StringBuilder(QueriesDepi.CONTACORRENTEAUTORIZADA_OBTERPORFILTROCOMRESTRICAODEGRUPOACESSO);
 		
 		return consultarPorFiltro(filtro, query, params);
 	}
@@ -170,7 +170,7 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 			params.addValues(filtro.getMapParamFiltro().getValues());
 		}
 		
-		query.append(QuerysDepi.CONTACORRENTEAUTORIZADA_ORDERBY);
+		query.append(QueriesDepi.CONTACORRENTEAUTORIZADA_ORDERBY);
 		
 		List<ContaCorrenteAutorizadaVO> lista = getJdbcTemplate().query(query.toString(), params, new ContaCorrenteRowMapper());
 		
@@ -190,7 +190,7 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 	
 		try {
 			return getJdbcTemplate()
-					.queryForObject(QuerysDepi.CONTACORRENTEAUTORIZADA_EXISTS,
+					.queryForObject(QueriesDepi.CONTACORRENTEAUTORIZADA_EXISTS,
 							params, String.class);
 		} catch (EmptyResultDataAccessException e) {
 			return null;
@@ -206,7 +206,7 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 		params.addValue(PRM1, vo.getObservacao().toUpperCase());
 		params.addValue(PRM2, vo.getCodigoResponsavelUltimaAtualizacao());
 		
-		int count = getJdbcTemplate().update(QuerysDepi.CONTACORRENTEAUTORIZADA_REATIVAR, params);
+		int count = getJdbcTemplate().update(QueriesDepi.CONTACORRENTEAUTORIZADA_REATIVAR, params);
 		
 		if (count != 1) {
 			throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_INCLUSAO);
@@ -228,7 +228,7 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 		params.addValue(PRM10, vo.getCodigoResponsavelUltimaAtualizacao());
 		params.addValue(PRM11, vo.getTrps());
 		
-		int count = getJdbcTemplate().update(QuerysDepi.CONTACORRENTEAUTORIZADA_INSERT, params);
+		int count = getJdbcTemplate().update(QueriesDepi.CONTACORRENTEAUTORIZADA_INSERT, params);
 		if (count != 1) {
 			throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_INCLUSAO);
 		}
@@ -243,7 +243,7 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 		params.addValue(PRM1, vo.getObservacao());
 		params.addValue(PRM2, vo.getCodigoResponsavelUltimaAtualizacao());
 		
-		int count = getJdbcTemplate().update(QuerysDepi.CONTACORRENTEAUTORIZADA_UPDATE, params);
+		int count = getJdbcTemplate().update(QueriesDepi.CONTACORRENTEAUTORIZADA_UPDATE, params);
 		
 		if (count != 1) {
 			throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_ALTERACAO);
@@ -259,7 +259,7 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 		params.addValue(WHR3, vo.getContaCorrente());
 		params.addValue(PRM1, vo.getCodigoResponsavelUltimaAtualizacao());
 		
-		int count = getJdbcTemplate().update(QuerysDepi.CONTACORRENTEAUTORIZADA_INATIVAR, params);
+		int count = getJdbcTemplate().update(QueriesDepi.CONTACORRENTEAUTORIZADA_INATIVAR, params);
 		
 		if (count != 1) {
 			throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_EXCLUSAO);

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.CompanhiaSeguradoraDataMapper;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 
 /**
@@ -49,7 +49,7 @@ public class CompanhiaSeguradoraDAOImpl extends JdbcDao implements
 	@Override
 	public List<CompanhiaSeguradoraVO> obterCias() {
 		List<CompanhiaSeguradoraVO> cias = getJdbcTemplate().query(
-				QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERCIAS,
+				QueriesDepi.DEPARTAMENTOCOMPANHIA_OBTERCIAS,
 				new MapSqlParameterSource(),
 				new CompanhiaSeguradoraDataMapper());
 		return cias;
@@ -68,7 +68,7 @@ public class CompanhiaSeguradoraDAOImpl extends JdbcDao implements
 		params.addValue(WHR1, codUsuario);
 		
 		List<CompanhiaSeguradoraVO> lista = getJdbcTemplate().query(
-				QuerysDepi.CIA_OBTERCOMRESTRICAODEGRUPOACESSO.replaceAll(PARAM_SUBST, ""), params,
+				QueriesDepi.CIA_OBTERCOMRESTRICAODEGRUPOACESSO.replaceAll(PARAM_SUBST, ""), params,
 				new CompanhiaSeguradoraDataMapper());
 		
 		return lista;
@@ -85,7 +85,7 @@ public class CompanhiaSeguradoraDAOImpl extends JdbcDao implements
 		params.addValue(WHR1, vo.getCodigoCompanhia());
 		
 		return getJdbcTemplate().queryForObject(
-				QuerysDepi.CIA_OBTERCIA_PORCHAVE, params,
+				QueriesDepi.CIA_OBTERCIA_PORCHAVE, params,
 				new CompanhiaSeguradoraDataMapper());
 	}
 	
@@ -98,7 +98,7 @@ public class CompanhiaSeguradoraDAOImpl extends JdbcDao implements
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		
-		String query = QuerysDepi.CIA_OBTERCOMRESTRICAODEGRUPOACESSO.replaceAll(PARAM_SUBST, CLAUSULA_CIA);
+		String query = QueriesDepi.CIA_OBTERCOMRESTRICAODEGRUPOACESSO.replaceAll(PARAM_SUBST, CLAUSULA_CIA);
 		
 		params.addValue(WHR1, codUsuario);
 		params.addValue(PARAM1, codCompanhia);

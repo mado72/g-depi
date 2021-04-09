@@ -8,7 +8,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MovimentoDepositoVO;
 
 /**
- *  
+ * Formulário de edição do movimento
  * @author Globality
  */
 public class MovimentoEditarFormModel extends CrudForm {
@@ -57,7 +57,7 @@ public class MovimentoEditarFormModel extends CrudForm {
 
 	@Override
 	public void preencherDadosIniciais() {
-		// N�o preenche dados iniciais
+		// N�o preenche dados iniciais
 	}
 
 	public void preencherDeposito(DepositoVO vo) {

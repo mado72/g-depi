@@ -18,7 +18,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegat
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioEnvioRetornoAnaliticoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioEnvioRetornoSinteticoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoSinteticoVO;
 
@@ -55,7 +55,7 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
     	
     	BUCBBusinessDelegate bucbDelegate = new BUCBBusinessDelegate (); 
     	
-        StringBuilder query = new StringBuilder(QuerysDepi.RELATORIOENVIORETORNO_OBTERDADOSANALITICO);
+        StringBuilder query = new StringBuilder(QueriesDepi.RELATORIOENVIORETORNO_OBTERDADOSANALITICO);
         
         StringBuilder sb = new StringBuilder();
         
@@ -173,7 +173,7 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
     	BUCBBusinessDelegate bucbDelegate = new BUCBBusinessDelegate (); 
     	List<RelatorioEnvioRetornoSinteticoVO> relatorio = null;
     	
-        StringBuilder query = new StringBuilder(QuerysDepi.RELATORIOENVIORETORNO_OBTERDADOSSINTETICO);
+        StringBuilder query = new StringBuilder(QueriesDepi.RELATORIOENVIORETORNO_OBTERDADOSSINTETICO);
         
         StringBuilder sb = new StringBuilder();
     	

@@ -1,7 +1,7 @@
 /* Documento de css para as telas de sistema Intranet */
-	/* Redefinição de Classes */
+	/* Redefiniï¿½ï¿½o de Classes */
 body {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	color: #333333;
 	margin: 0px;
@@ -9,42 +9,42 @@ body {
 }
 
 h5 {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Open Sans" , Montserrat, "Bradesco Sans";
 	font-size: 11px;
 	font-weight: bold;
 	text-align: center;
 }
 
 h5 a:link {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Open Sans" , Montserrat, "Bradesco Sans";
 	font-size: 11px;
 	color: #999999;
 	text-decoration: underline;
 }
 
 h5 a:visited {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Open Sans" , Montserrat, "Bradesco Sans";
 	font-size: 11px;
 	color: #999999;
 	text-decoration: underline;
 }
 
 h5 a:hover {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Open Sans" , Montserrat, "Bradesco Sans";
 	font-size: 11px;
 	text-decoration: none;
 	color: #999999;
 }
 
 h5 a:active {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Open Sans" , Montserrat, "Bradesco Sans";
 	font-size: 11px;
 	text-decoration: none;
 	color: #999999;
 }
 
 a:link {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	color: #666666;
 	text-decoration: underline;
@@ -63,7 +63,7 @@ a:active {
 }
 
 input {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	color: #000000;
 	border: thin none;
@@ -71,7 +71,7 @@ input {
 }
 
 textarea {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	color: #000000;
 	background-color: #FFFFFF;
@@ -79,7 +79,7 @@ textarea {
 }
 
 select {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	color: #000000;
 	border: thin solid #CCCCCC;
@@ -113,8 +113,8 @@ li {
 }
 
 #tabela_interna th {
-	/*definição  da cor mais escura do topo da tabela interna*/
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/*definiï¿½ï¿½o  da cor mais escura do topo da tabela interna*/
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	font-weight: bold;
 	color: #000000;
@@ -124,8 +124,8 @@ li {
 }
 
 .tabela_interna th {
-	/*definição  da cor mais escura do topo da tabela interna*/
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/*definiï¿½ï¿½o  da cor mais escura do topo da tabela interna*/
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	font-weight: bold;
 	color: #000000;
@@ -157,13 +157,13 @@ li {
 #tabela_interna tr.off { /*cores alternadas das linhas da tabela*/
 	padding: 3px;
 	background-color: #dcdedd;
-	/*cinza médio - para alternar as linhas da tabela*/
+	/*cinza mï¿½dio - para alternar as linhas da tabela*/
 }
 
 .tabela_interna tr.off { /*cores alternadas das linhas da tabela*/
 	padding: 3px;
 	background-color: #dcdedd;
-	/*cinza médio - para alternar as linhas da tabela*/
+	/*cinza mï¿½dio - para alternar as linhas da tabela*/
 }
 
 #tabela_interna TR.grupo1
@@ -205,7 +205,7 @@ li {
 	padding: 3px;
 	background-color: #FFFFFF;
 	color: #CC0000
-		/*vermelho médio - para alternar link das linhas da tabela*/
+		/*vermelho mï¿½dio - para alternar link das linhas da tabela*/
 }
 
 .tabela_interna tr.link {
@@ -213,10 +213,10 @@ li {
 	padding: 3px;
 	background-color: #FFFFFF;
 	color: #CC0000
-		/*vermelho médio - para alternar link das linhas da tabela*/
+		/*vermelho mï¿½dio - para alternar link das linhas da tabela*/
 }
 
-#tabela_botoes { /*os botões devem ser aplicados dentro dessa div*/
+#tabela_botoes { /*os botï¿½es devem ser aplicados dentro dessa div*/
 	background-color: none;
 	padding: 2px;
 }
@@ -226,12 +226,12 @@ li {
 	padding: 2px;
 }
 
-.margem_botoes { /*os botões devem ter essa class*/
+.margem_botoes { /*os botï¿½es devem ter essa class*/
 	margin: 5px;
 }
 
 button,.button {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 10px;
 	font-weight: bold;
 	text-decoration: none;
@@ -255,7 +255,7 @@ button,.button {
 }
 
 .tabela_verm { /*tabela de erro*/
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 10px;
 	font-weight: bold;
 	border: #FFFFFF;
@@ -274,7 +274,7 @@ button,.button {
 }
 
 .tabela_sucesso { /*tabela de erro*/
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 10px;
 	font-weight: bold;
 	border: #FFFFFF;
@@ -303,13 +303,13 @@ button,.button {
 }
 
 .obrigatorio {
-	/*aplicar nos * e na frase campo de preenchimento obrigatório*/
+	/*aplicar nos * e na frase campo de preenchimento obrigatï¿½rio*/
 	font-style: italic;
 	font-size: 9px;
 	color: #CC0000;
 }
 
-.titulo { /*provisório para o site assessorias, tirar depois*/
+.titulo { /*provisï¿½rio para o site assessorias, tirar depois*/
 	font-family: Arial, Tahoma, Verdana;
 	font-size: 14px;
 	font-weight: bold;
@@ -318,7 +318,7 @@ button,.button {
 }
 
 .subtitulo { /*no subtitulo deve ser aplicada essa classe*/
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 11px;
 	font-weight: bold;
 	color: #666666;
@@ -326,8 +326,8 @@ button,.button {
 }
 
 .subtitulo_2 {
-	/*essa classe deve ser usada para subtitulo com preposições que vêm direto da tabela de dados*/
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/*essa classe deve ser usada para subtitulo com preposiï¿½ï¿½es que vï¿½m direto da tabela de dados*/
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 11px;
 	font-weight: bold;
 	color: #666666;
@@ -358,28 +358,28 @@ img {
 }
 
 a.destaque:link {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	color: #FF0000;
 	text-decoration: underline;
 }
 
 a.destaque:visited {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	color: #FF0000;
 	text-decoration: underline;
 }
 
 a.destaque:hover {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	text-decoration: none;
 	color: #FF0000;
 }
 
 a.destaque:active {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: "Open Sans", Montserrat, "Bradesco Sans";
 	font-size: 9px;
 	text-decoration: none;
 	color: #FF0000;

@@ -80,13 +80,9 @@ public class MovimentoSalvarAction extends
 		LOGGER.info("Formulário validado. Chamando método para concluir a operação.");
 		return super.execute();
 	}
-
-	@Override
-	public String execute() {
-		return super.execute();
-	}
 	
 	public void validateSalvarProrrogarCancelar() {
+		// Validações da ação
 	}
 	
 	public String salvarProrrogarCancelar() {
@@ -107,7 +103,7 @@ public class MovimentoSalvarAction extends
 	}
 	
 	public void validateSalvarMovimento() {
-		System.out.println("salvar Movimento");
+		validateSalvar();
 	}
 	
 	public String salvarMovimento() {

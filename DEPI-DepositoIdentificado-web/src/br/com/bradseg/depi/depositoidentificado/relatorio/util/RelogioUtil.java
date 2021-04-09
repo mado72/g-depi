@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -20,9 +21,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
+/**
+ * Classe utilitária usada nos relatórios 
+ * @author Globality
+ */
 public class RelogioUtil {
 	
 	
+	private static final String DD_MM_YYYY = "dd/MM/yyyy";
 	private static final String REGEX_VIRGULA = "[,]";
 	public static final String FMT_DECIMAL_2   = "00";
 	public static final String FMT_DECIMAL_3   = "000";
@@ -180,14 +186,14 @@ public class RelogioUtil {
 		return sdf.format(data);
 	}
 	public static String formataTimestamp(Date data) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat(DD_MM_YYYY);
 		return sdf.format(data);
 	}
 
 	// Verifica se a String data de nascimento digitada � uma data v�lida
 	public static Date validaData(String dataStr) {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat(DD_MM_YYYY);
 			sdf.setLenient(false);
 
 			return sdf.parse(dataStr);
@@ -205,8 +211,7 @@ public class RelogioUtil {
 	}
 	private static String[] splitParts(Number valor, DecimalFormat fmt) {
 		String string = fmt.format(valor);
-		String[] part = string.split(REGEX_VIRGULA);
-		return part;
+		return string.split(REGEX_VIRGULA);
 	}
 	public static String decimalToString(Double valor) {
 		/*Transformando em 2 casas decimais*/
@@ -222,7 +227,7 @@ public class RelogioUtil {
 	}
 	
 	public static String formataDate(Date data) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat(DD_MM_YYYY);
 		return sdf.format(data);
 	}
 	
@@ -406,8 +411,7 @@ public class RelogioUtil {
 	
 	public static String formataCodigo(String valor,String formato){
 		NumberFormat format = new DecimalFormat(formato);
-    	String codFormatado = format.format(new Integer(valor));
-		return codFormatado;
+    	return format.format(new Integer(valor));
 	}
 
 	
@@ -434,10 +438,8 @@ public class RelogioUtil {
 	
 	public static String nullToZeroString(String valor ){
 		String result = "0";
-		if (valor != null){
-			if(!valor.trim().equals("")){
-				result = valor;
-			}
+		if (! StringUtils.isEmpty(valor)){
+			result = valor;
 		}
 		
 		return result;
@@ -467,7 +469,7 @@ public class RelogioUtil {
 		String dataFormatada = null;
 		try {
 			date = new SimpleDateFormat("yyyyMMdd").parse(data);
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat(DD_MM_YYYY);
 			dataFormatada = sdf.format(date);
 		} catch (ParseException e) {
 			LOGGER.error("N�o foi possivel converter a data.");
@@ -503,6 +505,7 @@ public class RelogioUtil {
 			valorFormatadoEmMoeda = formatacaoMoeda.format(valor);
 		} catch (Exception e) {
 			// ignora o erro. Retorna null.
+			LOGGER.debug("Erro ignorado", e);
 		}
 		
 		return valorFormatadoEmMoeda;

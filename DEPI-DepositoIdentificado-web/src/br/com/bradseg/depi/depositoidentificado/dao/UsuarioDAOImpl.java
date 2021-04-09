@@ -21,7 +21,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
@@ -63,7 +63,7 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 			
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			params.addValue(PARAM_USRGRP, vo.getCodigoGrupoAcesso());
-			return getJdbcTemplate().query(QuerysDepi.USUARIOS_OBTERPORGRUPOACESSO, params, new UsuarioDataMapper());
+			return getJdbcTemplate().query(QueriesDepi.USUARIOS_OBTERPORGRUPOACESSO, params, new UsuarioDataMapper());
 			
 		} catch(Exception e){
 			LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
@@ -83,7 +83,7 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 	
 	    	MapSqlParameterSource params = null;
 	
-	    	StringBuilder query = new StringBuilder(QuerysDepi.USUARIOS_OBTERPORFILTRO);
+	    	StringBuilder query = new StringBuilder(QueriesDepi.USUARIOS_OBTERPORFILTRO);
 	    	
 	        /**
 	         * Parametros.
@@ -123,7 +123,7 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 			
 			UsuarioVO usuario;
 			try {
-				usuario = getJdbcTemplate().queryForObject(QuerysDepi.USUARIOS_OBTERPORCODIGO, params,
+				usuario = getJdbcTemplate().queryForObject(QueriesDepi.USUARIOS_OBTERPORCODIGO, params,
 						new UsuarioDataMapper());
 			} catch(Exception e){
 				LOGGER.error("UsuarioDAOImpl - obterPorGrupoAcesso", e);
@@ -148,7 +148,7 @@ public class UsuarioDAOImpl extends JdbcDao implements UsuarioDAO {
 		
 		try {
 			return getJdbcTemplate()
-					.queryForObject(QuerysDepi.USUARIOS_EXISTEGRUPOACESSO, params, 
+					.queryForObject(QueriesDepi.USUARIOS_EXISTEGRUPOACESSO, params, 
 							BigDecimal.class).intValue() > 0;
 		} catch (EmptyResultDataAccessException e) {
 			return false;

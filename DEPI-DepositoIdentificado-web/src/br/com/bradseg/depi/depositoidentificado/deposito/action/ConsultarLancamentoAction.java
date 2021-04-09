@@ -30,7 +30,7 @@ public class ConsultarLancamentoAction
 	
 	private final ConsultarLancamentoFormModel model = new ConsultarLancamentoFormModel();
 	
-	private DepositoFacade facade;
+	private transient DepositoFacade facade;
 	
 	@Override
 	public ConsultarLancamentoFormModel getModel() {
@@ -40,12 +40,6 @@ public class ConsultarLancamentoAction
 	@Autowired
 	public void setFacade(DepositoFacade facade) {
 		this.facade = facade;
-	}
-	
-	@Override
-	public String execute() {
-		
-		return super.execute();
 	}
 	
 	public void validateConsultar() {

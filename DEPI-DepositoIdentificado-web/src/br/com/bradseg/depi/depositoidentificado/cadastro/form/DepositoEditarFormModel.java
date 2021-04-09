@@ -72,7 +72,7 @@ public class DepositoEditarFormModel extends CrudForm {
 	
 	private String cpfCnpj;
 	
-	private List<?> pessoasCorporativas;
+	private List<?> pessoasCorporativas = new ArrayList<>();
 	
 	private Long pessoaDepositante;
 	
@@ -120,7 +120,7 @@ public class DepositoEditarFormModel extends CrudForm {
 	
 	private Integer codigoSituacaoDeposito;
 	
-	private List<ParcelaCobrancaVO> listaParcelas;
+	private List<ParcelaCobrancaVO> listaParcelas = new ArrayList<>();
 	
 	private ParametroDepositoVO parametro;
 	

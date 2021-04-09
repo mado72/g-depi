@@ -1,5 +1,9 @@
 package br.com.bradseg.depi.depositoidentificado.model.enumerated;
 
+/**
+ * Ações do formulário de edição do movimento.
+ * @author Globality
+ */
 public enum MovimentoAcao {
 	
 	ACEITE("A"),

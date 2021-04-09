@@ -13,13 +13,10 @@ import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 //@Table(schema = ConstantesDAO.SCHEMA_BANCO, table = "PARMZ_DEP_IDTFD")
 public class ParametroDepositoVO implements Serializable{
 
-    /**
-	 * 
-	 */
-	private static final String NULL_VALUE = "null";
-
 	private static final long serialVersionUID = 5987719912367700030L;
 
+	private static final String NULL_VALUE = "null";
+	
     /**
      * Código da Companhia - obtido atraves da classe
      */

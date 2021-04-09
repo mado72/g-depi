@@ -20,7 +20,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.mapper.DepartamentoCompanhia
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
@@ -73,7 +73,7 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
         try {
         	MapSqlParameterSource params = null;
         	
-        	final StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTOCOMPANHIA_SELECT_DEPTO_CIA_CLAUSULA_ATIVO);
+        	final StringBuilder query = new StringBuilder(QueriesDepi.DEPARTAMENTOCOMPANHIA_SELECT_DEPTO_CIA_CLAUSULA_ATIVO);
 
 	        /**
 	         * Parametros.
@@ -84,7 +84,7 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 				params = filtro.getMapParamFiltro();
 			}
 			
-			query.append(QuerysDepi.DEPARTAMENTOCOMPANHIA_ORDERBY_DHORA_ULT_ATULZ_DESC);
+			query.append(QueriesDepi.DEPARTAMENTOCOMPANHIA_ORDERBY_DHORA_ULT_ATULZ_DESC);
 
 			return getJdbcTemplate().query(query.toString(), params,
 					new DepartamentoCompanhiaDataMapper());
@@ -104,7 +104,7 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 		params.addValue(WHR1, cia.getCodigoCompanhia());
 		
 		return getJdbcTemplate().query(
-				QuerysDepi.DEPARTAMENTOCOMPANHIA_OBTERPORCIA, params,
+				QueriesDepi.DEPARTAMENTOCOMPANHIA_OBTERPORCIA, params,
 				new DepartamentoCompanhiaDataMapper());
 	}
 	
@@ -165,7 +165,7 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 		
 		try {
 			String indicativo = getJdbcTemplate().queryForObject(
-					QuerysDepi.DEPARTAMENTOCOMPANHIA_EXISTS, params, String.class);
+					QueriesDepi.DEPARTAMENTOCOMPANHIA_EXISTS, params, String.class);
 			return indicativo;
 		} catch (EmptyResultDataAccessException e) {
 			return null;
@@ -189,7 +189,7 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 		params.addValue(WHR2, codigoCompanhia);
 		params.addValue(PRM1, codUsuario);
 
-		int count = getJdbcTemplate().update(QuerysDepi.DEPARTAMENTOCOMPANHIA_ATIVAR, params);
+		int count = getJdbcTemplate().update(QueriesDepi.DEPARTAMENTOCOMPANHIA_ATIVAR, params);
 		if (count == 0) {
 			throw new DEPIIntegrationException(
 					ConstantesDEPI.DepartamentoCompanhia.ERRO_NAOCONCLUIDO,
@@ -216,7 +216,7 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 		params.addValue(PRM2, codigoCompanhia);
 		params.addValue(PRM3, codUsuario);
 		
-		int count = getJdbcTemplate().update(QuerysDepi.DEPARTAMENTOCOMPANHIA_INSERT, params);
+		int count = getJdbcTemplate().update(QueriesDepi.DEPARTAMENTOCOMPANHIA_INSERT, params);
 		if (count == 0) {
 			throw new DEPIIntegrationException(
 					ConstantesDEPI.DepartamentoCompanhia.ERRO_NAOCONCLUIDO,
@@ -242,7 +242,7 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 		params.addValue(WHR1, codigoDepartamento);
 		params.addValue(WHR2, codigoCompanhia);
 		
-		int count = getJdbcTemplate().update(QuerysDepi.DEPARTAMENTOCOMPANHIA_INATIVAR, params);
+		int count = getJdbcTemplate().update(QueriesDepi.DEPARTAMENTOCOMPANHIA_INATIVAR, params);
 		if (count == 0) {
 			throw new DEPIIntegrationException(
 					ConstantesDEPI.DepartamentoCompanhia.ERRO_NAOCONCLUIDO,
@@ -263,7 +263,7 @@ public class DepartamentoCompanhiaDAOImpl extends JdbcDao implements Departament
 			params.addValue(WHR2, grupo.getDepartamento().getCodigoDepartamento());
 
 			List<Map<String, Object>> lista = getJdbcTemplate().queryForList(
-					QuerysDepi.GRUPOACESSO_REFERENCIADO_PARAMETRODEPOSITO,
+					QueriesDepi.GRUPOACESSO_REFERENCIADO_PARAMETRODEPOSITO,
 					params);
 
             return (!lista.isEmpty());

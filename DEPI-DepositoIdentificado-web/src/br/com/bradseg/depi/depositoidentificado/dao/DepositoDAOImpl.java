@@ -28,7 +28,7 @@ import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.IgnorarLog;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
@@ -69,7 +69,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 	@Override
     public List<DepositoVO> obterPorFiltroComRestricaoDeGrupoAcesso(FiltroUtil filtro, Integer codigoUsuario) {
 
-		StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_OBTERPORFILTROCOMRESTRICAODEGRUPOACESSO);
+		StringBuilder query = new StringBuilder(QueriesDepi.DEPOSITO_OBTERPORFILTROCOMRESTRICAODEGRUPOACESSO);
     	
 		try {
 
@@ -133,7 +133,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
             		
             GeneratedKeyHolder key = new GeneratedKeyHolder();
             
-            int count = getJdbcTemplate().update(QuerysDepi.DEPOSITO_INSERT, params, key);
+            int count = getJdbcTemplate().update(QueriesDepi.DEPOSITO_INSERT, params, key);
             
             if (count != 1) {
             	throw new DEPIBusinessException(ConstantesDEPI.Geral.ERRO_INCLUSAO);
@@ -154,7 +154,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     @Override
     public void inserirDV(DepositoVO vo)  {
 
-    	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_INSERIRDV);
+    	StringBuilder query = new StringBuilder(QueriesDepi.DEPOSITO_INSERIRDV);
 
     	MapSqlParameterSource params = new MapSqlParameterSource();
     	BaseUtil.prepararQuery(params, PREFIX_PARAM, 
@@ -174,7 +174,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     @Override
     public void atualizar(DepositoVO vo, ParametroDepositoVO param) {
 
-    	StringBuilder query = new StringBuilder(QuerysDepi.DEPOSITO_UPDATE);
+    	StringBuilder query = new StringBuilder(QueriesDepi.DEPOSITO_UPDATE);
     	
         try {
         	
@@ -233,7 +233,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, 
     			vo.getCodigoDepositoIdentificado());  
     	
-    	int count = getJdbcTemplate().update(QuerysDepi.DEPOSITO_PRORROGAR, params);
+    	int count = getJdbcTemplate().update(QueriesDepi.DEPOSITO_PRORROGAR, params);
     	
     	if (count != 1) {
     		throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_ALTERACAO);
@@ -255,7 +255,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, 
     			deposito.getCodigoDepositoIdentificado());
     	
-    	Integer count = getJdbcTemplate().update(QuerysDepi.DEPOSITO_CANCELAR, params);
+    	Integer count = getJdbcTemplate().update(QueriesDepi.DEPOSITO_CANCELAR, params);
     	
     	if (count == 0) {
     		throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_ALTERACAO);
@@ -272,7 +272,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     			vo.getCodigoResponsavelUltimaAtualizacao(),
     			vo.getCodigoDepositoIdentificado());
     	
-    	Integer count = getJdbcTemplate().update(QuerysDepi.DEPOSITO_INATIVAR, params);
+    	Integer count = getJdbcTemplate().update(QueriesDepi.DEPOSITO_INATIVAR, params);
     	
     	if (count == 0) {
     		throw new DEPIIntegrationException(ConstantesDEPI.Geral.ERRO_EXCLUSAO);
@@ -308,7 +308,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 		
 		GeneratedKeyHolder key = new GeneratedKeyHolder();
 		
-		getJdbcTemplate().update(QuerysDepi.DEPOSITO_UPDATELOGS, params, key);
+		getJdbcTemplate().update(QueriesDepi.DEPOSITO_UPDATELOGS, params, key);
 		
 		return key.getKey().longValue();
 	}
@@ -325,7 +325,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
                 log.getUsuarioNovo());
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		getJdbcTemplate().update(QuerysDepi.DEPOSITO_LOGS_INSERT, params, keyHolder);
+		getJdbcTemplate().update(QueriesDepi.DEPOSITO_LOGS_INSERT, params, keyHolder);
 		
 		return keyHolder.getKey().longValue();
 	}
@@ -374,11 +374,12 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 		}
 		Map<String, Object[]> difProps = BaseUtil.compararObjects(oldObj, newObj, propertyNamesToAvoid, 1L);
 		
-		for (String propName : difProps.keySet()) {
+		for (Map.Entry<String, Object[]> prop : difProps.entrySet()) {
+			String propName = prop.getKey();
 			LogDepositoVO log = new LogDepositoVO();
 			log.setFieldName(propName);
 			
-			Object[] valores = difProps.get(propName);
+			Object[] valores = prop.getValue();
 			if (valores[0] == null) {
 				log.setValorAntigo("");
 			}
@@ -406,7 +407,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     	
 		try {
 			DepositoVO vo = getJdbcTemplate().queryForObject(
-					QuerysDepi.DEPOSITO_OBTERPORCHAVE, params,
+					QueriesDepi.DEPOSITO_OBTERPORCHAVE, params,
 					new DepositoDataMapper());
 			return vo;
 		} catch (EmptyResultDataAccessException e) {

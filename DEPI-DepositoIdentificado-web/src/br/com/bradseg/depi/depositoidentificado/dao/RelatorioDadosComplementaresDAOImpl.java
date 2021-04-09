@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioDadosComplementaresDataMapper;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioDadosComplementaresVO;
 
 /**
@@ -52,17 +52,13 @@ public class RelatorioDadosComplementaresDAOImpl extends JdbcDao implements Rela
 
     	List<RelatorioDadosComplementaresVO> relatorio = null;
     	
-        StringBuilder query = new StringBuilder(QuerysDepi.RELATORIODADOSCOMPLEMENTARES_OBTERDADOSCOMPLEMENTARESANALITICO);
+        StringBuilder query = new StringBuilder(QueriesDepi.RELATORIODADOSCOMPLEMENTARES_OBTERDADOSCOMPLEMENTARESANALITICO);
         
         StringBuilder sb = new StringBuilder();
         
 
 		
 			MapSqlParameterSource params = new MapSqlParameterSource();
-			/*
-			 * FIXME - Remover referências diretas aos campos e utilizar os
-			 * critérios de consulta.
-			 */
         	params.addValue("dtInicioA", filtro.getDataInicio());
         	params.addValue("dtFimA", filtro.getDataFinal());
         	params.addValue("dtInicioB", filtro.getDataInicio());

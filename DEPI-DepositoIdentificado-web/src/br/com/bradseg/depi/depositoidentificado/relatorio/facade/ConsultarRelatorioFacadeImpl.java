@@ -44,6 +44,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
 
+/**
+ * Implementação do ConsultarRelatorioFacade 
+ * @author Globality
+ */
 @Service
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
@@ -91,6 +95,9 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.relatorio.facade.ConsultarRelatorioFacade#obterMotivoComRestricaoDeDeposito(int, int, br.com.bradseg.bsad.filtrologin.vo.LoginVo)
+	 */
 	@Override
 	public List<MotivoDepositoVO> obterMotivoComRestricaoDeDeposito(int codigCompanhia, int codigoDepartamento, LoginVo loginVO) {
 		int codigoUsuario =Integer.parseInt(loginVO.getId());  
@@ -139,14 +146,12 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Override
 	public List<ManutencoesAnaliticoVO> obterDadosManutencoesAnalitico(
 			FiltroUtil filtro) {
-		// TODO Auto-generated method stub
 		return daoManutAnalitico.obterDadosAnalitico(filtro);
 	}
 
 	@Override
 	public List<RelatorioDadosComplementaresVO> obterDadosComplementares(
 			FiltroUtil filtro) {
-		// TODO Auto-generated method stub RelatorioDadosComplementaresDAO
 		try {
 			return daoRelatorioDadosComplementares.obterDadosComplementaresAnalitico(filtro);
 		} catch (SQLException e) {
@@ -158,7 +163,6 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Override
 	public List<ManutencoesSinteticoVO> obterDadosManutencoesSintetico(
 			FiltroUtil filtro) {
-		// TODO Auto-generated method stub RelatorioManutencoesDAOImpl
 		return this.sintetizar(daoManutAnalitico.obterDadosAnalitico(filtro));
 		
 	}
@@ -174,12 +178,6 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
     	LinkedHashMap<String, ManutencoesSinteticoVO> map = new LinkedHashMap<String, ManutencoesSinteticoVO>();
         for (ManutencoesAnaliticoVO original : dadosAnaliticos) {
             ManutencoesSinteticoVO sintetico = new ManutencoesSinteticoVO();
-            try {
-               // AssemblerUtil.copy(original, sintetico);
-            } catch (Exception e) {
-            	LOGGER.error(e.getMessage());
-                throw new DEPIIntegrationException(e);
-            }
             String chave = new StringBuilder().append(original.getCodigoBanco()).append(original.getCodigoCia()).append(
                 original.getCodigoAgencia()).append(original.getCodigoConta()).append(original.getCodigoTipoAcao()).toString();
             map.put(chave, sintetico);
@@ -236,7 +234,6 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Override
 	public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosBancoExtratoAnalitico(
 			FiltroUtil filtro) {
-		// TODO Auto-generated method stub
 		try {
 			return this.daoRelatorioEnvioRetornoDAO.obterDadosAnalitico(filtro);
 		} catch (SQLException e) {
@@ -249,7 +246,6 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Override
 	public List<RelatorioExtratoSinteticoVO> obterDadosExtratoSintetico(
 			FiltroUtil filtro) {
-		// TODO Auto-generated method stub
 		try{
 			return daoRelatorioExtrato.obterDadosSintetico(filtro);
 		} catch (SQLException e) {
@@ -261,9 +257,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 
 	@Override
 	public List<CompanhiaSeguradoraVO> carregarComboCompanhiaUsuLogado(LoginVo loginVO) {
-		// TODO Auto-generated method stub		
 		int usuarioLogadoId =Integer.parseInt(loginVO.getId());  
-	    //;
 		return populaDescricaLstaCompanhia(daoCiaSeg.obterComRestricaoDeGrupoAcesso(usuarioLogadoId));
 		
 		
@@ -271,22 +265,16 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	}
 	
 	
-	public List<CompanhiaSeguradoraVO> populaDescricaLstaCompanhia( List<CompanhiaSeguradoraVO>  Companhias) {
-		// TODO Auto-generated method stub	
+	private List<CompanhiaSeguradoraVO> populaDescricaLstaCompanhia( List<CompanhiaSeguradoraVO>  companhias) {
 	
-        for (int i = 0; i < Companhias.size(); i++) {
-        	CompanhiaSeguradoraVO ele = Companhias.get(i);
-            //CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(ele.getCodigoCompanhia());
-        	CompanhiaSeguradoraVO cia  = new CompanhiaSeguradoraVO();
-        	cia.setDescricaoCompanhia(ele.getCodigoCompanhia()+"-descricaoCompanhia");
-        	cia.setCodigoCompanhia(ele.getCodigoCompanhia());        	
-        	Companhias.set(i, cia);
-      
-        	LOGGER.error("Cod.:"+cia.getCodigoCompanhia() + " - "+cia.getDescricaoCompanhia() );	
-        }
-	
-		return Companhias;
+		for (CompanhiaSeguradoraVO ele : companhias) {
+			CompanhiaSeguradoraVO cia  = new CompanhiaSeguradoraVO();
+			cia.setDescricaoCompanhia(ele.getCodigoCompanhia()+"-descricaoCompanhia");
+			cia.setCodigoCompanhia(ele.getCodigoCompanhia());        	
+			companhias.add(cia);
+		}
 
+		return companhias;
 	}
 	
 	

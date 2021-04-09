@@ -82,12 +82,8 @@ public class DepositoSalvarAction extends
 		return super.execute();
 	}
 
-	@Override
-	public String execute() {
-		return super.execute();
-	}
-	
 	public void validateSalvarProrrogarCancelar() {
+		// Validações para a ação.
 	}
 	
 	public String salvarProrrogarCancelar() {

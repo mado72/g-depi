@@ -20,7 +20,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 
@@ -242,7 +242,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	    	params.addValue(PARAM_WHR1, vo.getCodigoCompanhia());
 	    	
 			List<DepartamentoVO> departamentoVO = getJdbcTemplate().query(
-					QuerysDepi.DEPARTAMENTO_OBTERPORCOMPANHIASEGURADORA,
+					QueriesDepi.DEPARTAMENTO_OBTERPORCOMPANHIASEGURADORA,
 					params, new DepartamentoDataMapper());
 	    	
 	    	return departamentoVO;
@@ -260,7 +260,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	public DepartamentoVO obterPorCompanhiaSeguradora(CompanhiaSeguradoraVO vo,
 			DepartamentoVO deptoVO) {
 		
-		StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERPORCOMPANHIASEGURADORA);
+		StringBuilder query = new StringBuilder(QueriesDepi.DEPARTAMENTO_OBTERPORCOMPANHIASEGURADORA);
 		query.append(" AND DBPROD.DEPTO_DEP_IDTFD.CSGL_DEPTO_DEP = :prm1");
 	    
 	    try {
@@ -298,13 +298,13 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		final String query;
 
 		if (e.equals(Tabelas.GRUPO_ACESSO)) {
-			query = QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEGRUPOACESSO.replaceAll("%s", restricaoAdicional);
+			query = QueriesDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEGRUPOACESSO.replaceAll("%s", restricaoAdicional);
 		} else if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
-			query = QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO.replaceAll("%s", restricaoAdicional);
+			query = QueriesDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO.replaceAll("%s", restricaoAdicional);
 		} else if (e.equals(Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO)) {
-			query = QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODECONTACORRENTEMOTIVODEPOSITO.replaceAll("%s", restricaoAdicional);
+			query = QueriesDepi.DEPARTAMENTO_OBTERCOMRESTRICAODECONTACORRENTEMOTIVODEPOSITO.replaceAll("%s", restricaoAdicional);
 		} else if (e.equals(Tabelas.DEPOSITO)) {
-			query = QuerysDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEDEPOSITO.replaceAll("%s", restricaoAdicional);
+			query = QueriesDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEDEPOSITO.replaceAll("%s", restricaoAdicional);
 		} else {
 			throw new IntegrationException("Enum inválido.");
 		}
@@ -340,7 +340,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 			params.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
 			
 			DepartamentoVO departamentoVO = getJdbcTemplate().queryForObject(
-					QuerysDepi.DEPARTAMENTO_OBTERPORCHAVE, params,
+					QueriesDepi.DEPARTAMENTO_OBTERPORCHAVE, params,
 					new DepartamentoDataMapper());
 			
 			return departamentoVO;
@@ -359,7 +359,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	
 	    try {
 			
-	    	StringBuilder query = new StringBuilder(QuerysDepi.DEPARTAMENTO_OBTERTODOS);
+	    	StringBuilder query = new StringBuilder(QueriesDepi.DEPARTAMENTO_OBTERTODOS);
 	    	
 	    	MapSqlParameterSource params = null;
 	    	
@@ -390,7 +390,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		params.addValue(PARAM_WHR1, vo.getSiglaDepartamento());
 
 		List<DepartamentoVO> lista = getJdbcTemplate().query(
-				QuerysDepi.DEPARTAMENTO_EXISTS, params, new DepartamentoDataMapper());
+				QueriesDepi.DEPARTAMENTO_EXISTS, params, new DepartamentoDataMapper());
 		 
 		if (!lista.isEmpty()) {
 			
@@ -407,7 +407,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	public List<DepartamentoVO> obterDeListaSiglas(List<String> siglas) {
 		MapSqlParameterSource params = new MapSqlParameterSource(PARAM_WHR1, siglas);
 		
-		return getJdbcTemplate().query(QuerysDepi.DEPARTAMENTO_OBTERPORSIGLAS,
+		return getJdbcTemplate().query(QueriesDepi.DEPARTAMENTO_OBTERPORSIGLAS,
 				params, new DepartamentoDataMapper());
 	}
 
@@ -418,7 +418,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		paramsIns.addValue(PARAM_PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
 		paramsIns.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
 						
-		getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_ATIVAR, paramsIns);
+		getJdbcTemplate().update(QueriesDepi.DEPARTAMENTO_ATIVAR, paramsIns);
 	}
 
 	private void queryInativar(DepartamentoVO vo) {
@@ -427,7 +427,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		params.addValue(PARAM_PRM1, vo.getCodigoResponsavelUltimaAtualizacao());
 		params.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
 
-		getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_INATIVAR, params);
+		getJdbcTemplate().update(QueriesDepi.DEPARTAMENTO_INATIVAR, params);
 	}
 	
 	private void queryInsert(DepartamentoVO vo) {
@@ -436,7 +436,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		paramsIns.addValue(PARAM_PRM2, vo.getNomeDepartamento());
 		paramsIns.addValue(PARAM_PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
 		
-		getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_INSERT, paramsIns);
+		getJdbcTemplate().update(QueriesDepi.DEPARTAMENTO_INSERT, paramsIns);
 	}
 	
 	private Integer queryUpdate(DepartamentoVO vo) {
@@ -447,7 +447,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		paramsUpd.addValue(PARAM_PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
 		paramsUpd.addValue(PARAM_WHR1, vo.getCodigoDepartamento());
 		
-		return getJdbcTemplate().update(QuerysDepi.DEPARTAMENTO_UPDATE, paramsUpd);
+		return getJdbcTemplate().update(QueriesDepi.DEPARTAMENTO_UPDATE, paramsUpd);
 	}
 	
 	private boolean queryDepartamentoReferenciadoCompanhia(
@@ -456,7 +456,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		
 		// Tratamento para evitar erro -4460
 		// Ref.: https://www.ibm.com/support/pages/db2-sql-query-select-gives-sql-errorcode-4460
-		String query = QuerysDepi.DEPARTAMENTO_REFERENCIADO_COMPANHIADEPARTAMENTO
+		String query = QueriesDepi.DEPARTAMENTO_REFERENCIADO_COMPANHIADEPARTAMENTO
 				.replaceAll(String.format(":%s", PARAM_WHR1),
 						String.valueOf(vo.getCodigoDepartamento()));
 		

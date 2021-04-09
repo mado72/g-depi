@@ -1130,8 +1130,12 @@ public final class BaseUtil {
 
 	private static Map<String, Object[]> compararObjects(Object oldObject, Object newObject, Set<String> propertyNamesToAvoid, Long deep,
 	        String parentPropertyPath) {
-	    propertyNamesToAvoid = propertyNamesToAvoid != null ? propertyNamesToAvoid : new HashSet<String>();
-	    parentPropertyPath = parentPropertyPath != null ? parentPropertyPath : "";
+		if (propertyNamesToAvoid == null) {
+			propertyNamesToAvoid = new HashSet<String>();
+		}
+		if (parentPropertyPath == null) {
+			parentPropertyPath = "";
+		}
 
 	    Map<String,Object[]> mapProps = new LinkedHashMap<String, Object[]>();
 
@@ -1161,8 +1165,17 @@ public final class BaseUtil {
 	        try {
 	            if (property1 != null && property2 != null
 	                    && (deep == null || deep > 0)) {
-	                Map<String,Object[]> diffProperty = compararObjects(property1, property2, propertyNamesToAvoid,
-	                        deep != null ? deep - 1 : null, propertyPath + ".");
+	            	
+	                Map<String,Object[]> diffProperty;
+	                
+	                if (deep != null) {
+						diffProperty = compararObjects(property1, property2,
+								propertyNamesToAvoid, deep - 1, propertyPath + ".");
+	                }
+	                else {
+						diffProperty = compararObjects(property1, property2,
+								propertyNamesToAvoid, null, propertyPath + ".");
+	                }
 	                
 	                Set<String> propDiff = diffProperty.keySet();
 	                for (String prop : propDiff) {

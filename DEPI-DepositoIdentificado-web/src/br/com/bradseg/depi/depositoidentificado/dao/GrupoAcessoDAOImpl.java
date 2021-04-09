@@ -25,7 +25,7 @@ import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
@@ -75,7 +75,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 	public List<GrupoAcessoVO> obterPorFiltro(FiltroUtil filtro)  {
 
     	
-    	String query = QuerysDepi.GRUPOACESSO_OBTERPORFILTRONEW;
+    	String query = QueriesDepi.GRUPOACESSO_OBTERPORFILTRONEW;
     	String complementoQuery;
 
         try {
@@ -116,7 +116,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 			params.addValue(WHR2, vo.getCia().getCodigoCompanhia());
 
 			List<GrupoAcessoVO> grupoAcessoVO = getJdbcTemplate().query(
-					QuerysDepi.GRUPOACESSO_EXISTSATIVO, params,
+					QueriesDepi.GRUPOACESSO_EXISTSATIVO, params,
 					new GrupoAcessoDataMapper());
 
             if (!grupoAcessoVO.isEmpty()) {
@@ -129,7 +129,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
                 				.append(" - Departamento: ").append(grupoCadastrado.getDepto().getSiglaDepartamento()).toString());
             }
             
-            StringBuilder queryInsert = new StringBuilder(QuerysDepi.GRUPOACESSO_INSERT);
+            StringBuilder queryInsert = new StringBuilder(QueriesDepi.GRUPOACESSO_INSERT);
 
 			MapSqlParameterSource paramsInsert = new MapSqlParameterSource();
             
@@ -147,7 +147,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
                 throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CUSTOMIZADA, "Não foi possível incluir o Grupo de Acesso.");
             }
 
-            StringBuilder queryAlocar = new StringBuilder(QuerysDepi.GRUPOACESSO_ALOCARFUNCIONARIO);
+            StringBuilder queryAlocar = new StringBuilder(QueriesDepi.GRUPOACESSO_ALOCARFUNCIONARIO);
             MapSqlParameterSource paramsAlocar = new MapSqlParameterSource();
 		
             for (UsuarioVO usuario : vo.getFuncionarios()) {
@@ -209,7 +209,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 				queryAlocarOuRealocar(vo, usuarioVO);
 			}
             
-        	StringBuilder queryAloc = new StringBuilder(QuerysDepi.GRUPOACESSO_UPDATE);
+        	StringBuilder queryAloc = new StringBuilder(QueriesDepi.GRUPOACESSO_UPDATE);
 
   			MapSqlParameterSource paramsAloc = new MapSqlParameterSource();
 
@@ -229,7 +229,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 		paramsAlocar.addValue(WHR1, vo.getCodigoGrupoAcesso());
 		paramsAlocar.addValue(WHR2, usr.getCodigoUsuario());
 		
-		List<String> indAtivo = getJdbcTemplate().queryForList(QuerysDepi.ALOCACAO_EXISTSUSUARIO, paramsAlocar, String.class) ; 
+		List<String> indAtivo = getJdbcTemplate().queryForList(QueriesDepi.ALOCACAO_EXISTSUSUARIO, paramsAlocar, String.class) ; 
    
 		if (!indAtivo.isEmpty()) {
 		    if (ConstantesDEPI.INDICADOR_INATIVO.equals(indAtivo.get(0))) {
@@ -247,7 +247,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 		paramsAloc.addValue(PRM2, usr.getCodigoUsuario());
 		paramsAloc.addValue(PRM3, vo.getCodigoResponsavelUltimaAtualizacao());
 		
-		getJdbcTemplate().update(QuerysDepi.GRUPOACESSO_ALOCARFUNCIONARIO, paramsAloc);
+		getJdbcTemplate().update(QueriesDepi.GRUPOACESSO_ALOCARFUNCIONARIO, paramsAloc);
 	}
 
 	private void queryRealocar(GrupoAcessoVO vo, UsuarioVO usr) {
@@ -257,11 +257,11 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 		paramsRealocar.addValue(WHR1, vo.getCodigoGrupoAcesso());
 		paramsRealocar.addValue(WHR2, usr.getCodigoUsuario());
 		
-		getJdbcTemplate().update(QuerysDepi.GRUPOACESSO_REALOCARFUNCIONARIO, paramsRealocar);
+		getJdbcTemplate().update(QueriesDepi.GRUPOACESSO_REALOCARFUNCIONARIO, paramsRealocar);
 	}
 
 	private void queryDesalocar(GrupoAcessoVO grupo, UsuarioVO usuario) {
-		StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_DESALOCARFUNCIONARIO);
+		StringBuilder query = new StringBuilder(QueriesDepi.GRUPOACESSO_DESALOCARFUNCIONARIO);
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
 
@@ -302,7 +302,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             desalocarUsuarios(grupo);
             
             
-        	StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_DESATIVAR);
+        	StringBuilder query = new StringBuilder(QueriesDepi.GRUPOACESSO_DESATIVAR);
 
   			MapSqlParameterSource params = new MapSqlParameterSource();
 
@@ -330,7 +330,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
 			params.addValue(WHR2, grupo.getDepto().getCodigoDepartamento());
 
 			List<Map<String, Object>> lista = getJdbcTemplate().queryForList(
-					QuerysDepi.GRUPOACESSO_REFERENCIADO_PARAMETRODEPOSITO,
+					QueriesDepi.GRUPOACESSO_REFERENCIADO_PARAMETRODEPOSITO,
 					params);
 			//			List<GrupoAcessoVO> grupoAcessoVO = getJdbcTemplate().query(
 //					QuerysDepi.GRUPOACESSO_REFERENCIADO_PARAMETRODEPOSITO, params, new GrupoAcessoDataMapper());
@@ -345,7 +345,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     @Override
 	public GrupoAcessoVO obterGrupoPorChave(GrupoAcessoVO grupo)  {
 
-    	StringBuilder query = new StringBuilder(QuerysDepi.GRUPOACESSO_OBTERGRUPOPORCHAVE);
+    	StringBuilder query = new StringBuilder(QueriesDepi.GRUPOACESSO_OBTERGRUPOPORCHAVE);
 
     	try {
 
@@ -375,7 +375,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     	
 		try {
 			Boolean exists = getJdbcTemplate().queryForObject(
-					QuerysDepi.GRUPOACESSO_EXISTS, params, Boolean.class);
+					QueriesDepi.GRUPOACESSO_EXISTS, params, Boolean.class);
 			
 			return exists;
 			

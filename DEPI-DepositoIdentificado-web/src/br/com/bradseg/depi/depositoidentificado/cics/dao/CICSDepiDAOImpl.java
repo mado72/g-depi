@@ -149,15 +149,6 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 	}
 	
 	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO#obterContasCorrente(java.util.Collection)
-	 */
-	@Override
-	public List<ContaCorrenteAutorizadaVO> obterContasCorrente(Collection<ContaCorrenteAutorizadaVO> contas) {
-		// TODO Implementar
-		return null;
-	}
-	
-	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO#obterBanco(br.com.bradseg.depi.depositoidentificado.vo.BancoVO)
 	 */
 	@Override

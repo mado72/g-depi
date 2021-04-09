@@ -101,16 +101,15 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 	 */
 	protected LoginVo getUsuarioLogado() {
 
-		// FIXME retirar este log da publicação final
-		LOGGER.error("Tentando recuperar o usuário logado usando LoginUtils.getLoginObject(this.request)");
+		LOGGER.debug("Tentando recuperar o usuário logado usando LoginUtils.getLoginObject(this.request)");
 		LoginVo loginVO = LoginUtils.getLoginObject(this.request);
-		LOGGER.error("Usuário logado {}", loginVO);
+		LOGGER.trace("Usuário logado {}", loginVO);
 		
         if (BaseUtil.isNZB(loginVO) || BaseUtil.isNZB(loginVO.getId())) {
         	LOGGER.error("Não encontrou usuário logado");
             throw new IntegrationException(getText(MSG_LOGIN_USUARIO));
         }
-        LOGGER.error("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
+        LOGGER.info("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		
 		return loginVO;
 	}

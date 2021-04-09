@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.ParcelaCobrancaDataMapper;
-import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
+import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.ParcelaCobrancaVO;
 
 /**
@@ -63,7 +63,7 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
             	params.addValue("prm8",  new Date(parcelaCobranca.getDataVencimento().getTime()));
             	params.addValue("prm9",  parcelaCobranca.getCodigoUsuarioAtualizador());
                 
-                getJdbcTemplate().update(QuerysDepi.PARCELASPENDENTES_INSERIRDEPOSITOCOBRANCA, params);	
+                getJdbcTemplate().update(QueriesDepi.PARCELASPENDENTES_INSERIRDEPOSITOCOBRANCA, params);	
             }
             
 		} finally {
@@ -82,7 +82,7 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 		List<ParcelaCobrancaVO> listaParcelas = null;
 		
 		
-        StringBuilder query = new StringBuilder(QuerysDepi.PARCELASPENDENTES_LISTARPARCELASASSOCIADAS);
+        StringBuilder query = new StringBuilder(QueriesDepi.PARCELASPENDENTES_LISTARPARCELASASSOCIADAS);
 
 		try {
 
@@ -109,7 +109,7 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 		// List<ParcelaCobrancaVO> listaParcelas = new ArrayList<ParcelaCobrancaVO>();
 		List<ParcelaCobrancaVO> listaParcelas = null; 
 				
-        StringBuilder query = new StringBuilder(QuerysDepi.PARCELASPENDENTES_DETALHARPARCELASASSOCIADAS);
+        StringBuilder query = new StringBuilder(QueriesDepi.PARCELASPENDENTES_DETALHARPARCELASASSOCIADAS);
 
 		try {
 
@@ -136,7 +136,7 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			params.addValue("whr1", parcela);    
             
-            getJdbcTemplate().update(QuerysDepi.PARCELASPENDENTES_EXCLUIRPARCELA, params);	
+            getJdbcTemplate().update(QueriesDepi.PARCELASPENDENTES_EXCLUIRPARCELA, params);	
                 
             
 		} finally {

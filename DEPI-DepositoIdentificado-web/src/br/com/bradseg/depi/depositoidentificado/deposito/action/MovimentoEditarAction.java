@@ -127,6 +127,8 @@ public class MovimentoEditarAction
 			validarBanco();
 			validarNroCheque();
 			break;
+		default:
+			break;
 		}
 	}
 	

@@ -524,31 +524,45 @@ public class RelatorioEnvioRetornoAnaliticoVO implements Serializable{
     
     @Override
 	public String toString() {
-		return "RelatorioEnvioRetornoAnaliticoVO ["
-				+ (codigoSituacao != null ? "codigoSituacao=" + codigoSituacao + ", " : "")
-				+ (situacao != null ? "situacao=" + situacao + ", " : "")
-				+ (digitoCodigoAutorizador != null ? "digitoCodigoAutorizador=" + digitoCodigoAutorizador + ", " : "")
-				+ (bloquete != null ? "bloquete=" + bloquete + ", " : "")
-				+ (sucursal != null ? "sucursal=" + sucursal + ", " : "") + (ramo != null ? "ramo=" + ramo + ", " : "")
-				+ (apolice != null ? "apolice=" + apolice + ", " : "") + (item != null ? "item=" + item + ", " : "")
-				+ (tipo != null ? "tipo=" + tipo + ", " : "") + (endosso != null ? "endosso=" + endosso + ", " : "")
-				+ (parcela != null ? "parcela=" + parcela + ", " : "")
-				+ (cpfCnpj != null ? "cpfCnpj=" + cpfCnpj + ", " : "")
-				+ (codigoAutorizador != null ? "codigoAutorizador=" + codigoAutorizador + ", " : "")
-				+ (codigoDigitoIdentificador != null ? "codigoDigitoIdentificador=" + codigoDigitoIdentificador + ", " : "")
-				+ (codigoPessoa != null ? "codigoPessoa=" + codigoPessoa + ", " : "")
-				+ (vencimento != null ? "vencimento=" + vencimento + ", " : "")
-				+ (matricula != null ? "matricula=" + matricula + ", " : "")
-				+ (valorRegistrado != null ? "valorRegistrado=" + valorRegistrado + ", " : "")
-				+ (valorPago != null ? "valorPago=" + valorPago + ", " : "")
-				+ (codigoBanco != null ? "codigoBanco=" + codigoBanco + ", " : "")
-				+ (codigoAgencia != null ? "codigoAgencia=" + codigoAgencia + ", " : "")
-				+ (codigoConta != null ? "codigoConta=" + codigoConta + ", " : "")
-				+ (codigoCia != null ? "codigoCia=" + codigoCia + ", " : "")
-				+ (descricaoBanco != null ? "descricaoBanco=" + descricaoBanco + ", " : "")
-				+ (descricaoCia != null ? "descricaoCia=" + descricaoCia + ", " : "")
-				+ (descricaoConta != null ? "descricaoConta=" + descricaoConta + ", " : "")
-				+ (codigoAutorizadorComDv != null ? "codigoAutorizadorComDv=" + codigoAutorizadorComDv : "") + "]";
+    		
+		return new StringBuilder("RelatorioEnvioRetornoAnaliticoVO [")
+				.append(toString("codigoSituacao", codigoSituacao, true))
+				.append(toString("situacao", situacao, true))
+				.append(toString("digitoCodigoAutorizador", digitoCodigoAutorizador, true))
+				.append(toString("bloquete", bloquete, true))
+				.append(toString("sucursal", sucursal, true))
+				.append(toString("apolice", apolice, true))
+				.append(toString("tipo", tipo, true))
+				.append(toString("parcela", parcela, true))
+				.append(toString("cpfCnpj", cpfCnpj, true))
+				.append(toString("codigoAutorizador", codigoAutorizador, true))
+				.append(toString("codigoDigitoIdentificador", codigoDigitoIdentificador, true))
+				.append(toString("codigoPessoa", codigoPessoa, true))
+				.append(toString("vencimento", vencimento, true))
+				.append(toString("matricula", matricula, true))
+				.append(toString("valorRegistrado", valorRegistrado, true))
+				.append(toString("valorPago", valorPago, true))
+				.append(toString("codigoBanco", codigoBanco, true))
+				.append(toString("codigoAgencia", codigoAgencia, true))
+				.append(toString("codigoConta", codigoConta, true))
+				.append(toString("codigoCia", codigoCia, true))
+				.append(toString("descricaoBanco", descricaoBanco, true))
+				.append(toString("descricaoCia", descricaoCia, true))
+				.append(toString("descricaoConta", descricaoConta, true))
+				.append(toString("codigoAutorizadorComDv", codigoAutorizadorComDv, false))
+				.append("]")
+				.toString();
+    }
+    
+    private String toString(String property, Object value, boolean sufix) {
+    	StringBuilder sb = new StringBuilder(property).append('=');
+    	if (value != null) {
+    		sb.append(value);
+    	}
+    	if (sufix) {
+    		sb.append(", ");
+    	}
+    	return sb.toString();
     }
    
     
