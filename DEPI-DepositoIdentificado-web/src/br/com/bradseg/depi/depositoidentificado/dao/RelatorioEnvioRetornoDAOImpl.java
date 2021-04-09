@@ -17,12 +17,10 @@ import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO
 import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegate;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioEnvioRetornoAnaliticoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioEnvioRetornoSinteticoDataMapper;
-import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QuerysDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoSinteticoVO;
-import br.com.bradseg.depi.depositoidentificado.relatorio.util.RelogioUtil;
 
 /**
  * A(O) Class RelatorioEnvioRetornoDAOImpl.
@@ -50,7 +48,8 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
      * @param filtro do relatï¿½rio
      * @return List<ManutencoesAnaliticoVO>
      */
-    public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro) throws SQLException{
+    @Override
+	public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro) throws SQLException{
 
     	List<RelatorioEnvioRetornoAnaliticoVO> relatorio = null;
     	
@@ -168,7 +167,8 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
      * @param filtro do relatï¿½rio
      * @return List<ManutencoesAnaliticoVO>
      */
-    public List<RelatorioEnvioRetornoSinteticoVO> obterDadosSintetico(FiltroUtil filtro)throws SQLException {
+    @Override
+	public List<RelatorioEnvioRetornoSinteticoVO> obterDadosSintetico(FiltroUtil filtro)throws SQLException {
 
     	BUCBBusinessDelegate bucbDelegate = new BUCBBusinessDelegate (); 
     	List<RelatorioEnvioRetornoSinteticoVO> relatorio = null;

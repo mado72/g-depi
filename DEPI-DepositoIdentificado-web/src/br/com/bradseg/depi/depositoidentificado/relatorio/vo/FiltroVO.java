@@ -1,7 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.relatorio.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class FiltroVO implements Serializable {
 

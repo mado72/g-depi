@@ -3,29 +3,27 @@ package br.com.bradseg.depi.depositoidentificado.relatorio.util;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Calendar;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 public class RelogioUtil {
 	
 	
+	private static final String REGEX_VIRGULA = "[,]";
 	public static final String FMT_DECIMAL_2   = "00";
 	public static final String FMT_DECIMAL_3   = "000";
 	public static final String FMT_DECIMAL_4   = "0000";
@@ -76,7 +74,7 @@ public class RelogioUtil {
 		else if(path.endsWith(".xlsx")){
 			mime = ConstantesDEPI.MIME_TYPE_XLSX;
 		}
-		//O uso do .jrxml é porque esse documento será salvo em pdf
+		//O uso do .jrxml ï¿½ porque esse documento serï¿½ salvo em pdf
 		else if( (path.endsWith(".pdf")) || path.endsWith(".jrxml") ){
 			mime = ConstantesDEPI.MIME_TYPE_PDF;
 		}
@@ -115,7 +113,7 @@ public class RelogioUtil {
 				break;
 			
 			case Calendar.MARCH: 
-				mesExt = "Março";
+				mesExt = "Marï¿½o";
 				break;
 			
 			case Calendar.APRIL: 
@@ -186,7 +184,7 @@ public class RelogioUtil {
 		return sdf.format(data);
 	}
 
-	// Verifica se a String data de nascimento digitada é uma data válida
+	// Verifica se a String data de nascimento digitada ï¿½ uma data vï¿½lida
 	public static Date validaData(String dataStr) {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -201,16 +199,19 @@ public class RelogioUtil {
 	
 	public static String bigDecimalToString(BigDecimal valor) {
 		/*Transformando em 2 casas decimais*/
-		DecimalFormat fmt = new DecimalFormat("0.00"); //limita o número de casas decimais     
-		String string = fmt.format(valor);
-		String[] part = string.split("[,]");
+		DecimalFormat fmt = new DecimalFormat("0.00"); //limita o nï¿½mero de casas decimais     
+		String[] part = splitParts(valor, fmt);
 		return part[0] + "." + part[1];
+	}
+	private static String[] splitParts(Number valor, DecimalFormat fmt) {
+		String string = fmt.format(valor);
+		String[] part = string.split(REGEX_VIRGULA);
+		return part;
 	}
 	public static String decimalToString(Double valor) {
 		/*Transformando em 2 casas decimais*/
-		DecimalFormat fmt = new DecimalFormat("0.00"); //limita o número de casas decimais     
-		String string = fmt.format(valor);
-		String[] part = string.split("[,]");
+		DecimalFormat fmt = new DecimalFormat("0.00"); //limita o nï¿½mero de casas decimais     
+		String[] part = splitParts(valor, fmt);
 		return part[0] + "." + part[1];
 	}
 
@@ -226,7 +227,7 @@ public class RelogioUtil {
 	}
 	
 	public static Double stringToDouble(String valor) {
-		valor = valor.replaceAll("[.]", "").replaceAll("[,]", ".");
+		valor = valor.replaceAll("[.]", "").replaceAll(REGEX_VIRGULA, ".");
 		return Double.parseDouble(valor);
 	}
 	public static String doubleToString(Double valor){
@@ -235,7 +236,7 @@ public class RelogioUtil {
 		  return s.replace('.', ',');  
 	}
 	public static BigDecimal stringToBigDecimal(String valor) {
-		valor = valor.replaceAll("[.]", "").replaceAll("[,]", ".");
+		valor = valor.replaceAll("[.]", "").replaceAll(REGEX_VIRGULA, ".");
 		return new BigDecimal(valor);
 	}
 	
@@ -261,8 +262,8 @@ public class RelogioUtil {
 	
 	/**
 	 * 
-	 * Método: formataTimestampFuncaoOracle
-	 * Objetivo: Monta uma string preparada com uma função resposável por formatar
+	 * Mï¿½todo: formataTimestampFuncaoOracle
+	 * Objetivo: Monta uma string preparada com uma funï¿½ï¿½o resposï¿½vel por formatar
 	 * 			 um timestamp oriundo do DB2 para o formato do Oracle (Banco de dados usado no P8) 
 	 * @param timestamp String
 	 * @return String
@@ -279,15 +280,16 @@ public class RelogioUtil {
 		
 	}
 	
-	// Verifica se a String data de nascimento digitada é uma data válida
+	// Verifica se a String data de nascimento digitada ï¿½ uma data vï¿½lida
 	public static Date formataDataP8(String dataStr) {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss");
 			sdf.setLenient(false);
 			if (dataStr != null) {
 				dataStr = dataStr.substring(0, 19);
+				return sdf.parse(dataStr);
 			}
-			return sdf.parse(dataStr);
+			return null;
 		} catch (ParseException pe) {
 			LOGGER.error(pe.getMessage(), pe);
 			return null;
@@ -296,10 +298,9 @@ public class RelogioUtil {
 	
 	
 	/**
-	 * 
-	 * Método formataDataStrDb2ForDateP8
-	 * Objetivo do Método: Converte uma data(String) do DB2 em um formato Date do Java.
-	 * @param String dataStr
+	 * MÃ©todo formataDataStrDb2ForDateP8
+	 * Objetivo do MÃ©todo: Converte uma data(String) do DB2 em um formato Date do Java.
+	 * @param dataStr String
 	 * @return Date
 	 */
 	public static Date formataDataStrDb2ForDateP8(String dataStr){
@@ -307,17 +308,14 @@ public class RelogioUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss.SSS");
 		sdf.setLenient(false);
 		
-		// O Java somente suporta os milisegundos entre 1000 (0 a 999), por isso só conseguimos formatar até 3º dígito do milisegundo. 
+		// O Java somente suporta os milisegundos entre 1000 (0 a 999), por isso sï¿½ conseguimos formatar atï¿½ 3ï¿½ dï¿½gito do milisegundo. 
 		if (dataStr.length()>23){
 			dataStr = dataStr.substring(0, 23);
 		}
 		
 		try {
 			
-			//synchronized (sdf){
-				Date aux = sdf.parse(dataStr);					
-				return  aux;
-			//}
+			return sdf.parse(dataStr);			
 
 		} 
 		catch (Exception pe) {
@@ -329,7 +327,7 @@ public class RelogioUtil {
 	
 	/**
 	 * 
-	 * Método:   formataTimestampParaOracle
+	 * Mï¿½todo:   formataTimestampParaOracle
 	 * Objetivo: Altera uma string que representa o timestamp no formato DB2 e retorna esta em formato
 	 * 			 timestamp Oracle.
 	 * @param    timestampDb2 String
@@ -352,8 +350,8 @@ public class RelogioUtil {
 	}
 	
 	/**
-	 * Método: javaDateToSqlTimestamp
-	 * Objetivo: Transforma uma data do padrão Java para um String no formato Timestamp do DB2.
+	 * Mï¿½todo: javaDateToSqlTimestamp
+	 * Objetivo: Transforma uma data do padrï¿½o Java para um String no formato Timestamp do DB2.
 	 * @param data Date
 	 * @return String
 	 */
@@ -414,16 +412,19 @@ public class RelogioUtil {
 
 	
 	public static BigDecimal nullToZeroBigDecimal(BigDecimal valor ){
-		BigDecimal result = new BigDecimal(0);
+		BigDecimal result;
 		if (valor != null){
 			result = valor;
+		}
+		else {
+			result = BigDecimal.ZERO;
 		}
 		
 		return result;
 	}
 	
 	public static Integer nullToZeroInteger(Integer valor ){
-		Integer result = new Integer(0);
+		Integer result = 0;
 		if (valor != null){
 			result = valor;
 		}
@@ -469,7 +470,7 @@ public class RelogioUtil {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			dataFormatada = sdf.format(date);
 		} catch (ParseException e) {
-			LOGGER.error("Não foi possivel converter a data.");
+			LOGGER.error("Nï¿½o foi possivel converter a data.");
 		}  
 		
 		return dataFormatada;
@@ -501,7 +502,7 @@ public class RelogioUtil {
 			
 			valorFormatadoEmMoeda = formatacaoMoeda.format(valor);
 		} catch (Exception e) {
-			valorFormatadoEmMoeda = null;
+			// ignora o erro. Retorna null.
 		}
 		
 		return valorFormatadoEmMoeda;

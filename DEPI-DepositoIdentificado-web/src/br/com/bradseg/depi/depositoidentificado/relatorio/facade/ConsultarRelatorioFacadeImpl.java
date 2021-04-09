@@ -8,8 +8,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
-
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
@@ -167,7 +165,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 
 
     /**
-     * Gera lista com dados para o relatório Sintético usando a lista de dados do relatório Análitico.
+     * Gera lista com dados para o relatï¿½rio Sintï¿½tico usando a lista de dados do relatï¿½rio Anï¿½litico.
      * @param dadosAnaliticos - List<ManutencoesSinteticoVO>.
      * @throws DEPIIntegrationException - DEPIIntegrationException.
      * @return List<ManutencoesSinteticoVO>.
@@ -187,10 +185,10 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
             map.put(chave, sintetico);
         }
         List<ManutencoesSinteticoVO> dadosSinteticos = new ArrayList<ManutencoesSinteticoVO>();
-        Set<String> chaves = map.keySet();
-        for (String key : chaves) {
-            ManutencoesSinteticoVO sintetico = map.get(key);
-            // calcula valores por situação
+        for (Map.Entry<String,ManutencoesSinteticoVO> entry : map.entrySet()) {
+        	String key = entry.getKey();
+        	ManutencoesSinteticoVO sintetico = entry.getValue();
+            // calcula valores por situaï¿½ï¿½o
             for (ManutencoesAnaliticoVO original : dadosAnaliticos) {
                 String chave = new StringBuilder().append(original.getCodigoBanco()).append(original.getCodigoCia()).append(
                     original.getCodigoAgencia()).append(original.getCodigoConta()).append(original.getCodigoTipoAcao())
@@ -198,7 +196,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
                 if (key.equals(chave)) {
                 	Double vlDouble = original.getValorRegistrado();
                 	BigDecimal vlBigDecimal = new BigDecimal(vlDouble);
-                	BigDecimal valor = (BigDecimal) sintetico.getValor().add(vlBigDecimal);
+                	BigDecimal valor = sintetico.getValor().add(vlBigDecimal);
                      
                 	sintetico.setValor(valor);
                     sintetico.setQuantidade((sintetico.getQuantidade() + 1));
@@ -296,7 +294,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Override
 	public void obterTotais(List<RelatorioExtratoAnaliticoVO> lista) {
 	     ordenarPorDeposito(lista);
-	        Long id = new Long(0);
+	        Long id = 0L;
 	        for (RelatorioExtratoAnaliticoVO vo : lista) {
 	            if (!id.equals(vo.getCodigoAutorizador())) {
 	                id = vo.getCodigoAutorizador();
@@ -310,7 +308,8 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	public void ordenarDadosAnalitico(List<RelatorioExtratoAnaliticoVO> lista) {
 		 Comparator<RelatorioExtratoAnaliticoVO> ordenacaoAnalitico = new Comparator<RelatorioExtratoAnaliticoVO>() {
 
-	            public int compare(RelatorioExtratoAnaliticoVO p1, RelatorioExtratoAnaliticoVO p2) {
+	            @Override
+				public int compare(RelatorioExtratoAnaliticoVO p1, RelatorioExtratoAnaliticoVO p2) {
 
 	                StringBuilder chave1 = new StringBuilder();
 	                StringBuilder chave2 = new StringBuilder();
@@ -330,7 +329,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	}
 
 	/**
-     * Ordem Situação.
+     * Ordem Situaï¿½ï¿½o.
      * @param situacao - RelatorioExtratoAnaliticoVO.
      * @return String.
      */
@@ -367,7 +366,8 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	
 	 public void ordenarPorDeposito(List<RelatorioExtratoAnaliticoVO> lista) {
 	        Comparator<RelatorioExtratoAnaliticoVO> ordenacaoAnaliticoDeposito = new Comparator<RelatorioExtratoAnaliticoVO>() {
-	            public int compare(RelatorioExtratoAnaliticoVO p1, RelatorioExtratoAnaliticoVO p2) {
+	            @Override
+				public int compare(RelatorioExtratoAnaliticoVO p1, RelatorioExtratoAnaliticoVO p2) {
 	                return p1.getCodigoAutorizador().compareTo(p2.getCodigoAutorizador());
 	            };
 	        };

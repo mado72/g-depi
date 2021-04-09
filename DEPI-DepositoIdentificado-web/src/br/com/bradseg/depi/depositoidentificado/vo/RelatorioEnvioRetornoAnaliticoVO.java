@@ -3,6 +3,8 @@ package br.com.bradseg.depi.depositoidentificado.vo;
 import java.io.Serializable;
 import java.util.Date;
 
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+
 /**
  * Classe RelatorioEnvioRetornoAnaliticoVO.
  * @author fabio.almeida@cpmbraxis.com.
@@ -380,7 +382,7 @@ public class RelatorioEnvioRetornoAnaliticoVO implements Serializable{
      * @return O atributo vencimento
      */
     public Date getVencimento() {
-         return vencimento;
+         return BaseUtil.getDate(vencimento);
     }
 
     /**
