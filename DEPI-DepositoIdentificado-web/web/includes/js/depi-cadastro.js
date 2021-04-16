@@ -382,7 +382,7 @@ var fnReady = function ($) {
 			return false;
 		});
 
-		$("#BtnConsultar").click(function(ev) {
+		$(".btnConsultar").click(function(ev) {
 			ev.preventDefault();
 			if ($.filtro.prepararConsultar(ev, jqForm, jqRecipiente)) {
     			$(this).closest("form").submit();

@@ -1,5 +1,7 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
+import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.NULL_VALUE;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,8 +17,6 @@ public class ParametroDepositoVO implements Serializable{
 
 	private static final long serialVersionUID = 5987719912367700030L;
 
-	private static final String NULL_VALUE = "null";
-	
     /**
      * Código da Companhia - obtido atraves da classe
      */

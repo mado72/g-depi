@@ -53,6 +53,8 @@ public final class BaseUtil {
 
 	public static final NumberFormat DECIMAL_FMT = NumberFormat.getNumberInstance();
 
+	public static final String NULL_VALUE = "null";
+	
 	/**
 	 * Construtor privado.
 	 */
