@@ -15,6 +15,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepositoEditarForm
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepositoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -91,6 +92,7 @@ public class DepositoEditarAction
 			}
 			
 			model.setPessoasCorporativas(Collections.emptyList());
+			model.setEstado(EstadoCrud.INSERIR);
 			
 			return retorno;
 		} catch (Exception e) {
@@ -129,6 +131,7 @@ public class DepositoEditarAction
 			BancoVO banco = crudHelper.obterBanco(new BancoVO(CODIGO_BANCO_BRADESCO));
 			model.setCodBanco(String.valueOf(CODIGO_BANCO_BRADESCO));
 			model.setDescricaoBanco(banco.getDescricaoBanco());
+			model.setEstado(EstadoCrud.ALTERAR);
 			
 			return INPUT;
 		} catch (Exception e) {

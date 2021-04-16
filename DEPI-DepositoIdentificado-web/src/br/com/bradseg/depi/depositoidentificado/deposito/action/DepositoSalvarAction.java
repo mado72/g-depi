@@ -11,6 +11,7 @@ import br.com.bradseg.depi.depositoidentificado.cadastro.form.DepositoEditarForm
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.CrudHelper;
 import br.com.bradseg.depi.depositoidentificado.cadastro.helper.DepositoCrudHelper;
 import br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.SalvarAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -79,7 +80,18 @@ public class DepositoSalvarAction extends
 	
 	public String salvar() {
 		LOGGER.info("Formulário validado. Chamando método para concluir a operação.");
-		return super.execute();
+		String resultado = super.execute();
+		clearMessages();
+		
+		DepositoEditarFormModel model = getModel();
+		if (model.getEstado() == EstadoCrud.INSERIR) {
+			addActionMessage(getText(ConstantesDEPI.MSG_INSERIR_EXITO));
+		}
+		else {
+			addActionMessage(getText(ConstantesDEPI.MSG_ALTERAR_EXITO));
+		}
+
+		return resultado;
 	}
 
 	public void validateSalvarProrrogarCancelar() {
