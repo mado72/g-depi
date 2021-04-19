@@ -79,7 +79,7 @@ public class MovimentoEditarAction
 			MovimentoDepositoVO vo = model.obterMovimento();
 			vo.setCodigoResponsavelUltimaAtualizacao(codUsuario);
 			
-			facade.inserirMovimento(vo);
+			facade.inserirMovimento(vo, getIp());
 			
 			return SUCCESS;
 		} catch (Exception e) {
@@ -153,9 +153,10 @@ public class MovimentoEditarAction
 		LOGGER.info("Formulário validado. Chamando método para concluir a operação.");
 		
 		MovimentoDepositoVO vo = model.obterMovimento();
+		vo.setCodigoResponsavelUltimaAtualizacao(getCodUsuarioLogado());
 		
 		try {
-			facade.inserirMovimento(vo);
+			facade.inserirMovimento(vo, getIp());
 			addActionMessage(getText(ConstantesDEPI.MSG_INSERIR_EXITO));
 			
 			return SUCCESS;

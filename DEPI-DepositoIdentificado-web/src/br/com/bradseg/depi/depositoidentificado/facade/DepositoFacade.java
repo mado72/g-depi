@@ -193,7 +193,7 @@ public interface DepositoFacade {
 
 	MovimentoDepositoVO obterMovimentoDeposito(DepositoVO vo);
 	
-	void inserirMovimento(MovimentoDepositoVO vo);
+	void inserirMovimento(MovimentoDepositoVO vo, String ipCliente);
 	
 	void alterarMovimento(MovimentoDepositoVO vo);
 

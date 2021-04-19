@@ -62,7 +62,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	/*
 	 * TODO Verificar CÓDIGO para simular acesso EJB 
 	 */
-	private static final boolean FAKE_COMP = String.valueOf(3).equals("3");
+	private static final boolean FAKE_COMP = String.valueOf(2).equals("3");
 
 	private static final int PESSOA_JURIDICA = 4;
 
@@ -569,7 +569,17 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	}
 	
 	@Override
-	public void inserirMovimento(MovimentoDepositoVO vo) {
+	public void inserirMovimento(MovimentoDepositoVO vo, String ipCliente) {
+		try {
+			validarBancoAgenciaConta(vo);
+		} catch (BusinessException e) {
+			DepositoVO dep = obterPorChave(
+					new DepositoVO(vo.getCodigoMovimento()),
+					(int) vo.getCodigoResponsavelUltimaAtualizacao(), ipCliente);
+			vo.setBancoMovimento(dep.getBanco().getCdBancoExterno());
+			vo.setAgenciaMovimento(dep.getAgencia().getCdAgenciaExterno());
+			vo.setContaMovimento(dep.getContaCorrente());
+		}
 		validarInformacoesMovimento(vo);
 		movimentoDAO.inserir(vo);
 	}
