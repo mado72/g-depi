@@ -257,25 +257,32 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 
 	@Override
 	public List<CompanhiaSeguradoraVO> carregarComboCompanhiaUsuLogado(LoginVo loginVO) {
-		int usuarioLogadoId =Integer.parseInt(loginVO.getId());  
-		return populaDescricaLstaCompanhia(daoCiaSeg.obterComRestricaoDeGrupoAcesso(usuarioLogadoId));
+		int usuarioLogadoId =Integer.parseInt(loginVO.getId());
+		List<CompanhiaSeguradoraVO> lista = daoCiaSeg.obterComRestricaoDeGrupoAcesso(usuarioLogadoId);
 		
-		
+		return populaDescricaLstaCompanhia(lista);
 
 	}
 	
 	
-	private List<CompanhiaSeguradoraVO> populaDescricaLstaCompanhia( List<CompanhiaSeguradoraVO>  companhias) {
+	public List<CompanhiaSeguradoraVO> populaDescricaLstaCompanhia( List<CompanhiaSeguradoraVO>  Companhias) {
+		// TODO Auto-generated method stub	
 	
-		for (CompanhiaSeguradoraVO ele : companhias) {
-			CompanhiaSeguradoraVO cia  = new CompanhiaSeguradoraVO();
-			cia.setDescricaoCompanhia(ele.getCodigoCompanhia()+"-descricaoCompanhia");
-			cia.setCodigoCompanhia(ele.getCodigoCompanhia());        	
-			companhias.add(cia);
-		}
+        for (int i = 0; i < Companhias.size(); i++) {
+        	CompanhiaSeguradoraVO ele = Companhias.get(i);
+            CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(ele.getCodigoCompanhia());
+        	//CompanhiaSeguradoraVO cia  = new CompanhiaSeguradoraVO();
+        	//cia.setDescricaoCompanhia(ele.getCodigoCompanhia()+"-descricaoCompanhia");
+        	cia.setCodigoCompanhia(ele.getCodigoCompanhia());        	
+        	Companhias.set(i, cia);
+      
+        	LOGGER.error("Cod.:"+cia.getCodigoCompanhia() + " - "+cia.getDescricaoCompanhia() );	
+        }
+	
+		return Companhias;
 
-		return companhias;
 	}
+	
 	
 	
 	

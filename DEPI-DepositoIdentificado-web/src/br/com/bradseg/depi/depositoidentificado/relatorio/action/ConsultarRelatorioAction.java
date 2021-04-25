@@ -1,42 +1,35 @@
 package br.com.bradseg.depi.depositoidentificado.relatorio.action;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-import org.apache.jasper.JasperException;
-import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-
+import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
-import br.com.bradseg.bsad.framework.web.struts.support.BsadExceptionInterceptor;
+import br.com.bradseg.depi.depositoidentificado.cadastro.form.RelatorioFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseAction;
+import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.relatorio.facade.ConsultarRelatorioFacade;
 import br.com.bradseg.depi.depositoidentificado.relatorio.util.RelogioUtil;
 import br.com.bradseg.depi.depositoidentificado.relatorio.vo.FiltroVO;
@@ -45,7 +38,6 @@ import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
-
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesSinteticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
@@ -60,18 +52,13 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
 
 @Controller
-@Scope("request")
-public class ConsultarRelatorioAction extends BaseAction  {
-
-
+@Scope("session")
+public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel>  {
 	private static final long serialVersionUID = 3407809247264650489L;
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ConsultarRelatorioAction.class); 
 
 	private static final String DATA_FINAL = "Data Final";
 	private static final String DATA_INICIAL = "Data Inicial";
-	private static final String FORWARD_CONSULTAR = "consultar.relatorio";
-	// private static final String FORWARD_APRESENTAR = "apresentar.relatorio";
-	private static final String FORWARD_MENU = "dp06.menu";
 	private static final String VISUALIZACAO = "VISUALIZACAO";
 	private static final String HEADER = "HEADER";
 	private static final String SITUACAO = "SITUACAO";
@@ -86,11 +73,6 @@ public class ConsultarRelatorioAction extends BaseAction  {
     public static final String ESTRUTURA_PASTA_IMAGENS = "/padroes_web/intranet/imagens/";
     public static final String ESTRUTURA_PASTA_CSS = "/padroes_web/intranet/css/";
 	
-	private static final String JRXML = ".jrxml";
-	private static final String JASPER = ".jasper";
-	private static final String PDF = ".pdf";
-	
-	
 	private static final String EXIBIRENVIORETORNOANALITICO = "exibirEnvioRetornoAnalitico";
 	private static final String EXIBIRENVIORETORNOSINTETICO = "exibirEnvioRetornoSintetico";
 	private static final String EXIBIREXTRATOANALITICO      = "exibirExtratoAnalitico";
@@ -98,9 +80,9 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	private static final String EXIBIRMANUTENCOESANALITICO  = "exibirManutencoesAnalitico";
 	private static final String EXIBIRMANUTENCOESSINTETICO  = "exibirManutencoesSintetico";
 	private static final String EXIBIRDADOSCOMPLEMENTARES   = "exibirDadosComplementares";
-	private static final String SUCESS = null;
+	private final RelatorioFormModel model = new RelatorioFormModel();
 	
-    private int codigoCompanhia = 0;
+	private int codigoCompanhia = 0;
     private int codigoDepartamento = 0;
     private int codigoMotivoDeposito = 0;
 	
@@ -113,48 +95,19 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	private List<DepartamentoVO> listaDepartamentosOrd = new ArrayList<DepartamentoVO>();
 	private List<MotivoDepositoVO> listaMotivosDepositos = new ArrayList<MotivoDepositoVO>();
 	
-	
 	private FiltroUtil filtro;
 	
-	private String fileNameReport ;
-	private String contentTypeReport = "application/pdf"  ;
-	private transient InputStream fileInputStream;
-	
-	private String acao; 
-	private String acaoAnterior;
-	private String tpcCias = "TRUE";
-	private String tpcCiasOrdenadas = "TRUE";
-	private String subtituloTela;
-	private String tituloTabela;
-	
-	
-    private String tipoRelatorio;
-    private String visualizacao;
-    private int deposito;
-    private String situacaoEnvioRetorno;
-    private String situacaoManutencoes;
-    private String sucursal;
-    private String apolice;
-    private String endosso;
-    private String codigoAutorizador;
-    private String cpfCnpj;
-    private String codigoContaCorrente;
-    private String dataInicial;
-    private String dataFinal;
-    private String valorInicial;
-    private String valorFinal;
-    private String descricaoDetalhada;
-    private String subtitulo;
-    private FiltroVO filtroVO;
-	
+	private FiltroVO filtroVO;
+    private  LoginVo login;
+    
 	@Autowired
 	private ConsultarRelatorioFacade consultarRelatorioFacade;
     
 	
 	public String consultar(){
-   	  
+		login = getUsuarioLogado();
 		
-	    //List<CompanhiaSeguradoraVO> listaRetorno = //  CompanhiaSeguradoraBusinessDelegate.getInstance().obterComRestricaoDeDeposito(getUsuarioLogado());
+	    //List<CompanhiaSeguradoraVO> listaRetorno = //  CompanhiaSeguradoraBusinessDelegate.getInstance().obterComRestricaoDeDeposito(login());
 		
 		
 		carregarComboCompanhia();
@@ -168,38 +121,29 @@ public class ConsultarRelatorioAction extends BaseAction  {
 		cia.setCodigoCompanhia(686);
 		cia.setDescricaoCompanhia("Bardesco Seguros");
 		listaCompanhia.add(cia);
-		tpcCiasOrdenadas = "FALSE";
+		model.setTpcCiasOrdenadas("FALSE");
 		
+		String acao = model.getAcao();
 		
-		//DepartamentoVO departamento = new DepartamentoVO();
-		//departamento.setCodigoDepartamento(1);
-		//departamento.setNomeDepartamento("Juridico");
-		//listaDepartamentos.add(departamento);
-		
-		//MotivoDepositoVO motivoDeposito = new MotivoDepositoVO();
-		//motivoDeposito.setCodigoMotivoDeposito(1);
-		//motivoDeposito.setDescricaoBasica("Motivo1");			
-		//listaMotivosDepositos.add(motivoDeposito);
-		
-		if (acao.equals(EXIBIRENVIORETORNOANALITICO)){
+		if (EXIBIRENVIORETORNOANALITICO.equals(acao)){
 			exibirEnvioRetornoAnalitico();			
-		}		
-		if (acao.equals(EXIBIRENVIORETORNOSINTETICO)){
+		}
+		else if (EXIBIRENVIORETORNOSINTETICO.equals(acao)){
 		  	exibirEnvioRetornoSintetico();			
 		}
-		if (acao.equals(EXIBIREXTRATOANALITICO)){
+		else if (EXIBIREXTRATOANALITICO.equals(acao)){
 			exibirExtratoAnalitico();		
 		}
-		if (acao.equals(EXIBIREXTRATOSINTETICO)){
+		else if (EXIBIREXTRATOSINTETICO.equals(acao)){
 			exibirExtratoSintetico();		
-		}		
-		if (acao.equals(EXIBIRMANUTENCOESANALITICO)){
+		}
+		else if (EXIBIRMANUTENCOESANALITICO.equals(acao)){
 		    exibirManutencoesAnalitico();			
-		}		
-		if (acao.equals(EXIBIRMANUTENCOESSINTETICO)){
+		}
+		else if (EXIBIRMANUTENCOESSINTETICO.equals(acao)){
 			exibirManutencoesSintetico();			
-		}					
-		if (acao.equals(EXIBIRDADOSCOMPLEMENTARES)){
+		}
+		else if (EXIBIRDADOSCOMPLEMENTARES.equals(acao)){
 			exibirDadosComplementares();			
 		}					
 		return SUCCESS;	
@@ -207,15 +151,15 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
 	public void exibirEnvioRetornoAnalitico() throws DEPIIntegrationException {
 	        try {
-	            setSubtitulo("Envio/Retorno Banco - Analítico");
-	            setTituloTabela("Dados de Envio/Retorno Banco - Analítico");
-	            setTipoRelatorio("ER");
-	            setVisualizacao("A");
+	            model.setSubtitulo("Envio/Retorno Banco - AnalÃ­tico");
+	            model.setTituloTabela("Dados de Envio/Retorno Banco - AnalÃ­tio");
+	            model.setTipoRelatorio("ER");
+	            model.setVisualizacao("A");
 	            carregarComboCompanhia();
 	            carregarComboDepartamentos();
 	            carregarComboMotivos();
-                setAcao(EXIBIRENVIORETORNOANALITICO);
-                setAcaoAnterior(EXIBIRENVIORETORNOANALITICO);
+                model.setAcao(EXIBIRENVIORETORNOANALITICO);
+                model.setAcaoAnterior(EXIBIRENVIORETORNOANALITICO);
 //	    		listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 //	    		listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -229,16 +173,14 @@ public class ConsultarRelatorioAction extends BaseAction  {
     public void exibirEnvioRetornoSintetico() throws DEPIIntegrationException {
 
             try {
-                setSubtitulo("Envio/Retorno Banco - Sintético");
-                setTituloTabela("Dados de Envio/Retorno Banco - Sintético");
-                setTipoRelatorio("ER");
-                setVisualizacao("S");
-                setAcao(EXIBIRENVIORETORNOSINTETICO);
-                setAcaoAnterior(EXIBIRENVIORETORNOSINTETICO);
+                model.setSubtitulo("Envio/Retorno Banco - SintÃ©tico");
+                model.setTituloTabela("Dados de Envio/Retorno Banco - SintÃ©tico");
+                model.setTipoRelatorio("ER");
+                model.setVisualizacao("S");
+                model.setAcao(EXIBIRENVIORETORNOSINTETICO);
+                model.setAcaoAnterior(EXIBIRENVIORETORNOSINTETICO);
                 
 	    		carregarComboCompanhia();
-	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
              } catch (DEPIIntegrationException e) {
             	LOGGER.error(e.getMessage());
             	throw new DEPIIntegrationException(e.getMessage());
@@ -250,12 +192,12 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
             try {
 
-                setSubtitulo("Extrato Banco - Analítico");
-                setTituloTabela("Dados de Extrato Banco - Analítico");
-                setTipoRelatorio("EX");
-                setVisualizacao("A");
-                setAcao(EXIBIREXTRATOANALITICO);
-                setAcaoAnterior(EXIBIREXTRATOANALITICO);
+                model.setSubtitulo("Extrato Banco - AnalÃ­tio");
+                model.setTituloTabela("Dados de Extrato Banco - AnalÃ­tio");
+                model.setTipoRelatorio("EX");
+                model.setVisualizacao("A");
+                model.setAcao(EXIBIREXTRATOANALITICO);
+                model.setAcaoAnterior(EXIBIREXTRATOANALITICO);
                 
 	    		carregarComboCompanhia();
 	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
@@ -271,13 +213,14 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	  public void exibirExtratoSintetico() throws DEPIIntegrationException {
 
 		        try {
-		            setSubtitulo("Extrato Banco - Sintético");
-		            setTituloTabela("Dados de Extrato Banco - Sintético");
-		            setTipoRelatorio("EX");
-		            setVisualizacao("S");
-		    		carregarComboCompanhia();
-	                setAcao(EXIBIREXTRATOSINTETICO);
-	                setAcaoAnterior(EXIBIREXTRATOSINTETICO);
+		            model.setSubtitulo("Extrato Banco - SintÃ©tico");
+		            model.setTituloTabela("Dados de Extrato Banco - SintÃ©tico");
+		            model.setTipoRelatorio("EX");
+		            model.setVisualizacao("S");
+		    		
+		            carregarComboCompanhia();
+	                model.setAcao(EXIBIREXTRATOSINTETICO);
+	                model.setAcaoAnterior(EXIBIREXTRATOSINTETICO);
 		    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 		    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -292,14 +235,14 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	  public void exibirManutencoesAnalitico() throws DEPIIntegrationException {
 		    try {
 		    	
-		        setSubtitulo("Manutenções - Analítico");
-		        setTituloTabela("Dados de Manutenções - Analítico");
-		        setTipoRelatorio("MN");
-		        setVisualizacao("A");
-		        setAcaoAnterior("exibirManutencoesAnalitico");
+		        model.setSubtitulo("ManutenÃ§Ãµes - AnalÃ­tio");
+		        model.setTituloTabela("Dados de ManutenÃ§Ãµes - AnalÃ­tio");
+		        model.setTipoRelatorio("MN");
+		        model.setVisualizacao("A");
+		        model.setAcaoAnterior("exibirManutencoesAnalitico");
 				carregarComboCompanhia();
-                setAcao(EXIBIRMANUTENCOESANALITICO);
-                setAcaoAnterior(EXIBIRMANUTENCOESANALITICO);
+                model.setAcao(EXIBIRMANUTENCOESANALITICO);
+                model.setAcaoAnterior(EXIBIRMANUTENCOESANALITICO);
 	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 		    
@@ -314,14 +257,14 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	  public void exibirManutencoesSintetico() throws DEPIIntegrationException {
 	        try {
 
-		        setSubtitulo("Manutenções - Sintético");
-		        setTituloTabela("Dados de Manutenções - Sintético");
-		        setTipoRelatorio("MN");
-		        setVisualizacao("S");
-		        setAcaoAnterior("exibirManutencoesAnalitico");  
+		        model.setSubtitulo("ManutenÃ§Ãµes - SintÃ©tico");
+		        model.setTituloTabela("Dados de ManutenÃ§Ãµes - SintÃ©tico");
+		        model.setTipoRelatorio("MN");
+		        model.setVisualizacao("S");
+		        model.setAcaoAnterior("exibirManutencoesAnalitico");  
 		        carregarComboCompanhia();
-                setAcao(EXIBIRMANUTENCOESSINTETICO);
-                setAcaoAnterior(EXIBIRMANUTENCOESSINTETICO);
+                model.setAcao(EXIBIRMANUTENCOESSINTETICO);
+                model.setAcaoAnterior(EXIBIRMANUTENCOESSINTETICO);
   				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
   				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -334,14 +277,14 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	  
 	  public void exibirDadosComplementares() throws DEPIIntegrationException {
 	        try {
-	        	setSubtitulo("Dados Complementares - Analítico");
-		        setTituloTabela("Dados Complementares - Analítico");
-		        setTipoRelatorio("DC");
-		        setVisualizacao("A");
-		        setSituacaoEnvioRetorno("A");
+	        	model.setSubtitulo("Dados Complementares - AnalÃ­tio");
+		        model.setTituloTabela("Dados Complementares - AnalÃ­tio");
+		        model.setTipoRelatorio("DC");
+		        model.setVisualizacao("A");
+		        model.setSituacaoEnvioRetorno("A");
 		        carregarComboCompanhia();
-                setAcao(EXIBIRDADOSCOMPLEMENTARES);
-                setAcaoAnterior(EXIBIRDADOSCOMPLEMENTARES);
+                model.setAcao(EXIBIRDADOSCOMPLEMENTARES);
+                model.setAcaoAnterior(EXIBIRDADOSCOMPLEMENTARES);
 	  				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
 	  				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 
@@ -353,7 +296,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	  }	  
 	  
 	  /**
-	  * Retorna valores do form para um nova instância do tipo FiltroUtil
+	  * Retorna valores do form para um nova instï¿½ncia do tipo FiltroUtil
 	  * @param FiltroUtil
 	  * @return FiltroUtil
 	  * @throws DEPIIntegrationException - DEPIIntegrationException
@@ -429,7 +372,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
 		        }
 
              if (!BaseUtil.isNZB(filtroVO.getValorInicial())) {
-                 filtro.setValorInicial(new Double(getValorInicial()));
+                 filtro.setValorInicial(new Double(model.getValorInicial()));
              }
 
 		        if (!BaseUtil.isNZB(filtroVO.getValorFinal())) {
@@ -462,42 +405,33 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	  
 	public String gerarRelatorio() {
 		LOGGER.error("XXXXXX="+filtroVO.toString());
-		acao = this.filtroVO.getAcao();
+		String acao = this.filtroVO.getAcao();
 		String retorno = SUCCESS;
-		if(acao.equals(EXIBIRENVIORETORNOANALITICO)){
+		if(EXIBIRENVIORETORNOANALITICO.equals(acao)){
 			retorno = this.consultarEnvioRetornoAnalitico();
 		}
-		if(acao.equals(EXIBIRENVIORETORNOSINTETICO)){
+		else if(EXIBIRENVIORETORNOSINTETICO.equals(acao)){
 			retorno = this.consultarEnvioRetornoSintetico();
 		}
-		if(acao.equals(EXIBIREXTRATOANALITICO)){
+		else if(EXIBIREXTRATOANALITICO.equals(acao)){
 			retorno = this.consultarExtratoAnalitico();
-		}			
-		if(acao.equals(EXIBIREXTRATOSINTETICO)){
+		}
+		else if(EXIBIREXTRATOSINTETICO.equals(acao)){
 			retorno = this.consultarEnvioRetornoSintetico();
-		}				
-		if(acao.equals(EXIBIRMANUTENCOESANALITICO)){
+		}
+		else if(EXIBIRMANUTENCOESANALITICO.equals(acao)){
 			retorno = this.consultarManutencoesAnalitico();				
-		}					     
-		if(acao.equals(EXIBIRMANUTENCOESSINTETICO)){
+		}
+		else if(EXIBIRMANUTENCOESSINTETICO.equals(acao)){
 			retorno = this.consultarManutencoesSintetico();
-		}					      			     
-		if(acao.equals(EXIBIRDADOSCOMPLEMENTARES)){		
+		}
+		else if(EXIBIRDADOSCOMPLEMENTARES.equals(acao)){		
 			retorno = this.consultarDadosComplementaresAnalitico();
 		}					     
 		
 		return retorno;
 	}
 	
-	/**
-     * Processa a ação consultar
-     * @param pMapping ActionMapping
-     * @param pForm ActionForm
-     * @param pRequest HttpServletRequest
-     * @param pResponse HttpServletResponse
-     * @return ActionForward
-     * @throws DEPIIntegrationException Exception
-     */
     public String consultarManutencoesAnalitico(){      
     	                 
         //RelatorioForm frm = (RelatorioForm) pForm;
@@ -538,7 +472,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
             
             
             Map<String, Object> params = new HashMap<String, Object>();
-            params.put(VISUALIZACAO, "ANALÍTICO");
+            params.put(VISUALIZACAO, "AnalÃ­tio");
             
             params.put( SITUACAO, filtro.getSituacaoManutencao() );
             params.put(DATA_INICIO, filtro.getDataInicio() );
@@ -598,7 +532,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
                 }
 */
                 Map<String, Object> params = new HashMap<String, Object>();
-                params.put(VISUALIZACAO, "ANALÍTICO");
+                params.put(VISUALIZACAO, "AnalÃ­tio");
                 params.put(SITUACAO, filtro.getSituacaoManutencao());
                 params.put(DATA_INICIO, filtro.getDataInicio());
                 params.put(DATA_FIM, filtro.getDataFinal());
@@ -649,11 +583,11 @@ public class ConsultarRelatorioAction extends BaseAction  {
                 String situacao = "";//RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(c.getSituacaoManutencao());
                 
                 if (BaseUtil.isNZB(situacao)) {
-                    situacao = "MANUTENÇÕES";
+                    situacao = "ManutenÃ§Ãµes";
                 }
                 
                 StringBuilder sb = new StringBuilder().append("DEPOSITOS IDENTIFICADOS - ").append(situacao)
-                    .append(" - ").append("SINTÉTICO");
+                    .append(" - ").append("SintÃ©tico");
                 params.put(HEADER, sb.toString());
                 params.put(DATA_INICIO, filtro.getDataInicio());
                 params.put(DATA_FIM, filtro.getDataFinal());
@@ -719,7 +653,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
             return ERROR;
         } catch (Exception e) {
         	LOGGER.error(e.getMessage());
-            throw new DEPIIntegrationException(e.getMessage());
+            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_GENERICO, e.getMessage());
         }
         return "relEnvioRetornoBancoAnalitico.pdf";// exibirEnvioRetornoAnalitico();
     }
@@ -793,7 +727,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
             }
 	
             
-            // Adiciona dados obtidos de envio retorno na lista de Extrato após conversão
+            // Adiciona dados obtidos de envio retorno na lista de Extrato apï¿½s conversï¿½o
 	            for (RelatorioEnvioRetornoAnaliticoVO vo : dadosER) {
 	                RelatorioExtratoAnaliticoVO extratoVO = new RelatorioExtratoAnaliticoVO();
 	               
@@ -813,11 +747,11 @@ public class ConsultarRelatorioAction extends BaseAction  {
                 return exibirExtratoAnalitico();
             }
 
-            // // Adiciona dados obtidos de manutenções na lista de Extrato apoós conversão
+            // // Adiciona dados obtidos de ManutenÃ§Ãµes na lista de Extrato apoï¿½s conversï¿½o
             for (ManutencoesAnaliticoVO vo : dadosManut) {
                 RelatorioExtratoAnaliticoVO extratoVO = new RelatorioExtratoAnaliticoVO();
                 copyProperties(extratoVO, vo);
-                extratoVO.setNomeGrupo("MANUTENÇÕES");
+                extratoVO.setNomeGrupo("ManutenÃ§Ãµes");
                 extratoVO.setSituacaoManutencao(vo.getCodigoTipoAcao());
                 extratoVO.setVencimento(vo.getVencimento());
                 extratoVO.setSituacao(RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(vo.getCodigoTipoAcao()));
@@ -829,7 +763,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
 	            consultarRelatorioFacade.ordenarDadosAnalitico(dados);
 
 	            Map<String, Object> params = new HashMap<String, Object>();
-	            params.put(VISUALIZACAO, "ANALÍTICO");
+	            params.put(VISUALIZACAO, "AnalÃ­tio");
 	            params.put(SITUACAO, "TODOS");
 	            params.put(DATA_INICIO, filtro.getDataInicio());
 	            params.put(DATA_FIM, filtro.getDataFinal());
@@ -877,7 +811,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
                 		{
 
                     Map<String, Object> params = new HashMap<String, Object>();
-                    params.put(VISUALIZACAO, "SINTÉTICO");
+                    params.put(VISUALIZACAO, "SintÃ©tico");
                     params.put(SITUACAO, "TODOS");
     	            params.put(DATA_INICIO, filtro.getDataInicio());
     	            params.put(DATA_FIM, filtro.getDataFinal());
@@ -900,16 +834,18 @@ public class ConsultarRelatorioAction extends BaseAction  {
     private void carregarComboCompanhia() throws DEPIIntegrationException {
     	//request.setAttribute("cias", new ArrayList<CompanhiaSeguradoraVO>());
         //request.setAttribute("ciasOrdenadas", new ArrayList<CompanhiaSeguradoraVO>());
+    	
+    
     
     	List<CompanhiaSeguradoraVO> listaRetorno = 
-        		consultarRelatorioFacade.carregarComboCompanhiaUsuLogado(getUsuarioLogado());
+        		consultarRelatorioFacade.carregarComboCompanhiaUsuLogado(login);
         List<CompanhiaSeguradoraVO> ciasOrdenadas = new ArrayList<CompanhiaSeguradoraVO>(listaRetorno);
         
         
         //ordenaCompanhia = Collections.sort(ciasOrdenadas);
         
-    	tpcCias = "TRUE";
-    	tpcCiasOrdenadas = "TRUE";
+    	model.setTpcCias("TRUE");
+    	model.setTpcCiasOrdenadas("TRUE");
         
     	//request.setAttribute("cias", listaRetorno);
         //request.setAttribute("ciasOrdenadas", ciasOrdenadas);
@@ -929,27 +865,24 @@ public class ConsultarRelatorioAction extends BaseAction  {
     }
     
     private static Comparator<CompanhiaSeguradoraVO> ordenaCompanhia = new Comparator<CompanhiaSeguradoraVO>() {
-        public int compare(CompanhiaSeguradoraVO p1, CompanhiaSeguradoraVO p2) {
+        @Override
+		public int compare(CompanhiaSeguradoraVO p1, CompanhiaSeguradoraVO p2) {
             return p1.getDescricaoCompanhia().compareTo(p2.getDescricaoCompanhia());
         };
-    };   
-    
-    
-    
-    
+    };
     
     private void carregarComboMotivos() throws DEPIIntegrationException {
         //request.setAttribute("motivos", new ArrayList<MotivoDepositoVO>());
         if (!BaseUtil.isNZB(this.codigoCompanhia) && !BaseUtil.isNZB(this.codigoDepartamento)) {
             List<MotivoDepositoVO> listaRetorno = consultarRelatorioFacade.obterMotivoComRestricaoDeDeposito(
-            		this.codigoCompanhia, this.codigoDepartamento, getUsuarioLogado());
+            		this.codigoCompanhia, this.codigoDepartamento, login);
             if (!BaseUtil.isNZB(listaRetorno)) {
                 Collections.sort(listaRetorno, ordenaMotivoBasico);
                 request.setAttribute("motivos", listaRetorno);
                 if (!BaseUtil.isNZB(this.codigoMotivoDeposito)) {
                     for (MotivoDepositoVO mot : listaRetorno) {
                         if (mot.equals(new MotivoDepositoVO(this.codigoMotivoDeposito, null, null))) {
-                            setDescricaoDetalhada(mot.getDescricaoDetalhada());
+                            model.setDescricaoDetalhada(mot.getDescricaoDetalhada());
                             return;
                         }
                     }
@@ -957,16 +890,17 @@ public class ConsultarRelatorioAction extends BaseAction  {
                 
                 this.listaMotivosDepositos = listaRetorno;
                 this.codigoMotivoDeposito =0;
-                this.setDescricaoDetalhada("");
+                model.setDescricaoDetalhada("");
             }
         }
     }
 
     /**
-     * Comparador de MotivoDepositoVO onde a ordenação será realizada pela descrição básica do motivo de depósito.
+     * Comparador de MotivoDepositoVO onde a ordenaï¿½ï¿½o serï¿½ realizada pela descriï¿½ï¿½o bï¿½sica do motivo de depï¿½sito.
      */
     private static Comparator<MotivoDepositoVO> ordenaMotivoBasico = new Comparator<MotivoDepositoVO>() {
-        public int compare(MotivoDepositoVO p1, MotivoDepositoVO p2) {
+        @Override
+		public int compare(MotivoDepositoVO p1, MotivoDepositoVO p2) {
             return p1.getDescricaoBasica().compareTo(p2.getDescricaoBasica());
         };
     };
@@ -980,7 +914,7 @@ public class ConsultarRelatorioAction extends BaseAction  {
 			
 	    	if (!BaseUtil.isNZB(this.codigoCompanhia)) {
 	            List<DepartamentoVO> listaRetorno = consultarRelatorioFacade.obterComDepositoRestricaoDeDeposito(
-	                Integer.valueOf( this.codigoCompanhia) , getUsuarioLogado());
+	                Integer.valueOf( this.codigoCompanhia) , login);
 	            if (!BaseUtil.isNZB(listaRetorno)) {
 	                List<DepartamentoVO> departamentosOrdenados = new ArrayList<DepartamentoVO>(listaRetorno);
 	                Collections.sort(departamentosOrdenados, ordenaDepartamento);
@@ -1008,93 +942,21 @@ public class ConsultarRelatorioAction extends BaseAction  {
     	
     }
     /**
-     * Comparador de DepartamentoVO onde a ordenação será realizada pelo código do departamento.
+     * Comparador de DepartamentoVO onde a ordenaï¿½ï¿½o serï¿½ realizada pelo cï¿½digo do departamento.
      */
     private static Comparator<DepartamentoVO> ordenaDepartamento = new Comparator<DepartamentoVO>() {
-        public int compare(DepartamentoVO p1, DepartamentoVO p2) {
+        @Override
+		public int compare(DepartamentoVO p1, DepartamentoVO p2) {
             return p1.getSiglaDepartamento().compareTo(p2.getSiglaDepartamento());
         };
     };   
     
  
    
-    private Object montaFiltro_lod(Object frm) throws IntegrationException {
-
-    	
-        //GeneralFiltroVO  filtro = new GeneralFiltroVO();
-        /*
-        if (!BaseUtil.isNZB(frm.getCodigoCompanhia())) {
-            filtro.setCodigoCia(frm.getCodigoCompanhia());
-        }
-
-        if (!BaseUtil.isNZB(frm.getCodigoAutorizador())) {
-            filtro.setCodigoAutorizador(Long.valueOf(frm.getCodigoAutorizador()));
-        }
-
-        if (!BaseUtil.isNZB(frm.getCodigoDepartamento())) {
-            filtro.setCodigoDepartamento(frm.getCodigoDepartamento());
-        }
-
-        if (!BaseUtil.isNZB(frm.getCodigoMotivoDeposito())) {
-            filtro.setCodigoMotivo(frm.getCodigoMotivoDeposito());
-        }
-
-        if (!BaseUtil.isNZB(frm.getApolice())) {
-            filtro.setApolice(Integer.valueOf(frm.getApolice()));
-        }
-
-        if (!BaseUtil.isNZB(frm.getSucursal())) {
-            filtro.setSucursal(Integer.valueOf(frm.getSucursal()));
-        }
-
-        if (!BaseUtil.isNZB(frm.getEndosso())) {
-            filtro.setEndosso(Integer.valueOf(frm.getEndosso()));
-        }
-
-        filtro.setTipoDeposito(frm.getDeposito());
-
-        if (!BaseUtil.isNZB(frm.getCpfCnpj())) {
-            filtro.setCpfCnpj(Long.valueOf(BaseUtil.retiraMascaraCNPJ(frm.getCpfCnpj())));
-        }
-
-        if (!BaseUtil.isNZB(filtro.getDataInicio())) {
-            filtro.setDtIni(BaseUtil.parserStringToDate(filtro.getDataInicio().concat(" ").concat(ConstantesModel.HORA_INI),
-                ConstantesModel.FORMATO_DATO_HORA2));
-        }
-
-        if (!BaseUtil.isNZB(filtro.getDataFinal())) {
-            filtro.setDtFim(BaseUtil.parserStringToDate(filtro.getDataFinal().concat(" ").concat(ConstantesModel.HORA_FIM),
-                ConstantesModel.FORMATO_DATO_HORA2));
-        }
-
-        if (!BaseUtil.isNZB(frm.getValorInicial())) {
-            filtro.setValorIni(BaseUtil.stringToBigDecimal(frm.getValorInicial()));
-        }
-
-        if (!BaseUtil.isNZB(frm.getValorFinal())) {
-            filtro.setValorFim(BaseUtil.stringToBigDecimal(frm.getValorFinal()));
-        }
-        if (!BaseUtil.isNZB(frm.getCodigoContaCorrente())) {
-            filtro.setContaCorrente(Long.valueOf(frm.getCodigoContaCorrente()));
-        }
-
-        filtro.setSituacaoArquivo(RelatorioEnvioRetornoUtil.obterCodigoSituacaoPorLetra(frm.getSituacaoEnvioRetorno()));
-
-        filtro.setSituacaoManutencao(frm.getSituacaoManutencoes());
-        */
-        return filtro;
-    }
-	
-	
-	
-	
     /**
-     * Método utilizado para gerar relatório em PDF.
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     * @param nomeRelatorio Nome do Relatorio
+     * MÃ©todo utilizado para gerar relatÃ³rio em PDF.
      * @param parametros Parametros do Relatorio.
-     * @throws IntegrationException - Integração.
+     * @throws IntegrationException - Integraï¿½ï¿½o.
      */
     public InputStream gerarPdf(String nomeRelatorio, Map<String, Object> parametros) throws DEPIIntegrationException, IOException {
         Connection conn = null;
@@ -1126,43 +988,15 @@ public class ConsultarRelatorioAction extends BaseAction  {
         */
 		return ouputStream;
     }
-
-  /*
-   * 
-	private InputStream gerarCartaInterna(CartaVO cartaAux) throws JRException  {
-		LOGGER.error("Proposta Action - gerarCartaInterna - inicio");
-		
-		//=>Gera o PDF a partir do relatório JASPER
-		String pathRel = request.getSession().getServletContext().getRealPath(PATH_REPORT + cartaAux.getFormulario().getiArqAnexoDocto());
-		pathRel = pathRel.replace(PDF, JASPER);
-
-		JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(beanCartas);  
-		Map<String, Object> parametros = new HashMap<String, Object>();
-		parametros.put("SUBREPORT_DIR",  request.getSession().getServletContext().getRealPath(PATH_REPORT)+File.separator);
-		JasperPrint jasperPrint = JasperFillManager.fillReport(pathRel, parametros, ds);  
-		byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);  
-
-		InputStream is = new ByteArrayInputStream(pdf);
-		LOGGER.error("Proposta Action - gerarCartaInterna - fim");
-		return is;					        
-
-	}
-   * 
-   */
-    
-    
-    
     
     /**
-     * Método utilizado para gerar relatório em PDF.
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
+     * MÃ©todo utilizado para gerar relatÃ³rio em PDF.
      * @param nomeRelatorio Nome do Relatorio
      * @param parametros Parametros do Relatorio
      * @param dados Collection
-     * @throws DEPIIntegrationException - Integração.
+     * @throws DEPIIntegrationException - Integraï¿½ï¿½o.
      */
-    public void gerarPdf( String nomeRelatorio,Map<String, Object> parametros, Collection dados) throws DEPIIntegrationException {
+    public void gerarPdf( String nomeRelatorio,Map<String, Object> parametros, Collection<?> dados) throws DEPIIntegrationException {
     	LOGGER.error("gerarPdf 1");  
         try {
         	JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(dados);
@@ -1192,38 +1026,6 @@ public class ConsultarRelatorioAction extends BaseAction  {
    
 
 	
-	private InputStream geraEnvioRetornoSintetico()throws JRException  {
-		
-	   return null;
-	}
-	
-	private InputStream geraExtratoAnalitico()throws JRException  {
-		
-		return null;
-	}
-	
-	private InputStream geraExtratoSintetico()throws JRException  {
-	     return null;	
-	}
-	
-	private InputStream geraManutencoesAnalitico()throws JRException  {
-		return null;
-	}
-	
-	private InputStream geraDadosComplementares()throws JRException  {
-		return null;
-	}
-
-
-	public String getAcao() {
-		return acao;
-	}
-
-
-	public void setAcao(String acao) {
-		this.acao = acao;
-	}
-
 	public int getCodigoCompanhia() {
 		return codigoCompanhia;
 	}
@@ -1279,282 +1081,6 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
 	
 
-	public String getTpcCias() {
-		return tpcCias;
-	}
-
-	public void setTpcCias(String tpcCias) {
-		this.tpcCias = tpcCias;
-	}
-
-	public String getTpcCiasOrdenadas() {
-		return tpcCiasOrdenadas;
-	}
-
-	public void setTpcCiasOrdenadas(String tpcCiasOrdenadas) {
-		this.tpcCiasOrdenadas = tpcCiasOrdenadas;
-	}
-
-
-	public String getTituloTabela() {
-		return tituloTabela;
-	}
-
-
-	public void setTituloTabela(String tituloTabela) {
-		this.tituloTabela = tituloTabela;
-	}
-
-
-	public String getSubtituloTela() {
-		return subtituloTela;
-	}
-
-
-	public void setSubtituloTela(String subtituloTela) {
-		this.subtituloTela = subtituloTela;
-	}
-
-
-
-
-	public String getTipoRelatorio() {
-		return tipoRelatorio;
-	}
-
-
-
-
-	public void setTipoRelatorio(String tipoRelatorio) {
-		this.tipoRelatorio = tipoRelatorio;
-	}
-
-
-
-
-	public String getVisualizacao() {
-		return visualizacao;
-	}
-
-
-
-
-	public void setVisualizacao(String visualizacao) {
-		this.visualizacao = visualizacao;
-	}
-
-
-
-
-	public int getDeposito() {
-		return deposito;
-	}
-
-
-
-
-	public void setDeposito(int deposito) {
-		this.deposito = deposito;
-	}
-
-
-
-
-	public String getSituacaoEnvioRetorno() {
-		return situacaoEnvioRetorno;
-	}
-
-
-
-
-	public void setSituacaoEnvioRetorno(String situacaoEnvioRetorno) {
-		this.situacaoEnvioRetorno = situacaoEnvioRetorno;
-	}
-
-
-
-
-	public String getSituacaoManutencoes() {
-		return situacaoManutencoes;
-	}
-
-
-
-
-	public void setSituacaoManutencoes(String situacaoManutencoes) {
-		this.situacaoManutencoes = situacaoManutencoes;
-	}
-
-
-
-
-	public String getSucursal() {
-		return sucursal;
-	}
-
-
-
-
-	public void setSucursal(String sucursal) {
-		this.sucursal = sucursal;
-	}
-
-
-
-
-	public String getApolice() {
-		return apolice;
-	}
-
-
-
-
-	public void setApolice(String apolice) {
-		this.apolice = apolice;
-	}
-
-
-
-
-	public String getEndosso() {
-		return endosso;
-	}
-
-
-
-
-	public void setEndosso(String endosso) {
-		this.endosso = endosso;
-	}
-
-
-
-
-	public String getCodigoAutorizador() {
-		return codigoAutorizador;
-	}
-
-
-
-
-	public void setCodigoAutorizador(String codigoAutorizador) {
-		this.codigoAutorizador = codigoAutorizador;
-	}
-
-
-
-
-	public String getCpfCnpj() {
-		return cpfCnpj;
-	}
-
-
-
-
-	public void setCpfCnpj(String cpfCnpj) {
-		this.cpfCnpj = cpfCnpj;
-	}
-
-
-
-
-	public String getCodigoContaCorrente() {
-		return codigoContaCorrente;
-	}
-
-
-
-
-	public void setCodigoContaCorrente(String codigoContaCorrente) {
-		this.codigoContaCorrente = codigoContaCorrente;
-	}
-
-
-
-
-	public String getDataInicial() {
-		return dataInicial;
-	}
-
-
-
-
-	public void setDataInicial(String dataInicial) {
-		this.dataInicial = dataInicial;
-	}
-
-
-
-
-	public String getDataFinal() {
-		return dataFinal;
-	}
-
-
-
-
-	public void setDataFinal(String dataFinal) {
-		this.dataFinal = dataFinal;
-	}
-
-
-
-
-	public String getValorInicial() {
-		return valorInicial;
-	}
-
-
-
-
-	public void setValorInicial(String valorInicial) {
-		this.valorInicial = valorInicial;
-	}
-
-
-
-
-	public String getValorFinal() {
-		return valorFinal;
-	}
-
-
-
-
-	public void setValorFinal(String valorFinal) {
-		this.valorFinal = valorFinal;
-	}
-
-
-
-
-	public String getDescricaoDetalhada() {
-		return descricaoDetalhada;
-	}
-
-
-
-
-	public void setDescricaoDetalhada(String descricaoDetalhada) {
-		this.descricaoDetalhada = descricaoDetalhada;
-	}
-
-	public String getAcaoAnterior() {
-		return acaoAnterior;
-	}
-
-	public void setAcaoAnterior(String acaoAnterior) {
-		this.acaoAnterior = acaoAnterior;
-	}
-
-	public String getSubtitulo() {
-		return subtitulo;
-	}
-
-	public void setSubtitulo(String subtitulo) {
-		this.subtitulo = subtitulo;
-	}
-
 	public List<CompanhiaSeguradoraVO> getListaCompanhiaOrd() {
 		return listaCompanhiaOrd;
 	}
@@ -1569,30 +1095,6 @@ public class ConsultarRelatorioAction extends BaseAction  {
 
 	public void setListaDepartamentosOrd(List<DepartamentoVO> listaDepartamentosOrd) {
 		this.listaDepartamentosOrd = listaDepartamentosOrd;
-	}
-
-	public String getFileNameReport() {
-		return fileNameReport;
-	}
-
-	public void setFileNameReport(String fileNameReport) {
-		this.fileNameReport = fileNameReport;
-	}
-
-	public String getContentTypeReport() {
-		return contentTypeReport;
-	}
-
-	public void setContentTypeReport(String contentTypeReport) {
-		this.contentTypeReport = contentTypeReport;
-	}
-
-	public InputStream getFileInputStream() {
-		return fileInputStream;
-	}
-
-	public void setFileInputStream(InputStream fileInputStream) {
-		this.fileInputStream = fileInputStream;
 	}
 
 	public FiltroVO getFiltroVO() {
@@ -1613,7 +1115,20 @@ public class ConsultarRelatorioAction extends BaseAction  {
 		
 	}
 
-		
+	public LoginVo getLogin() {
+		return login;
+	}
+
+	public void setLogin(LoginVo login) {
+		this.login = login;
+	}
 	
+	public void setFileInputStream(InputStream fileInputStream) {
+	}
+
+	@Override
+	public RelatorioFormModel getModel() {
+		return model;
+	}
 	
 }

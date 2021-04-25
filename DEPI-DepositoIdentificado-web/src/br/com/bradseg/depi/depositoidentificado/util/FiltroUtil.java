@@ -94,28 +94,28 @@ public class FiltroUtil {
 	 * @return the dataInicio
 	 */
 	public Date getDataInicio() {
-		return (Date) dataInicio.clone();
+		return BaseUtil.getDate(dataInicio);
 	}
 	/**
 	 * Define dataInicio.
 	 * @param dataInicio the dataInicio to set
 	 */
 	public void setDataInicio(Date dataInicio) {
-		this.dataInicio = (Date) dataInicio.clone();
+		this.dataInicio = BaseUtil.getDate(dataInicio);
 	}
 	/**
 	 * Obtem dataFinal.
 	 * @return the dataFinal
 	 */
 	public Date getDataFinal() {
-		return (Date) dataFinal.clone();
+		return BaseUtil.getDate(dataFinal);
 	}
 	/**
 	 * Define dataFinal.
 	 * @param dataFinal the dataFinal to set
 	 */
 	public void setDataFinal(Date dataFinal) {
-		this.dataFinal = (Date) dataFinal.clone();
+		this.dataFinal = BaseUtil.getDate(dataFinal);
 	}
 	/**
 	 * Obtem codigoCia.

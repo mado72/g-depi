@@ -1,21 +1,16 @@
-
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@	taglib prefix="s" uri="/struts-tags" %>
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<link href="<s:url value="/includes/calendar/theme.css"/>" rel="stylesheet" type="text/css" />
- 
 <s:include value="/WEB-INF/pages/pt_BR/includes/include-consultarRelatorio.jsp"/>
 <s:include value="/WEB-INF/pages/pt_BR/includes/include-arquivos.jsp"/>
-
 
     <s:set name="vacao" value="acao"/>
     <s:set name="vtpcCias" value="tpcCias"/>
     <s:set name="vtpcCiasOrdenadas" value="tpcCiasOrdenadas"/>
-    
-    
 		
-<s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank"  onload="loadPage()"   >
+<s:form id="formConsultarRelatorio" action="gerarRelatorio.do" onload="loadPage()"   >
+<%-- <s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank"  onload="loadPage()"   > --%>
     	<input type="hidden" id="acao" name="acao" value="${acao}" />
     	<input type="hidden" id="tituloTabela" name="tituloTabela" value="${tituloTabela}" />
     	<input type="hidden" id="acaoOriginal" name="acaoOriginal" value="${acao}" />
