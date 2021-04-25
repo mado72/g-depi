@@ -630,8 +630,8 @@ function ObtemDadosForm(){
     document.getElementById('cpfCnpjFrm').value = getCpfCnpjVal();
     document.getElementById('codigoContaCorrenteFrm').value = getCodigoContaCorrenteVal();
    
-    document.getElementById('dataInicialFrm').value = getDataInicialVal();
-    document.getElementById('dataFinalFrm').value = getDataFinalVal();
+//    document.getElementById('dataInicialFrm').value = getDataInicialVal();
+//    document.getElementById('dataFinalFrm').value = getDataFinalVal();
     document.getElementById('valorInicialFrm').value = getValorInicialVal();
     document.getElementById('valorFinalFrm').value = getValorFinalVal();
    // document.getElementById('descricaoDetalhadaFrm').value = getDescricaoDetalhadaVal;
@@ -639,7 +639,7 @@ function ObtemDadosForm(){
 }
 
 function gerarRelatorio(){
-    ObtemDadosForm();
+    // ObtemDadosForm();
 	var acao = document.forms[0].acaoOriginal.value;	
 	//document.location.href = document.forms[0].action + '?acao=' + acao;
 

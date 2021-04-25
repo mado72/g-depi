@@ -97,22 +97,15 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 	
 	private FiltroUtil filtro;
 	
-	private FiltroVO filtroVO;
-    private  LoginVo login;
+	private FiltroVO filtroVO = new FiltroVO();
     
 	@Autowired
 	private ConsultarRelatorioFacade consultarRelatorioFacade;
+	private InputStream fileInputStream;
     
 	
-	public String consultar(){
-		login = getUsuarioLogado();
-		
-	    //List<CompanhiaSeguradoraVO> listaRetorno = //  CompanhiaSeguradoraBusinessDelegate.getInstance().obterComRestricaoDeDeposito(login());
-		
-		
+	public String consultarRelatorio(){
 		carregarComboCompanhia();
-		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
 		
 		CompanhiaSeguradoraVO cia  = new CompanhiaSeguradoraVO();
 		cia.setCodigoCompanhia(0);
@@ -125,284 +118,203 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 		
 		String acao = model.getAcao();
 		
-		if (EXIBIRENVIORETORNOANALITICO.equals(acao)){
-			exibirEnvioRetornoAnalitico();			
+		try {
+			if (EXIBIRENVIORETORNOANALITICO.equals(acao)){
+				exibirEnvioRetornoAnalitico();			
+			}
+			else if (EXIBIRENVIORETORNOSINTETICO.equals(acao)){
+				exibirEnvioRetornoSintetico();			
+			}
+			else if (EXIBIREXTRATOANALITICO.equals(acao)){
+				exibirExtratoAnalitico();		
+			}
+			else if (EXIBIREXTRATOSINTETICO.equals(acao)){
+				exibirExtratoSintetico();		
+			}
+			else if (EXIBIRMANUTENCOESANALITICO.equals(acao)){
+				exibirManutencoesAnalitico();			
+			}
+			else if (EXIBIRMANUTENCOESSINTETICO.equals(acao)){
+				exibirManutencoesSintetico();			
+			}
+			else if (EXIBIRDADOSCOMPLEMENTARES.equals(acao)){
+				exibirDadosComplementares();			
+			}					
 		}
-		else if (EXIBIRENVIORETORNOSINTETICO.equals(acao)){
-		  	exibirEnvioRetornoSintetico();			
+		catch (Exception e) {
+			addActionError(e.getMessage());
+			LOGGER.error("Erro na exibição do formulário", e);
 		}
-		else if (EXIBIREXTRATOANALITICO.equals(acao)){
-			exibirExtratoAnalitico();		
-		}
-		else if (EXIBIREXTRATOSINTETICO.equals(acao)){
-			exibirExtratoSintetico();		
-		}
-		else if (EXIBIRMANUTENCOESANALITICO.equals(acao)){
-		    exibirManutencoesAnalitico();			
-		}
-		else if (EXIBIRMANUTENCOESSINTETICO.equals(acao)){
-			exibirManutencoesSintetico();			
-		}
-		else if (EXIBIRDADOSCOMPLEMENTARES.equals(acao)){
-			exibirDadosComplementares();			
-		}					
 		return SUCCESS;	
 	}
 
-	public void exibirEnvioRetornoAnalitico() throws DEPIIntegrationException {
-	        try {
-	            model.setSubtitulo("Envio/Retorno Banco - Analítico");
-	            model.setTituloTabela("Dados de Envio/Retorno Banco - Analítio");
-	            model.setTipoRelatorio("ER");
-	            model.setVisualizacao("A");
-	            carregarComboCompanhia();
-	            carregarComboDepartamentos();
-	            carregarComboMotivos();
-                model.setAcao(EXIBIRENVIORETORNOANALITICO);
-                model.setAcaoAnterior(EXIBIRENVIORETORNOANALITICO);
-//	    		listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-//	    		listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
+	private void exibirEnvioRetornoAnalitico() throws DEPIIntegrationException {
+		model.setSubtitulo("Envio/Retorno Banco - Analítico");
+		model.setTituloTabela("Dados de Envio/Retorno Banco - Analítio");
+		model.setTipoRelatorio("ER");
+		model.setVisualizacao("A");
+		model.setAcao(EXIBIRENVIORETORNOANALITICO);
+		model.setAcaoAnterior(EXIBIRENVIORETORNOANALITICO);
 
-	        } catch (DEPIIntegrationException e) {
-	            LOGGER.error(e.getMessage());
-	            //tratarExcecao(e);
-	        }
-	       
+		carregarComboCompanhia();
+		carregarComboDepartamentos();
+		carregarComboMotivos();
 	}
 	
-    public void exibirEnvioRetornoSintetico() throws DEPIIntegrationException {
+	private void exibirEnvioRetornoSintetico() throws DEPIIntegrationException {
+    	model.setSubtitulo("Envio/Retorno Banco - Sintético");
+    	model.setTituloTabela("Dados de Envio/Retorno Banco - Sintético");
+    	model.setTipoRelatorio("ER");
+    	model.setVisualizacao("S");
+    	model.setAcao(EXIBIRENVIORETORNOSINTETICO);
+    	model.setAcaoAnterior(EXIBIRENVIORETORNOSINTETICO);
+    	
+    	carregarComboCompanhia();
+    }
 
-            try {
-                model.setSubtitulo("Envio/Retorno Banco - Sintético");
-                model.setTituloTabela("Dados de Envio/Retorno Banco - Sintético");
-                model.setTipoRelatorio("ER");
-                model.setVisualizacao("S");
-                model.setAcao(EXIBIRENVIORETORNOSINTETICO);
-                model.setAcaoAnterior(EXIBIRENVIORETORNOSINTETICO);
-                
-	    		carregarComboCompanhia();
-             } catch (DEPIIntegrationException e) {
-            	LOGGER.error(e.getMessage());
-            	throw new DEPIIntegrationException(e.getMessage());
-            }
-            
-        }
+	private void exibirExtratoAnalitico() throws DEPIIntegrationException {
 
-    public void exibirExtratoAnalitico() throws DEPIIntegrationException {
+    	model.setSubtitulo("Extrato Banco - Analítio");
+    	model.setTituloTabela("Dados de Extrato Banco - Analítio");
+    	model.setTipoRelatorio("EX");
+    	model.setVisualizacao("A");
+    	model.setAcao(EXIBIREXTRATOANALITICO);
+    	model.setAcaoAnterior(EXIBIREXTRATOANALITICO);
 
-            try {
+    	carregarComboCompanhia();
+    }
 
-                model.setSubtitulo("Extrato Banco - Analítio");
-                model.setTituloTabela("Dados de Extrato Banco - Analítio");
-                model.setTipoRelatorio("EX");
-                model.setVisualizacao("A");
-                model.setAcao(EXIBIREXTRATOANALITICO);
-                model.setAcaoAnterior(EXIBIREXTRATOANALITICO);
-                
-	    		carregarComboCompanhia();
-	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
+	private void exibirExtratoSintetico() throws DEPIIntegrationException {
 
-            } catch (DEPIIntegrationException e) {
-            	LOGGER.error(e.getMessage());
-            	throw new DEPIIntegrationException(e.getMessage());
-            }
-        }
-
-    
-	  public void exibirExtratoSintetico() throws DEPIIntegrationException {
-
-		        try {
-		            model.setSubtitulo("Extrato Banco - Sintético");
-		            model.setTituloTabela("Dados de Extrato Banco - Sintético");
-		            model.setTipoRelatorio("EX");
-		            model.setVisualizacao("S");
-		    		
-		            carregarComboCompanhia();
-	                model.setAcao(EXIBIREXTRATOSINTETICO);
-	                model.setAcaoAnterior(EXIBIREXTRATOSINTETICO);
-		    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-		    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
-
-		        
-		        } catch (DEPIIntegrationException e) {
-	            	LOGGER.error(e.getMessage());
-	            	throw new DEPIIntegrationException(e.getMessage());
-		        }
-
-		    }
+    	model.setSubtitulo("Extrato Banco - Sintético");
+    	model.setTituloTabela("Dados de Extrato Banco - Sintético");
+    	model.setTipoRelatorio("EX");
+    	model.setVisualizacao("S");
+    	model.setAcao(EXIBIREXTRATOSINTETICO);
+    	model.setAcaoAnterior(EXIBIREXTRATOSINTETICO);
+    	
+    	carregarComboCompanhia();
+    }
 	  
-	  public void exibirManutencoesAnalitico() throws DEPIIntegrationException {
-		    try {
-		    	
-		        model.setSubtitulo("Manutenções - Analítio");
-		        model.setTituloTabela("Dados de Manutenções - Analítio");
-		        model.setTipoRelatorio("MN");
-		        model.setVisualizacao("A");
-		        model.setAcaoAnterior("exibirManutencoesAnalitico");
-				carregarComboCompanhia();
-                model.setAcao(EXIBIRMANUTENCOESANALITICO);
-                model.setAcaoAnterior(EXIBIRMANUTENCOESANALITICO);
-	    		//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-	    		//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
-		    
-		        } catch (DEPIIntegrationException e) {
-	            	LOGGER.error(e.getMessage());
-	            	throw new DEPIIntegrationException(e.getMessage());
-		        }
+	private void exibirManutencoesAnalitico() throws DEPIIntegrationException {
+    	model.setSubtitulo("Manutenções - Analítio");
+    	model.setTituloTabela("Dados de Manutenções - Analítio");
+    	model.setTipoRelatorio("MN");
+    	model.setVisualizacao("A");
+    	model.setAcaoAnterior("exibirManutencoesAnalitico");
+    	model.setAcao(EXIBIRMANUTENCOESANALITICO);
+    	model.setAcaoAnterior(EXIBIRMANUTENCOESANALITICO);
 
-		       
-	  }
+    	carregarComboCompanhia();
+    }
 
-	  public void exibirManutencoesSintetico() throws DEPIIntegrationException {
-	        try {
+	private void exibirManutencoesSintetico() throws DEPIIntegrationException {
+    	model.setSubtitulo("Manutenções - Sintético");
+    	model.setTituloTabela("Dados de Manutenções - Sintético");
+    	model.setTipoRelatorio("MN");
+    	model.setVisualizacao("S");
+    	model.setAcaoAnterior("exibirManutencoesAnalitico");  
+    	model.setAcao(EXIBIRMANUTENCOESSINTETICO);
+    	model.setAcaoAnterior(EXIBIRMANUTENCOESSINTETICO);
 
-		        model.setSubtitulo("Manutenções - Sintético");
-		        model.setTituloTabela("Dados de Manutenções - Sintético");
-		        model.setTipoRelatorio("MN");
-		        model.setVisualizacao("S");
-		        model.setAcaoAnterior("exibirManutencoesAnalitico");  
-		        carregarComboCompanhia();
-                model.setAcao(EXIBIRMANUTENCOESSINTETICO);
-                model.setAcaoAnterior(EXIBIRMANUTENCOESSINTETICO);
-  				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-  				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
-
-		        } catch (DEPIIntegrationException e) {
-		        	LOGGER.error(e.getMessage());
-	            	throw new DEPIIntegrationException(e.getMessage());
-		        }
-		
-	  }
+    	carregarComboCompanhia();
+    }
 	  
-	  public void exibirDadosComplementares() throws DEPIIntegrationException {
-	        try {
-	        	model.setSubtitulo("Dados Complementares - Analítio");
-		        model.setTituloTabela("Dados Complementares - Analítio");
-		        model.setTipoRelatorio("DC");
-		        model.setVisualizacao("A");
-		        model.setSituacaoEnvioRetorno("A");
-		        carregarComboCompanhia();
-                model.setAcao(EXIBIRDADOSCOMPLEMENTARES);
-                model.setAcaoAnterior(EXIBIRDADOSCOMPLEMENTARES);
-	  				//listaDepartamentos    = consultarRelatorioFacade.carregarComboDepartamentos();
-	  				//listaMotivosDepositos = consultarRelatorioFacade.carregarComboMotivos();
+	private void exibirDadosComplementares() throws DEPIIntegrationException {
+    	model.setSubtitulo("Dados Complementares - Analítio");
+    	model.setTituloTabela("Dados Complementares - Analítio");
+    	model.setTipoRelatorio("DC");
+    	model.setVisualizacao("A");
+    	model.setSituacaoEnvioRetorno("A");
+    	model.setAcao(EXIBIRDADOSCOMPLEMENTARES);
+    	model.setAcaoAnterior(EXIBIRDADOSCOMPLEMENTARES);
 
-		        } catch (DEPIIntegrationException e) {
-		        	LOGGER.error(e.getMessage());
-	            	throw new DEPIIntegrationException(e.getMessage());
-		        }
+    	carregarComboCompanhia();
+	}
 
-	  }	  
-	  
-	  /**
-	  * Retorna valores do form para um nova inst�ncia do tipo FiltroUtil
-	  * @param FiltroUtil
-	  * @return FiltroUtil
-	  * @throws DEPIIntegrationException - DEPIIntegrationException
-	  */	  	  
-	  private FiltroUtil montaFiltro(FiltroUtil filtro){
-	         if(filtro == null ){
-	        	  filtro = new FiltroUtil(); 
-	         }
-	    	
-	         //filtro.setDataInicio(RelogioUtil.validaData("01/01/2013"));
-	    	 //filtro.setDataFinal(RelogioUtil.validaData("30/12/2020"));
-	   	 
-			 filtro.setCodigoCia(0);
-			 filtro.setCodigoDepartamento(0);
-			 filtro.setCodigoMotivo(0);
-			 filtro.setApolice(0);
-			 filtro.setSucursal(0);
-			 filtro.setEndosso(0);
-			 filtro.setTipoDeposito(0);
-			 filtro.setCodigoAutorizador(0);
-			 filtro.setSituacaoManutencao(0);
-			 filtro.setSituacaoManutencao(0);
-			 filtro.setValorInicial(0.0);
-			 filtro.setValorFinal(0.0); 
-			 filtro.setCpfCnpj("");
-			 filtro.setSituacaoArquivo(0);
-			 
-			 
-			 
-		        if (!BaseUtil.isNZB(filtroVO.getCodigoCompanhia() )) {
-		            filtro.setCodigoCia(new Integer(filtroVO.getCodigoCompanhia()));
-		        }
+	/**
+	 * Retorna valores do form para um nova inst�ncia do tipo FiltroUtil
+	 * @param FiltroUtil
+	 * @return FiltroUtil
+	 * @throws DEPIIntegrationException - DEPIIntegrationException
+	 */	  	  
+	private FiltroUtil montaFiltro(FiltroUtil filtro){
+		if(filtro == null ){
+			filtro = new FiltroUtil(); 
+		}
 
-		        if (!BaseUtil.isNZB(filtroVO.getCodigoAutorizador())) {
-		            filtro.setCodigoAutorizador(Integer.valueOf(filtroVO.getCodigoAutorizador()));
-		        }
+		filtro.setCodigoCia(0);
+		filtro.setCodigoDepartamento(0);
+		filtro.setCodigoMotivo(0);
+		filtro.setApolice(0);
+		filtro.setSucursal(0);
+		filtro.setEndosso(0);
+		filtro.setTipoDeposito(0);
+		filtro.setCodigoAutorizador(0);
+		filtro.setSituacaoManutencao(0);
+		filtro.setSituacaoManutencao(0);
+		filtro.setValorInicial(0.0);
+		filtro.setValorFinal(0.0); 
+		filtro.setCpfCnpj("");
+		filtro.setSituacaoArquivo(0);
 
-		        if (!BaseUtil.isNZB(filtroVO.getCodigoDepartamento())) {
-		            filtro.setCodigoDepartamento(new Integer(filtroVO.getCodigoDepartamento()));
-		        }
-		    	
-				
-		        if (!BaseUtil.isNZB(filtroVO.getCodigoMotivoDeposito())) {
-		            filtro.setCodigoMotivo(Integer.valueOf( filtroVO.getCodigoMotivoDeposito()));
-		        }
+		if (!BaseUtil.isNZB(filtroVO.getCodigoCompanhia() )) {
+			filtro.setCodigoCia(new Integer(filtroVO.getCodigoCompanhia()));
+		}
 
-		        if (!BaseUtil.isNZB(filtroVO.getApolice())) {
-		            filtro.setApolice(Integer.valueOf(filtroVO.getApolice()));
-		        }
+		if (!BaseUtil.isNZB(filtroVO.getCodigoAutorizador())) {
+			filtro.setCodigoAutorizador(Integer.valueOf(filtroVO.getCodigoAutorizador()));
+		}
 
-		        if (!BaseUtil.isNZB(filtroVO.getSucursal())) {
-		            filtro.setSucursal(Integer.valueOf(filtroVO.getSucursal()));
-		        }
+		if (!BaseUtil.isNZB(filtroVO.getCodigoDepartamento())) {
+			filtro.setCodigoDepartamento(new Integer(filtroVO.getCodigoDepartamento()));
+		}
 
-		        if (!BaseUtil.isNZB(filtroVO.getEndosso())) {
-		            filtro.setEndosso(Integer.valueOf(filtroVO.getEndosso()));
-		        }
+		if (!BaseUtil.isNZB(filtroVO.getCodigoMotivoDeposito())) {
+			filtro.setCodigoMotivo(Integer.valueOf( filtroVO.getCodigoMotivoDeposito()));
+		}
 
-		        filtro.setTipoDeposito(filtroVO.getDeposito());
+		if (!BaseUtil.isNZB(filtroVO.getApolice())) {
+			filtro.setApolice(Integer.valueOf(filtroVO.getApolice()));
+		}
 
-		        if (!BaseUtil.isNZB(filtroVO.getCpfCnpj())) {
-		            filtro.setCpfCnpj(BaseUtil.retiraMascaraCNPJ(filtroVO.getCpfCnpj()));
-		        }
-		    
-		        if (!BaseUtil.isNZB(filtroVO.getDataInicial())) {
-		            filtro.setDataInicio(BaseUtil.parserStringToDate(filtroVO.getDataInicial().concat(" ").concat(ConstantesDEPI.HORA_INI),
-		            		ConstantesDEPI.FORMATO_DATO_HORA2));
-		        }
-		        
-		        if (!BaseUtil.isNZB(filtroVO.getDataFinal())) {
-                 filtro.setDataFinal(BaseUtil.parserStringToDate(filtroVO.getDataFinal().concat(" ").concat(ConstantesDEPI.HORA_FIM),
-                 		ConstantesDEPI.FORMATO_DATO_HORA2));
-		        }
+		if (!BaseUtil.isNZB(filtroVO.getSucursal())) {
+			filtro.setSucursal(Integer.valueOf(filtroVO.getSucursal()));
+		}
 
-             if (!BaseUtil.isNZB(filtroVO.getValorInicial())) {
-                 filtro.setValorInicial(new Double(model.getValorInicial()));
-             }
+		if (!BaseUtil.isNZB(filtroVO.getEndosso())) {
+			filtro.setEndosso(Integer.valueOf(filtroVO.getEndosso()));
+		}
 
-		        if (!BaseUtil.isNZB(filtroVO.getValorFinal())) {
-		            filtro.setValorFinal(new Double(filtroVO.getValorFinal()));
-		        }
-		        
-		        /*
-		        if (!BaseUtil.isNZB(filtroVO.getCodigoContaCorrente())) {
-		            filtro.setContaCorrente(Integer.valueOf(filtroVO.getCodigoContaCorrente()));
-		        }
-				*/
-		        
-		        //filtro.setSituacaoArquivo(RelatorioEnvioRetornoUtil.obterCodigoSituacaoPorLetra(filtroVO.getSituacaoEnvioRetorno()));
-               
-		        //filtro.setSituacaoManutencao(filtroVO.getSituacaoManutencoes());
-				 	 
-			 
-			 
-			 
-			 
-			 
-			 
-			 
-			 
-			 
-			 
-	         return filtro;		 
-			 
-		}	
-	  
+		if (!BaseUtil.isNZB(filtroVO.getDeposito())) {
+			filtro.setTipoDeposito(filtroVO.getDeposito());
+		}
+
+		if (!BaseUtil.isNZB(filtroVO.getCpfCnpj())) {
+			filtro.setCpfCnpj(BaseUtil.retiraMascaraCNPJ(filtroVO.getCpfCnpj()));
+		}
+
+		if (!BaseUtil.isNZB(filtroVO.getDataInicial())) {
+			filtro.setDataInicio(BaseUtil.parserStringToDate(filtroVO.getDataInicial().concat(" ").concat(ConstantesDEPI.HORA_INI),
+					ConstantesDEPI.FORMATO_DATO_HORA2));
+		}
+
+		if (!BaseUtil.isNZB(filtroVO.getDataFinal())) {
+			filtro.setDataFinal(BaseUtil.parserStringToDate(filtroVO.getDataFinal().concat(" ").concat(ConstantesDEPI.HORA_FIM),
+					ConstantesDEPI.FORMATO_DATO_HORA2));
+		}
+
+		if (!BaseUtil.isNZB(filtroVO.getValorInicial())) {
+			filtro.setValorInicial(new Double(model.getValorInicial()));
+		}
+
+		if (!BaseUtil.isNZB(filtroVO.getValorFinal())) {
+			filtro.setValorFinal(new Double(filtroVO.getValorFinal()));
+		}
+
+		return filtro;		 
+	}	
+
 	public String gerarRelatorio() {
 		LOGGER.error("XXXXXX="+filtroVO.toString());
 		String acao = this.filtroVO.getAcao();
@@ -432,316 +344,224 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 		return retorno;
 	}
 	
-    public String consultarManutencoesAnalitico(){      
-    	                 
-        //RelatorioForm frm = (RelatorioForm) pForm;
-
-        //GeneralFiltroVO c = montaFiltro(new Object());
-        filtro = this.montaFiltro(filtro);
-        if (BaseUtil.isNZB(filtro.getDataInicio())) {
-            //addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_INICIAL);
-            exibirManutencoesAnalitico();
-            return ERROR;
-        }
-
-        if (BaseUtil.isNZB(filtro.getDataFinal())) {
-            //addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_FINAL);
-            exibirManutencoesAnalitico();
-            return ERROR;
-        }
-        
-        try {
-        	 
-        	 filtro = montaFiltro(filtro);
-        	 
-             if (filtro.getDataInicio() == null  ){
- 	            addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_INICIAL);
- 	            return ERROR;
-             }
-             if (filtro.getDataFinal() == null  ){
-  	            addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_FINAL);
-  	            return ERROR;
-             }
-        	 
-            
-             List<ManutencoesAnaliticoVO> dados =  consultarRelatorioFacade.obterDadosManutencoesAnalitico(filtro); //RelatorioBusinessDelegate.getInstance().obterDadosManutencoesAnalitico(c);
-             if (dados.size() == 0){
-    	            addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-    	            return ERROR;
-             }
-            
-            
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put(VISUALIZACAO, "Analítio");
-            
-            params.put( SITUACAO, filtro.getSituacaoManutencao() );
-            params.put(DATA_INICIO, filtro.getDataInicio() );
-            params.put(DATA_FIM, filtro.getDataFinal() );
-            params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-            params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-            params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
-            
-            gerarPdf("relManutencoesAnalitico.jasper", params, dados);
-            
-        } catch (IntegrationException e) {
-            LOGGER.error(e.getMessage());
-            return ERROR;
-        }
-        return "relManutencoesAnalitico.pdf";//exibirManutencoesAnalitico();//();
-    }
+	@Override
+	public String input() throws Exception {
+		filtro = this.montaFiltro(filtro);
+		
+		return super.input();
+	}
 	
+	public void validateGerarRelatorio() {
+		filtro = montaFiltro(filtro);
+		if (BaseUtil.isNZB(filtro.getDataInicio())) {
+			addActionError(getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{DATA_INICIAL}));
+		}
+		
+		if (BaseUtil.isNZB(filtro.getDataFinal())) {
+			addActionError(getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{DATA_FINAL}));
+		}
+		
+		if (BaseUtil.isNZB(filtroVO.getAcao())) {
+			addActionError(getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{"acao"}));
+		}
+	}
+	
+	public String consultarManutencoesAnalitico(){      
+
+		exibirManutencoesAnalitico();
+
+		try {
+			List<ManutencoesAnaliticoVO> dados =  consultarRelatorioFacade.obterDadosManutencoesAnalitico(filtro);
+			if (dados.size() == 0){
+				addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
+				return INPUT;
+			}
+
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put(VISUALIZACAO, "Analítio");
+
+			params.put( SITUACAO, filtro.getSituacaoManutencao() );
+			params.put(DATA_INICIO, filtro.getDataInicio() );
+			params.put(DATA_FIM, filtro.getDataFinal() );
+			params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
+			params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
+			params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
+
+			gerarPdf("relManutencoesAnalitico.jasper", params, dados);
+
+		} catch (IntegrationException e) {
+			LOGGER.error(e.getMessage());
+			return INPUT;
+		}
+		return "relManutencoesAnalitico.pdf";//exibirManutencoesAnalitico();//();
+	}
 	
     public String consultarDadosComplementaresAnalitico() throws DEPIIntegrationException {
 
-   	 		filtro = montaFiltro(filtro);
-   	 		/*
-            RelatorioForm frm = (RelatorioForm) pForm;
+    	try {
+    		List<RelatorioDadosComplementaresVO> dados = consultarRelatorioFacade.obterDadosComplementares(filtro);
 
-            GeneralFiltroVO c = montaFiltro(frm);
+    		BigDecimal valorTotalPago = BigDecimal.ZERO;
+    		BigDecimal valorTotalRegistrado =  BigDecimal.ZERO;
 
-            if (BaseUtil.isNZB(filtro.getDataInicio())) {
-                addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_INICIAL);
-                return exibirDadosComplementares();
-            }
-
-            if (BaseUtil.isNZB(filtro.getDataFinal())) {
-                addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_FINAL);
-                return exibirDadosComplementares();
-            }
-            */
-    	
-            try {
-                List<RelatorioDadosComplementaresVO> dados = consultarRelatorioFacade.obterDadosComplementares(filtro);
-                
-                BigDecimal valorTotalPago = BigDecimal.ZERO;
-                BigDecimal valorTotalRegistrado =  BigDecimal.ZERO;
-                
-                //Itera lista para obter totais gerais
-                for(RelatorioDadosComplementaresVO relatorio : dados){
-                    if(relatorio.getValorPago() != null){
-                        valorTotalPago = relatorio.getValorPago();
-                    }
-                    if(relatorio.getValorRegistrado() != null){
-                        valorTotalRegistrado = relatorio.getValorRegistrado();
-                    }
-                }
-/*
+    		//Itera lista para obter totais gerais
+    		for(RelatorioDadosComplementaresVO relatorio : dados){
+    			if(relatorio.getValorPago() != null){
+    				valorTotalPago = relatorio.getValorPago();
+    			}
+    			if(relatorio.getValorRegistrado() != null){
+    				valorTotalRegistrado = relatorio.getValorRegistrado();
+    			}
+    		}
+    		/*
                 if (BaseUtil.isNZB(dados)) {
                     addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
                     return exibirDadosComplementares();
                 }
-*/
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put(VISUALIZACAO, "Analítio");
-                params.put(SITUACAO, filtro.getSituacaoManutencao());
-                params.put(DATA_INICIO, filtro.getDataInicio());
-                params.put(DATA_FIM, filtro.getDataFinal());
-                params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-                params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-                params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
-                params.put(VALOR_TOTAL_PAGO, valorTotalPago);
-                params.put(VALOR_TOTAL_REGISTRADO, valorTotalRegistrado);
+    		 */
+    		Map<String, Object> params = new HashMap<String, Object>();
+    		params.put(VISUALIZACAO, "Analítio");
+    		params.put(SITUACAO, filtro.getSituacaoManutencao());
+    		params.put(DATA_INICIO, filtro.getDataInicio());
+    		params.put(DATA_FIM, filtro.getDataFinal());
+    		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
+    		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
+    		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
+    		params.put(VALOR_TOTAL_PAGO, valorTotalPago);
+    		params.put(VALOR_TOTAL_REGISTRADO, valorTotalRegistrado);
 
-               gerarPdf("relDadosComplementares.jasper", params, dados);
+    		gerarPdf("relDadosComplementares.jasper", params, dados);
 
-            } catch (DEPIIntegrationException e) {
-                LOGGER.error(e.getMessage());
-                return "relDadosComplementares.pdf";
-            }
-            return "relDadosComplementares.pdf";//exibirDadosComplementares();
-        }
-    
-    
+    	} catch (DEPIIntegrationException e) {
+    		LOGGER.error(e.getMessage());
+    		return "relDadosComplementares.pdf";
+    	}
+    	return "relDadosComplementares.pdf";//exibirDadosComplementares();
+    }
+
     public String consultarManutencoesSintetico() throws DEPIIntegrationException {
-    		
-    		filtro = montaFiltro(filtro);
- 
-            if (BaseUtil.isNZB(filtro.getDataInicio())) {
-                addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_INICIAL);
-                exibirManutencoesSintetico();
-                return ERROR;
-            }
 
-            if (BaseUtil.isNZB(filtro.getDataFinal())) {
-                addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_FINAL);
-                exibirManutencoesSintetico();
-                return ERROR;
-            }
+    	try {
 
-            try {
+    		List<ManutencoesSinteticoVO> dados = consultarRelatorioFacade.obterDadosManutencoesSintetico(filtro);
 
-                List<ManutencoesSinteticoVO> dados = consultarRelatorioFacade.obterDadosManutencoesSintetico(filtro);
-             
-                
-                if (BaseUtil.isNZB(dados)) {
-                    addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-                     exibirManutencoesSintetico();
-                     return ERROR;
-                }
 
-                Map<String, Object> params = new HashMap<String, Object>();
-                String situacao = "";//RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(c.getSituacaoManutencao());
-                
-                if (BaseUtil.isNZB(situacao)) {
-                    situacao = "Manutenções";
-                }
-                
-                StringBuilder sb = new StringBuilder().append("DEPOSITOS IDENTIFICADOS - ").append(situacao)
-                    .append(" - ").append("Sintético");
-                params.put(HEADER, sb.toString());
-                params.put(DATA_INICIO, filtro.getDataInicio());
-                params.put(DATA_FIM, filtro.getDataFinal());
-                
-                params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-                params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-                params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
-                                        
-                gerarPdf("relManutencoesSintetico.jasper", params, dados);
-            } catch (DEPIIntegrationException e) {
-                LOGGER.error(e.getMessage());
-                return ERROR;
-            }
-            return "relManutencoesSintetico.pdf";// exibirManutencoesSintetico();
-        }
+    		if (BaseUtil.isNZB(dados)) {
+    			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
+    			exibirManutencoesSintetico();
+    			return INPUT;
+    		}
+
+    		Map<String, Object> params = new HashMap<String, Object>();
+    		String situacao = "";//RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(c.getSituacaoManutencao());
+
+    		if (BaseUtil.isNZB(situacao)) {
+    			situacao = "Manutenções";
+    		}
+
+    		StringBuilder sb = new StringBuilder().append("DEPOSITOS IDENTIFICADOS - ").append(situacao)
+    				.append(" - ").append("Sintético");
+    		params.put(HEADER, sb.toString());
+    		params.put(DATA_INICIO, filtro.getDataInicio());
+    		params.put(DATA_FIM, filtro.getDataFinal());
+
+    		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
+    		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
+    		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
+
+    		gerarPdf("relManutencoesSintetico.jasper", params, dados);
+    	} catch (DEPIIntegrationException e) {
+    		LOGGER.error(e.getMessage());
+    		return INPUT;
+    	}
+    	return "relManutencoesSintetico.pdf";// exibirManutencoesSintetico();
+    }
 
 
     public String consultarEnvioRetornoAnalitico() throws DEPIIntegrationException {
 
-        //RelatorioForm frm = (RelatorioForm) pForm;
+    	//RelatorioForm frm = (RelatorioForm) pForm;
 
-        try {
-        	filtro = montaFiltro(filtro);
+    	try {
+    		List<RelatorioEnvioRetornoAnaliticoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
 
-            if (BaseUtil.isNZB(filtro.getDataInicio())) {
-            	addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO + " " + DATA_INICIAL);
-                 exibirEnvioRetornoAnalitico();
-                 return ERROR;
-            }
+    		if (BaseUtil.isNZB(colRelatorio)) {
+    			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
 
-            if (BaseUtil.isNZB(filtro.getDataFinal())) {
-            	addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO  + " " + DATA_FINAL);
-                exibirEnvioRetornoAnalitico();
-                return ERROR;
-            }
+    			exibirEnvioRetornoAnalitico();
+    			return INPUT;
+    		}
 
-            List<RelatorioEnvioRetornoAnaliticoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
-            
-            
-            
-            if (BaseUtil.isNZB(colRelatorio)) {
-                addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-                 
-                exibirEnvioRetornoAnalitico();
-                return ERROR;
-            }
-            
-            
-            
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put(DATA_INICIO,  RelogioUtil.formataDate(filtro.getDataInicio()));
-            params.put(DATA_FIM, RelogioUtil.formataDate(filtro.getDataFinal()));
+    		Map<String, Object> params = new HashMap<String, Object>();
+    		params.put(DATA_INICIO,  RelogioUtil.formataDate(filtro.getDataInicio()));
+    		params.put(DATA_FIM, RelogioUtil.formataDate(filtro.getDataFinal()));
 
-            params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-            params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-            params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
-            
-           gerarPdf( "relEnvioRetornoBancoAnalitico.jasper", params,  colRelatorio);
+    		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
+    		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
+    		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
 
-       
-        } catch (DEPIIntegrationException e) {
-            LOGGER.error(e.getMessage());
-            return ERROR;
-        } catch (Exception e) {
-        	LOGGER.error(e.getMessage());
-            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_GENERICO, e.getMessage());
-        }
-        return "relEnvioRetornoBancoAnalitico.pdf";// exibirEnvioRetornoAnalitico();
+    		gerarPdf( "relEnvioRetornoBancoAnalitico.jasper", params,  colRelatorio);
+    		
+    	} catch (Exception e) {
+    		LOGGER.error("Erro ao gerar relat\u00f3rio", e);
+    		throw new DEPIIntegrationException(ConstantesDEPI.ERRO_GENERICO, e.getMessage());
+    	}
+    	return "relEnvioRetornoBancoAnalitico.pdf";// exibirEnvioRetornoAnalitico();
     }
     public String consultarEnvioRetornoSintetico() throws DEPIIntegrationException {
 
-      		filtro = montaFiltro(filtro);
-  
-            try {
+    	try {
 
-                if (BaseUtil.isNZB(filtro.getDataInicio())) {
-                    addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+DATA_INICIAL);
-                    exibirEnvioRetornoSintetico();
-                    return ERROR;
-                }
+    		List<RelatorioEnvioRetornoSinteticoVO> colRelatorio = new ArrayList<RelatorioEnvioRetornoSinteticoVO>();
+    		colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoSintetico(filtro);
 
-                if (BaseUtil.isNZB(filtro.getDataFinal())) {
-                    addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_FINAL);
-                    exibirEnvioRetornoSintetico();
-                    return ERROR;
-                }
+    		if (BaseUtil.isNZB(colRelatorio)) {
+    			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
+    			exibirEnvioRetornoSintetico();
+    			return INPUT;
+    		}
 
-                List<RelatorioEnvioRetornoSinteticoVO> colRelatorio = new ArrayList<RelatorioEnvioRetornoSinteticoVO>();
-                colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoSintetico(filtro);
-                
-                if (BaseUtil.isNZB(colRelatorio)) {
-                    addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-                     exibirEnvioRetornoSintetico();
-                    return ERROR;
-                }
-                
-                Map<String, Object> params = new HashMap<String, Object>();
-                params.put(DATA_INICIO, filtro.getDataInicio());
-                params.put(DATA_FIM, filtro.getDataFinal());
-                params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-                params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-                params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
-                
-               gerarPdf( "relEnvioRetornoBancoSintetico.jasper", params, colRelatorio);
+    		Map<String, Object> params = new HashMap<String, Object>();
+    		params.put(DATA_INICIO, filtro.getDataInicio());
+    		params.put(DATA_FIM, filtro.getDataFinal());
+    		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
+    		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
+    		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
 
-            } catch (DEPIIntegrationException e) {
-             	LOGGER.error(e.getMessage());
-                throw new DEPIIntegrationException(e.getMessage());
-            }
-            return "relEnvioRetornoBancoSintetico.pdf";// exibirEnvioRetornoSintetico();
-        }
+    		gerarPdf( "relEnvioRetornoBancoSintetico.jasper", params, colRelatorio);
+
+    	} catch (DEPIIntegrationException e) {
+    		LOGGER.error(e.getMessage());
+    		throw new DEPIIntegrationException(e.getMessage());
+    	}
+    	return "relEnvioRetornoBancoSintetico.pdf";// exibirEnvioRetornoSintetico();
+    }
 
     public String consultarExtratoAnalitico() throws DEPIIntegrationException {        
 
-    	filtro = montaFiltro(filtro);   
     	List<RelatorioExtratoAnaliticoVO> dados = new ArrayList<RelatorioExtratoAnaliticoVO>();
     	try {
+    		List<RelatorioEnvioRetornoAnaliticoVO> dadosER = consultarRelatorioFacade.obterDadosBancoExtratoAnalitico(filtro);              
+    		if (dadosER == null || dadosER.isEmpty()) {
+    			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO); 
+    			exibirExtratoAnalitico();
+    			return INPUT;
+    		}
 
-    		if (BaseUtil.isNZB(filtro.getDataInicio())) {
-                addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_INICIAL);
-                exibirExtratoAnalitico();
-                return ERROR;
-            }
+    		for (RelatorioEnvioRetornoAnaliticoVO vo : dadosER) {
+    			RelatorioExtratoAnaliticoVO extratoVO = new RelatorioExtratoAnaliticoVO();
 
-            if (BaseUtil.isNZB(filtro.getDataFinal())) {
-                addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_FINAL);
-                exibirExtratoAnalitico();
-                return ERROR;
-                		
-            }
-            
-            List<RelatorioEnvioRetornoAnaliticoVO> dadosER = consultarRelatorioFacade.obterDadosBancoExtratoAnalitico(filtro);              
-            if (dadosER == null || dadosER.isEmpty()) {
-                addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO); 
-                exibirExtratoAnalitico();
-                return ERROR;
-            }
-	
-            
-            // Adiciona dados obtidos de envio retorno na lista de Extrato ap�s convers�o
-	            for (RelatorioEnvioRetornoAnaliticoVO vo : dadosER) {
-	                RelatorioExtratoAnaliticoVO extratoVO = new RelatorioExtratoAnaliticoVO();
-	               
-					extratoVO = (RelatorioExtratoAnaliticoVO) BaseUtil.copyProperties(extratoVO, vo);
-					
-	                extratoVO.setVencimento(vo.getVencimento());
-	                extratoVO.setSituacaoEnvioRetorno(vo.getSituacao());
-	                extratoVO.setSituacao(vo.getSituacao());
-	                extratoVO.setCodigoAutorizadorComDv(vo.getCodigoAutorizadorComDv());
-	               // extratoVO.setNomeGrupo("ENVIO E RETORNO");
-	                dados.add(extratoVO);
-	            }
+    			extratoVO = (RelatorioExtratoAnaliticoVO) BaseUtil.copyProperties(extratoVO, vo);
 
-           /* List<ManutencoesAnaliticoVO> dadosManut = RelatorioBusinessDelegate.getInstance().obterDadosManutencoesAnalitico(c);
+    			extratoVO.setVencimento(vo.getVencimento());
+    			extratoVO.setSituacaoEnvioRetorno(vo.getSituacao());
+    			extratoVO.setSituacao(vo.getSituacao());
+    			extratoVO.setCodigoAutorizadorComDv(vo.getCodigoAutorizadorComDv());
+    			// extratoVO.setNomeGrupo("ENVIO E RETORNO");
+    			dados.add(extratoVO);
+    		}
+
+    		/* List<ManutencoesAnaliticoVO> dadosManut = RelatorioBusinessDelegate.getInstance().obterDadosManutencoesAnalitico(c);
             if (BaseUtil.isNZB(dadosManut) && BaseUtil.isNZB(dadosER)) {
                 addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
                 return exibirExtratoAnalitico();
@@ -757,226 +577,210 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
                 extratoVO.setSituacao(RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(vo.getCodigoTipoAcao()));
                 dados.add(extratoVO);
             }*/
-            
-	            consultarRelatorioFacade.obterTotais(dados);
-            //List<RelatorioExtratoAnaliticoVO> dados
-	            consultarRelatorioFacade.ordenarDadosAnalitico(dados);
 
-	            Map<String, Object> params = new HashMap<String, Object>();
-	            params.put(VISUALIZACAO, "Analítio");
-	            params.put(SITUACAO, "TODOS");
-	            params.put(DATA_INICIO, filtro.getDataInicio());
-	            params.put(DATA_FIM, filtro.getDataFinal());
-            
-	            params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-	            params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-	            params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
-                            
-	            gerarPdf("relExtratoAnalitico.jasper", params, dados);
-	            
+    		consultarRelatorioFacade.obterTotais(dados);
+    		//List<RelatorioExtratoAnaliticoVO> dados
+    		consultarRelatorioFacade.ordenarDadosAnalitico(dados);
+
+    		Map<String, Object> params = new HashMap<String, Object>();
+    		params.put(VISUALIZACAO, "Analítio");
+    		params.put(SITUACAO, "TODOS");
+    		params.put(DATA_INICIO, filtro.getDataInicio());
+    		params.put(DATA_FIM, filtro.getDataFinal());
+
+    		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
+    		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
+    		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
+
+    		gerarPdf("relExtratoAnalitico.jasper", params, dados);
+
     	} catch (IllegalAccessException | InvocationTargetException e) {
-			LOGGER.error(e.getMessage());
-			throw new DEPIIntegrationException(e.getMessage());
-		} catch (DEPIIntegrationException e) {
-			LOGGER.error(e.getMessage());
-			throw new DEPIIntegrationException(e.getMessage());
-		}
-            
-            return "relExtratoAnalitico.pdf";// exibirExtratoAnalitico();
+    		LOGGER.error(e.getMessage());
+    		throw new DEPIIntegrationException(e.getMessage());
+    	} catch (DEPIIntegrationException e) {
+    		LOGGER.error(e.getMessage());
+    		throw new DEPIIntegrationException(e.getMessage());
+    	}
+
+    	return "relExtratoAnalitico.pdf";// exibirExtratoAnalitico();
     }
 
-    
+
     public String consultarExtratoSintetico() throws DEPIIntegrationException {
-    		filtro = montaFiltro(filtro);   
-         
-            if (BaseUtil.isNZB(filtro.getDataInicio())) {
-                addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_INICIAL);
-                exibirExtratoSintetico();
-                return ERROR;
-            }
+    	filtro = montaFiltro(filtro);   
 
-            if (BaseUtil.isNZB(filtro.getDataFinal())) {
-                addActionError(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO +" "+ DATA_FINAL);
-                exibirExtratoSintetico();
-                return ERROR;
-            }
-		
-            try {
-                List<RelatorioExtratoSinteticoVO> dados = consultarRelatorioFacade.obterDadosExtratoSintetico(filtro);
-                
-                if (BaseUtil.isNZB(dados)) {
-                    addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-                } else
-                	
-                		{
+    	try {
+    		List<RelatorioExtratoSinteticoVO> dados = consultarRelatorioFacade.obterDadosExtratoSintetico(filtro);
 
-                    Map<String, Object> params = new HashMap<String, Object>();
-                    params.put(VISUALIZACAO, "Sintético");
-                    params.put(SITUACAO, "TODOS");
-    	            params.put(DATA_INICIO, filtro.getDataInicio());
-    	            params.put(DATA_FIM, filtro.getDataFinal());
-    	            
-                    params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-                    params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-                    params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
-                                    
-                    gerarPdf( "relExtratoSintetico.jasper", params, dados);
-                    
-                }
-            } catch (DEPIIntegrationException e) {
-        		LOGGER.error(e.getMessage());
-    			throw new DEPIIntegrationException(e.getMessage());
+    		if (BaseUtil.isNZB(dados)) {
+    			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
+    		} else {
+
+    			Map<String, Object> params = new HashMap<String, Object>();
+    			params.put(VISUALIZACAO, "Sintético");
+    			params.put(SITUACAO, "TODOS");
+    			params.put(DATA_INICIO, filtro.getDataInicio());
+    			params.put(DATA_FIM, filtro.getDataFinal());
+
+    			params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
+    			params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
+    			params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
+
+    			gerarPdf( "relExtratoSintetico.jasper", params, dados);
+
     		}
-    	
-        return "relExtratoSintetico.pdf";//       
+    	} catch (DEPIIntegrationException e) {
+    		LOGGER.error(e.getMessage());
+    		throw new DEPIIntegrationException(e.getMessage());
+    	}
+
+    	return "relExtratoSintetico.pdf";//       
     }
-    
+
     private void carregarComboCompanhia() throws DEPIIntegrationException {
-    	//request.setAttribute("cias", new ArrayList<CompanhiaSeguradoraVO>());
-        //request.setAttribute("ciasOrdenadas", new ArrayList<CompanhiaSeguradoraVO>());
-    	
-    
-    
+
+    	LoginVo login = getUsuarioLogado();
+
     	List<CompanhiaSeguradoraVO> listaRetorno = 
-        		consultarRelatorioFacade.carregarComboCompanhiaUsuLogado(login);
-        List<CompanhiaSeguradoraVO> ciasOrdenadas = new ArrayList<CompanhiaSeguradoraVO>(listaRetorno);
-        
-        
-        //ordenaCompanhia = Collections.sort(ciasOrdenadas);
-        
+    			consultarRelatorioFacade.carregarComboCompanhiaUsuLogado(login);
+    	List<CompanhiaSeguradoraVO> ciasOrdenadas = new ArrayList<CompanhiaSeguradoraVO>(listaRetorno);
+
+
+    	//ordenaCompanhia = Collections.sort(ciasOrdenadas);
+
     	model.setTpcCias("TRUE");
     	model.setTpcCiasOrdenadas("TRUE");
-        
+
     	//request.setAttribute("cias", listaRetorno);
-        //request.setAttribute("ciasOrdenadas", ciasOrdenadas);
+    	//request.setAttribute("ciasOrdenadas", ciasOrdenadas);
     	this.listaCompanhia = listaRetorno; 
     	this.setListaCompanhiaOrd(ciasOrdenadas);
-        if (!BaseUtil.isNZB(this.codigoCompanhia)) {
-            for (CompanhiaSeguradoraVO cia : listaRetorno) {
-                if (cia.equals(new CompanhiaSeguradoraVO(this.codigoCompanhia))) {
-                    return;
-                }
-            }
+    	if (!BaseUtil.isNZB(this.codigoCompanhia)) {
+    		for (CompanhiaSeguradoraVO cia : listaRetorno) {
+    			if (cia.equals(new CompanhiaSeguradoraVO(this.codigoCompanhia))) {
+    				return;
+    			}
+    		}
 
-        }
-        
-       
-        this.codigoCompanhia = 0;
+    	}
+
+    	this.codigoCompanhia = 0;
     }
-    
+
     private static Comparator<CompanhiaSeguradoraVO> ordenaCompanhia = new Comparator<CompanhiaSeguradoraVO>() {
-        @Override
-		public int compare(CompanhiaSeguradoraVO p1, CompanhiaSeguradoraVO p2) {
-            return p1.getDescricaoCompanhia().compareTo(p2.getDescricaoCompanhia());
-        };
+    	@Override
+    	public int compare(CompanhiaSeguradoraVO p1, CompanhiaSeguradoraVO p2) {
+    		return p1.getDescricaoCompanhia().compareTo(p2.getDescricaoCompanhia());
+    	};
     };
-    
+
     private void carregarComboMotivos() throws DEPIIntegrationException {
-        //request.setAttribute("motivos", new ArrayList<MotivoDepositoVO>());
-        if (!BaseUtil.isNZB(this.codigoCompanhia) && !BaseUtil.isNZB(this.codigoDepartamento)) {
-            List<MotivoDepositoVO> listaRetorno = consultarRelatorioFacade.obterMotivoComRestricaoDeDeposito(
-            		this.codigoCompanhia, this.codigoDepartamento, login);
-            if (!BaseUtil.isNZB(listaRetorno)) {
-                Collections.sort(listaRetorno, ordenaMotivoBasico);
-                request.setAttribute("motivos", listaRetorno);
-                if (!BaseUtil.isNZB(this.codigoMotivoDeposito)) {
-                    for (MotivoDepositoVO mot : listaRetorno) {
-                        if (mot.equals(new MotivoDepositoVO(this.codigoMotivoDeposito, null, null))) {
-                            model.setDescricaoDetalhada(mot.getDescricaoDetalhada());
-                            return;
-                        }
-                    }
-                }
-                
-                this.listaMotivosDepositos = listaRetorno;
-                this.codigoMotivoDeposito =0;
-                model.setDescricaoDetalhada("");
-            }
-        }
+    	LoginVo login = getUsuarioLogado();
+
+    	//request.setAttribute("motivos", new ArrayList<MotivoDepositoVO>());
+    	if (!BaseUtil.isNZB(this.codigoCompanhia) && !BaseUtil.isNZB(this.codigoDepartamento)) {
+    		List<MotivoDepositoVO> listaRetorno = consultarRelatorioFacade.obterMotivoComRestricaoDeDeposito(
+    				this.codigoCompanhia, this.codigoDepartamento, login);
+    		if (!BaseUtil.isNZB(listaRetorno)) {
+    			Collections.sort(listaRetorno, ordenaMotivoBasico);
+    			request.setAttribute("motivos", listaRetorno);
+    			if (!BaseUtil.isNZB(this.codigoMotivoDeposito)) {
+    				for (MotivoDepositoVO mot : listaRetorno) {
+    					if (mot.equals(new MotivoDepositoVO(this.codigoMotivoDeposito, null, null))) {
+    						model.setDescricaoDetalhada(mot.getDescricaoDetalhada());
+    						return;
+    					}
+    				}
+    			}
+
+    			this.listaMotivosDepositos = listaRetorno;
+    			this.codigoMotivoDeposito =0;
+    			model.setDescricaoDetalhada("");
+    		}
+    	}
     }
 
     /**
      * Comparador de MotivoDepositoVO onde a ordena��o ser� realizada pela descri��o b�sica do motivo de dep�sito.
      */
     private static Comparator<MotivoDepositoVO> ordenaMotivoBasico = new Comparator<MotivoDepositoVO>() {
-        @Override
-		public int compare(MotivoDepositoVO p1, MotivoDepositoVO p2) {
-            return p1.getDescricaoBasica().compareTo(p2.getDescricaoBasica());
-        };
+    	@Override
+    	public int compare(MotivoDepositoVO p1, MotivoDepositoVO p2) {
+    		return p1.getDescricaoBasica().compareTo(p2.getDescricaoBasica());
+    	};
     };
-    
+
     private void carregarComboDepartamentos() throws DEPIIntegrationException {
-        //request.setAttribute("departamentos", new ArrayList<DepartamentoVO>());
-        //request.setAttribute("departamentosOrdenados", new ArrayList<DepartamentoVO>());
-    	
+    	LoginVo login = getUsuarioLogado();
+
     	try {
-			
-			
-	    	if (!BaseUtil.isNZB(this.codigoCompanhia)) {
-	            List<DepartamentoVO> listaRetorno = consultarRelatorioFacade.obterComDepositoRestricaoDeDeposito(
-	                Integer.valueOf( this.codigoCompanhia) , login);
-	            if (!BaseUtil.isNZB(listaRetorno)) {
-	                List<DepartamentoVO> departamentosOrdenados = new ArrayList<DepartamentoVO>(listaRetorno);
-	                Collections.sort(departamentosOrdenados, ordenaDepartamento);
-	
-	                this.listaDepartamentos = listaRetorno;
-	                this.listaDepartamentosOrd = departamentosOrdenados;
-	                request.setAttribute("departamentosOrdenados", departamentosOrdenados);
-	
-	                if (!BaseUtil.isNZB(this.codigoDepartamento)) {
-	                    for (DepartamentoVO dep : listaRetorno) {
-	                        if (dep.equals(new DepartamentoVO(this.codigoDepartamento , null, null))) {
-	                            return;
-	                        }
-	                    }
-	                }
-	                this.codigoDepartamento =0;
-	            }
-	        }
-    	
+    		if (!BaseUtil.isNZB(this.codigoCompanhia)) {
+    			List<DepartamentoVO> listaRetorno = consultarRelatorioFacade.obterComDepositoRestricaoDeDeposito(
+    					Integer.valueOf( this.codigoCompanhia) , login);
+    			if (!BaseUtil.isNZB(listaRetorno)) {
+    				List<DepartamentoVO> departamentosOrdenados = new ArrayList<DepartamentoVO>(listaRetorno);
+    				Collections.sort(departamentosOrdenados, ordenaDepartamento);
+
+    				this.listaDepartamentos = listaRetorno;
+    				this.listaDepartamentosOrd = departamentosOrdenados;
+    				request.setAttribute("departamentosOrdenados", departamentosOrdenados);
+
+    				if (!BaseUtil.isNZB(this.codigoDepartamento)) {
+    					for (DepartamentoVO dep : listaRetorno) {
+    						if (dep.equals(new DepartamentoVO(this.codigoDepartamento , null, null))) {
+    							return;
+    						}
+    					}
+    				}
+    				this.codigoDepartamento =0;
+    			}
+    		}
+
     	} catch (DEPIIntegrationException e) {
-        	LOGGER.error(e.getMessage());
-        	//throw new DEPIIntegrationException(e.getMessage());
-        }
-    	
-    	
+    		LOGGER.error(e.getMessage());
+    		//throw new DEPIIntegrationException(e.getMessage());
+    	}
+
+
     }
     /**
      * Comparador de DepartamentoVO onde a ordena��o ser� realizada pelo c�digo do departamento.
      */
     private static Comparator<DepartamentoVO> ordenaDepartamento = new Comparator<DepartamentoVO>() {
-        @Override
-		public int compare(DepartamentoVO p1, DepartamentoVO p2) {
-            return p1.getSiglaDepartamento().compareTo(p2.getSiglaDepartamento());
-        };
+    	@Override
+    	public int compare(DepartamentoVO p1, DepartamentoVO p2) {
+    		return p1.getSiglaDepartamento().compareTo(p2.getSiglaDepartamento());
+    	};
     };   
-    
- 
-   
+
+
+
     /**
      * Método utilizado para gerar relatório em PDF.
      * @param parametros Parametros do Relatorio.
      * @throws IntegrationException - Integra��o.
      */
     public InputStream gerarPdf(String nomeRelatorio, Map<String, Object> parametros) throws DEPIIntegrationException, IOException {
-        Connection conn = null;
-        InputStream ouputStream = null;
-        conn = null; // Falta obter conn new  dao.getDataSource().getConnection();
-		File reportFile = new File(  request.getSession().getServletContext().getRealPath(ConstantesDEPI.DIR_RELATORIOS + nomeRelatorio));
-		String pathImg = this.getWww3()+ESTRUTURA_PASTA_IMAGENS;
-		//String url = this.getWww3()+ESTRUTURA_PASTA_IMAGENS;            
-		parametros.put(ConstantesDEPI.PARAM_LOGO, pathImg + ConstantesDEPI.DP06_LOGO_JPG);
-		byte[] bytes = null;
-		try {
-			bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, conn);
-		} catch (JRException e) {
-			// TODO Auto-generated catch block 
-			LOGGER.error(e.getMessage());
-		}
-		InputStream is = new ByteArrayInputStream(bytes);
-		LOGGER.error("Proposta Action - gerarCartaInterna - fim");
-		ouputStream = is;
-        /*
+    	Connection conn = null;
+    	InputStream ouputStream = null;
+    	conn = null; // Falta obter conn new  dao.getDataSource().getConnection();
+    	File reportFile = new File(  request.getSession().getServletContext().getRealPath(ConstantesDEPI.DIR_RELATORIOS + nomeRelatorio));
+    	String pathImg = this.getWww3()+ESTRUTURA_PASTA_IMAGENS;
+    	//String url = this.getWww3()+ESTRUTURA_PASTA_IMAGENS;            
+    	parametros.put(ConstantesDEPI.PARAM_LOGO, pathImg + ConstantesDEPI.DP06_LOGO_JPG);
+    	byte[] bytes = null;
+    	try {
+    		bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, conn);
+    		
+    		try (InputStream is = new ByteArrayInputStream(bytes)) {
+    			LOGGER.error("Proposta Action - gerarCartaInterna - fim");
+    			ouputStream = is;
+    		}
+    	} catch (JRException e) {
+    		// TODO Auto-generated catch block 
+    		LOGGER.error(e.getMessage());
+    	}
+    	/*
         } catch (JRException e) {
            LOGGER.error(e.getMessage());
            throw new IntegrationException(e.getMessage());
@@ -985,10 +789,10 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
            LOGGER.error(e.getMessage());
             throw new IntegrationException(e.getMessage());
         }
-        */
-		return ouputStream;
+    	 */
+    	return ouputStream;
     }
-    
+
     /**
      * Método utilizado para gerar relatório em PDF.
      * @param nomeRelatorio Nome do Relatorio
@@ -998,137 +802,134 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
      */
     public void gerarPdf( String nomeRelatorio,Map<String, Object> parametros, Collection<?> dados) throws DEPIIntegrationException {
     	LOGGER.error("gerarPdf 1");  
-        try {
-        	JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(dados);
-            File reportFile = new File(request.getSession().getServletContext().getRealPath(ConstantesDEPI.DIR_RELATORIOS + nomeRelatorio));
-            String pathImg = this.getWww3()+ESTRUTURA_PASTA_IMAGENS;
-            parametros.put(ConstantesDEPI.PARAM_LOGO, pathImg + ConstantesDEPI.DP06_LOGO_JPG);
-           // LOGGER.error("pathImg:"+pathImg);
-           // LOGGER.error("reportFile.getPath():"+reportFile.getPath());
-           // LOGGER.error("ConstantesDEPI.DP06_LOGO_JPG:"+ ConstantesDEPI.DP06_LOGO_JPG);
-           // LOGGER.error("PARAM_LOGO:"+ConstantesDEPI.PARAM_LOGO);
-           // LOGGER.error("pathImg:"+pathImg);
-            byte[] bytes = null;
-            bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, ds);
+    	try {
+    		JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(dados);
+    		File reportFile = new File(request.getSession().getServletContext().getRealPath(ConstantesDEPI.DIR_RELATORIOS + nomeRelatorio));
+    		String pathImg = this.getWww3()+ESTRUTURA_PASTA_IMAGENS;
+    		parametros.put(ConstantesDEPI.PARAM_LOGO, pathImg + ConstantesDEPI.DP06_LOGO_JPG);
+    		// LOGGER.error("pathImg:"+pathImg);
+    		// LOGGER.error("reportFile.getPath():"+reportFile.getPath());
+    		// LOGGER.error("ConstantesDEPI.DP06_LOGO_JPG:"+ ConstantesDEPI.DP06_LOGO_JPG);
+    		// LOGGER.error("PARAM_LOGO:"+ConstantesDEPI.PARAM_LOGO);
+    		// LOGGER.error("pathImg:"+pathImg);
+    		byte[] bytes = null;
+    		bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, ds);
 
-            InputStream is = new ByteArrayInputStream(bytes);
+    		InputStream is = new ByteArrayInputStream(bytes);
     		LOGGER.error("Proposta Action - gerarCartaInterna - fim");
     		setFileInputStream(is);
 
-        } catch (JRException e) {
-            LOGGER.error(e.getMessage());
-            throw new DEPIIntegrationException(e.getMessage());
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            throw new DEPIIntegrationException(e.getMessage());
-        }
+    	} catch (JRException e) {
+    		LOGGER.error(e.getMessage());
+    		throw new DEPIIntegrationException(e.getMessage());
+    	} catch (Exception e) {
+    		LOGGER.error(e.getMessage());
+    		throw new DEPIIntegrationException(e.getMessage());
+    	}
     }
-   
 
-	
-	public int getCodigoCompanhia() {
-		return codigoCompanhia;
+
+
+    public int getCodigoCompanhia() {
+    	return codigoCompanhia;
+    }
+
+    public void setCodigoCompanhia(int codigoCompanhia) {
+    	this.codigoCompanhia = codigoCompanhia;
+    }
+
+    public int getCodigoDepartamento() {
+    	return codigoDepartamento;
+    }
+
+    public void setCodigoDepartamento(int codigoDepartamento) {
+    	this.codigoDepartamento = codigoDepartamento;
+    }
+
+    public int getCodigoMotivoDeposito() {
+    	return codigoMotivoDeposito;
+    }
+
+    public void setCodigoMotivoDeposito(int codigoMotivoDeposito) {
+    	this.codigoMotivoDeposito = codigoMotivoDeposito;
+    }
+
+    public List<CompanhiaSeguradoraVO> getListaCompanhia() {
+    	return listaCompanhia;
+    }
+
+
+    public void setListaCompanhia(List<CompanhiaSeguradoraVO> listaCompanhia) {
+    	this.listaCompanhia = listaCompanhia;
+    }
+
+
+    public List<DepartamentoVO> getListaDepartamentos() {
+    	return listaDepartamentos;
+    }
+
+
+    public void setListaDepartamentos(List<DepartamentoVO> listaDepartamentos) {
+    	this.listaDepartamentos = listaDepartamentos;
+    }
+
+
+    public List<MotivoDepositoVO> getListaMotivosDepositos() {
+    	return listaMotivosDepositos;
+    }
+
+
+    public void setListaMotivosDepositos(List<MotivoDepositoVO> listaMotivosDepositos) {
+    	this.listaMotivosDepositos = listaMotivosDepositos;
+    }
+
+
+
+    public List<CompanhiaSeguradoraVO> getListaCompanhiaOrd() {
+    	return listaCompanhiaOrd;
+    }
+
+    public void setListaCompanhiaOrd(List<CompanhiaSeguradoraVO> listaCompanhiaOrd) {
+    	this.listaCompanhiaOrd = listaCompanhiaOrd;
+    }
+
+    public List<DepartamentoVO> getListaDepartamentosOrd() {
+    	return listaDepartamentosOrd;
+    }
+
+    public void setListaDepartamentosOrd(List<DepartamentoVO> listaDepartamentosOrd) {
+    	this.listaDepartamentosOrd = listaDepartamentosOrd;
+    }
+
+    public FiltroVO getFiltroVO() {
+    	return filtroVO;
+    }
+
+    public void setFiltroVO(FiltroVO filtroVO) {
+
+    	try {
+    		this.filtroVO = filtroVO;	
+    	} catch (Exception e) {
+    		LOGGER.error("XXXX-"+e.getMessage());
+    		if (filtroVO != null) {
+    			LOGGER.error(filtroVO.toString());
+    		}	
+    		this.filtroVO = new FiltroVO();
+    	}
+
+    }
+
+    public InputStream getFileInputStream() {
+		return fileInputStream;
 	}
+    
+    public void setFileInputStream(InputStream fileInputStream) {
+    	this.fileInputStream = fileInputStream;
+    }
 
-	public void setCodigoCompanhia(int codigoCompanhia) {
-		this.codigoCompanhia = codigoCompanhia;
-	}
+    @Override
+    public RelatorioFormModel getModel() {
+    	return model;
+    }
 
-	public int getCodigoDepartamento() {
-		return codigoDepartamento;
-	}
-
-	public void setCodigoDepartamento(int codigoDepartamento) {
-		this.codigoDepartamento = codigoDepartamento;
-	}
-
-	public int getCodigoMotivoDeposito() {
-		return codigoMotivoDeposito;
-	}
-
-	public void setCodigoMotivoDeposito(int codigoMotivoDeposito) {
-		this.codigoMotivoDeposito = codigoMotivoDeposito;
-	}
-
-	public List<CompanhiaSeguradoraVO> getListaCompanhia() {
-		return listaCompanhia;
-	}
-
-
-	public void setListaCompanhia(List<CompanhiaSeguradoraVO> listaCompanhia) {
-		this.listaCompanhia = listaCompanhia;
-	}
-
-	
-	public List<DepartamentoVO> getListaDepartamentos() {
-		return listaDepartamentos;
-	}
-
-
-	public void setListaDepartamentos(List<DepartamentoVO> listaDepartamentos) {
-		this.listaDepartamentos = listaDepartamentos;
-	}
-
-
-	public List<MotivoDepositoVO> getListaMotivosDepositos() {
-		return listaMotivosDepositos;
-	}
-
-
-	public void setListaMotivosDepositos(List<MotivoDepositoVO> listaMotivosDepositos) {
-		this.listaMotivosDepositos = listaMotivosDepositos;
-	}
-
-	
-
-	public List<CompanhiaSeguradoraVO> getListaCompanhiaOrd() {
-		return listaCompanhiaOrd;
-	}
-
-	public void setListaCompanhiaOrd(List<CompanhiaSeguradoraVO> listaCompanhiaOrd) {
-		this.listaCompanhiaOrd = listaCompanhiaOrd;
-	}
-
-	public List<DepartamentoVO> getListaDepartamentosOrd() {
-		return listaDepartamentosOrd;
-	}
-
-	public void setListaDepartamentosOrd(List<DepartamentoVO> listaDepartamentosOrd) {
-		this.listaDepartamentosOrd = listaDepartamentosOrd;
-	}
-
-	public FiltroVO getFiltroVO() {
-		return filtroVO;
-	}
-
-	public void setFiltroVO(FiltroVO filtroVO) {
-		
-		try {
-			this.filtroVO = filtroVO;	
-		} catch (Exception e) {
-			LOGGER.error("XXXX-"+e.getMessage());
-			if (filtroVO != null) {
-				LOGGER.error(filtroVO.toString());
-			}	
-			this.filtroVO = new FiltroVO();
-		}
-		
-	}
-
-	public LoginVo getLogin() {
-		return login;
-	}
-
-	public void setLogin(LoginVo login) {
-		this.login = login;
-	}
-	
-	public void setFileInputStream(InputStream fileInputStream) {
-	}
-
-	@Override
-	public RelatorioFormModel getModel() {
-		return model;
-	}
-	
 }

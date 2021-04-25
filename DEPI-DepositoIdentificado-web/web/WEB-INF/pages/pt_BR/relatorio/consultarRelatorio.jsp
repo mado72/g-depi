@@ -11,39 +11,27 @@
 		
 <s:form id="formConsultarRelatorio" action="gerarRelatorio.do" onload="loadPage()"   >
 <%-- <s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank"  onload="loadPage()"   > --%>
-    	<input type="hidden" id="acao" name="acao" value="${acao}" />
     	<input type="hidden" id="tituloTabela" name="tituloTabela" value="${tituloTabela}" />
     	<input type="hidden" id="acaoOriginal" name="acaoOriginal" value="${acao}" />
-    	
-  		
-        	<input type="hidden" id="acaoFrm" name="filtroVO.acao" value="" />
-	        
-        	<input type="hidden" id="tipoRelatorioFrm" name="filtroVO.tipoRelatorio" value="" />
 
-        	<input type="hidden" id="visualizacaoFrm" name="filtroVO.visualizacao" value="" />
-				
-			<input type="hidden" id="codigoCompanhiaFrm" name="filtroVO.codigoCompanhia" value="0" />
-			<input type="hidden" id="codigoDepartamentoFrm" name="filtroVO.codigoDepartamento" value="0" />
-			<input type="hidden" id="codigoMotivoDepositoFrm" name="filtroVO.codigoMotivoDeposito" value="0" />
-
-		    <input type="hidden" id="depositoFrm" name="filtroVO.deposito" value=""/>
-		    <input type="hidden" id="situacaoEnvioRetornoFrm" name="filtroVO.situacaoEnvioRetorno" value=""/>
-		    <input type="hidden" id="situacaoManutencoesFrm" name="filtroVO.situacaoManutencoes" value=""/>
-				    
-		    <input type="hidden" id="sucursalFrm" name="filtroVO.sucursal" value=""/>		    
-		    <input type="hidden" id="apoliceFrm" name="filtroVO.apolice" value=""/>
-		    <input type="hidden" id="endossoFrm" name="filtroVO.endosso" value=""/>
-		    
-		    <input type="hidden" id="codigoAutorizadorFrm" name="filtroVO.codigoAutorizador" value = "" />
-		    <input type="hidden" id="cpfCnpjFrm" name="filtroVO.cpfCnpj" value = "" />
-		    <input type="hidden" id="codigoContaCorrenteFrm" name="filtroVO.codigoContaCorrente" value = "" />	
-		         	
-		    <input type="hidden" id="dataInicialFrm" name="filtroVO.dataInicial" value = "" />
-		    <input type="hidden" id="dataFinalFrm" name="filtroVO.dataFinal" value = "" />
-		    <input type="hidden" id="valorInicialFrm" name="filtroVO.valorInicial" value = ""/>		
-		    <input type="hidden" id="valorFinalFrm" name="valorFinal" value = "" />
-		    <input type="hidden" id="descricaoDetalhadaFrm" name="filtroVO.descricaoDetalhada" value = "" />
-		  
+       	<input type="hidden" id="acaoFrm" name="filtroVO.acao" value="${acao}" />
+       	<input type="hidden" id="tipoRelatorioFrm" name="filtroVO.tipoRelatorio" value="" />
+       	<input type="hidden" id="visualizacaoFrm" name="filtroVO.visualizacao" value="" />
+		<input type="hidden" id="codigoCompanhiaFrm" name="filtroVO.codigoCompanhia" value="0" />
+		<input type="hidden" id="codigoDepartamentoFrm" name="filtroVO.codigoDepartamento" value="0" />
+		<input type="hidden" id="codigoMotivoDepositoFrm" name="filtroVO.codigoMotivoDeposito" value="0" />
+	    <input type="hidden" id="depositoFrm" name="filtroVO.deposito" value=""/>
+	    <input type="hidden" id="situacaoEnvioRetornoFrm" name="filtroVO.situacaoEnvioRetorno" value=""/>
+	    <input type="hidden" id="situacaoManutencoesFrm" name="filtroVO.situacaoManutencoes" value=""/>
+	    <input type="hidden" id="sucursalFrm" name="filtroVO.sucursal" value=""/>		    
+	    <input type="hidden" id="apoliceFrm" name="filtroVO.apolice" value=""/>
+	    <input type="hidden" id="endossoFrm" name="filtroVO.endosso" value=""/>
+	    <input type="hidden" id="codigoAutorizadorFrm" name="filtroVO.codigoAutorizador" value = "" />
+	    <input type="hidden" id="cpfCnpjFrm" name="filtroVO.cpfCnpj" value = "" />
+	    <input type="hidden" id="codigoContaCorrenteFrm" name="filtroVO.codigoContaCorrente" value = "" />	
+	    <input type="hidden" id="valorInicialFrm" name="filtroVO.valorInicial" value = ""/>		
+	    <input type="hidden" id="valorFinalFrm" name="valorFinal" value = "" />
+	    <input type="hidden" id="descricaoDetalhadaFrm" name="filtroVO.descricaoDetalhada" value = "" />
 
 	<table  class="tabela_principal" align="center">
 		<tr>
@@ -241,7 +229,7 @@
 
 					
 					   <td>&nbsp;De&nbsp;
-							<input type="text" id="dataInicial" name="dataInicial" size="13" maxlength="10" onkeypress="formatarData(this, event);" style="margin-left: 15px;" >							
+							<input type="text" id="dataInicial" name="filtroVO.dataInicial" size="13" maxlength="10" onkeypress="formatarData(this, event);" style="margin-left: 15px;" >							
 							<img src="${caminhoImagens}ic_sbox_calendario.gif" style="cursor: pointer;" title="Data"  
 								id="inicio" style="cursor: pointer;" title="Data"
 								onmouseover="this.style.background='';"
@@ -260,7 +248,7 @@
 
 					   </td>
 					   <td colspan="5">
-							Até &nbsp;<input type="text" id="dataFinal" name="dataFinal" size="13" maxlength="10" onkeypress="formatarData(this, event);">
+							Até &nbsp;<input type="text" id="dataFinal" name="filtroVO.dataFinal" size="13" maxlength="10" onkeypress="formatarData(this, event);">
 							&nbsp;&nbsp;&nbsp;<img src="${caminhoImagens}ic_sbox_calendario.gif" style="cursor: pointer;" title="Data"
 								id="fim" style="cursor: pointer;" title="Data"
 								onmouseover="this.style.background='';"

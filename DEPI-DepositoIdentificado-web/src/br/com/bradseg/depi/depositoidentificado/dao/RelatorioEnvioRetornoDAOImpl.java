@@ -153,13 +153,9 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
 		query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
 		LOGGER.error("obterDadosAnalitico3 - "+query.toString());
 		
-		
 		relatorio = getJdbcTemplate().query(query.toString(), params, new RelatorioEnvioRetornoAnaliticoDataMapper()); 
 		
-        
-   
     	return relatorio;
-
     }
 
     /**
