@@ -489,7 +489,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     		List<RelatorioEnvioRetornoAnaliticoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
 
     		if (BaseUtil.isNZB(colRelatorio)) {
-    			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
+    			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
 
     			exibirEnvioRetornoAnalitico();
     			return INPUT;
@@ -666,12 +666,13 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     	this.codigoCompanhia = 0;
     }
     
+    /*
     private static Comparator<CompanhiaSeguradoraVO> ordenaCompanhia = new Comparator<CompanhiaSeguradoraVO>() {
     	@Override
     	public int compare(CompanhiaSeguradoraVO p1, CompanhiaSeguradoraVO p2) {
     		return p1.getDescricaoCompanhia().compareTo(p2.getDescricaoCompanhia());
     	};
-    };
+    };*/
 
     private void carregarComboMotivos() throws DEPIIntegrationException {
     	LoginVo login = getUsuarioLogado();

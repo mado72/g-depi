@@ -20,8 +20,6 @@
 	    <input type="hidden" id="depositoFrm" name="filtroVO.deposito" value=""/>
 	    <input type="hidden" id="situacaoEnvioRetornoFrm" name="filtroVO.situacaoEnvioRetorno" value=""/>
 	    <input type="hidden" id="situacaoManutencoesFrm" name="filtroVO.situacaoManutencoes" value=""/>
-	    <input type="hidden" id="sucursalFrm" name="filtroVO.sucursal" value=""/>		    
-	    <input type="hidden" id="apoliceFrm" name="filtroVO.apolice" value=""/>
 	    <input type="hidden" id="endossoFrm" name="filtroVO.endosso" value=""/>
 	    <input type="hidden" id="codigoAutorizadorFrm" name="filtroVO.codigoAutorizador" value = "" />
 	    <input type="hidden" id="cpfCnpjFrm" name="filtroVO.cpfCnpj" value = "" />
@@ -223,10 +221,10 @@ $.dpcoddesc.aninhar({
 						Sucursal
 					</td>
 					<td>
-					     <input type="text" id="sucursal" size="5" onkeypress="return permitirApenasInteiros(event);" maxlength="5"  />
+					     <input type="text" id="filtroVO.sucursal" size="5" onkeypress="return permitirApenasInteiros(event);" maxlength="5"  />
 					<td class="td_label" width="13%">&nbsp; Apólice </td>
 					<td colspan="4">&nbsp;
-						<input type="text" name="apolice"  id="apolice"  size="12" onkeypress="return permitirApenasInteiros(event);" maxlength="9"  />
+						<input type="text" name="filtroVO.apolice"  id="apolice"  size="12" onkeypress="return permitirApenasInteiros(event);" maxlength="9"  />
 					</td>					
 				</tr>
 					
