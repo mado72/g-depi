@@ -8,16 +8,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO;
 import br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
+import br.com.bradseg.depi.depositoidentificado.relatorio.facade.ConsultarRelatorioFacade;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
@@ -39,6 +43,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 @Controller
 @Scope("request")
 public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
+	
+	private final static Logger LOGGER = LoggerFactory.getLogger(JsonServiceAction.class);
 
 	@Autowired
 	private GrupoAcessoFacade grupoAcessoFacade;
@@ -51,6 +57,9 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 	
 	@Autowired
 	private DepositoFacade depositoFacade;
+	
+	@Autowired
+	private ConsultarRelatorioFacade relatorioFacade;
 	
 	private static final long serialVersionUID = 8999882840693772747L;
 	
@@ -256,6 +265,25 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 		
 		ParametroDepositoVO parametro = depositoFacade.obterParametro(vo);
 		model.setResponse(parametro);
+		
+		return SUCCESS;
+	}
+	
+	public String relatorioComboMotivo() {
+		int cia = Integer.parseInt(model.getCodigo().get("cia"));
+		int depto = Integer.parseInt(model.getCodigo().get("depto"));
+		
+		LoginVo loginVO = getUsuarioLogado();
+		
+		try {
+			List<MotivoDepositoVO> motivos = relatorioFacade
+					.obterMotivoComRestricaoDeDeposito(cia, depto, loginVO);
+			model.setResponse(motivos);
+		} catch (Exception e) {
+			LOGGER.error("Falha ao carregar motivos", e);
+			addActionError(e.getMessage());
+			return ERROR;
+		}
 		
 		return SUCCESS;
 	}

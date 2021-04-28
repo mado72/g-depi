@@ -665,7 +665,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 
     	this.codigoCompanhia = 0;
     }
-
+    
     private static Comparator<CompanhiaSeguradoraVO> ordenaCompanhia = new Comparator<CompanhiaSeguradoraVO>() {
     	@Override
     	public int compare(CompanhiaSeguradoraVO p1, CompanhiaSeguradoraVO p2) {

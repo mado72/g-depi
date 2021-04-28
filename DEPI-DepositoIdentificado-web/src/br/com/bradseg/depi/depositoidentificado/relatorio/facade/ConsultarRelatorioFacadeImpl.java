@@ -78,18 +78,6 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Autowired
 	private CICSDepiDAO cicsDepiDAO;
 	
-	@Override
-	public List<CompanhiaSeguradoraVO> carregarComboCompanhia() {
-	
-		return daoCiaSeg.obterCias();
-	}
-	
-	@Override
-	public List<DepartamentoVO> carregarComboDepartamentos() {
-		
-		return null;
-	}
-
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.relatorio.facade.ConsultarRelatorioFacade#obterMotivoComRestricaoDeDeposito(int, int, br.com.bradseg.bsad.filtrologin.vo.LoginVo)
 	 */

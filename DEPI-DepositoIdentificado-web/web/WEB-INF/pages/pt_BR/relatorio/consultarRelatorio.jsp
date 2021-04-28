@@ -94,7 +94,7 @@
 						<td class="td_label" align="left">Cia</td>
 							<td align="left">
 								<s:if test="%{#vtpcCias=='TRUE'}">
-								<c:url value='/json/ciaDeptosComRestricao.do?codigoCia=%d' var="urlDepto"></c:url>
+<c:url value='/json/ciaDeptosComRestricao.do?codigoCia=%d' var="urlDepto"></c:url>
 <c:set var="scriptCompanhia">
 urlDepto = '${urlDepto}';
 $.dpcoddesc.combinar(['#listaCompanhia','#listaCompanhiaOrd']);
@@ -107,7 +107,7 @@ $.dpcoddesc.aninhar({
 	},
 	url: urlDepto,
 	fn: function(v) {
-		return [v.siglaDepartamento, v.siglaDepartamento, v.nomeDepartamento];
+		return [v.codigoDepartamento, v.siglaDepartamento, v.nomeDepartamento];
 	},
 	error: void(0)
 });
@@ -129,7 +129,6 @@ $.dpcoddesc.aninhar({
 								<s:select 
 									list="listaCompanhiaOrd" 
 									id="listaCompanhiaOrd" 
-									onchange="changeCombo('listaCompanhia',this.value);"
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoCompanhia" 
@@ -143,10 +142,29 @@ $.dpcoddesc.aninhar({
 					<tr>
 						<td class="td_label">Departamento</td>
 							<td align="left" >
+<c:url value='/json/relatorioComboMotivo.do?codigo.cia=%d&codigo.depto=%d' var="urlMotivo"></c:url>
+<c:set var="scriptDepto">
+urlMotivo = '${urlMotivo}';
+$.dpcoddesc.combinar(['#listaDepartamentos','#listaDepartamentosOrd']);
+$.dpcoddesc.aninhar({
+	origem: ['#listaDepartamentos', '#listaDepartamentosOrd'],
+	destino: ['#listaMotivosDepositos', '#listaMotivosDepositosOrd'],
+	todos: {
+		value: 0,
+		text: '-- Todos --'
+	},
+	url: function() {
+		return urlMotivo.replace("%d", $('#listaCompanhia').val()).replace("%d", $('#listaDepartamentos').val())
+	},
+	fn: function(v) {
+		return [v.codigoMotivoDeposito, v.descricaoBasica, v.descricaoDetalhada];
+	},
+	error: void(0)
+});
+</c:set>
 								<s:select 
 									list="listaDepartamentos" 
 									id="listaDepartamentos" 
-									onchange="changeCombo('listaDepartamentosOrd',this.value);"
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoDepartamento" 
@@ -160,7 +178,6 @@ $.dpcoddesc.aninhar({
 								<s:select 
 									list="listaDepartamentos" 
 									id="listaDepartamentosOrd" 
-									onchange="changeCombo('listaDepartamentos',this.value);"
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoDepartamento" 
@@ -384,6 +401,7 @@ $.dpcoddesc.aninhar({
 <script>
 jQuery(document).ready(function($){
 	${scriptCompanhia};
+	${scriptDepto};
 }(jQuery));
 </script>
 </c:set>

@@ -23,24 +23,12 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
  */
 public interface ConsultarRelatorioFacade {
 	
-	/**
-	 * Lista as companhias
-	 * @return Lista de CompanhiaSeguradoraVO
-	 */
-	public List<CompanhiaSeguradoraVO>  carregarComboCompanhia();
-   
    /**
     * Lista as companhias para o usuário logado
     * @param loginVO Dados do login
     * @return Lista de Companhias
     */
    public List<CompanhiaSeguradoraVO>  carregarComboCompanhiaUsuLogado(LoginVo loginVO);
-
-   /**
-    * Lista departamentos
-    * @return Lista os departamentos
-    */
-   public List<DepartamentoVO>  carregarComboDepartamentos();
 
    /**
     * Obtém motivos com restrição
