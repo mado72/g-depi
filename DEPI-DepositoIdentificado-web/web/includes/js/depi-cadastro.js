@@ -242,6 +242,11 @@ var fnReady = function ($) {
 				dataType : "json",
 				success : function(data) {
 					var codigos = $(), nomes = $();
+					
+					if (!! opcoes.todos) {
+						codigos = codigos.add($('<option>', {value: opcoes.todos.value, text: opcoes.todos.text}));
+						nomes = nomes.add($('<option>', {value: opcoes.todos.value, text: opcoes.todos.text}));
+					}
 
 					$(data.response).each(function(i,v) {
 						var item = opcoes.fn(v);

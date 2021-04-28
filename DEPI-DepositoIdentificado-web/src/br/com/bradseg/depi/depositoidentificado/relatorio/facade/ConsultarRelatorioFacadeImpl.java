@@ -78,17 +78,12 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Autowired
 	private CICSDepiDAO cicsDepiDAO;
 	
-	
-	
-
 	@Override
 	public List<CompanhiaSeguradoraVO> carregarComboCompanhia() {
 	
 		return daoCiaSeg.obterCias();
 	}
 	
-	
-
 	@Override
 	public List<DepartamentoVO> carregarComboDepartamentos() {
 		

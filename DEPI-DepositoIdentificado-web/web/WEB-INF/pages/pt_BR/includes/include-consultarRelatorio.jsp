@@ -782,8 +782,6 @@ function  exibirEnvioRetornoAnalitico(acao) {
 	
 	            
 	carregarComboCompanhia();
-	carregarComboDepartamentos();
-	carregarComboMotivos();
 	document.getElementById('subtitulo').innerHTML = subtitulo;
 	document.getElementById('titulo_tabela').innerHTML = titulo;
 	document.forms[0].acao.value = acao;
@@ -802,8 +800,6 @@ function  exibirEnvioRetornoSintetico(acao) {
     setTipoRelatorio("ER");
     setVisualizacao("S");
 	carregarComboCompanhia();
-	carregarComboDepartamentos();
-	carregarComboMotivos();
 }
 
 function  exibirExtratoAnalitico(acao) {
@@ -813,8 +809,6 @@ function  exibirExtratoAnalitico(acao) {
       setTipoRelatorio("EX");
       setVisualizacao("A");
       carregarComboCompanhia();
-	  carregarComboDepartamentos();
-	  carregarComboMotivos();
 
     document.forms[0].acao.value = acao;
 	document.getElementById("acaoOriginal").value = acao;
@@ -828,8 +822,6 @@ function  exibirExtratoSintetico(acao) {
 	  setTipoRelatorio("EX");
 	  setVisualizacao("S");
       carregarComboCompanhia();
-	  carregarComboDepartamentos();
-	  carregarComboMotivos();
 
     document.forms[0].acao.value = acao;
 	document.getElementById("acaoOriginal").value = acao;
@@ -844,8 +836,6 @@ function  exibirManutencoesAnalitico(acao) {
 	  setVisualizacao("A");
 	  setAcaoAnterior("exibirManutencoesAnalitico");
       carregarComboCompanhia();
-	  carregarComboDepartamentos();
-	  carregarComboMotivos();
 
     document.forms[0].acao.value = acao;
 	document.getElementById("acaoOriginal").value = acao;
@@ -859,8 +849,6 @@ function  exibirManutencoesAnalitico(acao) {
 	  setTipoRelatorio("MN");
 	  setVisualizacao("S");
       carregarComboCompanhia();
-	  carregarComboDepartamentos();
-	  carregarComboMotivos();
 
     document.forms[0].acao.value = acao;
 	document.getElementById("acaoOriginal").value = acao;
@@ -875,8 +863,6 @@ function  exibirDadosComplementares(acao) {
 	setVisualizacao("A");
 	setSituacaoEnvioRetorno("A");
     carregarComboCompanhia();
-	carregarComboDepartamentos();
-	carregarComboMotivos();
     document.forms[0].acao.value = acao;
 	document.getElementById("acaoOriginal").value = acao;
 
@@ -884,7 +870,7 @@ function  exibirDadosComplementares(acao) {
 
 function carregarComboCompanhia(){
 }
-function carregarComboDepartamentos(){
+function carregarComboDepartamentos(valor, opcoes){
 }
 
 function carregarComboMotivos(){

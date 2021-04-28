@@ -17,9 +17,6 @@
        	<input type="hidden" id="acaoFrm" name="filtroVO.acao" value="${acao}" />
        	<input type="hidden" id="tipoRelatorioFrm" name="filtroVO.tipoRelatorio" value="" />
        	<input type="hidden" id="visualizacaoFrm" name="filtroVO.visualizacao" value="" />
-		<input type="hidden" id="codigoCompanhiaFrm" name="filtroVO.codigoCompanhia" value="0" />
-		<input type="hidden" id="codigoDepartamentoFrm" name="filtroVO.codigoDepartamento" value="0" />
-		<input type="hidden" id="codigoMotivoDepositoFrm" name="filtroVO.codigoMotivoDeposito" value="0" />
 	    <input type="hidden" id="depositoFrm" name="filtroVO.deposito" value=""/>
 	    <input type="hidden" id="situacaoEnvioRetornoFrm" name="filtroVO.situacaoEnvioRetorno" value=""/>
 	    <input type="hidden" id="situacaoManutencoesFrm" name="filtroVO.situacaoManutencoes" value=""/>
@@ -97,15 +94,32 @@
 						<td class="td_label" align="left">Cia</td>
 							<td align="left">
 								<s:if test="%{#vtpcCias=='TRUE'}">
+								<c:url value='/json/ciaDeptosComRestricao.do?codigoCia=%d' var="urlDepto"></c:url>
+<c:set var="scriptCompanhia">
+urlDepto = '${urlDepto}';
+$.dpcoddesc.combinar(['#listaCompanhia','#listaCompanhiaOrd']);
+$.dpcoddesc.aninhar({
+	origem: ['#listaCompanhia', '#listaCompanhiaOrd'],
+	destino: ['#listaDepartamentos', '#listaDepartamentosOrd'],
+	todos: {
+		value: 0,
+		text: '-- Todos --'
+	},
+	url: urlDepto,
+	fn: function(v) {
+		return [v.siglaDepartamento, v.siglaDepartamento, v.nomeDepartamento];
+	},
+	error: void(0)
+});
+</c:set>
 								<s:select 
 									list="listaCompanhia" 
 									id="listaCompanhia" 
-									onchange="changeCombo('listaCompanhiaOrd',this.value);"
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoCompanhia" 
 						  			listValue="codigoCompanhia" 
-						  			name="companhia.listaCompanhia" 
+						  			name="filtroVO.codigoCompanhia" 
 						  			style="width: 100%;"  />
 						  		</s:if>
 							</td>
@@ -137,7 +151,7 @@
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoDepartamento" 
 						  			listValue="codigoDepartamento" 
-						  			name="departamento.listaDepartamentos"
+						  			name="filtroVO.codigoDepartamento"
 						  			style="width: 100%;"
 						            onkeydown="return tabEnter(event);"
 						            /> 
@@ -169,7 +183,7 @@
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoMotivoDeposito" 
 						  			listValue="codigoMotivoDeposito" 
-						  			name="motivoDeposito.listaMotivosDepositos"
+						  			name="filtroVO.codigoMotivoDeposito"
 						  			style="width: 100%;" 
 						  			/>
 						  	<s:select 
@@ -365,3 +379,11 @@
 	
 	
 </s:form>
+
+<c:set var="scriptPage" scope="request">
+<script>
+jQuery(document).ready(function($){
+	${scriptCompanhia};
+}(jQuery));
+</script>
+</c:set>

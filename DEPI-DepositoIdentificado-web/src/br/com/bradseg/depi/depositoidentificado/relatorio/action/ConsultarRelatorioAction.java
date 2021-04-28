@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -419,11 +420,13 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
                     return exibirDadosComplementares();
                 }
     		 */
+    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    		
     		Map<String, Object> params = new HashMap<String, Object>();
     		params.put(VISUALIZACAO, "Analítio");
     		params.put(SITUACAO, filtro.getSituacaoManutencao());
-    		params.put(DATA_INICIO, filtro.getDataInicio());
-    		params.put(DATA_FIM, filtro.getDataFinal());
+    		params.put(DATA_INICIO, sdf.format(filtro.getDataInicio()));
+    		params.put(DATA_FIM, sdf.format(filtro.getDataFinal()));
     		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
     		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
     		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
@@ -644,15 +647,11 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     	List<CompanhiaSeguradoraVO> listaRetorno = 
     			consultarRelatorioFacade.carregarComboCompanhiaUsuLogado(login);
     	List<CompanhiaSeguradoraVO> ciasOrdenadas = new ArrayList<CompanhiaSeguradoraVO>(listaRetorno);
-
-
-    	//ordenaCompanhia = Collections.sort(ciasOrdenadas);
+//    	ciasOrdenadas.sort(ordenaCompanhia);
 
     	model.setTpcCias("TRUE");
     	model.setTpcCiasOrdenadas("TRUE");
 
-    	//request.setAttribute("cias", listaRetorno);
-    	//request.setAttribute("ciasOrdenadas", ciasOrdenadas);
     	this.listaCompanhia = listaRetorno; 
     	this.setListaCompanhiaOrd(ciasOrdenadas);
     	if (!BaseUtil.isNZB(this.codigoCompanhia)) {
@@ -798,7 +797,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
      * @param nomeRelatorio Nome do Relatorio
      * @param parametros Parametros do Relatorio
      * @param dados Collection
-     * @throws DEPIIntegrationException - Integra��o.
+     * @throws DEPIIntegrationException - Integração.
      */
     public void gerarPdf( String nomeRelatorio,Map<String, Object> parametros, Collection<?> dados) throws DEPIIntegrationException {
     	LOGGER.error("gerarPdf 1");  
