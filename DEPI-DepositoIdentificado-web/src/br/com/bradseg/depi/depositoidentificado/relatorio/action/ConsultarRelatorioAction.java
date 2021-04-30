@@ -2,12 +2,9 @@ package br.com.bradseg.depi.depositoidentificado.relatorio.action;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,6 +12,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
@@ -28,7 +26,6 @@ import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
-import br.com.bradseg.depi.depositoidentificado.cadastro.form.RelatorioFormModel;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.relatorio.facade.ConsultarRelatorioFacade;
@@ -44,7 +41,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesSinteticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioDadosComplementaresVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
-import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoSinteticoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
@@ -54,7 +51,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
 @Controller
 @Scope("session")
-public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel>  {
+public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
+	private static final String ZERO_STR = "0";
 	private static final long serialVersionUID = 3407809247264650489L;
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ConsultarRelatorioAction.class); 
 
@@ -81,45 +79,23 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 	private static final String EXIBIRMANUTENCOESANALITICO  = "exibirManutencoesAnalitico";
 	private static final String EXIBIRMANUTENCOESSINTETICO  = "exibirManutencoesSintetico";
 	private static final String EXIBIRDADOSCOMPLEMENTARES   = "exibirDadosComplementares";
-	private final RelatorioFormModel model = new RelatorioFormModel();
-	
-	private int codigoCompanhia = 0;
-    private int codigoDepartamento = 0;
-    private int codigoMotivoDeposito = 0;
 	
 	//Combos da tela
-
-	private List<CompanhiaSeguradoraVO> listaCompanhia = new ArrayList<CompanhiaSeguradoraVO>();
-	private List<CompanhiaSeguradoraVO> listaCompanhiaOrd  = new ArrayList<CompanhiaSeguradoraVO>();
-	
-	private List<DepartamentoVO> listaDepartamentos = new ArrayList<DepartamentoVO>();
-	private List<DepartamentoVO> listaDepartamentosOrd = new ArrayList<DepartamentoVO>();
-	private List<MotivoDepositoVO> listaMotivosDepositos = new ArrayList<MotivoDepositoVO>();
-	
 	private FiltroUtil filtro;
 	
-	private FiltroVO filtroVO = new FiltroVO();
+	private final FiltroVO model = new FiltroVO();
     
 	@Autowired
 	private ConsultarRelatorioFacade consultarRelatorioFacade;
 	private InputStream fileInputStream;
-    
 	
 	public String consultarRelatorio(){
-		carregarComboCompanhia();
-		
-		CompanhiaSeguradoraVO cia  = new CompanhiaSeguradoraVO();
-		cia.setCodigoCompanhia(0);
-		cia.setDescricaoCompanhia("Todos");
-		listaCompanhia.add(cia);
-		cia.setCodigoCompanhia(686);
-		cia.setDescricaoCompanhia("Bardesco Seguros");
-		listaCompanhia.add(cia);
-		model.setTpcCiasOrdenadas("FALSE");
-		
 		String acao = model.getAcao();
-		
 		try {
+			carregarComboCompanhia();
+			carregarComboDepartamentos();
+			carregarComboMotivos();
+			
 			if (EXIBIRENVIORETORNOANALITICO.equals(acao)){
 				exibirEnvioRetornoAnalitico();			
 			}
@@ -140,7 +116,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 			}
 			else if (EXIBIRDADOSCOMPLEMENTARES.equals(acao)){
 				exibirDadosComplementares();			
-			}					
+			}
 		}
 		catch (Exception e) {
 			addActionError(e.getMessage());
@@ -150,87 +126,55 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 	}
 
 	private void exibirEnvioRetornoAnalitico() throws DEPIIntegrationException {
-		model.setSubtitulo("Envio/Retorno Banco - Analítico");
+		model.setSubtituloTela("Envio/Retorno Banco - Analítico");
 		model.setTituloTabela("Dados de Envio/Retorno Banco - Analítio");
 		model.setTipoRelatorio("ER");
 		model.setVisualizacao("A");
-		model.setAcao(EXIBIRENVIORETORNOANALITICO);
-		model.setAcaoAnterior(EXIBIRENVIORETORNOANALITICO);
-
-		carregarComboCompanhia();
-		carregarComboDepartamentos();
-		carregarComboMotivos();
 	}
 	
 	private void exibirEnvioRetornoSintetico() throws DEPIIntegrationException {
-    	model.setSubtitulo("Envio/Retorno Banco - Sintético");
+    	model.setSubtituloTela("Envio/Retorno Banco - Sintético");
     	model.setTituloTabela("Dados de Envio/Retorno Banco - Sintético");
     	model.setTipoRelatorio("ER");
     	model.setVisualizacao("S");
-    	model.setAcao(EXIBIRENVIORETORNOSINTETICO);
-    	model.setAcaoAnterior(EXIBIRENVIORETORNOSINTETICO);
-    	
-    	carregarComboCompanhia();
     }
 
 	private void exibirExtratoAnalitico() throws DEPIIntegrationException {
-
-    	model.setSubtitulo("Extrato Banco - Analítio");
+    	model.setSubtituloTela("Extrato Banco - Analítio");
     	model.setTituloTabela("Dados de Extrato Banco - Analítio");
     	model.setTipoRelatorio("EX");
     	model.setVisualizacao("A");
-    	model.setAcao(EXIBIREXTRATOANALITICO);
-    	model.setAcaoAnterior(EXIBIREXTRATOANALITICO);
-
-    	carregarComboCompanhia();
     }
 
 	private void exibirExtratoSintetico() throws DEPIIntegrationException {
-
-    	model.setSubtitulo("Extrato Banco - Sintético");
+    	model.setSubtituloTela("Extrato Banco - Sintético");
     	model.setTituloTabela("Dados de Extrato Banco - Sintético");
     	model.setTipoRelatorio("EX");
     	model.setVisualizacao("S");
-    	model.setAcao(EXIBIREXTRATOSINTETICO);
-    	model.setAcaoAnterior(EXIBIREXTRATOSINTETICO);
-    	
-    	carregarComboCompanhia();
     }
 	  
 	private void exibirManutencoesAnalitico() throws DEPIIntegrationException {
-    	model.setSubtitulo("Manutenções - Analítio");
+    	model.setSubtituloTela("Manutenções - Analítio");
     	model.setTituloTabela("Dados de Manutenções - Analítio");
     	model.setTipoRelatorio("MN");
     	model.setVisualizacao("A");
-    	model.setAcaoAnterior("exibirManutencoesAnalitico");
-    	model.setAcao(EXIBIRMANUTENCOESANALITICO);
-    	model.setAcaoAnterior(EXIBIRMANUTENCOESANALITICO);
-
-    	carregarComboCompanhia();
     }
 
 	private void exibirManutencoesSintetico() throws DEPIIntegrationException {
-    	model.setSubtitulo("Manutenções - Sintético");
+    	model.setSubtituloTela("Manutenções - Sintético");
     	model.setTituloTabela("Dados de Manutenções - Sintético");
     	model.setTipoRelatorio("MN");
     	model.setVisualizacao("S");
-    	model.setAcaoAnterior("exibirManutencoesAnalitico");  
     	model.setAcao(EXIBIRMANUTENCOESSINTETICO);
-    	model.setAcaoAnterior(EXIBIRMANUTENCOESSINTETICO);
-
-    	carregarComboCompanhia();
     }
 	  
 	private void exibirDadosComplementares() throws DEPIIntegrationException {
-    	model.setSubtitulo("Dados Complementares - Analítio");
+    	model.setSubtituloTela("Dados Complementares - Analítio");
     	model.setTituloTabela("Dados Complementares - Analítio");
     	model.setTipoRelatorio("DC");
     	model.setVisualizacao("A");
     	model.setSituacaoEnvioRetorno("A");
     	model.setAcao(EXIBIRDADOSCOMPLEMENTARES);
-    	model.setAcaoAnterior(EXIBIRDADOSCOMPLEMENTARES);
-
-    	carregarComboCompanhia();
 	}
 
 	/**
@@ -259,66 +203,66 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 		filtro.setCpfCnpj("");
 		filtro.setSituacaoArquivo(0);
 
-		if (!BaseUtil.isNZB(filtroVO.getCodigoCompanhia() )) {
-			filtro.setCodigoCia(new Integer(filtroVO.getCodigoCompanhia()));
+		if (!BaseUtil.isNZB(model.getCodigoCompanhia() )) {
+			filtro.setCodigoCia(new Integer(model.getCodigoCompanhia()));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getCodigoAutorizador())) {
-			filtro.setCodigoAutorizador(Integer.valueOf(filtroVO.getCodigoAutorizador()));
+		if (!BaseUtil.isNZB(model.getCodigoAutorizador())) {
+			filtro.setCodigoAutorizador(Integer.valueOf(model.getCodigoAutorizador()));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getCodigoDepartamento())) {
-			filtro.setCodigoDepartamento(new Integer(filtroVO.getCodigoDepartamento()));
+		if (!BaseUtil.isNZB(model.getCodigoDepartamento())) {
+			filtro.setCodigoDepartamento(new Integer(model.getCodigoDepartamento()));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getCodigoMotivoDeposito())) {
-			filtro.setCodigoMotivo(Integer.valueOf( filtroVO.getCodigoMotivoDeposito()));
+		if (!BaseUtil.isNZB(model.getCodigoMotivoDeposito())) {
+			filtro.setCodigoMotivo(Integer.valueOf( model.getCodigoMotivoDeposito()));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getApolice())) {
-			filtro.setApolice(Integer.valueOf(filtroVO.getApolice()));
+		if (!BaseUtil.isNZB(model.getApolice())) {
+			filtro.setApolice(Integer.valueOf(model.getApolice()));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getSucursal())) {
-			filtro.setSucursal(Integer.valueOf(filtroVO.getSucursal()));
+		if (!BaseUtil.isNZB(model.getSucursal())) {
+			filtro.setSucursal(Integer.valueOf(model.getSucursal()));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getEndosso())) {
-			filtro.setEndosso(Integer.valueOf(filtroVO.getEndosso()));
+		if (!BaseUtil.isNZB(model.getEndosso())) {
+			filtro.setEndosso(Integer.valueOf(model.getEndosso()));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getDeposito())) {
-			filtro.setTipoDeposito(filtroVO.getDeposito());
+		if (!BaseUtil.isNZB(model.getDeposito())) {
+			filtro.setTipoDeposito(model.getDeposito());
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getCpfCnpj())) {
-			filtro.setCpfCnpj(BaseUtil.retiraMascaraCNPJ(filtroVO.getCpfCnpj()));
+		if (!BaseUtil.isNZB(model.getCpfCnpj())) {
+			filtro.setCpfCnpj(BaseUtil.retiraMascaraCNPJ(model.getCpfCnpj()));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getDataInicial())) {
-			filtro.setDataInicio(BaseUtil.parserStringToDate(filtroVO.getDataInicial().concat(" ").concat(ConstantesDEPI.HORA_INI),
+		if (!BaseUtil.isNZB(model.getDataInicial())) {
+			filtro.setDataInicio(BaseUtil.parserStringToDate(model.getDataInicial().concat(" ").concat(ConstantesDEPI.HORA_INI),
 					ConstantesDEPI.FORMATO_DATO_HORA2));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getDataFinal())) {
-			filtro.setDataFinal(BaseUtil.parserStringToDate(filtroVO.getDataFinal().concat(" ").concat(ConstantesDEPI.HORA_FIM),
+		if (!BaseUtil.isNZB(model.getDataFinal())) {
+			filtro.setDataFinal(BaseUtil.parserStringToDate(model.getDataFinal().concat(" ").concat(ConstantesDEPI.HORA_FIM),
 					ConstantesDEPI.FORMATO_DATO_HORA2));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getValorInicial())) {
+		if (!BaseUtil.isNZB(model.getValorInicial())) {
 			filtro.setValorInicial(new Double(model.getValorInicial()));
 		}
 
-		if (!BaseUtil.isNZB(filtroVO.getValorFinal())) {
-			filtro.setValorFinal(new Double(filtroVO.getValorFinal()));
+		if (!BaseUtil.isNZB(model.getValorFinal())) {
+			filtro.setValorFinal(new Double(model.getValorFinal()));
 		}
 
-		return filtro;		 
-	}	
+		return filtro;
+	}
 
 	public String gerarRelatorio() {
-		LOGGER.error("XXXXXX="+filtroVO.toString());
-		String acao = this.filtroVO.getAcao();
+		LOGGER.error("XXXXXX="+model.toString());
+		String acao = this.model.getAcao();
 		String retorno = SUCCESS;
 		if(EXIBIRENVIORETORNOANALITICO.equals(acao)){
 			retorno = this.consultarEnvioRetornoAnalitico();
@@ -362,7 +306,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 			addActionError(getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{DATA_FINAL}));
 		}
 		
-		if (BaseUtil.isNZB(filtroVO.getAcao())) {
+		if (BaseUtil.isNZB(model.getAcao())) {
 			addActionError(getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{"acao"}));
 		}
 	}
@@ -378,15 +322,9 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 				return INPUT;
 			}
 
-			Map<String, Object> params = new HashMap<String, Object>();
+			Map<String, Object> params = prepararParametrosComunsPdf();
 			params.put(VISUALIZACAO, "Analítio");
-
-			params.put( SITUACAO, filtro.getSituacaoManutencao() );
-			params.put(DATA_INICIO, filtro.getDataInicio() );
-			params.put(DATA_FIM, filtro.getDataFinal() );
-			params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-			params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-			params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
+			params.put(SITUACAO, filtro.getSituacaoManutencao() );
 
 			gerarPdf("relManutencoesAnalitico.jasper", params, dados);
 
@@ -420,16 +358,10 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
                     return exibirDadosComplementares();
                 }
     		 */
-    		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    		
-    		Map<String, Object> params = new HashMap<String, Object>();
+			Map<String, Object> params = prepararParametrosComunsPdf();
     		params.put(VISUALIZACAO, "Analítio");
     		params.put(SITUACAO, filtro.getSituacaoManutencao());
-    		params.put(DATA_INICIO, sdf.format(filtro.getDataInicio()));
-    		params.put(DATA_FIM, sdf.format(filtro.getDataFinal()));
-    		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-    		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-    		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
+
     		params.put(VALOR_TOTAL_PAGO, valorTotalPago);
     		params.put(VALOR_TOTAL_REGISTRADO, valorTotalRegistrado);
 
@@ -455,7 +387,8 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     			return INPUT;
     		}
 
-    		Map<String, Object> params = new HashMap<String, Object>();
+    		Map<String, Object> params = prepararParametrosComunsPdf();
+    		
     		String situacao = "";//RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(c.getSituacaoManutencao());
 
     		if (BaseUtil.isNZB(situacao)) {
@@ -465,12 +398,6 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     		StringBuilder sb = new StringBuilder().append("DEPOSITOS IDENTIFICADOS - ").append(situacao)
     				.append(" - ").append("Sintético");
     		params.put(HEADER, sb.toString());
-    		params.put(DATA_INICIO, filtro.getDataInicio());
-    		params.put(DATA_FIM, filtro.getDataFinal());
-
-    		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-    		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-    		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
 
     		gerarPdf("relManutencoesSintetico.jasper", params, dados);
     	} catch (DEPIIntegrationException e) {
@@ -486,7 +413,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     	//RelatorioForm frm = (RelatorioForm) pForm;
 
     	try {
-    		List<RelatorioEnvioRetornoAnaliticoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
+    		List<RelatorioEnvioRetornoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
 
     		if (BaseUtil.isNZB(colRelatorio)) {
     			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
@@ -495,13 +422,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     			return INPUT;
     		}
 
-    		Map<String, Object> params = new HashMap<String, Object>();
-    		params.put(DATA_INICIO,  RelogioUtil.formataDate(filtro.getDataInicio()));
-    		params.put(DATA_FIM, RelogioUtil.formataDate(filtro.getDataFinal()));
-
-    		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-    		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-    		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
+    		Map<String, Object> params = prepararParametrosComunsPdf();
 
     		gerarPdf( "relEnvioRetornoBancoAnalitico.jasper", params,  colRelatorio);
     		
@@ -511,25 +432,21 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     	}
     	return "relEnvioRetornoBancoAnalitico.pdf";// exibirEnvioRetornoAnalitico();
     }
-    public String consultarEnvioRetornoSintetico() throws DEPIIntegrationException {
+
+	public String consultarEnvioRetornoSintetico() throws DEPIIntegrationException {
 
     	try {
 
-    		List<RelatorioEnvioRetornoSinteticoVO> colRelatorio = new ArrayList<RelatorioEnvioRetornoSinteticoVO>();
-    		colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoSintetico(filtro);
+    		List<RelatorioEnvioRetornoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoSintetico(filtro);
 
     		if (BaseUtil.isNZB(colRelatorio)) {
     			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
+    			
     			exibirEnvioRetornoSintetico();
     			return INPUT;
     		}
 
-    		Map<String, Object> params = new HashMap<String, Object>();
-    		params.put(DATA_INICIO, filtro.getDataInicio());
-    		params.put(DATA_FIM, filtro.getDataFinal());
-    		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-    		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-    		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
+    		Map<String, Object> params = prepararParametrosComunsPdf();
 
     		gerarPdf( "relEnvioRetornoBancoSintetico.jasper", params, colRelatorio);
 
@@ -585,15 +502,9 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     		//List<RelatorioExtratoAnaliticoVO> dados
     		consultarRelatorioFacade.ordenarDadosAnalitico(dados);
 
-    		Map<String, Object> params = new HashMap<String, Object>();
+			Map<String, Object> params = prepararParametrosComunsPdf();
     		params.put(VISUALIZACAO, "Analítio");
     		params.put(SITUACAO, "TODOS");
-    		params.put(DATA_INICIO, filtro.getDataInicio());
-    		params.put(DATA_FIM, filtro.getDataFinal());
-
-    		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-    		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-    		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
 
     		gerarPdf("relExtratoAnalitico.jasper", params, dados);
 
@@ -608,7 +519,6 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     	return "relExtratoAnalitico.pdf";// exibirExtratoAnalitico();
     }
 
-
     public String consultarExtratoSintetico() throws DEPIIntegrationException {
     	filtro = montaFiltro(filtro);   
 
@@ -619,15 +529,9 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
     		} else {
 
-    			Map<String, Object> params = new HashMap<String, Object>();
+    			Map<String, Object> params = prepararParametrosComunsPdf();
     			params.put(VISUALIZACAO, "Sintético");
     			params.put(SITUACAO, "TODOS");
-    			params.put(DATA_INICIO, filtro.getDataInicio());
-    			params.put(DATA_FIM, filtro.getDataFinal());
-
-    			params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
-    			params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
-    			params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
 
     			gerarPdf( "relExtratoSintetico.jasper", params, dados);
 
@@ -640,62 +544,72 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     	return "relExtratoSintetico.pdf";//       
     }
 
-    private void carregarComboCompanhia() throws DEPIIntegrationException {
+    private Map<String, Object> prepararParametrosComunsPdf() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put(DATA_INICIO,  RelogioUtil.formataDate(filtro.getDataInicio()));
+		params.put(DATA_FIM, RelogioUtil.formataDate(filtro.getDataFinal()));
+	
+		params.put(DATA_MOVIMENTO, RelogioUtil.obterDataCorrenteFormatada());
+		params.put(DATA_HORA, RelogioUtil.obterHoraCorrenteFormatada());
+		params.put(SEQUENCIAL, RelogioUtil.obterSequencial());
+		return params;
+	}
+
+	private void carregarComboCompanhia() throws DEPIIntegrationException {
 
     	LoginVo login = getUsuarioLogado();
 
     	List<CompanhiaSeguradoraVO> listaRetorno = 
     			consultarRelatorioFacade.carregarComboCompanhiaUsuLogado(login);
-    	List<CompanhiaSeguradoraVO> ciasOrdenadas = new ArrayList<CompanhiaSeguradoraVO>(listaRetorno);
-//    	ciasOrdenadas.sort(ordenaCompanhia);
+    	model.setListaCompanhia(listaRetorno);
+    	
+		TreeSet<CompanhiaSeguradoraVO> ciasOrdenadas = new TreeSet<CompanhiaSeguradoraVO>(
+				ConsultarRelatorioAction.ordenaCompanhia);
+		ciasOrdenadas.addAll(listaRetorno);
 
-    	model.setTpcCias("TRUE");
-    	model.setTpcCiasOrdenadas("TRUE");
-
-    	this.listaCompanhia = listaRetorno; 
-    	this.setListaCompanhiaOrd(ciasOrdenadas);
-    	if (!BaseUtil.isNZB(this.codigoCompanhia)) {
-    		for (CompanhiaSeguradoraVO cia : listaRetorno) {
-    			if (cia.equals(new CompanhiaSeguradoraVO(this.codigoCompanhia))) {
-    				return;
-    			}
-    		}
-
-    	}
-
-    	this.codigoCompanhia = 0;
+    	model.setListaCompanhiaOrd(new ArrayList<>(ciasOrdenadas));
+    	
+		if (BaseUtil.isNZB(model.getCodigoCompanhia())) {
+			model.setCodigoCompanhia(ZERO_STR);
+		}
     }
     
-    /*
     private static Comparator<CompanhiaSeguradoraVO> ordenaCompanhia = new Comparator<CompanhiaSeguradoraVO>() {
     	@Override
     	public int compare(CompanhiaSeguradoraVO p1, CompanhiaSeguradoraVO p2) {
     		return p1.getDescricaoCompanhia().compareTo(p2.getDescricaoCompanhia());
     	};
-    };*/
+    };
 
     private void carregarComboMotivos() throws DEPIIntegrationException {
     	LoginVo login = getUsuarioLogado();
 
     	//request.setAttribute("motivos", new ArrayList<MotivoDepositoVO>());
-    	if (!BaseUtil.isNZB(this.codigoCompanhia) && !BaseUtil.isNZB(this.codigoDepartamento)) {
-    		List<MotivoDepositoVO> listaRetorno = consultarRelatorioFacade.obterMotivoComRestricaoDeDeposito(
-    				this.codigoCompanhia, this.codigoDepartamento, login);
+    	if (!BaseUtil.isNZB(model.getCodigoCompanhia()) && !BaseUtil.isNZB(model.getCodigoDepartamento())) {
+    		int codigoCompanhia = Integer.parseInt(model.getCodigoCompanhia());
+			int codigoDepartamento = Integer.parseInt(model.getCodigoDepartamento());
+			
+			List<MotivoDepositoVO> listaRetorno = consultarRelatorioFacade.obterMotivoComRestricaoDeDeposito(
+    				codigoCompanhia, codigoDepartamento, login);
+			
     		if (!BaseUtil.isNZB(listaRetorno)) {
     			Collections.sort(listaRetorno, ordenaMotivoBasico);
-    			request.setAttribute("motivos", listaRetorno);
-    			if (!BaseUtil.isNZB(this.codigoMotivoDeposito)) {
+    			model.setListaMotivosDepositos(listaRetorno);
+    			model.setDescricaoDetalhada("");
+    			
+				if (!BaseUtil.isNZB(model.getCodigoMotivoDeposito())) {
+					int codigoMotivoDeposito = Integer.parseInt(model.getCodigoMotivoDeposito());
+    				
     				for (MotivoDepositoVO mot : listaRetorno) {
-    					if (mot.equals(new MotivoDepositoVO(this.codigoMotivoDeposito, null, null))) {
+    					if (mot.getCodigoMotivoDeposito() == codigoMotivoDeposito) {
     						model.setDescricaoDetalhada(mot.getDescricaoDetalhada());
-    						return;
+    						break;
     					}
     				}
     			}
-
-    			this.listaMotivosDepositos = listaRetorno;
-    			this.codigoMotivoDeposito =0;
-    			model.setDescricaoDetalhada("");
+				else {
+					model.setCodigoMotivoDeposito(ZERO_STR);
+				}
     		}
     	}
     }
@@ -714,34 +628,38 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     	LoginVo login = getUsuarioLogado();
 
     	try {
-    		if (!BaseUtil.isNZB(this.codigoCompanhia)) {
-    			List<DepartamentoVO> listaRetorno = consultarRelatorioFacade.obterComDepositoRestricaoDeDeposito(
-    					Integer.valueOf( this.codigoCompanhia) , login);
+    		if (!BaseUtil.isNZB(model.getCodigoCompanhia())) {
+    			int codigoCompanhia = Integer.parseInt(model.getCodigoCompanhia());
+    			
+				List<DepartamentoVO> listaRetorno = consultarRelatorioFacade
+						.obterComDepositoRestricaoDeDeposito(codigoCompanhia, login);
+				
     			if (!BaseUtil.isNZB(listaRetorno)) {
     				List<DepartamentoVO> departamentosOrdenados = new ArrayList<DepartamentoVO>(listaRetorno);
     				Collections.sort(departamentosOrdenados, ordenaDepartamento);
 
-    				this.listaDepartamentos = listaRetorno;
-    				this.listaDepartamentosOrd = departamentosOrdenados;
+    				model.setListaDepartamentos(departamentosOrdenados);
     				request.setAttribute("departamentosOrdenados", departamentosOrdenados);
 
-    				if (!BaseUtil.isNZB(this.codigoDepartamento)) {
+					if (!BaseUtil.isNZB(model.getCodigoDepartamento())) {
+						int codigoDepartamento = Integer.parseInt(model.getCodigoDepartamento());
+						
     					for (DepartamentoVO dep : listaRetorno) {
-    						if (dep.equals(new DepartamentoVO(this.codigoDepartamento , null, null))) {
-    							return;
+    						if (dep.getCodigoDepartamento() == codigoDepartamento) {
+    							break;
     						}
     					}
     				}
-    				this.codigoDepartamento =0;
+					else {
+						model.setCodigoDepartamento(ZERO_STR);
+					}
     			}
     		}
 
     	} catch (DEPIIntegrationException e) {
-    		LOGGER.error(e.getMessage());
-    		//throw new DEPIIntegrationException(e.getMessage());
+    		LOGGER.error("Falha carregamento departamento", e);
+    		throw new DEPIIntegrationException(e.getMessage());
     	}
-
-
     }
     /**
      * Comparador de DepartamentoVO onde a ordena��o ser� realizada pelo c�digo do departamento.
@@ -752,46 +670,6 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     		return p1.getSiglaDepartamento().compareTo(p2.getSiglaDepartamento());
     	};
     };   
-
-
-
-    /**
-     * Método utilizado para gerar relatório em PDF.
-     * @param parametros Parametros do Relatorio.
-     * @throws IntegrationException - Integra��o.
-     */
-    public InputStream gerarPdf(String nomeRelatorio, Map<String, Object> parametros) throws DEPIIntegrationException, IOException {
-    	Connection conn = null;
-    	InputStream ouputStream = null;
-    	conn = null; // Falta obter conn new  dao.getDataSource().getConnection();
-    	File reportFile = new File(  request.getSession().getServletContext().getRealPath(ConstantesDEPI.DIR_RELATORIOS + nomeRelatorio));
-    	String pathImg = this.getWww3()+ESTRUTURA_PASTA_IMAGENS;
-    	//String url = this.getWww3()+ESTRUTURA_PASTA_IMAGENS;            
-    	parametros.put(ConstantesDEPI.PARAM_LOGO, pathImg + ConstantesDEPI.DP06_LOGO_JPG);
-    	byte[] bytes = null;
-    	try {
-    		bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, conn);
-    		
-    		try (InputStream is = new ByteArrayInputStream(bytes)) {
-    			LOGGER.error("Proposta Action - gerarCartaInterna - fim");
-    			ouputStream = is;
-    		}
-    	} catch (JRException e) {
-    		// TODO Auto-generated catch block 
-    		LOGGER.error(e.getMessage());
-    	}
-    	/*
-        } catch (JRException e) {
-           LOGGER.error(e.getMessage());
-           throw new IntegrationException(e.getMessage());
-        }
-        } catch (SQLException e) {
-           LOGGER.error(e.getMessage());
-            throw new IntegrationException(e.getMessage());
-        }
-    	 */
-    	return ouputStream;
-    }
 
     /**
      * Método utilizado para gerar relatório em PDF.
@@ -817,7 +695,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
 
     		InputStream is = new ByteArrayInputStream(bytes);
     		LOGGER.error("Proposta Action - gerarCartaInterna - fim");
-    		setFileInputStream(is);
+    		this.fileInputStream = is;
 
     	} catch (JRException e) {
     		LOGGER.error(e.getMessage());
@@ -828,107 +706,16 @@ public class ConsultarRelatorioAction extends BaseModelAction<RelatorioFormModel
     	}
     }
 
-
-
-    public int getCodigoCompanhia() {
-    	return codigoCompanhia;
-    }
-
-    public void setCodigoCompanhia(int codigoCompanhia) {
-    	this.codigoCompanhia = codigoCompanhia;
-    }
-
-    public int getCodigoDepartamento() {
-    	return codigoDepartamento;
-    }
-
-    public void setCodigoDepartamento(int codigoDepartamento) {
-    	this.codigoDepartamento = codigoDepartamento;
-    }
-
-    public int getCodigoMotivoDeposito() {
-    	return codigoMotivoDeposito;
-    }
-
-    public void setCodigoMotivoDeposito(int codigoMotivoDeposito) {
-    	this.codigoMotivoDeposito = codigoMotivoDeposito;
-    }
-
-    public List<CompanhiaSeguradoraVO> getListaCompanhia() {
-    	return listaCompanhia;
-    }
-
-
-    public void setListaCompanhia(List<CompanhiaSeguradoraVO> listaCompanhia) {
-    	this.listaCompanhia = listaCompanhia;
-    }
-
-
-    public List<DepartamentoVO> getListaDepartamentos() {
-    	return listaDepartamentos;
-    }
-
-
-    public void setListaDepartamentos(List<DepartamentoVO> listaDepartamentos) {
-    	this.listaDepartamentos = listaDepartamentos;
-    }
-
-
-    public List<MotivoDepositoVO> getListaMotivosDepositos() {
-    	return listaMotivosDepositos;
-    }
-
-
-    public void setListaMotivosDepositos(List<MotivoDepositoVO> listaMotivosDepositos) {
-    	this.listaMotivosDepositos = listaMotivosDepositos;
-    }
-
-
-
-    public List<CompanhiaSeguradoraVO> getListaCompanhiaOrd() {
-    	return listaCompanhiaOrd;
-    }
-
-    public void setListaCompanhiaOrd(List<CompanhiaSeguradoraVO> listaCompanhiaOrd) {
-    	this.listaCompanhiaOrd = listaCompanhiaOrd;
-    }
-
-    public List<DepartamentoVO> getListaDepartamentosOrd() {
-    	return listaDepartamentosOrd;
-    }
-
-    public void setListaDepartamentosOrd(List<DepartamentoVO> listaDepartamentosOrd) {
-    	this.listaDepartamentosOrd = listaDepartamentosOrd;
-    }
-
-    public FiltroVO getFiltroVO() {
-    	return filtroVO;
-    }
-
-    public void setFiltroVO(FiltroVO filtroVO) {
-
-    	try {
-    		this.filtroVO = filtroVO;	
-    	} catch (Exception e) {
-    		LOGGER.error("XXXX-"+e.getMessage());
-    		if (filtroVO != null) {
-    			LOGGER.error(filtroVO.toString());
-    		}	
-    		this.filtroVO = new FiltroVO();
-    	}
-
-    }
-
     public InputStream getFileInputStream() {
 		return fileInputStream;
 	}
     
-    public void setFileInputStream(InputStream fileInputStream) {
-    	this.fileInputStream = fileInputStream;
+    public FiltroVO getFiltroVO() {
+    	return model;
     }
 
     @Override
-    public RelatorioFormModel getModel() {
+    public FiltroVO getModel() {
     	return model;
     }
 

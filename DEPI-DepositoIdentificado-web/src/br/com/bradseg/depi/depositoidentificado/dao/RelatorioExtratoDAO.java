@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
 /**
@@ -19,7 +19,7 @@ public interface RelatorioExtratoDAO {
      * @throws IntegrationException trata erro de neg�cio
      * @return List<RelatorioExtratoAnaliticoVO>
      */
-    List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro) throws SQLException;
+    List<RelatorioEnvioRetornoVO> obterDadosAnalitico(FiltroUtil filtro) throws SQLException;
 
     /**
      * Método obterDadosSintetico

@@ -15,18 +15,6 @@
     	<input type="hidden" id="acaoOriginal" name="acaoOriginal" value="${acao}" />
 
        	<input type="hidden" id="acaoFrm" name="filtroVO.acao" value="${acao}" />
-       	<input type="hidden" id="tipoRelatorioFrm" name="filtroVO.tipoRelatorio" value="" />
-       	<input type="hidden" id="visualizacaoFrm" name="filtroVO.visualizacao" value="" />
-	    <input type="hidden" id="depositoFrm" name="filtroVO.deposito" value=""/>
-	    <input type="hidden" id="situacaoEnvioRetornoFrm" name="filtroVO.situacaoEnvioRetorno" value=""/>
-	    <input type="hidden" id="situacaoManutencoesFrm" name="filtroVO.situacaoManutencoes" value=""/>
-	    <input type="hidden" id="endossoFrm" name="filtroVO.endosso" value=""/>
-	    <input type="hidden" id="codigoAutorizadorFrm" name="filtroVO.codigoAutorizador" value = "" />
-	    <input type="hidden" id="cpfCnpjFrm" name="filtroVO.cpfCnpj" value = "" />
-	    <input type="hidden" id="codigoContaCorrenteFrm" name="filtroVO.codigoContaCorrente" value = "" />	
-	    <input type="hidden" id="valorInicialFrm" name="filtroVO.valorInicial" value = ""/>		
-	    <input type="hidden" id="valorFinalFrm" name="valorFinal" value = "" />
-	    <input type="hidden" id="descricaoDetalhadaFrm" name="filtroVO.descricaoDetalhada" value = "" />
 
 	<table  class="tabela_principal" align="center">
 		<tr>
@@ -56,42 +44,37 @@
 					
 							<td colspan="6">
 								<!-- checked="checked"  -->
-								<input type="radio" name="tipoRelatorio"  value="ER" checked="checked" class="optionbutton" onclick = "ajustarPagina();">&nbsp; Envio/Retorno Banco    
-							    <input type="radio" name="tipoRelatorio"  value="EX" class="optionbutton" onclick = "ajustarPagina();">&nbsp;Extrato-Banco
-								<input type="radio" name="tipoRelatorio"  value="MN" class="optionbutton"onclick = "ajustarPagina();">&nbsp;Manutenções   
-							    <input type="radio" name="tipoRelatorio"  value="DC" class="optionbutton" onclick = "ajustarPagina();">&nbsp;Dados Complementares 
+								<s:radio name="filtroVO.tipoRelatorio" 
+									list="#{'ER': 'Envio/Retorno Banco', 'EX': 'Extrato-Banco', 'MN': 'Manutenções', 'DC': 'Dados Complementares'}"
+									cssClass="optionButton"
+									onclick="ajustarPagina()"/>
 							</td>
 					</tr>
 					
-					<s:if test="%{#vacao=='exibirDadosComplementares'}">
-						<tr>
-							<td class="td_label">
-								Visualização
-								<span class="obrigatorio">*</span>
-							</td>
-							<td colspan="6">
-								<input type="radio" name="visualizacao" value="A" checked="checked" class="optionbutton" onclick = "ajustarPagina();">Analítico   
-							</td>
-						</tr>
-					</s:if>
-				    <s:else>
-						<tr>
-							<td class="td_label">
-								Visualização
-								<span class="obrigatorio">*</span>
-							</td>
-							<td colspan="6">					
-						    	<input type="radio" name="visualizacao" value="A" checked="checked" class="optionbutton" onclick = "ajustarPagina();">Analítico
-						    	<input type="radio" name="visualizacao" value="S" class="optionbutton" onclick = "ajustarPagina();">Sintético
-							</td>
-						</tr>	
-					</s:else>
-					
+					<tr>
+						<td class="td_label">
+							Visualização
+							<span class="obrigatorio">*</span>
+						</td>
+						<td colspan="6">
+							<s:if test="%{#vacao=='exibirDadosComplementares'}">
+								<s:set var="visualizacaoRadio">disabled</s:set>
+							</s:if>
+							<s:radio name="filtroVO.visualizacao" 
+								list="#{'A': 'Analítico', 'S': 'Sintético'}"
+								cssClass="optionButton"
+								onclick="ajustarPagina()"
+								disabled="%{#vacao=='exibirDadosComplementares'}"/>
+							<%--
+					    	<input type="radio" name="filtroVO.visualizacao" value="A" checked="checked" class="optionbutton" onclick = "ajustarPagina();" #{visualizacaoRadio}>Analítico
+					    	<input type="radio" name="filtroVO.visualizacao" value="S" class="optionbutton" onclick = "ajustarPagina();" #{visualizacaoRadio}>Sintético
+							 --%>
+						</td>
+					</tr>	
 					<tr>
 
 						<td class="td_label" align="left">Cia</td>
 							<td align="left">
-								<s:if test="%{#vtpcCias=='TRUE'}">
 <c:url value='/json/ciaDeptosComRestricao.do?codigoCia=%d' var="urlDepto"></c:url>
 <c:set var="scriptCompanhia">
 urlDepto = '${urlDepto}';
@@ -119,11 +102,9 @@ $.dpcoddesc.aninhar({
 						  			listValue="codigoCompanhia" 
 						  			name="filtroVO.codigoCompanhia" 
 						  			style="width: 100%;"  />
-						  		</s:if>
 							</td>
 							
 							<td align="left" colspan="5">
-							<s:if test="%{#vtpcCiasOrdenadas=='TRUE'}">
 								<s:select 
 									list="listaCompanhiaOrd" 
 									id="listaCompanhiaOrd" 
@@ -133,7 +114,6 @@ $.dpcoddesc.aninhar({
 						  			listValue="descricaoCompanhia" 
 						  			name="companhia.listaCompanhiaOrd"
 						  			style="width: 100%;"  />
-						  	</s:if>
 							</td>
 						
 					</tr>
@@ -244,13 +224,13 @@ $.dpcoddesc.aninhar({
 				<tr>
 					<td class="td_label">CPF/CNPJ</td>
 					<td>&nbsp;
-						<input type="hidden" id="hdd_cpfCnpj"  name="hdd_cpfCnpj" value="" /> 
-						<input type="text" id="cpfCnpj" class="cpfCnpj" size="28" onkeypress="return permitirApenasInteiros(event);" maxlength="18" 
-						onfocus="document.getElementById('hdd_cpfCnpj').value = this.value;" onkeypress="return formatarCPFCNPJ(this, event);" />
+						<input type="text" id="cpfCnpj" class="cpfCnpj" size="28" name="cpfCnpj" 
+							onkeypress="return permitirApenasInteiros(event) && formatarCPFCNPJ(this, event)" 
+							maxlength="18"/>
 					</td>							
 					<td class="td_label" width="13%">&nbsp;Endosso</td>
 					<td colspan="4">&nbsp;
-						<input type="text" id="endosso" class="input" size="12"  onkeypress="return permitirApenasInteiros(event);" maxlength="9">							
+						<input type="text" id="endosso" name="endosso" class="input" size="12"  onkeypress="return permitirApenasInteiros(event);" maxlength="9">							
 					</td>
 				</tr>	
 				<tr>	
@@ -340,34 +320,15 @@ $.dpcoddesc.aninhar({
 					'exibirEnvioRetornoAnalitico_OR_exibirEnvioRetornoSintetico'
 					'NOT_exibirManutencoesAnalitico_and_NOT_exibirManutencoesSintetico
 					 -->
-					<s:if test="%{#vacao=='exibirManutencoesAnalitico' or #vacao=='exibirManutencoesSintetico' }">
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="A" class="optionbutton" onclick = "ajustarPagina();">Aceitos  
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="T" class="optionbutton" onclick = "ajustarPagina();">Transferidos
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="D" class="optionbutton"onclick = "ajustarPagina();">Devolvidos  
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="R" class="optionbutton" onclick = "ajustarPagina();">Rejeitados
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value=""   checked="checked" class="optionbutton" onclick = "ajustarPagina();">Todos
-					</s:if>
-					<s:if test="%{#vacao!='exibirManutencoesAnalitico' and #vacao!='exibirManutencoesSintetico' }">
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="A" class="optionbutton" onclick = "ajustarPagina();" disabled>Aceitos  
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="T" class="optionbutton" onclick = "ajustarPagina();" disabled>Transferidos
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="D" class="optionbutton"onclick = "ajustarPagina();" disabled>Devolvidos  
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value="R" class="optionbutton" onclick = "ajustarPagina();" disabled>Rejeitados
-						<input type="radio" name="situacaoManutencoes" id="situacaoManutencoes" value=""   checked="checked" class="optionbutton" onclick = "ajustarPagina();"  disabled>Todos
-					</s:if>
-	
-
-
-					
+					<s:radio list="#{'A':'Aceitos', 'T':'Transferidos', 'D':'Devolvidos', 'R':'Rejeitados' }"
+						name="situacaoManutencoes" cssClass="optionbutton" onclick="ajustarPagina" id="situacaoManutencoes" 
+						disabled="%{#vacao!='exibirManutencoesAnalitico' and #vacao!='exibirManutencoesSintetico' }"
+						/>
 					</td>
 				</tr>					
-					
 			</table>
-				
-				
-				
 				</td>	
 		    </tr>
-
 	</table>
 	
 	<table align="center">

@@ -39,7 +39,7 @@
 	       		<param name="dataSource">beans</param>  
 	      			<param name="format">PDF</param>  
 	      			<param name="documentName">Relatorio_Envio</param>
-		    </result> 
+		    </result>
 		    		    
 		    <result name="relEnvioRetornoBancoAnalitico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
@@ -52,19 +52,19 @@
 					<param name="inputName">fileInputStream</param>
 					<param name="contentDisposition">filename="${fileNameReport}"</param>
 				<param name="bufferSize">1024</param>			   
-			</result>			
+			</result>
  			<result name="relExtratoAnalitico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
 					<param name="contentDisposition">filename="${fileNameReport}"</param>
 				<param name="bufferSize">1024</param>			   
-			</result>							
+			</result>
  			<result name="relExtratoSintetico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
 					<param name="contentDisposition">filename="${fileNameReport}"</param>
 				<param name="bufferSize">1024</param>			   
-			</result>				
+			</result>
 		    <result name="relManutencoesAnalitico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
@@ -76,13 +76,13 @@
 					<param name="inputName">fileInputStream</param>
 					<param name="contentDisposition">filename="${fileNameReport}"</param>
 				<param name="bufferSize">1024</param>			   
-			</result>		    
+			</result>
 			<result name="relManutencoesSintetico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
 					<param name="contentDisposition">filename="${fileNameReport}"</param>
 				<param name="bufferSize">1024</param>			   
-			</result>		    		 
+			</result>
 		    		   		    
 			<result name="error">
 			      <param name="location">/WEB-INF/pages/layout/erro.jsp</param>

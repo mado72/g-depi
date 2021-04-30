@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<libraries:Library xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:libraries="http://www.ibm.com/websphere/appserver/schemas/5.0/libraries.xmi" xmi:id="Library_1619665762962" name="BSAD">
+  <classPath>E:\Desenv\globality\@Java\@Libs\BSAD-3.6.10-all\Bibliotecas</classPath>
+</libraries:Library>

@@ -13,7 +13,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesSinteticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioDadosComplementaresVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
-import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoSinteticoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
@@ -78,18 +78,18 @@ public interface ConsultarRelatorioFacade {
    public List<ManutencoesSinteticoVO> obterDadosManutencoesSintetico(FiltroUtil filtro);
 
    /**
-    * Obtém dados envio retorno analítico
+    * Obtém dados de envio analítico
     * @param filtro Filtro
-    * @return lista de RelatorioEnvioRetornoAnaliticoVO
+    * @return lista de RelatorioEnvioRetornoVO
     */
-   public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosEnvioRetornoAnalitico(FiltroUtil filtro); 
-
+   public List<RelatorioEnvioRetornoVO> obterDadosEnvioRetornoAnalitico(FiltroUtil filtro); 
+   
    /**
-    * Obtém dados envio retorno sintético
+    * Obtém dados de envio sintético
     * @param filtro Filtro
-    * @return Lista de RelatorioEnvioRetornoSinteticoVO
+    * @return lista de RelatorioEnvioRetornoVO
     */
-   public List<RelatorioEnvioRetornoSinteticoVO> obterDadosEnvioRetornoSintetico(FiltroUtil filtro); 
+   public List<RelatorioEnvioRetornoVO> obterDadosEnvioRetornoSintetico(FiltroUtil filtro); 
    
    /**
     * Obtém dados banco extrato analítico
@@ -115,6 +115,7 @@ public interface ConsultarRelatorioFacade {
     * Preenche dados analítico
     * @param dados Dados
     */
-   public void ordenarDadosAnalitico(List<RelatorioExtratoAnaliticoVO> dados); 
+   public void ordenarDadosAnalitico(List<RelatorioExtratoAnaliticoVO> dados);
+
 
 }

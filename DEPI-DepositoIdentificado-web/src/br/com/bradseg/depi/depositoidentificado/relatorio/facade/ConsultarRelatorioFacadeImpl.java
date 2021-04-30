@@ -1,5 +1,10 @@
 package br.com.bradseg.depi.depositoidentificado.relatorio.facade;
 
+import static br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.ARQUIVO_ACEITO;
+import static br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.ARQUIVO_CANCELADO;
+import static br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.ARQUIVO_ENVIADO;
+import static br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.ARQUIVO_REJEITADO;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +45,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesSinteticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioDadosComplementaresVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
-import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoSinteticoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
@@ -188,43 +194,106 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
         
         return dadosSinteticos;
     }
-
-	@Override
-	public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosEnvioRetornoAnalitico(
-			FiltroUtil filtro) {
+    
+    @Override
+    public List<RelatorioEnvioRetornoVO> obterDadosEnvioRetornoAnalitico(
+    		FiltroUtil filtro) {
+    	
+    	return this.daoRelatorioEnvioRetornoDAO.obterDados(filtro);
+    }
+    
+    @Override
+    public List<RelatorioEnvioRetornoVO> obterDadosEnvioRetornoSintetico(
+    		FiltroUtil filtro) {
+    	
+    	List<RelatorioEnvioRetornoVO> dados = this.daoRelatorioEnvioRetornoDAO.obterDados(filtro);
+		HashMap<String, RelatorioEnvioRetornoVO> mapaPorCompanhiaBanco = new LinkedHashMap<>();
 		
-		try {
-			return this.daoRelatorioEnvioRetornoDAO.obterDadosAnalitico(filtro);
-		} catch (SQLException e) {
-        	LOGGER.error(e.getMessage());
-            throw new DEPIIntegrationException(e.getMessage());
+		AtomicInteger qtdAceitos = new AtomicInteger();
+		AtomicInteger qtdCancelados = new AtomicInteger();
+		AtomicInteger qtdEnviados = new AtomicInteger();
+		AtomicInteger qtdRejeitados = new AtomicInteger();
+		
+		BigDecimal totalAceitos = BigDecimal.ZERO;
+		BigDecimal totalCancelados = BigDecimal.ZERO;;
+		BigDecimal totalEnviados = BigDecimal.ZERO;;
+		BigDecimal totalRejeitados = BigDecimal.ZERO;
+		
+		for (RelatorioEnvioRetornoVO item : dados) {
+			String companhiaBanco = item.getCodigoCia() + "." + item.getCodigoBanco();
+			
+			RelatorioEnvioRetornoVO consolidado = mapaPorCompanhiaBanco.get(companhiaBanco);
+			if (consolidado == null) {
+				consolidado = item;
+				
+				consolidado.setQtdAceitos(0);
+				consolidado.setQtdCancelados(0);
+				consolidado.setQtdEnviados(0);
+				consolidado.setQtdRejeitados(0);
+				
+				consolidado.setTotalAceitos(BigDecimal.ZERO);
+				consolidado.setTotalCancelados(BigDecimal.ZERO);
+				consolidado.setTotalEnviados(BigDecimal.ZERO);
+				consolidado.setTotalRejeitados(BigDecimal.ZERO);
+				
+				mapaPorCompanhiaBanco.put(companhiaBanco, consolidado);
+			}
+			
+			if (item.getCodigoSituacao() == ARQUIVO_ACEITO) {
+				totalAceitos = totalAceitos.add(item.getValorRegistrado());
+				qtdAceitos.incrementAndGet();
+				
+				consolidado.setQtdAceitos(consolidado.getQtdAceitos() + 1);
+				consolidado.setTotalAceitos(consolidado.getTotalAceitos().add(item.getValorRegistrado()));
+			}
+			else if (item.getCodigoSituacao() == ARQUIVO_CANCELADO) {
+				totalCancelados = totalCancelados.add(item.getValorRegistrado());
+				qtdCancelados.incrementAndGet();
+				
+				consolidado.setQtdCancelados(consolidado.getQtdCancelados() + 1);
+				consolidado.setTotalCancelados(consolidado.getTotalCancelados().add(item.getValorRegistrado()));
+			}
+			else if (item.getCodigoSituacao() == ARQUIVO_ENVIADO) {
+				totalEnviados = totalEnviados.add(item.getValorRegistrado());
+				qtdEnviados.incrementAndGet();
+				
+				consolidado.setQtdEnviados(consolidado.getQtdEnviados() + 1);
+				consolidado.setTotalEnviados(consolidado.getTotalEnviados().add(item.getValorRegistrado()));
+			}
+			else if (item.getCodigoSituacao() == ARQUIVO_REJEITADO) {
+				totalRejeitados = totalRejeitados.add(item.getValorRegistrado());
+				qtdRejeitados.incrementAndGet();
+				
+				consolidado.setQtdRejeitados(consolidado.getQtdRejeitados() + 1);
+				consolidado.setTotalRejeitados(consolidado.getTotalRejeitados().add(item.getValorRegistrado()));
+			}
 		}
 		
+		ArrayList<RelatorioEnvioRetornoVO> retorno = new ArrayList<>(mapaPorCompanhiaBanco.values());
+		RelatorioEnvioRetornoVO totais = new RelatorioEnvioRetornoVO();
 		
-	}
+		totais.setTotalAceitos(totalAceitos);
+		totais.setTotalCancelados(totalCancelados);
+		totais.setTotalEnviados(totalEnviados);
+		totais.setTotalRejeitados(totalRejeitados);
+		
+		totais.setQtdAceitos(qtdAceitos.get());
+		totais.setQtdCancelados(qtdCancelados.get());
+		totais.setQtdEnviados(qtdEnviados.get());
+		totais.setQtdRejeitados(qtdRejeitados.get());
+		
+		retorno.add(totais);
+		
+		return retorno;
 
-	@Override
-	public List<RelatorioEnvioRetornoSinteticoVO> obterDadosEnvioRetornoSintetico(
-			FiltroUtil filtro) {
-		try{
-			return this.daoRelatorioEnvioRetornoDAO.obterDadosSintetico(filtro);
-		} catch (SQLException e) {
-	       	LOGGER.error(e.getMessage());
-	        throw new DEPIIntegrationException(e.getMessage());
-		}
-	}
-
-	@Override
-	public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosBancoExtratoAnalitico(
-			FiltroUtil filtro) {
-		try {
-			return this.daoRelatorioEnvioRetornoDAO.obterDadosAnalitico(filtro);
-		} catch (SQLException e) {
-	       	LOGGER.error(e.getMessage());
-            throw new DEPIIntegrationException(e.getMessage());
-		}
-	}
-	
+    }
+    
+    @Override
+    public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosBancoExtratoAnalitico(
+    		FiltroUtil filtro) {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
 	
 	@Override
 	public List<RelatorioExtratoSinteticoVO> obterDadosExtratoSintetico(
@@ -246,7 +315,6 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 		return populaDescricaLstaCompanhia(lista);
 
 	}
-	
 	
 	public List<CompanhiaSeguradoraVO> populaDescricaLstaCompanhia( List<CompanhiaSeguradoraVO>  Companhias) {
 		// TODO Auto-generated method stub	

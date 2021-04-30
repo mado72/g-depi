@@ -1,6 +1,12 @@
 package br.com.bradseg.depi.depositoidentificado.relatorio.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
  * Dados do filtro usado nos relatórios 
@@ -9,8 +15,12 @@ import java.io.Serializable;
 public class FiltroVO implements Serializable {
 
 	private static final long serialVersionUID = -6638692335506721199L;
+
+	private String fileNameReport;
 	private String acao;
 
+	private String tituloTabela;
+	private String subtituloTela;
 	private String tipoRelatorio;
 	private String visualizacao;
 	private String codigoCompanhia;
@@ -31,6 +41,11 @@ public class FiltroVO implements Serializable {
 	private String valorInicial;
 	private String valorFinal;
 	private String descricaoDetalhada;
+	
+	private List<CompanhiaSeguradoraVO> listaCompanhia = new ArrayList<CompanhiaSeguradoraVO>();
+	private List<CompanhiaSeguradoraVO> listaCompanhiaOrd = new ArrayList<CompanhiaSeguradoraVO>();
+	private List<DepartamentoVO> listaDepartamentos = new ArrayList<DepartamentoVO>();
+	private List<MotivoDepositoVO> listaMotivosDepositos = new ArrayList<MotivoDepositoVO>();
 	
 	@Override
 	public String toString() {
@@ -70,6 +85,21 @@ public class FiltroVO implements Serializable {
     }
 
 	/**
+	 * fileNameReport
+	 * @return fileNameReport
+	 */
+	public String getFileNameReport() {
+		return fileNameReport;
+	}
+
+	/**
+	 * @param fileNameReport fileNameReport
+	 */
+	public void setFileNameReport(String fileNameReport) {
+		this.fileNameReport = fileNameReport;
+	}
+
+	/**
 	 * Retorna acao
 	 * @return o acao
 	 */
@@ -83,6 +113,38 @@ public class FiltroVO implements Serializable {
 	 */
 	public void setAcao(String acao) {
 		this.acao = acao;
+	}
+
+	/**
+	 * Retorna tituloTabela
+	 * @return o tituloTabela
+	 */
+	public String getTituloTabela() {
+		return tituloTabela;
+	}
+
+	/**
+	 * Define tituloTabela
+	 * @param tituloTabela o tituloTabela a ser configurado
+	 */
+	public void setTituloTabela(String tituloTabela) {
+		this.tituloTabela = tituloTabela;
+	}
+
+	/**
+	 * Retorna subtituloTela
+	 * @return o subtituloTela
+	 */
+	public String getSubtituloTela() {
+		return subtituloTela;
+	}
+
+	/**
+	 * Define subtituloTela
+	 * @param subtituloTela o subtituloTela a ser configurado
+	 */
+	public void setSubtituloTela(String subtituloTela) {
+		this.subtituloTela = subtituloTela;
 	}
 
 	/**
@@ -389,6 +451,69 @@ public class FiltroVO implements Serializable {
 		this.descricaoDetalhada = descricaoDetalhada;
 	}
 
-    
+	/**
+	 * Retorna listaCompanhia
+	 * @return o listaCompanhia
+	 */
+	public List<CompanhiaSeguradoraVO> getListaCompanhia() {
+		return listaCompanhia;
+	}
+
+	/**
+	 * Define listaCompanhia
+	 * @param listaCompanhia o listaCompanhia a ser configurado
+	 */
+	public void setListaCompanhia(List<CompanhiaSeguradoraVO> listaCompanhia) {
+		this.listaCompanhia = listaCompanhia;
+	}
+
+	/**
+	 * Retorna listaCompanhiaOrd
+	 * @return o listaCompanhiaOrd
+	 */
+	public List<CompanhiaSeguradoraVO> getListaCompanhiaOrd() {
+		return listaCompanhiaOrd;
+	}
+
+	/**
+	 * Define listaCompanhiaOrd
+	 * @param listaCompanhiaOrd o listaCompanhiaOrd a ser configurado
+	 */
+	public void setListaCompanhiaOrd(List<CompanhiaSeguradoraVO> listaCompanhiaOrd) {
+		this.listaCompanhiaOrd = listaCompanhiaOrd;
+	}
+
+	/**
+	 * Retorna listaDepartamentos
+	 * @return o listaDepartamentos
+	 */
+	public List<DepartamentoVO> getListaDepartamentos() {
+		return listaDepartamentos;
+	}
+
+	/**
+	 * Define listaDepartamentos
+	 * @param listaDepartamentos o listaDepartamentos a ser configurado
+	 */
+	public void setListaDepartamentos(List<DepartamentoVO> listaDepartamentos) {
+		this.listaDepartamentos = listaDepartamentos;
+	}
+
+	/**
+	 * Retorna listaMotivosDepositos
+	 * @return o listaMotivosDepositos
+	 */
+	public List<MotivoDepositoVO> getListaMotivosDepositos() {
+		return listaMotivosDepositos;
+	}
+
+	/**
+	 * Define listaMotivosDepositos
+	 * @param listaMotivosDepositos o listaMotivosDepositos a ser configurado
+	 */
+	public void setListaMotivosDepositos(
+			List<MotivoDepositoVO> listaMotivosDepositos) {
+		this.listaMotivosDepositos = listaMotivosDepositos;
+	}
 	
 }

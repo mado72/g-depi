@@ -18,20 +18,40 @@
 			</TimeBasedFileNamingAndTriggeringPolicy>
 		</rollingPolicy>
 	</appender>
+
+<!--
+FIXME: Não deve estar habilitado para publicar no servidor. 
+ -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%-40(%d{ISO8601} [%thread])
+				${applicationName} %-5level %-60logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+ 	<logger name="org.apache" level="INFO" />
+	<logger name="com.opensymphony" level="DEBUG" />
+	<logger name="com.opensymphony.xwork2.ognl.accessor.XWorkMapPropertyAccessor" level="INFO" />
 	
+	<logger name="org.springframework" level="DEBUG" />
+	<logger name="br.com.bradseg.bsad.framework" level="INFO" />
+	<logger name="br.com.bradseg.depi" level="DEBUG" />
+
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+	
+<!--
+FIXME: Habilitar para publicar no servidor.
+
 	<logger name="org.apache" level="INFO" />
 	<logger name="com.opensymphony" level="INFO" />
 	<logger name="org.springframework" level="INFO" />
 	<logger name="br.com.bradseg.bsad.framework" level="INFO" />
-
-<!--
-	FIXME Deve estar comentado ao fazer commit.
-	<logger name="br.com.bradseg.depi.depositoidentificado" level="DEBUG" />
-	<logger name="com.opensymphony.xwork2.interceptor" level="DEBUG" />
-	<logger name="com.opensymphony.xwork2.validator" level="DEBUG" />
- -->	
 	
 	<root level="ERROR">
 		<appender-ref ref="FILE" />
 	</root>
+ -->	
 </configuration>

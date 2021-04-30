@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appdeployment:Deployment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:appdeployment="http://www.ibm.com/websphere/appserver/schemas/5.0/appdeployment.xmi" xmi:id="Dep_20210429192807900">
+  <deployedObject xmi:type="appdeployment:ApplicationDeployment" xmi:id="AppDep_20210429192807900" startingWeight="10">
+    <modules xmi:type="appdeployment:WebModuleDeployment" xmi:id="WebDep_20210429192807900" startingWeight="10000" uri="xxx-fake-web.war"/>
+    <classloader xmi:id="CL_20210429192807900" mode="PARENT_LAST">
+      <libraries xmi:id="LibraryRef_1619735508611" libraryName="BSAD3"/>
+    </classloader>
+  </deployedObject>
+</appdeployment:Deployment>

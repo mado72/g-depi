@@ -1,32 +1,20 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
-import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoSinteticoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoVO;
 
 /**
  * RelatorioEnvioRetornoDAO
- * @author igor.almeida
  */
 
 public interface RelatorioEnvioRetornoDAO {
     /**
-     * Método obterDadosAnalitico
+     * ObterDados de envio
      * @param filtro do relatório
-     * @throws IntegrationException - trata erro de neg�cio
      * @return List<DadosEnvioRetornoAnaliticoVO>
      */
-    List<RelatorioEnvioRetornoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro)throws SQLException;
-
-    /**
-     * Método obterDadosSintetico
-     * @param filtro do relatório
-     * @throws IntegrationException - trata erro de neg�cio
-     * @return List<DadosEnvioRetornoSinteticoVO>
-     */
-    List<RelatorioEnvioRetornoSinteticoVO> obterDadosSintetico(FiltroUtil filtro) throws SQLException;
+    List<RelatorioEnvioRetornoVO> obterDados(FiltroUtil filtro);
 
 }

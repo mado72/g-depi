@@ -1,6 +1,6 @@
 <Context>
   <!-- Datasource
-  <Resource name="jdbc/dsApplication" auth="Container" type="javax.sql.DataSource"
+  <Resource name="jdbc/DEPI-DepositoIdentificado" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="30" maxWait="10000"
                username="app" password="memory" driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
                url="jdbc:derby:memory:databases/DEPI-DepositoIdentificado;create=true"/>
