@@ -12,7 +12,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesSinteticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioDadosComplementaresVO;
-import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
@@ -96,14 +95,14 @@ public interface ConsultarRelatorioFacade {
     * @param filtro Filtro
     * @return Lista de RelatorioEnvioRetornoAnaliticoVO
     */
-   public List<RelatorioEnvioRetornoAnaliticoVO> obterDadosBancoExtratoAnalitico(FiltroUtil filtro);
+   public List<RelatorioExtratoAnaliticoVO> obterDadosBancoExtratoAnalitico(FiltroUtil filtro);
 
    /**
     * Obter dados extrato sintetico
     * @param filtro Filtro
     * @return Lista de RelatorioExtratoSinteticoVO
     */
-   public List<RelatorioExtratoSinteticoVO> obterDadosExtratoSintetico(FiltroUtil filtro);
+   public List<RelatorioExtratoSinteticoVO> obterDadosBancoExtratoSintetico(FiltroUtil filtro);
 
    /**
     * Preenche dados de totais

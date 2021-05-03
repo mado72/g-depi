@@ -50,8 +50,8 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
 
-		params.addValue("dataInicio", filtro.getDataInicio());
-		params.addValue("dataFim", filtro.getDataFinal());
+		params.addValue("dtInicio", filtro.getDataInicio());
+		params.addValue("dtFim", filtro.getDataFinal());
 
 		filtrosOpcionais(filtro, params, sb);
 

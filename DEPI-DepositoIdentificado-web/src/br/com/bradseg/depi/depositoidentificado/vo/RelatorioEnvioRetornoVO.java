@@ -9,7 +9,9 @@ import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 /**
  * Classe RelatorioEnvioRetornoAnaliticoVO.
  */
-public class RelatorioEnvioRetornoVO implements Serializable{
+public class RelatorioEnvioRetornoVO implements Serializable,
+		RelatorioCompanhiaAware, RelatorioBancoContaAware,
+		RelatorioSituacaoAware {
 
    private static final long serialVersionUID = -4759118749891158867L;
     
@@ -63,6 +65,8 @@ public class RelatorioEnvioRetornoVO implements Serializable{
     
     private String descricaoConta;
     
+    private String descricaoSituacao;
+    
     private String codigoAutorizadorComDv;
 
     private Integer qtdEnviados;
@@ -79,7 +83,8 @@ public class RelatorioEnvioRetornoVO implements Serializable{
      * Retorna o valor do atributo codigoConta.
      * @return o valor do atributo codigoConta
      */
-    public Long getCodigoConta() {
+    @Override
+	public Long getCodigoConta() {
         return codigoConta;
     }
 
@@ -128,7 +133,8 @@ public class RelatorioEnvioRetornoVO implements Serializable{
      * Especifica o descricaoCia.
      * @param descricaoCia String do descricaoCia a ser setado
      */
-    public void setDescricaoCia(String descricaoCia) {
+    @Override
+	public void setDescricaoCia(String descricaoCia) {
         this.descricaoCia = descricaoCia;
     }
 
@@ -144,9 +150,27 @@ public class RelatorioEnvioRetornoVO implements Serializable{
      * Especifica o descricaoConta.
      * @param descricaoConta String do descricaoConta a ser setado
      */
-    public void setDescricaoConta(String descricaoConta) {
+    @Override
+	public void setDescricaoConta(String descricaoConta) {
         this.descricaoConta = descricaoConta;
     }
+    
+    /**
+     * Situação
+     * @return Situação
+     */
+    public String getDescricaoSituacao() {
+		return descricaoSituacao;
+	}
+    
+    /**
+     * Situação
+     * @param descricaoSituacao Situação
+     */
+    @Override
+	public void setDescricaoSituacao(String descricaoSituacao) {
+		this.descricaoSituacao = descricaoSituacao;
+	}
 
     /**
      * Retorna o descricaoCia.
@@ -168,7 +192,8 @@ public class RelatorioEnvioRetornoVO implements Serializable{
      * Especifica o descricaoBanco.
      * @param descricaoBanco String do descricaoBanco a ser setado
      */
-    public void setDescricaoBanco(String descricaoBanco) {
+    @Override
+	public void setDescricaoBanco(String descricaoBanco) {
         this.descricaoBanco = descricaoBanco;
     }
 
@@ -241,7 +266,8 @@ public class RelatorioEnvioRetornoVO implements Serializable{
      * Retorna o valor do atributo codigoSituacao.
      * @return o valor do atributo codigoSituacao
      */
-    public Integer getCodigoSituacao() {
+    @Override
+	public Integer getCodigoSituacao() {
         return codigoSituacao;
     }
 
@@ -399,7 +425,8 @@ public class RelatorioEnvioRetornoVO implements Serializable{
      * Retorna o valor do atributo codigoBanco.
      * @return o valor do atributo codigoBanco
      */
-    public Integer getCodigoBanco() {
+    @Override
+	public Integer getCodigoBanco() {
         return codigoBanco;
     }
 
@@ -415,7 +442,8 @@ public class RelatorioEnvioRetornoVO implements Serializable{
      * Retorna o valor do atributo codigoAgencia.
      * @return o valor do atributo codigoAgencia
      */
-    public Integer getCodigoAgencia() {
+    @Override
+	public Integer getCodigoAgencia() {
         return codigoAgencia;
     }
 
@@ -433,7 +461,8 @@ public class RelatorioEnvioRetornoVO implements Serializable{
      * Retorna o valor do atributo codigoCia.
      * @return o valor do atributo codigoCia
      */
-    public Integer getCodigoCia() {
+    @Override
+	public Integer getCodigoCia() {
         return codigoCia;
     }
 

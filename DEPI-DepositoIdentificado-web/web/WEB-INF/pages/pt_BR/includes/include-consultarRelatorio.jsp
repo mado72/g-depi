@@ -16,129 +16,103 @@ function ajustarPagina() {
 	var tipoRelatorio = document.forms[0].elements['tipoRelatorio'];
 	var situacaoEnvioRetorno = document.forms[0].elements['situacaoEnvioRetorno'];
 	var situacaoManutencoes = document.forms[0].elements['situacaoManutencoes'];
+	
 	var sucu = document.forms[0].sucursal;
 	var apol = document.forms[0].apolice;
 	var cpfC = document.forms[0].cpfCnpj;
 	var end = document.forms[0].endosso;	
 	
+	apol.disabled = false;
+	end.disabled = false;
+	cpfC.disabled = false;
+	sucu.disabled = false;
 	
-	for (var i = 0; i < tipoRelatorio.length; i++) {
-		if (tipoRelatorio[i].checked && tipoRelatorio[i].value == 'ER') {
+	$("input[name='visualizacao']").prop("disabled", false);
+	
+	switch ($("input[name='tipoRelatorio']:checked").val()) {
+		case 'ER':
 			titulo += 'Dados de Envio/Retorno Banco';
 			subtitulo += 'Envio/Retorno Banco';
-			janela += 'Envio/RetornoBanco'
-			acao += 'EnvioRetorno'
-			situacaoEnvioRetorno[4].checked = true;
-			for (var i = 0; i < situacaoEnvioRetorno.length; i++) 
-				situacaoEnvioRetorno[i].disabled = false;
-			for (var i = 0; i < situacaoManutencoes.length; i++) 
-				situacaoManutencoes[i].disabled = true;
+			janela += 'Envio/RetornoBanco';
+			acao += 'EnvioRetorno';
 			
-			for (var i = 0; i < visualizacao.length; i++) {
-				visualizacao[i].disabled = false;
-			}	
-			apol.disabled = false;
-			end.disabled = false;
-			cpfC.disabled = false;
-			sucu.disabled = false;	
-			break;					
-		} else if (tipoRelatorio[i].checked && tipoRelatorio[i].value == 'EX') {
+			$("input[name='situacaoEnvioRetorno']").val('T');
+			$("input[name='situacaoManutencoes']").val('T');
+			
+			$("input[name='situacaoEnvioRetorno']").prop("disabled", false);
+			$("input[name='situacaoManutencoes']").prop("disabled", true);
+			
+			break;
+		case 'EX':
 			titulo += 'Dados de Extrato Banco';
 			subtitulo += 'Extrato Banco';
-			janela += 'ExtratoBanco'
-			acao += 'Extrato'
-			situacaoEnvioRetorno[1].checked = true;
-			for (var i = 0; i < situacaoEnvioRetorno.length; i++) {
-				situacaoEnvioRetorno[i].disabled = true;			
-			}				
-			for (var i = 0; i < situacaoManutencoes.length; i++) {
-				situacaoManutencoes[i].disabled = true;
-			}
-			for (var i = 0; i < visualizacao.length; i++) {
-				visualizacao[i].disabled = false;
-			}	
-			apol.disabled = false;
-			end.disabled = false;
-			cpfC.disabled = false;
-			sucu.disabled = false;
-			break;				
-		} else if (tipoRelatorio[i].checked && tipoRelatorio[i].value == 'MN') {
+			janela += 'ExtratoBanco';
+			acao += 'Extrato';
+			
+			$("input[name='situacaoEnvioRetorno']").val('A');
+			$("input[name='situacaoManutencoes']").val('T');
+			
+			$("input[name='situacaoEnvioRetorno']").prop("disabled", true);
+			$("input[name='situacaoManutencoes']").prop("disabled", true);
+
+			break;
+		case 'MN':
 			titulo += 'Dados de Manutenções';
 			subtitulo += 'Manutenções';
-			janela += 'Manutenções'
-			acao += 'Manutencoes'
-			situacaoEnvioRetorno[4].checked = true;
-			for (var i = 0; i < situacaoEnvioRetorno.length; i++) 
-				situacaoEnvioRetorno[i].disabled = true;
-			for (var i = 0; i < situacaoManutencoes.length; i++){ 
-				situacaoManutencoes[i].disabled = false;
-		    }
-		    for (var i = 0; i < visualizacao.length; i++) {
-				visualizacao[i].disabled = false;
-			}	
-			apol.disabled = false;
-			end.disabled = false;
-			cpfC.disabled = false;
-			sucu.disabled = false;
-			break;				
-		} else if (tipoRelatorio[i].checked && tipoRelatorio[i].value == 'DC') {					
+			janela += 'Manutenções';
+			acao += 'Manutencoes';
+			
+			$("input[name='situacaoEnvioRetorno']").val('T');
+			$("input[name='situacaoManutencoes']").val('T');
+			
+			$("input[name='situacaoEnvioRetorno']").prop("disabled", true);
+			$("input[name='situacaoManutencoes']").prop("disabled", false);
+
+			break;
+		case 'DC':
 			titulo += 'Dados Complementares';									
 			subtitulo += 'Dados Complementares';									
-			janela += 'Dados Complementares'
-			acao += 'DadosComplementares'						
-			situacaoEnvioRetorno[1].checked = true;	
-			visualizacao[0].checked = true;						
-			for (var i = 0; i < situacaoEnvioRetorno.length; i++) {
-				situacaoEnvioRetorno[i].disabled = true;			
-			}			
-			for (var i = 0; i < situacaoManutencoes.length; i++) {
-				situacaoManutencoes[i].disabled = true;		
-			}			
-			for (var i = 0; i < visualizacao.length; i++) {
-				visualizacao[i].disabled = true;
-			}	
+			janela += 'Dados Complementares';
+			acao += 'DadosComplementares';
+			
+			$("input[name='situacaoEnvioRetorno']").val('A');
+			$("input[name='situacaoManutencoes']").val('T');
+			$("input[name='visualizacao']").val('A');
+			
+			$("input[name='situacaoEnvioRetorno']").prop("disabled", true);
+			$("input[name='situacaoManutencoes']").prop("disabled", true);
+			$("input[name='visualizacao']").prop("disabled", true);
 			
 			apol.value = "";			
 			end.value = "";
 			cpfC.value = "";
 			sucu.value = "";	
-					
+			
 			apol.disabled = true;
 			end.disabled = true;
 			cpfC.disabled = true;
 			sucu.disabled = true;			
 			break;				
-		}		
 	}
-	for (var i = 0; i < visualizacao.length; i++) {
-		if (visualizacao[i].checked && visualizacao[i].value == 'A') {
+	
+	switch ($("input[name='visualizacao']:checked").val()) {
+	case 'A':
 			titulo += ' - Analítico';
 			subtitulo += ' - Analítico';
 			janela += '-Analítico';
 			acao += 'Analitico';
 			break;
-		} else if (visualizacao[i].checked && visualizacao[i].value == 'S') {
-			if (subtitulo == 'Manutenções') {
-				for (var i = 0; i < situacaoManutencoes.length; i++) 
-					situacaoManutencoes[i].disabled = false;
-				var situ = situacaoManutencoes[situacaoManutencoes.length - 1];
-				situ.checked = true; situ.disabled = false; 
-			} else if (subtitulo == 'Envio/Retorno Banco') {
-				for (var i = 0; i < situacaoEnvioRetorno.length; i++) 
-					situacaoEnvioRetorno[i].disabled = false;
-				var situ = situacaoEnvioRetorno[situacaoEnvioRetorno.length - 1];
-				situ.checked = true; situ.disabled = false; 
-			}
+	case 'S':
 			titulo += ' - Sintético';
 			subtitulo += ' - Sintético';
 			janela += '-Sintético';
 			acao += 'Sintetico';
 			break;
-		}
+	default:
 	}
 	
 	
-	    Calendar.setup({
+	Calendar.setup({
         inputField     : "dataInicial",
         ifFormat       : "%d/%m/%Y",
         button         : "inicio",
@@ -155,13 +129,13 @@ function ajustarPagina() {
         singleClick    : true
     });
 	
-	
-	document.getElementById('subtitulo').innerHTML = subtitulo;
-	document.getElementById('titulo_tabela').innerHTML = titulo;
-	document.forms[0].acao.value = acao;
+    $("#subtitulo").text(subtitulo);
+    $("#titulo_tabela").text(titulo);
+    
+	$("#situacaoEnvioRetorno"+$("input[name='situacaoEnvioRetorno']").val()).prop('checked', true);
+	$("#situacaoManutencoes"+$("input[name='situacaoManutencoes']").val()).prop('checked', true);
+
 	document.title = janela;
-	
-	
 }
 
 function validarCpfCnpj() { 

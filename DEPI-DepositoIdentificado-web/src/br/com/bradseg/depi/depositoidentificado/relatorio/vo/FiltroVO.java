@@ -15,6 +15,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 public class FiltroVO implements Serializable {
 
 	private static final long serialVersionUID = -6638692335506721199L;
+	
+	private boolean abrirRelatorio;
 
 	private String fileNameReport;
 	private String acao;
@@ -83,6 +85,21 @@ public class FiltroVO implements Serializable {
     	}
     	return sb.toString();
     }
+    
+    /**
+     * @return true se deve abrir nova janela com relatóroi
+     */
+    public boolean isAbrirRelatorio() {
+		return abrirRelatorio;
+	}
+    
+    /**
+     * abrir ou não relatório
+     * @param abrirRelatorio true = abrir
+     */
+    public void setAbrirRelatorio(boolean abrirRelatorio) {
+		this.abrirRelatorio = abrirRelatorio;
+	}
 
 	/**
 	 * fileNameReport

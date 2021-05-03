@@ -3,12 +3,14 @@ package br.com.bradseg.depi.depositoidentificado.vo;
 import java.io.Serializable;
 import java.util.Date;
 
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
+
 /**
  * Método RelatorioExtratoAnaliticoVO
  * @author Globality
  */
-public class RelatorioExtratoAnaliticoVO implements Serializable{
-
+public class RelatorioExtratoAnaliticoVO implements Serializable,
+		RelatorioCompanhiaAware, RelatorioBancoContaAware {
     
     /**
      * 
@@ -124,7 +126,8 @@ public class RelatorioExtratoAnaliticoVO implements Serializable{
      * Retorna o valor do atributo codigoAgencia.
      * @return o valor do atributo codigoAgencia
      */
-    public Integer getCodigoAgencia() {
+    @Override
+	public Integer getCodigoAgencia() {
         return codigoAgencia;
     }
 
@@ -156,7 +159,8 @@ public class RelatorioExtratoAnaliticoVO implements Serializable{
      * Retorna o valor do atributo codigoBanco.
      * @return o valor do atributo codigoBanco
      */
-    public Integer getCodigoBanco() {
+    @Override
+	public Integer getCodigoBanco() {
         return codigoBanco;
     }
 
@@ -172,7 +176,8 @@ public class RelatorioExtratoAnaliticoVO implements Serializable{
      * Retorna o valor do atributo codigoCia.
      * @return o valor do atributo codigoCia
      */
-    public Integer getCodigoCia() {
+    @Override
+	public Integer getCodigoCia() {
         return codigoCia;
     }
 
@@ -188,7 +193,8 @@ public class RelatorioExtratoAnaliticoVO implements Serializable{
      * Retorna o valor do atributo codigoConta.
      * @return o valor do atributo codigoConta
      */
-    public Long getCodigoConta() {
+    @Override
+	public Long getCodigoConta() {
         return codigoConta;
     }
 
@@ -244,7 +250,8 @@ public class RelatorioExtratoAnaliticoVO implements Serializable{
      * Especifica o valor do atributo descricaoBanco.
      * @param descricaoBanco - String do descricaoBanco a ser configurado.
      */
-    public void setDescricaoBanco(String descricaoBanco) {
+    @Override
+	public void setDescricaoBanco(String descricaoBanco) {
         this.descricaoBanco = descricaoBanco;
     }
 
@@ -260,7 +267,8 @@ public class RelatorioExtratoAnaliticoVO implements Serializable{
      * Especifica o valor do atributo descricaoCia.
      * @param descricaoCia - String do descricaoCia a ser configurado.
      */
-    public void setDescricaoCia(String descricaoCia) {
+    @Override
+	public void setDescricaoCia(String descricaoCia) {
         this.descricaoCia = descricaoCia;
     }
 
@@ -276,7 +284,8 @@ public class RelatorioExtratoAnaliticoVO implements Serializable{
      * Especifica o valor do atributo descricaoConta.
      * @param descricaoConta - String do descricaoConta a ser configurado.
      */
-    public void setDescricaoConta(String descricaoConta) {
+    @Override
+	public void setDescricaoConta(String descricaoConta) {
         this.descricaoConta = descricaoConta;
     }
 
@@ -477,7 +486,7 @@ public class RelatorioExtratoAnaliticoVO implements Serializable{
      * @return o valor do atributo vencimento
      */
     public Date getVencimento() {
-        return (Date) vencimento.clone();
+        return BaseUtil.getDate(vencimento);
     }
 
     /**
@@ -485,7 +494,7 @@ public class RelatorioExtratoAnaliticoVO implements Serializable{
      * @param vencimento - Date do vencimento a ser configurado.
      */
     public void setVencimento(Date vencimento) {
-        this.vencimento = (Date) vencimento.clone();
+        this.vencimento = BaseUtil.getDate(vencimento); 
     }
 
     /**

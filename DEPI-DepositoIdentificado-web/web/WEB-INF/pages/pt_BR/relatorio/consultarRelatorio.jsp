@@ -10,11 +10,14 @@
     <s:set name="vtpcCiasOrdenadas" value="tpcCiasOrdenadas"/>
 		
 <s:form id="formConsultarRelatorio" action="gerarRelatorio.do" onload="loadPage()"   >
-<%-- <s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank"  onload="loadPage()"   > --%>
-    	<input type="hidden" id="tituloTabela" name="tituloTabela" value="${tituloTabela}" />
-    	<input type="hidden" id="acaoOriginal" name="acaoOriginal" value="${acao}" />
-
-       	<input type="hidden" id="acaoFrm" name="filtroVO.acao" value="${acao}" />
+<%-- 
+<s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank"  onload="loadPage()"   > 
+--%>
+abrirRelatorio = ${abrirRelatorio}
+	<s:hidden name="abrirRelatorio" value="false"/>	
+   	<s:hidden id="tituloTabela" name="tituloTabela"/>
+   	<s:hidden id="acaoOriginal" name="acaoOriginal" />
+   	<s:hidden id="acaoFrm" name="acao" />
 
 	<table  class="tabela_principal" align="center">
 		<tr>
@@ -29,10 +32,7 @@
 				<table width="95%" class="tabela_interna" align="center">
 					<tr>
 						<th colspan="7">
-						<div id="titulo_tabela">
-							 ${tituloTabela}
-							
-							</div>
+							<div id="titulo_tabela">${tituloTabela}</div>
 						</th>
 					</tr>	
 					
@@ -44,7 +44,7 @@
 					
 							<td colspan="6">
 								<!-- checked="checked"  -->
-								<s:radio name="filtroVO.tipoRelatorio" 
+								<s:radio name="tipoRelatorio" 
 									list="#{'ER': 'Envio/Retorno Banco', 'EX': 'Extrato-Banco', 'MN': 'Manutenções', 'DC': 'Dados Complementares'}"
 									cssClass="optionButton"
 									onclick="ajustarPagina()"/>
@@ -60,15 +60,11 @@
 							<s:if test="%{#vacao=='exibirDadosComplementares'}">
 								<s:set var="visualizacaoRadio">disabled</s:set>
 							</s:if>
-							<s:radio name="filtroVO.visualizacao" 
+							<s:radio name="visualizacao" 
 								list="#{'A': 'Analítico', 'S': 'Sintético'}"
 								cssClass="optionButton"
 								onclick="ajustarPagina()"
 								disabled="%{#vacao=='exibirDadosComplementares'}"/>
-							<%--
-					    	<input type="radio" name="filtroVO.visualizacao" value="A" checked="checked" class="optionbutton" onclick = "ajustarPagina();" #{visualizacaoRadio}>Analítico
-					    	<input type="radio" name="filtroVO.visualizacao" value="S" class="optionbutton" onclick = "ajustarPagina();" #{visualizacaoRadio}>Sintético
-							 --%>
 						</td>
 					</tr>	
 					<tr>
@@ -201,10 +197,11 @@ $.dpcoddesc.aninhar({
 						Sucursal
 					</td>
 					<td>
-					     <input type="text" id="filtroVO.sucursal" size="5" onkeypress="return permitirApenasInteiros(event);" maxlength="5"  />
+						<s:textfield name="sucursal" id="filtroVO.sucursal" size="5" 
+							onkeypress="return permitirApenasInteiros(event);" />
 					<td class="td_label" width="13%">&nbsp; Apólice </td>
 					<td colspan="4">&nbsp;
-						<input type="text" name="filtroVO.apolice"  id="apolice"  size="12" onkeypress="return permitirApenasInteiros(event);" maxlength="9"  />
+						<s:textfield name="apolice"  id="apolice" size="12" onkeypress="return permitirApenasInteiros(event);" maxlength="9"  />
 					</td>					
 				</tr>
 					
@@ -212,33 +209,29 @@ $.dpcoddesc.aninhar({
 					<td class="td_label">Depósito<span class="obrigatorio">*</span></td>
 					
 					<td>
-						<input type="radio" name="deposito" id="deposito1" value="1" checked="checked"  onkeypress="return permitirApenasInteiros(event)">Prêmios
-					    <input type="radio" name="deposito" id="deposito2" value="2" checked="checked"  onkeypress="return permitirApenasInteiros(event)">Diversos
-					    <input type="radio" name="deposito" id="deposito0" value="0" checked="checked" class="optionbutton" onkeypress="return permitirApenasInteiros(event)">Todos
+						<s:radio list="#{'1':'Prêmios', '2':'Diversos', '0':'Todos' }" name="deposito"/>
 					</td>
 					<td class="td_label">&nbsp;Código Autorizador</td>
 					<td colspan="4">&nbsp;
-						<input type="text" name="codigoAutorizador" id="codigoAutorizador" size="12" onkeypress="return permitirApenasInteiros(event);" maxlength="5"  />
+						<s:textfield name="codigoAutorizador" id="codigoAutorizador" size="12" onkeypress="return permitirApenasInteiros(event);" maxlength="5"  />
 					</td>
 				</tr>
 				<tr>
 					<td class="td_label">CPF/CNPJ</td>
 					<td>&nbsp;
-						<input type="text" id="cpfCnpj" class="cpfCnpj" size="28" name="cpfCnpj" 
+						<s:textfield id="cpfCnpj" class="cpfCnpj" size="28" name="cpfCnpj" 
 							onkeypress="return permitirApenasInteiros(event) && formatarCPFCNPJ(this, event)" 
 							maxlength="18"/>
 					</td>							
 					<td class="td_label" width="13%">&nbsp;Endosso</td>
 					<td colspan="4">&nbsp;
-						<input type="text" id="endosso" name="endosso" class="input" size="12"  onkeypress="return permitirApenasInteiros(event);" maxlength="9">							
+						<s:textfield id="endosso" name="endosso" class="input" size="12"  onkeypress="return permitirApenasInteiros(event);" maxlength="9"/>							
 					</td>
 				</tr>	
 				<tr>	
 					<td class="td_label" width="8%">Período<span class="obrigatorio">*</span></td>
-
-					
 					   <td>&nbsp;De&nbsp;
-							<input type="text" id="dataInicial" name="filtroVO.dataInicial" size="13" maxlength="10" onkeypress="formatarData(this, event);" style="margin-left: 15px;" >							
+							<s:textfield id="dataInicial" name="filtroVO.dataInicial" size="13" maxlength="10" onkeypress="formatarData(this, event);" style="margin-left: 15px;" />							
 							<img src="${caminhoImagens}ic_sbox_calendario.gif" style="cursor: pointer;" title="Data"  
 								id="inicio" style="cursor: pointer;" title="Data"
 								onmouseover="this.style.background='';"
@@ -257,7 +250,7 @@ $.dpcoddesc.aninhar({
 
 					   </td>
 					   <td colspan="5">
-							Até &nbsp;<input type="text" id="dataFinal" name="filtroVO.dataFinal" size="13" maxlength="10" onkeypress="formatarData(this, event);">
+							Até &nbsp;<s:textfield id="dataFinal" name="filtroVO.dataFinal" size="13" maxlength="10" onkeypress="formatarData(this, event);"/>
 							&nbsp;&nbsp;&nbsp;<img src="${caminhoImagens}ic_sbox_calendario.gif" style="cursor: pointer;" title="Data"
 								id="fim" style="cursor: pointer;" title="Data"
 								onmouseover="this.style.background='';"
@@ -280,47 +273,29 @@ $.dpcoddesc.aninhar({
 				<tr>  
 					<td class="td_label" style="height: 18px;">	Valor Inicial</td>
 					<td>&nbsp;De 
-					    <input type="text" name="valorInicial" id="valorInicial" class="input" size="35" maxlength="18" maxlength="13" style="margin-left: 15px;" 
-				        onkeypress="return mascararValor(this, event, 13)"  >					
+					    <s:textfield name="valorInicial" id="valorInicial" class="input" size="35" maxlength="18" maxlength="13" style="margin-left: 15px;" 
+				        onkeypress="return mascararValor(this, event, 13)" />	
 					</td>
 					<td colspan="5">&nbsp;Valor Final
-					    <input type="text" name="valorFinal" id="valorFinal" class="input" size="35" maxlength="18" maxlength="13" style="margin-left: 15px;" 
-				        onkeypress="return mascararValor(this, event, 13)"  >					
+					    <s:textfield name="valorFinal" id="valorFinal" class="input" size="35" maxlength="18" maxlength="13" style="margin-left: 15px;" 
+				        onkeypress="return mascararValor(this, event, 13)" />					
 					</td>
 				</tr>		
 					
 				<tr>
 					<td class="td_label">Situação Relatório Envio/Retorno Banco<span class="obrigatorio">*</span></td>
 					<td colspan="6" id="id_envio_retorno">
-					<s:if test="%{#vacao=='exibirEnvioRetornoAnalitico' or #vacao=='exibirEnvioRetornoSintetico' }">
-
-						<input type="radio" name="situacaoEnvioRetorno"  value="E" class="optionbutton" >Enviados  
-						<input type="radio" name="situacaoEnvioRetorno"  value="A" class="optionbutton" >Aceitos
-						<input type="radio" name="situacaoEnvioRetorno"  value="R" class="optionbutton" >Rejeitados  
-						<input type="radio" name="situacaoEnvioRetorno"  value="C" class="optionbutton" >Cancelados
-						<input type="radio" name="situacaoEnvioRetorno"  value="" checked="checked" class="optionbutton" >Todos
-					</s:if>
-					
-					<s:if test="%{#vacao!='exibirEnvioRetornoAnalitico' and #vacao!='exibirEnvioRetornoSintetico' }">
-						<input type="radio" name="situacaoEnvioRetorno"  value="E" class="optionbutton" disabled>Enviados  
-						<input type="radio" name="situacaoEnvioRetorno"  value="A" class="optionbutton" disabled>Aceitos
-						<input type="radio" name="situacaoEnvioRetorno"  value="R" class="optionbutton" disabled>Rejeitados  
-						<input type="radio" name="situacaoEnvioRetorno"  value="C" class="optionbutton" disabled>Cancelados
-						<input type="radio" name="situacaoEnvioRetorno"  value="" checked="checked" class="optionbutton" disabled>Todos
-				
-					</s:if>
-					
+						<s:radio list="#{'E':'Enviados', 'A':'Aceitos', 'R':'Rejeitados', 'C':'Cancelados', 'T': 'Todos' }"
+							name="situacaoEnvioRetorno" cssClass="optionbutton" onclick="ajustarPagina" id="situacaoEnvioRetorno" 
+							disabled="%{#vacao!='exibirEnvioRetornoAnalitico' and #vacao!='exibirEnvioRetornoSintetico' }"
+							/>
 					</td>
-				</tr>					
+				</tr>
 					
 				<tr>
 					<td class="td_label">Situação Relatório Manutenções<span class="obrigatorio">*</span></td>
 					<td colspan="6" id="id_envio_retorno">
-					<!-- 
-					'exibirEnvioRetornoAnalitico_OR_exibirEnvioRetornoSintetico'
-					'NOT_exibirManutencoesAnalitico_and_NOT_exibirManutencoesSintetico
-					 -->
-					<s:radio list="#{'A':'Aceitos', 'T':'Transferidos', 'D':'Devolvidos', 'R':'Rejeitados' }"
+					<s:radio list="#{'A':'Aceitos', 'T':'Transferidos', 'D':'Devolvidos', 'R':'Rejeitados', 'T': 'Todos' }"
 						name="situacaoManutencoes" cssClass="optionbutton" onclick="ajustarPagina" id="situacaoManutencoes" 
 						disabled="%{#vacao!='exibirManutencoesAnalitico' and #vacao!='exibirManutencoesSintetico' }"
 						/>
@@ -361,6 +336,19 @@ $.dpcoddesc.aninhar({
 jQuery(document).ready(function($){
 	${scriptCompanhia};
 	${scriptDepto};
+	
+	$.fn.abrirRelatorio = function(form, target) {
+		$(form).attr('target', target);
+		$(form).find("input[name='abrirRelatorio']").val(true);
+		$(form).submit();
+		$(form).removeAttr('target');
+		$(form).find("input[name='abrirRelatorio']").val(false);
+	};
+	
+	ajustarPagina();
 }(jQuery));
+<s:if test="abrirRelatorio">
+	$.fn.abrirRelatorio("#formConsultarRelatorio", "_blank");
+</s:if>
 </script>
 </c:set>

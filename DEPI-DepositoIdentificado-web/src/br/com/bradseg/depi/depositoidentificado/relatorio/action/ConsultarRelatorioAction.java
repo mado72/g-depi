@@ -3,7 +3,6 @@ package br.com.bradseg.depi.depositoidentificado.relatorio.action;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +39,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesSinteticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioDadosComplementaresVO;
-import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
@@ -95,6 +93,9 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			carregarComboCompanhia();
 			carregarComboDepartamentos();
 			carregarComboMotivos();
+			
+			model.setAbrirRelatorio(false);
+			model.setDeposito(0);
 			
 			if (EXIBIRENVIORETORNOANALITICO.equals(acao)){
 				exibirEnvioRetornoAnalitico();			
@@ -311,79 +312,207 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 		}
 	}
 	
-	public String consultarManutencoesAnalitico(){      
+	public String consultarEnvioRetornoAnalitico() throws DEPIIntegrationException {
+	
+		exibirEnvioRetornoAnalitico();
 
-		exibirManutencoesAnalitico();
+		if (! model.isAbrirRelatorio()) {
+			model.setAbrirRelatorio(true);
+			return INPUT;
+		}
+	
+		try {
+			List<RelatorioEnvioRetornoVO> dados = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
+
+    		if (BaseUtil.isNZB(dados)) {
+    			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
+    			model.setAbrirRelatorio(false);
+    			return INPUT;
+    		}
+	
+			Map<String, Object> params = prepararParametrosComunsPdf();
+	
+			gerarPdf( "relEnvioRetornoBancoAnalitico.jasper", params,  dados);
+			
+		} catch (Exception e) {
+			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
+			addActionError(getText(ConstantesDEPI.ERRO_CUSTOMIZADA, new String[]{e.getMessage()}));
+			return INPUT;
+		}
+		return "relEnvioRetornoBancoAnalitico.pdf";// exibirEnvioRetornoAnalitico();
+	}
+
+	public String consultarEnvioRetornoSintetico() throws DEPIIntegrationException {
+
+		exibirEnvioRetornoSintetico();
+
+		if (! model.isAbrirRelatorio()) {
+			model.setAbrirRelatorio(true);
+			return INPUT;
+		}
+	
+		try {
+	
+			List<RelatorioEnvioRetornoVO> dados = consultarRelatorioFacade.obterDadosEnvioRetornoSintetico(filtro);
+
+    		if (BaseUtil.isNZB(dados)) {
+    			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
+    			model.setAbrirRelatorio(false);
+    			return INPUT;
+    		}
+	
+			Map<String, Object> params = prepararParametrosComunsPdf();
+	
+			gerarPdf( "relEnvioRetornoBancoSintetico.jasper", params, dados);
+	
+		} catch (DEPIIntegrationException e) {
+			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
+			addActionError(getText(ConstantesDEPI.ERRO_CUSTOMIZADA, new String[]{e.getMessage()}));
+			model.setAbrirRelatorio(false);
+			return INPUT;
+		}
+		return "relEnvioRetornoBancoSintetico.pdf";// exibirEnvioRetornoSintetico();
+	}
+
+	public String consultarExtratoAnalitico() throws DEPIIntegrationException {
+		
+		exibirExtratoAnalitico();
+		
+		if (! model.isAbrirRelatorio()) {
+			model.setAbrirRelatorio(true);
+			return INPUT;
+		}
 
 		try {
-			List<ManutencoesAnaliticoVO> dados =  consultarRelatorioFacade.obterDadosManutencoesAnalitico(filtro);
-			if (dados.size() == 0){
-				addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-				return INPUT;
-			}
+			List<RelatorioExtratoAnaliticoVO> dados = consultarRelatorioFacade.obterDadosBancoExtratoAnalitico(filtro);     
+			
+    		if (BaseUtil.isNZB(dados)) {
+    			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
+    			model.setAbrirRelatorio(false);
+    			return INPUT;
+    		}
+    		
+    		
+		
+			/* List<ManutencoesAnaliticoVO> dadosManut = RelatorioBusinessDelegate.getInstance().obterDadosManutencoesAnalitico(c);
+	        if (BaseUtil.isNZB(dadosManut) && BaseUtil.isNZB(dadosER)) {
+	            addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
+	            return exibirExtratoAnalitico();
+	        }
+	
+	        // // Adiciona dados obtidos de Manutenções na lista de Extrato apo�s convers�o
+	        for (ManutencoesAnaliticoVO vo : dadosManut) {
+	            RelatorioExtratoAnaliticoVO extratoVO = new RelatorioExtratoAnaliticoVO();
+	            copyProperties(extratoVO, vo);
+	            extratoVO.setNomeGrupo("Manutenções");
+	            extratoVO.setSituacaoManutencao(vo.getCodigoTipoAcao());
+	            extratoVO.setVencimento(vo.getVencimento());
+	            extratoVO.setSituacao(RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(vo.getCodigoTipoAcao()));
+	            dados.add(extratoVO);
+	        }*/
+	
+			consultarRelatorioFacade.obterTotais(dados);
+			//List<RelatorioExtratoAnaliticoVO> dados
+			consultarRelatorioFacade.ordenarDadosAnalitico(dados);
+	
+			Map<String, Object> params = prepararParametrosComunsPdf();
+			params.put(VISUALIZACAO, "Analítio");
+			params.put(SITUACAO, "TODOS");
+	
+			gerarPdf("relExtratoAnalitico.jasper", params, dados);
+	
+		} catch (Exception e) {
+			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
+			addActionError(getText(ConstantesDEPI.ERRO_CUSTOMIZADA, new String[]{e.getMessage()}));
+			model.setAbrirRelatorio(false);
+			return INPUT;
+		}
+	
+		return "relExtratoAnalitico.pdf";// exibirExtratoAnalitico();
+	}
 
+	public String consultarExtratoSintetico() throws DEPIIntegrationException {
+
+		exibirExtratoSintetico();
+		
+		if (! model.isAbrirRelatorio()) {
+			model.setAbrirRelatorio(true);
+			return INPUT;
+		}
+	
+		try {
+			List<RelatorioExtratoSinteticoVO> dados = consultarRelatorioFacade.obterDadosBancoExtratoSintetico(filtro);
+
+    		if (BaseUtil.isNZB(dados)) {
+    			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
+    			model.setAbrirRelatorio(false);
+    			return INPUT;
+    		}
+	
+    		Map<String, Object> params = prepararParametrosComunsPdf();
+    		params.put(VISUALIZACAO, "Sintético");
+    		params.put(SITUACAO, "TODOS");
+    		
+    		gerarPdf( "relExtratoSintetico.jasper", params, dados);
+
+		} catch (Exception e) {
+			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
+			addActionError(getText(ConstantesDEPI.ERRO_CUSTOMIZADA, new String[]{e.getMessage()}));
+			model.setAbrirRelatorio(false);
+			return INPUT;
+		}
+	
+		return "relExtratoSintetico.pdf";//       
+	}
+
+	public String consultarManutencoesAnalitico(){      
+	
+		exibirManutencoesAnalitico();
+		
+		if (! model.isAbrirRelatorio()) {
+			return INPUT;
+		}
+	
+		try {
+			List<ManutencoesAnaliticoVO> dados =  consultarRelatorioFacade.obterDadosManutencoesAnalitico(filtro);
+
+    		if (BaseUtil.isNZB(dados)) {
+    			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
+    			model.setAbrirRelatorio(false);
+    			return INPUT;
+    		}
+	
 			Map<String, Object> params = prepararParametrosComunsPdf();
 			params.put(VISUALIZACAO, "Analítio");
 			params.put(SITUACAO, filtro.getSituacaoManutencao() );
-
+	
 			gerarPdf("relManutencoesAnalitico.jasper", params, dados);
-
+	
 		} catch (IntegrationException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
+			addActionError(getText(ConstantesDEPI.ERRO_CUSTOMIZADA, new String[]{e.getMessage()}));
+			model.setAbrirRelatorio(false);
 			return INPUT;
 		}
 		return "relManutencoesAnalitico.pdf";//exibirManutencoesAnalitico();//();
 	}
-	
-    public String consultarDadosComplementaresAnalitico() throws DEPIIntegrationException {
 
-    	try {
-    		List<RelatorioDadosComplementaresVO> dados = consultarRelatorioFacade.obterDadosComplementares(filtro);
+	public String consultarManutencoesSintetico() throws DEPIIntegrationException {
 
-    		BigDecimal valorTotalPago = BigDecimal.ZERO;
-    		BigDecimal valorTotalRegistrado =  BigDecimal.ZERO;
-
-    		//Itera lista para obter totais gerais
-    		for(RelatorioDadosComplementaresVO relatorio : dados){
-    			if(relatorio.getValorPago() != null){
-    				valorTotalPago = relatorio.getValorPago();
-    			}
-    			if(relatorio.getValorRegistrado() != null){
-    				valorTotalRegistrado = relatorio.getValorRegistrado();
-    			}
-    		}
-    		/*
-                if (BaseUtil.isNZB(dados)) {
-                    addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-                    return exibirDadosComplementares();
-                }
-    		 */
-			Map<String, Object> params = prepararParametrosComunsPdf();
-    		params.put(VISUALIZACAO, "Analítio");
-    		params.put(SITUACAO, filtro.getSituacaoManutencao());
-
-    		params.put(VALOR_TOTAL_PAGO, valorTotalPago);
-    		params.put(VALOR_TOTAL_REGISTRADO, valorTotalRegistrado);
-
-    		gerarPdf("relDadosComplementares.jasper", params, dados);
-
-    	} catch (DEPIIntegrationException e) {
-    		LOGGER.error(e.getMessage());
-    		return "relDadosComplementares.pdf";
-    	}
-    	return "relDadosComplementares.pdf";//exibirDadosComplementares();
-    }
-
-    public String consultarManutencoesSintetico() throws DEPIIntegrationException {
-
+		exibirManutencoesSintetico();
+		
+		if (! model.isAbrirRelatorio()) {
+			model.setAbrirRelatorio(true);
+			return INPUT;
+		}
+		
     	try {
 
     		List<ManutencoesSinteticoVO> dados = consultarRelatorioFacade.obterDadosManutencoesSintetico(filtro);
 
-
     		if (BaseUtil.isNZB(dados)) {
-    			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-    			exibirManutencoesSintetico();
+    			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
+    			model.setAbrirRelatorio(false);
     			return INPUT;
     		}
 
@@ -401,150 +530,72 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 
     		gerarPdf("relManutencoesSintetico.jasper", params, dados);
     	} catch (DEPIIntegrationException e) {
-    		LOGGER.error(e.getMessage());
+    		LOGGER.error("Erro ao gerar relat\u00f3rio", e);
+    		addActionError(getText(ConstantesDEPI.ERRO_CUSTOMIZADA, new String[]{e.getMessage()}));
+			model.setAbrirRelatorio(false);
     		return INPUT;
     	}
     	return "relManutencoesSintetico.pdf";// exibirManutencoesSintetico();
     }
 
 
-    public String consultarEnvioRetornoAnalitico() throws DEPIIntegrationException {
-
-    	//RelatorioForm frm = (RelatorioForm) pForm;
-
-    	try {
-    		List<RelatorioEnvioRetornoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoAnalitico(filtro);
-
-    		if (BaseUtil.isNZB(colRelatorio)) {
-    			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
-
-    			exibirEnvioRetornoAnalitico();
-    			return INPUT;
-    		}
-
-    		Map<String, Object> params = prepararParametrosComunsPdf();
-
-    		gerarPdf( "relEnvioRetornoBancoAnalitico.jasper", params,  colRelatorio);
-    		
-    	} catch (Exception e) {
-    		LOGGER.error("Erro ao gerar relat\u00f3rio", e);
-    		throw new DEPIIntegrationException(ConstantesDEPI.ERRO_GENERICO, e.getMessage());
-    	}
-    	return "relEnvioRetornoBancoAnalitico.pdf";// exibirEnvioRetornoAnalitico();
-    }
-
-	public String consultarEnvioRetornoSintetico() throws DEPIIntegrationException {
-
-    	try {
-
-    		List<RelatorioEnvioRetornoVO> colRelatorio = consultarRelatorioFacade.obterDadosEnvioRetornoSintetico(filtro);
-
-    		if (BaseUtil.isNZB(colRelatorio)) {
-    			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-    			
-    			exibirEnvioRetornoSintetico();
-    			return INPUT;
-    		}
-
-    		Map<String, Object> params = prepararParametrosComunsPdf();
-
-    		gerarPdf( "relEnvioRetornoBancoSintetico.jasper", params, colRelatorio);
-
-    	} catch (DEPIIntegrationException e) {
-    		LOGGER.error(e.getMessage());
-    		throw new DEPIIntegrationException(e.getMessage());
-    	}
-    	return "relEnvioRetornoBancoSintetico.pdf";// exibirEnvioRetornoSintetico();
-    }
-
-    public String consultarExtratoAnalitico() throws DEPIIntegrationException {        
-
-    	List<RelatorioExtratoAnaliticoVO> dados = new ArrayList<RelatorioExtratoAnaliticoVO>();
-    	try {
-    		List<RelatorioEnvioRetornoAnaliticoVO> dadosER = consultarRelatorioFacade.obterDadosBancoExtratoAnalitico(filtro);              
-    		if (dadosER == null || dadosER.isEmpty()) {
-    			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO); 
-    			exibirExtratoAnalitico();
-    			return INPUT;
-    		}
-
-    		for (RelatorioEnvioRetornoAnaliticoVO vo : dadosER) {
-    			RelatorioExtratoAnaliticoVO extratoVO = new RelatorioExtratoAnaliticoVO();
-
-    			extratoVO = (RelatorioExtratoAnaliticoVO) BaseUtil.copyProperties(extratoVO, vo);
-
-    			extratoVO.setVencimento(vo.getVencimento());
-    			extratoVO.setSituacaoEnvioRetorno(vo.getSituacao());
-    			extratoVO.setSituacao(vo.getSituacao());
-    			extratoVO.setCodigoAutorizadorComDv(vo.getCodigoAutorizadorComDv());
-    			// extratoVO.setNomeGrupo("ENVIO E RETORNO");
-    			dados.add(extratoVO);
-    		}
-
-    		/* List<ManutencoesAnaliticoVO> dadosManut = RelatorioBusinessDelegate.getInstance().obterDadosManutencoesAnalitico(c);
-            if (BaseUtil.isNZB(dadosManut) && BaseUtil.isNZB(dadosER)) {
-                addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-                return exibirExtratoAnalitico();
-            }
-
-            // // Adiciona dados obtidos de Manutenções na lista de Extrato apo�s convers�o
-            for (ManutencoesAnaliticoVO vo : dadosManut) {
-                RelatorioExtratoAnaliticoVO extratoVO = new RelatorioExtratoAnaliticoVO();
-                copyProperties(extratoVO, vo);
-                extratoVO.setNomeGrupo("Manutenções");
-                extratoVO.setSituacaoManutencao(vo.getCodigoTipoAcao());
-                extratoVO.setVencimento(vo.getVencimento());
-                extratoVO.setSituacao(RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(vo.getCodigoTipoAcao()));
-                dados.add(extratoVO);
-            }*/
-
-    		consultarRelatorioFacade.obterTotais(dados);
-    		//List<RelatorioExtratoAnaliticoVO> dados
-    		consultarRelatorioFacade.ordenarDadosAnalitico(dados);
-
-			Map<String, Object> params = prepararParametrosComunsPdf();
-    		params.put(VISUALIZACAO, "Analítio");
-    		params.put(SITUACAO, "TODOS");
-
-    		gerarPdf("relExtratoAnalitico.jasper", params, dados);
-
-    	} catch (IllegalAccessException | InvocationTargetException e) {
-    		LOGGER.error(e.getMessage());
-    		throw new DEPIIntegrationException(e.getMessage());
-    	} catch (DEPIIntegrationException e) {
-    		LOGGER.error(e.getMessage());
-    		throw new DEPIIntegrationException(e.getMessage());
-    	}
-
-    	return "relExtratoAnalitico.pdf";// exibirExtratoAnalitico();
-    }
-
-    public String consultarExtratoSintetico() throws DEPIIntegrationException {
-    	filtro = montaFiltro(filtro);   
-
-    	try {
-    		List<RelatorioExtratoSinteticoVO> dados = consultarRelatorioFacade.obterDadosExtratoSintetico(filtro);
+    public String consultarDadosComplementaresAnalitico() throws DEPIIntegrationException {
+		
+		exibirDadosComplementares();
+		
+		if (! model.isAbrirRelatorio()) {
+			model.setAbrirRelatorio(true);
+			return INPUT;
+		}
+		
+		model.setAbrirRelatorio(false);
+	
+		try {
+			List<RelatorioDadosComplementaresVO> dados = consultarRelatorioFacade.obterDadosComplementares(filtro);
 
     		if (BaseUtil.isNZB(dados)) {
-    			addActionError(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO);
-    		} else {
-
-    			Map<String, Object> params = prepararParametrosComunsPdf();
-    			params.put(VISUALIZACAO, "Sintético");
-    			params.put(SITUACAO, "TODOS");
-
-    			gerarPdf( "relExtratoSintetico.jasper", params, dados);
-
+    			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
+    			model.setAbrirRelatorio(false);
+    			return INPUT;
     		}
-    	} catch (DEPIIntegrationException e) {
-    		LOGGER.error(e.getMessage());
-    		throw new DEPIIntegrationException(e.getMessage());
-    	}
 
-    	return "relExtratoSintetico.pdf";//       
-    }
+			BigDecimal valorTotalPago = BigDecimal.ZERO;
+			BigDecimal valorTotalRegistrado =  BigDecimal.ZERO;
+	
+			//Itera lista para obter totais gerais
+			for(RelatorioDadosComplementaresVO relatorio : dados){
+				if(relatorio.getValorPago() != null){
+					valorTotalPago = relatorio.getValorPago();
+				}
+				if(relatorio.getValorRegistrado() != null){
+					valorTotalRegistrado = relatorio.getValorRegistrado();
+				}
+			}
+			/*
+	            if (BaseUtil.isNZB(dados)) {
+	                addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
+	                return exibirDadosComplementares();
+	            }
+			 */
+			Map<String, Object> params = prepararParametrosComunsPdf();
+			params.put(VISUALIZACAO, "Analítio");
+			params.put(SITUACAO, filtro.getSituacaoManutencao());
+	
+			params.put(VALOR_TOTAL_PAGO, valorTotalPago);
+			params.put(VALOR_TOTAL_REGISTRADO, valorTotalRegistrado);
+	
+			gerarPdf("relDadosComplementares.jasper", params, dados);
+	
+		} catch (DEPIIntegrationException e) {
+			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
+			addActionError(getText(ConstantesDEPI.ERRO_CUSTOMIZADA, new String[]{e.getMessage()}));
+			model.setAbrirRelatorio(false);
+			return INPUT;
+		}
+		return "relDadosComplementares.pdf";//exibirDadosComplementares();
+	}
 
-    private Map<String, Object> prepararParametrosComunsPdf() {
+	private Map<String, Object> prepararParametrosComunsPdf() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put(DATA_INICIO,  RelogioUtil.formataDate(filtro.getDataInicio()));
 		params.put(DATA_FIM, RelogioUtil.formataDate(filtro.getDataFinal()));
