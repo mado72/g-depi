@@ -10,7 +10,7 @@ import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
-import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
+import br.com.bradseg.depi.depositoidentificado.util.Fornecedor;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.util.json.DepiObjectMapper;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
@@ -65,7 +65,7 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> implements Serializab
 	 *            Função para receber o nome do campo ({@link IEntidadeCampo}) e
 	 *            devolve a instância referente.
 	 */
-	public FiltroConsultarForm(FornecedorObjeto<Collection<T>> fornecedor, Funcao<String, T> obterEntidade) {
+	public FiltroConsultarForm(Fornecedor<Collection<T>> fornecedor, Funcao<String, T> obterEntidade) {
 		
 		this.obterEntidade = obterEntidade;
 		Collection<T> lista = fornecedor.get();

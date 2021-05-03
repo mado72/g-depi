@@ -9,7 +9,7 @@ package br.com.bradseg.depi.depositoidentificado.util;
  * 
  * @param <T> O tipo do resultado deste fornecedor
  */
-public interface FornecedorObjeto<T> {
+public interface Fornecedor<T> {
 
 	/**
 	 * Retorna o resultado

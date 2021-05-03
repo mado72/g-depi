@@ -16,7 +16,7 @@ import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarForm;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.GrupoAcessoCampo;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
+import br.com.bradseg.depi.depositoidentificado.util.Fornecedor;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
@@ -66,7 +66,7 @@ public class GrupoAcessoCrudHelper implements
 
 	@Override
 	public FiltroConsultarForm<GrupoAcessoCampo> criarFiltroModel() {
-		FornecedorObjeto<Collection<GrupoAcessoCampo>> criterios = new FornecedorObjeto<Collection<GrupoAcessoCampo>>() {
+		Fornecedor<Collection<GrupoAcessoCampo>> criterios = new Fornecedor<Collection<GrupoAcessoCampo>>() {
 
 			@Override
 			public Collection<GrupoAcessoCampo> get() {

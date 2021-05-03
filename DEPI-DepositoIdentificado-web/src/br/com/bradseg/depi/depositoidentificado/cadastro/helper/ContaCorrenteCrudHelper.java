@@ -14,7 +14,7 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarFor
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.ContaCorrenteAutorizadaCampo;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
+import br.com.bradseg.depi.depositoidentificado.util.Fornecedor;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
@@ -79,7 +79,7 @@ public class ContaCorrenteCrudHelper implements
 
 	@Override
 	public FiltroConsultarForm<ContaCorrenteAutorizadaCampo> criarFiltroModel() {
-		FornecedorObjeto<Collection<ContaCorrenteAutorizadaCampo>> criterios = new FornecedorObjeto<Collection<ContaCorrenteAutorizadaCampo>>() {
+		Fornecedor<Collection<ContaCorrenteAutorizadaCampo>> criterios = new Fornecedor<Collection<ContaCorrenteAutorizadaCampo>>() {
 
 			@Override
 			public Collection<ContaCorrenteAutorizadaCampo> get() {

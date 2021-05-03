@@ -19,7 +19,7 @@ import br.com.bradseg.depi.depositoidentificado.funcao.action.FiltroConsultarFor
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.FuncionarioCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
-import br.com.bradseg.depi.depositoidentificado.util.FornecedorObjeto;
+import br.com.bradseg.depi.depositoidentificado.util.Fornecedor;
 import br.com.bradseg.depi.depositoidentificado.util.Funcao;
 import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
@@ -54,7 +54,7 @@ public class FuncionarioCrudHelper implements
 
 	@Override
 	public FiltroConsultarForm<FuncionarioCampo> criarFiltroModel() {
-		FornecedorObjeto<Collection<FuncionarioCampo>> fornecedor = new FornecedorObjeto<Collection<FuncionarioCampo>>() {
+		Fornecedor<Collection<FuncionarioCampo>> fornecedor = new Fornecedor<Collection<FuncionarioCampo>>() {
 			
 			@Override
 			public Collection<FuncionarioCampo> get() {
