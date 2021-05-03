@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relExtratoAnalitico" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="ccadc313-272f-4e07-a15d-0c621473e543">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relExtratoAnalitico" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="187"/>
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -113,8 +113,8 @@
 		<variableExpression><![CDATA[$F{valorRegistrado}.subtract($F{valorPago})]]></variableExpression>
 	</variable>
 	<variable name="TITULO" class="java.lang.String">
-		<variableExpression><![CDATA["DEPÓSITO IDENTIFICADO – DP06 – EXTRATO DO BANCO - ANALÍTICO"]]></variableExpression>
-		<initialValueExpression><![CDATA["DEPÓSITO IDENTIFICADO – DP06 – EXTRATO DO BANCO - ANALÍTICO"]]></initialValueExpression>
+		<variableExpression><![CDATA["DEPÓSITO IDENTIFICADO – EXTRATO DO BANCO - ANALÍTICO"]]></variableExpression>
+		<initialValueExpression><![CDATA["DEPÓSITO IDENTIFICADO – EXTRATO DO BANCO - ANALÍTICO"]]></initialValueExpression>
 	</variable>
 	<variable name="TRACO" class="java.lang.String">
 		<variableExpression><![CDATA[" - "]]></variableExpression>
@@ -172,7 +172,7 @@
 		<groupHeader>
 			<band height="18" splitType="Stretch">
 				<staticText>
-					<reportElement key="staticText-32" x="0" y="5" width="90" height="10" uuid="44ab4dbc-7c2c-499f-ab29-059a7c984443"/>
+					<reportElement key="staticText-32" x="0" y="5" width="90" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -185,7 +185,7 @@
 					<text><![CDATA[BANCO ..............:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField" x="93" y="5" width="264" height="10" uuid="8018dabc-0e5a-4be7-aa30-97d6db52497f"/>
+					<reportElement key="textField" x="93" y="5" width="264" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -195,14 +195,14 @@
 					<textElement>
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{descricaoBanco}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{descricaoBanco}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="17" splitType="Stretch">
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-18" x="584" y="5" width="60" height="10" uuid="0fa4fa59-c6d2-4010-a48c-9f0f2cf43402"/>
+					<reportElement key="textField-18" x="584" y="5" width="60" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -212,10 +212,10 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{totalRegistradoBanco}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{totalRegistradoBanco}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{totalRegistradoBanco}) + ",00"]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-19" x="655" y="5" width="60" height="10" uuid="cc88027e-1884-45e0-9c6d-db381d8ca539"/>
+					<reportElement key="textField-19" x="655" y="5" width="60" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -225,10 +225,10 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{totalPagoBanco}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{totalPagoBanco}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{totalPagoBanco}) + ",00"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-55" x="0" y="5" width="90" height="10" printWhenGroupChanges="situacao" uuid="15acdb98-1a77-4cdd-82a7-692479668c3e"/>
+					<reportElement key="staticText-55" x="0" y="5" width="90" height="10" printWhenGroupChanges="situacao"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -241,7 +241,7 @@
 					<text><![CDATA[TOTAL BANCO]]></text>
 				</staticText>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-39" x="726" y="5" width="60" height="10" uuid="a40a40d0-a3b1-4a2f-bfed-4b92a285518e"/>
+					<reportElement key="textField-39" x="726" y="5" width="60" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -251,7 +251,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{diferencaBanco}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{diferencaBanco}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{diferencaBanco}) + ",00"]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -261,7 +261,7 @@
 		<groupHeader>
 			<band height="18" splitType="Stretch">
 				<staticText>
-					<reportElement key="staticText-33" x="0" y="5" width="90" height="10" uuid="9df3baa4-59bb-4928-bae6-67d41ad23c81"/>
+					<reportElement key="staticText-33" x="0" y="5" width="90" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -274,7 +274,7 @@
 					<text><![CDATA[CIA. ...............:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField" x="90" y="5" width="264" height="10" uuid="997b8765-2364-41e7-b3bb-eaf714c121be"/>
+					<reportElement key="textField" x="90" y="5" width="264" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -284,14 +284,14 @@
 					<textElement>
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{descricaoCia}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{descricaoCia}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="17" splitType="Stretch">
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="584" y="4" width="60" height="10" uuid="2bdf36b0-4b47-4f87-9ae8-09ad428ff24a"/>
+					<reportElement key="textField" x="584" y="4" width="60" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -301,10 +301,10 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{totalRegistradoCia}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{totalRegistradoCia}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{totalRegistradoCia}) + ",00"]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="655" y="4" width="60" height="10" uuid="ed87cffc-f33e-4238-a780-2d650c8bc583"/>
+					<reportElement key="textField" x="655" y="4" width="60" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -314,10 +314,10 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{totalPagoCia}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{totalPagoCia}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{totalPagoCia}) + ",00"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-54" x="0" y="4" width="90" height="10" printWhenGroupChanges="situacao" uuid="9421aa0b-b319-4b12-99c4-09dca583d2d6"/>
+					<reportElement key="staticText-54" x="0" y="4" width="90" height="10" printWhenGroupChanges="situacao"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -330,7 +330,7 @@
 					<text><![CDATA[TOTAL CIA]]></text>
 				</staticText>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-40" x="726" y="4" width="60" height="10" uuid="65c34f0a-4317-4a3c-8825-b406c767a752"/>
+					<reportElement key="textField-40" x="726" y="4" width="60" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -340,7 +340,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{diferencaCia}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{diferencaCia}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{diferencaCia}) + ",00"]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -359,7 +359,7 @@
 		<groupHeader>
 			<band height="15" splitType="Stretch">
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-16" x="113" y="2" width="244" height="10" uuid="d652b69d-acbb-4304-a87f-5d3cc8a82f35"/>
+					<reportElement key="textField-16" x="113" y="2" width="244" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -369,10 +369,10 @@
 					<textElement>
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{descricaoConta}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{descricaoConta}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-34" x="0" y="2" width="110" height="10" uuid="d890a549-c593-45aa-bc50-899902878d54"/>
+					<reportElement key="staticText-34" x="0" y="2" width="110" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -389,7 +389,7 @@
 		<groupFooter>
 			<band height="15" splitType="Stretch">
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="584" y="3" width="60" height="10" uuid="ab7a3bf5-5bdf-498b-9ce0-26b0c8f9268f"/>
+					<reportElement key="textField" x="584" y="3" width="60" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -399,10 +399,10 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{totalRegistradoConta}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{totalRegistradoConta}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{totalRegistradoConta}) + ",00"]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" x="655" y="3" width="60" height="10" uuid="fcb73626-e34a-4001-a558-26c78f3536ea"/>
+					<reportElement key="textField" x="655" y="3" width="60" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -412,10 +412,10 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{totalPagoConta}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{totalPagoConta}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{totalPagoConta}) + ",00"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-53" x="0" y="3" width="90" height="10" printWhenGroupChanges="situacao" uuid="54060f04-d5b8-4b5d-abe2-80c0f8d96fc3"/>
+					<reportElement key="staticText-53" x="0" y="3" width="90" height="10" printWhenGroupChanges="situacao"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -428,7 +428,7 @@
 					<text><![CDATA[TOTAL CONTA CORRENTE]]></text>
 				</staticText>
 				<textField pattern="" isBlankWhenNull="true">
-					<reportElement key="textField-38" x="726" y="3" width="60" height="10" uuid="0325e43f-d8a6-4d10-a39b-d902a19ede9d"/>
+					<reportElement key="textField-38" x="726" y="3" width="60" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -438,7 +438,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{diferencaConta}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{diferencaConta}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{diferencaConta}) + ",00"]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -458,7 +458,7 @@
 			<band height="31" splitType="Stretch">
 				<elementGroup>
 					<staticText>
-						<reportElement key="staticText-35" x="4" y="17" width="48" height="10" uuid="2f421ebe-a428-4932-b3da-b552cb830af0"/>
+						<reportElement key="staticText-35" x="4" y="17" width="48" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -471,7 +471,7 @@
 						<text><![CDATA[BLOQUETE]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-36" x="60" y="17" width="20" height="10" uuid="e66f004e-d8c6-4fd5-ad0d-25116906ff26"/>
+						<reportElement key="staticText-36" x="60" y="17" width="20" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -484,7 +484,7 @@
 						<text><![CDATA[SUC]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-37" x="92" y="17" width="20" height="10" uuid="5606370f-c7d5-4b8f-bd56-4430a819db20"/>
+						<reportElement key="staticText-37" x="92" y="17" width="20" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -497,7 +497,7 @@
 						<text><![CDATA[RAMO]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-38" x="118" y="17" width="43" height="10" uuid="a8a9a87c-74bc-4528-9a26-f044b897ee9f"/>
+						<reportElement key="staticText-38" x="118" y="17" width="43" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -510,7 +510,7 @@
 						<text><![CDATA[APÓLICE]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-39" x="168" y="17" width="20" height="10" uuid="d9a75320-e30b-44a1-a71c-f97707bfd40f"/>
+						<reportElement key="staticText-39" x="168" y="17" width="20" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -523,7 +523,7 @@
 						<text><![CDATA[ITEM]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-40" x="196" y="17" width="20" height="10" uuid="d0471dc9-21b8-4696-9c89-b378412c561a"/>
+						<reportElement key="staticText-40" x="196" y="17" width="20" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -536,7 +536,7 @@
 						<text><![CDATA[TIPO]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-41" x="220" y="17" width="48" height="10" uuid="2919f7bf-1c06-44cc-95eb-3456c60f8061"/>
+						<reportElement key="staticText-41" x="220" y="17" width="48" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -549,7 +549,7 @@
 						<text><![CDATA[ENDOSSO]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-42" x="278" y="17" width="32" height="10" uuid="2b61b333-6a05-42bf-b34b-137172b539e8"/>
+						<reportElement key="staticText-42" x="278" y="17" width="32" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -562,7 +562,7 @@
 						<text><![CDATA[PARCELA]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-43" x="349" y="17" width="60" height="10" uuid="2cc58d7e-c847-4aa0-bb7b-9e12c61c0274"/>
+						<reportElement key="staticText-43" x="349" y="17" width="60" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -575,7 +575,7 @@
 						<text><![CDATA[CPF/CNPJ]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-44" x="415" y="17" width="52" height="10" uuid="f5536ef6-10a6-4ecc-b778-a0fa19e9c4d7"/>
+						<reportElement key="staticText-44" x="415" y="17" width="52" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -588,7 +588,7 @@
 						<text><![CDATA[COD AUTORIZ]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-45" x="478" y="17" width="44" height="10" uuid="44d94ad0-1bc4-4656-aecd-93fb45064f09"/>
+						<reportElement key="staticText-45" x="478" y="17" width="44" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -601,7 +601,7 @@
 						<text><![CDATA[VENCTO]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-46" x="533" y="17" width="40" height="10" uuid="710e2862-2a4f-460d-a6b9-2c09ebc4f036"/>
+						<reportElement key="staticText-46" x="533" y="17" width="40" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -614,7 +614,7 @@
 						<text><![CDATA[MATRÍCULA]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-47" x="584" y="17" width="60" height="10" uuid="5daf8024-aaf4-4a15-8356-55cfecb83f75"/>
+						<reportElement key="staticText-47" x="584" y="17" width="60" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -627,7 +627,7 @@
 						<text><![CDATA[VLR REGISTRADO]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-48" x="726" y="17" width="60" height="10" uuid="b170c2fe-15e7-47c2-a87f-4b6b24eb48b2"/>
+						<reportElement key="staticText-48" x="726" y="17" width="60" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -640,7 +640,7 @@
 						<text><![CDATA[DIFERENÇA]]></text>
 					</staticText>
 					<staticText>
-						<reportElement key="staticText-49" x="655" y="17" width="60" height="10" uuid="62536f5f-b363-4bb2-8bc9-3fa430003a5a"/>
+						<reportElement key="staticText-49" x="655" y="17" width="60" height="10"/>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -654,10 +654,10 @@
 					</staticText>
 				</elementGroup>
 				<ellipse>
-					<reportElement key="ellipse-1" x="36" y="17" width="0" height="0" uuid="c41e3e1f-073c-42b3-8cfa-e3628772d7bc"/>
+					<reportElement key="ellipse-1" x="36" y="17" width="0" height="0"/>
 				</ellipse>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-30" x="68" y="6" width="100" height="10" isRemoveLineWhenBlank="true" uuid="635193d9-7522-46eb-9318-825e0fdc4d64"/>
+					<reportElement key="textField-30" x="68" y="6" width="100" height="10" isRemoveLineWhenBlank="true"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -667,10 +667,10 @@
 					<textElement>
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{situacao}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{situacao}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-56" x="0" y="6" width="68" height="10" isRemoveLineWhenBlank="true" uuid="78094297-b03d-4889-8d59-bcd0d2000b9e"/>
+					<reportElement key="staticText-56" x="0" y="6" width="68" height="10" isRemoveLineWhenBlank="true"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -687,7 +687,7 @@
 		<groupFooter>
 			<band height="18" splitType="Stretch">
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" isPrintRepeatedValues="false" x="655" y="5" width="60" height="10" printWhenGroupChanges="situacao" uuid="ef065a5c-19a5-4468-a770-55c6678e8100"/>
+					<reportElement key="textField" isPrintRepeatedValues="false" x="655" y="5" width="60" height="10" printWhenGroupChanges="situacao"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -697,10 +697,10 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{totalPagoSituacao}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{totalPagoSituacao}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{totalPagoSituacao}) + ",00"]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00" isBlankWhenNull="true">
-					<reportElement key="textField" isPrintRepeatedValues="false" x="584" y="5" width="60" height="10" printWhenGroupChanges="situacao" uuid="b5fd5acc-db89-4a0e-8cba-f1e0f1645e4d"/>
+					<reportElement key="textField" isPrintRepeatedValues="false" x="584" y="5" width="60" height="10" printWhenGroupChanges="situacao"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -710,10 +710,10 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{totalRegistradoSituacao}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{totalRegistradoSituacao}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{totalRegistradoSituacao}) + ",00"]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-86" x="0" y="5" width="25" height="10" uuid="37272997-4c9c-4461-8ea0-3e818240cf2a"/>
+					<reportElement key="staticText-86" x="0" y="5" width="25" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -726,7 +726,7 @@
 					<text><![CDATA[TOTAL]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-31" x="25" y="5" width="100" height="10" uuid="b7a94fe9-4461-4e36-99fb-1881e71bc550"/>
+					<reportElement key="textField-31" x="25" y="5" width="100" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -736,10 +736,10 @@
 					<textElement>
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{situacao}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{situacao}]]></textFieldExpression>
 				</textField>
 				<textField pattern="" isBlankWhenNull="true">
-					<reportElement key="textField-36" x="726" y="5" width="60" height="10" uuid="4afe010f-1067-44c8-910b-9c3a18ae05ea"/>
+					<reportElement key="textField-36" x="726" y="5" width="60" height="10"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -749,7 +749,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{diferencaSituacao}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{diferencaSituacao}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{diferencaSituacao}) + ",00"]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -760,7 +760,7 @@
 	<title>
 		<band splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-62" x="0" y="-70" width="786" height="10" isRemoveLineWhenBlank="true" uuid="86809161-311e-4010-86a7-0a3cbde59374"/>
+				<reportElement key="staticText-62" x="0" y="-70" width="786" height="10" isRemoveLineWhenBlank="true"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -777,7 +777,7 @@
 	<pageHeader>
 		<band height="70" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-60" x="0" y="0" width="786" height="10" isRemoveLineWhenBlank="true" uuid="62b08b1c-6915-49b4-b0c7-a3b3c99c7bdc"/>
+				<reportElement key="staticText-60" x="0" y="0" width="786" height="10" isRemoveLineWhenBlank="true"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -790,7 +790,7 @@
 				<text><![CDATA[---------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="true">
-				<reportElement key="textField-20" x="0" y="40" width="786" height="10" uuid="b2ad9431-23e6-4948-a96b-f98192fff6df"/>
+				<reportElement key="textField-20" x="0" y="40" width="786" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -800,10 +800,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{PERIODO}+$P{DATA_INICIO}+$V{ATE}+$P{DATA_FIM}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PERIODO}+$P{DATA_INICIO}+$V{ATE}+$P{DATA_FIM}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-59" positionType="Float" mode="Opaque" x="0" y="20" width="786" height="10" isRemoveLineWhenBlank="true" uuid="7d5eb55d-e5eb-4869-a17d-a5cfb3d4dcee"/>
+				<reportElement key="staticText-59" positionType="Float" mode="Opaque" x="0" y="20" width="786" height="10" isRemoveLineWhenBlank="true"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -813,10 +813,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 				</textElement>
-				<text><![CDATA[DP06 - COBRANÇA BRADESCO SEGUROS]]></text>
+				<text><![CDATA[DEPÓSITO IDENTIFICADO - COBRANÇA BRADESCO SEGUROS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-61" x="0" y="10" width="110" height="10" uuid="e6496ff7-99f2-42ed-8a76-d6348c24f7a6"/>
+				<reportElement key="staticText-61" x="0" y="10" width="110" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -829,7 +829,7 @@
 				<text><![CDATA[GRUPO BRADESCO SEGUROS]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-21" x="75" y="40" width="106" height="10" uuid="495a5a9f-dc4b-4825-b4cb-2771c95b45cb"/>
+				<reportElement key="textField-21" x="75" y="40" width="106" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -839,10 +839,10 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{DATA_MOVIMENTO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{DATA_MOVIMENTO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-22" x="75" y="50" width="106" height="10" uuid="1920088a-f1ba-4590-b1b5-76bc9bd3c884"/>
+				<reportElement key="textField-22" x="75" y="50" width="106" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -852,10 +852,10 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{DATA_HORA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{DATA_HORA}]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-25" x="0" y="30" width="786" height="10" uuid="83620909-7cf9-4b0f-8dda-e87f07203620"/>
+				<reportElement key="textField-25" x="0" y="30" width="786" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -865,10 +865,10 @@
 				<textElement textAlignment="Center">
 					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{TITULO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{TITULO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-24" x="762" y="20" width="20" height="10" uuid="a6ea96f5-cea0-4ff1-884f-089156c30387"/>
+				<reportElement key="textField-24" x="762" y="20" width="20" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -878,10 +878,10 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-63" x="735" y="20" width="27" height="10" uuid="2fa511e7-1a09-4faa-857c-cb427ee853c4"/>
+				<reportElement key="staticText-63" x="735" y="20" width="27" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -894,7 +894,7 @@
 				<text><![CDATA[PAG #]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-64" x="0" y="40" width="72" height="10" uuid="367cd146-8ee5-4d85-a250-dd9afc072f5b"/>
+				<reportElement key="staticText-64" x="0" y="40" width="72" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -907,7 +907,7 @@
 				<text><![CDATA[DATA MOVIMENTO  - ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-26" x="632" y="50" width="150" height="10" uuid="b26ba1a3-8a1f-43dd-b63e-2432b4bb68b3"/>
+				<reportElement key="textField-26" x="632" y="50" width="150" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -917,10 +917,10 @@
 				<textElement textAlignment="Right">
 					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{SEQUENCIAL}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{SEQUENCIAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-65" x="0" y="50" width="72" height="10" uuid="bd88bb79-575c-4bd6-a0ce-971dec250657"/>
+				<reportElement key="staticText-65" x="0" y="50" width="72" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -933,7 +933,7 @@
 				<text><![CDATA[CPD - DATA/HORA - ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-87" x="0" y="59" width="786" height="10" isRemoveLineWhenBlank="true" uuid="3d484867-6751-49fc-9d29-977a63dea8f3"/>
+				<reportElement key="staticText-87" x="0" y="59" width="786" height="10" isRemoveLineWhenBlank="true"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -953,7 +953,7 @@
 	<detail>
 		<band height="10" splitType="Stretch">
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="0" y="0" width="54" height="10" uuid="795b24bc-de6a-4ff0-b322-be49acf6e325"/>
+				<reportElement key="textField-1" x="0" y="0" width="54" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -963,10 +963,10 @@
 				<textElement textAlignment="Right">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bloquete}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{bloquete}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-2" x="60" y="0" width="20" height="10" uuid="60d6ae44-4bcc-44d1-93f8-820ebb6562b6"/>
+				<reportElement key="textField-2" x="60" y="0" width="20" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -976,10 +976,10 @@
 				<textElement textAlignment="Right">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sucursal}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sucursal}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-3" x="92" y="0" width="20" height="10" uuid="33f07cf3-8aae-4da6-8d22-365eb7a3f93d"/>
+				<reportElement key="textField-3" x="92" y="0" width="20" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -989,10 +989,10 @@
 				<textElement textAlignment="Left">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{ramo}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ramo}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-4" x="118" y="0" width="43" height="10" uuid="33f74df8-ee30-4100-84dc-cb6dac9cdcc5"/>
+				<reportElement key="textField-4" x="118" y="0" width="43" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1002,10 +1002,10 @@
 				<textElement textAlignment="Right">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{apolice}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{apolice}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-5" x="168" y="0" width="20" height="10" uuid="6a2c4091-93f4-4d0e-9f9f-40b5662daf4e"/>
+				<reportElement key="textField-5" x="168" y="0" width="20" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1015,10 +1015,10 @@
 				<textElement textAlignment="Center">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{item}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-6" x="196" y="0" width="20" height="10" uuid="6d61089d-b6e3-42e0-9d7c-967270ac2976"/>
+				<reportElement key="textField-6" x="196" y="0" width="20" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1028,10 +1028,10 @@
 				<textElement textAlignment="Center">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipo}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-7" x="220" y="0" width="48" height="10" uuid="fb0f1c2e-968f-47ec-b75a-7b5eb3e6139e"/>
+				<reportElement key="textField-7" x="220" y="0" width="48" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1041,10 +1041,10 @@
 				<textElement textAlignment="Right">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{endosso}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{endosso}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-8" x="278" y="0" width="32" height="10" uuid="0d7cb6ff-6c35-45dc-9ca6-112a21ae96be"/>
+				<reportElement key="textField-8" x="278" y="0" width="32" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1054,10 +1054,10 @@
 				<textElement textAlignment="Center">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{parcela}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{parcela}.toString()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-9" x="309" y="0" width="100" height="10" uuid="59e7b7ad-420c-42f9-a5bf-744c0ba9ec5e"/>
+				<reportElement key="textField-9" x="309" y="0" width="100" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1067,10 +1067,10 @@
 				<textElement textAlignment="Right">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cpfCnpj}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cpfCnpj}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-10" x="415" y="0" width="52" height="10" uuid="1944fe17-b3dc-4f30-b8b1-fa8623a28990"/>
+				<reportElement key="textField-10" x="415" y="0" width="52" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1080,10 +1080,10 @@
 				<textElement textAlignment="Right">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{codigoAutorizadorComDv}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigoAutorizadorComDv}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement key="textField-11" x="478" y="0" width="44" height="10" uuid="7b38835e-ae1d-43b8-836f-8f101f4104a2"/>
+				<reportElement key="textField-11" x="478" y="0" width="44" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1093,10 +1093,10 @@
 				<textElement textAlignment="Center">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{vencimento}]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{vencimento}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-12" x="533" y="0" width="40" height="10" uuid="96d2e2d0-0459-4e31-9633-7bc8874d81b1"/>
+				<reportElement key="textField-12" x="533" y="0" width="40" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1106,10 +1106,10 @@
 				<textElement textAlignment="Center">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{matricula}.toString()]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-13" x="584" y="0" width="60" height="10" uuid="290d2cd2-e1fa-4b32-b2a7-e2e689a11de2"/>
+				<reportElement key="textField-13" x="584" y="0" width="60" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1119,10 +1119,10 @@
 				<textElement textAlignment="Right">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorRegistrado}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{valorRegistrado}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($F{valorRegistrado}) + ",00"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-14" x="655" y="0" width="60" height="10" uuid="edb97c81-f723-4c11-93ea-aeff71bd0c65"/>
+				<reportElement key="textField-14" x="655" y="0" width="60" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1132,10 +1132,10 @@
 				<textElement textAlignment="Right">
 					<font fontName="Courier New" size="7" isBold="false" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorPago}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{valorPago}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($F{valorPago}) + ",00"]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement key="textField" x="726" y="0" width="60" height="10" uuid="18aea7c3-27e6-48c6-8715-ac63dea9f29a"/>
+				<reportElement key="textField" x="726" y="0" width="60" height="10"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1145,7 +1145,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{diferenca}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{diferenca}.toString().equals("0.00")?" ":NumberFormat.getInstance(new Locale( "pt", "BR" )).format($V{diferenca}) + ",00"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
