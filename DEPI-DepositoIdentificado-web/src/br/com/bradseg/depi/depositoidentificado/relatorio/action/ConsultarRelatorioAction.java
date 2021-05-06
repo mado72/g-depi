@@ -84,7 +84,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 	private final FiltroVO model = new FiltroVO();
 	
 	private DadosRelatorioVO dadosRelatorio;
-    
+	
 	@Autowired
 	private ConsultarRelatorioFacade consultarRelatorioFacade;
 	private InputStream fileInputStream;
@@ -584,8 +584,6 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			return INPUT;
 		}
 		
-		model.setAbrirRelatorio(false);
-	
 		try {
 			List<RelatorioDadosComplementaresVO> dados = consultarRelatorioFacade.obterDadosComplementares(filtro);
 
@@ -621,7 +619,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			params.put(VALOR_TOTAL_REGISTRADO, valorTotalRegistrado);
 				
 			dadosRelatorio = new DadosRelatorioVO("relDadosComplementares.pdf",
-					"relManutencoesAnalitico.jasper", params, dados);
+					"relDadosComplementares.jasper", params, dados);
 	
 		} catch (DEPIIntegrationException e) {
 			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
@@ -795,7 +793,12 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     		LOGGER.error("Proposta Action - gerarCartaInterna - fim");
     		this.fileInputStream = is;
     		
-    		return dadosRelatorio.getRetorno();
+    		String retorno = dadosRelatorio.getRetorno();
+			model.setFileNameReport(retorno);
+			
+			// Para liberar o espaço em memória, depois de ter gerado o relatório.
+			dadosRelatorio = null; 
+    		return retorno;
 
     	} catch (Exception e) {
     		LOGGER.error("Falha na geração do relatório", e);

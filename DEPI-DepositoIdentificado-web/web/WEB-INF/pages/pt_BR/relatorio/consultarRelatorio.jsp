@@ -13,8 +13,6 @@
 <%-- 
 <s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank"  onload="loadPage()"   > 
 --%>
-abrirRelatorio = ${abrirRelatorio}
-tipoRelatorio = ${tipoRelatorio}
 	<s:hidden name="abrirRelatorio" value="true"/>
    	<s:hidden id="tituloTabela" name="tituloTabela"/>
    	<s:hidden id="acaoOriginal" name="acaoOriginal" />

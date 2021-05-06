@@ -36,44 +36,44 @@
 		    <result name="relEnvioRetornoBancoAnalitico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
-					<param name="contentDisposition">filename="${fileNameReport}"</param>
-				<param name="bufferSize">1024</param>			   
+					<param name="contentDisposition">attachment;filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>
 			</result>
  			<result name="relEnvioRetornoBancoSintetico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
-					<param name="contentDisposition">filename="${fileNameReport}"</param>
-				<param name="bufferSize">1024</param>			   
+					<param name="contentDisposition">attachment;filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>
 			</result>
  			<result name="relExtratoAnalitico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
-					<param name="contentDisposition">filename="${fileNameReport}"</param>
-				<param name="bufferSize">1024</param>			   
+					<param name="contentDisposition">attachment;filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>
 			</result>
  			<result name="relExtratoSintetico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
-					<param name="contentDisposition">filename="${fileNameReport}"</param>
-				<param name="bufferSize">1024</param>			   
+					<param name="contentDisposition">attachment;filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>
 			</result>
 		    <result name="relManutencoesAnalitico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
-					<param name="contentDisposition">filename="${fileNameReport}"</param>
-				<param name="bufferSize">1024</param>			   
+					<param name="contentDisposition">attachment;filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>
 			</result>
 		    <result name="relDadosComplementares.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
-					<param name="contentDisposition">filename="${fileNameReport}"</param>
-				<param name="bufferSize">1024</param>			   
+					<param name="contentDisposition">attachment;filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>
 			</result>
 			<result name="relManutencoesSintetico.pdf" type="stream">  
 					<param name="contentType">${contentTypeReport}</param>
 					<param name="inputName">fileInputStream</param>
-					<param name="contentDisposition">filename="${fileNameReport}"</param>
-				<param name="bufferSize">1024</param>			   
+					<param name="contentDisposition">attachment;filename="${fileNameReport}"</param>
+				<param name="bufferSize">1024</param>
 			</result>
 		    		   		    
 			<result name="error">
