@@ -51,7 +51,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
      * @param filtro do relatório
      * @return List<ManutencoesAnaliticoVO>
      */
-    public List<ManutencoesAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro) {
+    @Override
+	public List<ManutencoesAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro) {
     	
     	BUCBBusinessDelegate bucbDelegate = new BUCBBusinessDelegate ();
     	List<ManutencoesAnaliticoVO> manutencoes = null;
@@ -120,7 +121,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
                 f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
                 f.setCodigoTipoPesquisa(1);
                 f.setDataNascimento(0);
-                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // � cnpj
+                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // É cnpj
                     f.setCodigoTipoPessoa(4);
                 } else {
                     f.setCodigoTipoPessoa(3);

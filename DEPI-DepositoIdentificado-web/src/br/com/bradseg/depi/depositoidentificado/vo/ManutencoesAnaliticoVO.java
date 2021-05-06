@@ -1,13 +1,14 @@
 package br.com.bradseg.depi.depositoidentificado.vo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Classe ManutencoesAnaliticoVO
  * @author Globality
  */
-public class ManutencoesAnaliticoVO implements Serializable{
+public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaAware, RelatorioBancoContaAware {
 
     
     /**
@@ -33,8 +34,8 @@ public class ManutencoesAnaliticoVO implements Serializable{
     private Long codigoPessoa;
     private Date vencimento;
     private Long matricResp;
-    private Double valorRegistrado = 0.00 ;
-    private Double valorPago = 0.00 ;
+    private BigDecimal valorRegistrado = BigDecimal.ZERO ;
+    private BigDecimal valorPago = BigDecimal.ZERO ;
     private Integer codigoBanco;
     private Integer codigoAgencia;
     private Long codigoConta;
@@ -64,7 +65,8 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Retorna o valor do atributo codigoAgencia.
      * @return o valor do atributo codigoAgencia
      */
-    public Integer getCodigoAgencia() {
+    @Override
+	public Integer getCodigoAgencia() {
         return codigoAgencia;
     }
 
@@ -110,7 +112,8 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Retorna o valor do atributo codigoCia.
      * @return o valor do atributo codigoCia
      */
-    public Integer getCodigoCia() {
+    @Override
+	public Integer getCodigoCia() {
         return codigoCia;
     }
 
@@ -125,7 +128,8 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Retorna o valor do atributo codigoBanco.
      * @return o valor do atributo codigoBanco
      */
-    public Integer getCodigoBanco() {
+    @Override
+	public Integer getCodigoBanco() {
         return codigoBanco;
     }
 
@@ -140,7 +144,8 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Retorna o valor do atributo codigoConta.
      * @return o valor do atributo codigoConta
      */
-    public Long getCodigoConta() {
+    @Override
+	public Long getCodigoConta() {
         return codigoConta;
     }
 
@@ -194,7 +199,8 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Especifica o valor do atributo descricaoBanco.
      * @param descrBanco - String do descricaoBanco a ser configurado.
      */
-    public void setDescricaoBanco(String descrBanco) {
+    @Override
+	public void setDescricaoBanco(String descrBanco) {
         this.descrBanco = descrBanco;
     }
 
@@ -225,7 +231,8 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Especifica o valor do atributo descricaoCia.
      * @param descrCia - String do descricaoCia a ser configurado.
      */
-    public void setDescricaoCia(String descrCia) {
+    @Override
+	public void setDescricaoCia(String descrCia) {
         this.descrCia = descrCia;
     }
 
@@ -256,7 +263,8 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Especifica o valor do atributo descricaoConta.
      * @param descrConta - String do descricaoConta a ser configurado.
      */
-    public void setDescricaoConta(String descrConta) {
+    @Override
+	public void setDescricaoConta(String descrConta) {
         this.descrConta = descrConta;
     }
     /**
@@ -388,7 +396,7 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Retorna o valor do atributo valorRegistrado.
      * @return o valor do atributo valorRegistrado
      */
-    public Double getValorRegistrado() {
+    public BigDecimal getValorRegistrado() {
         return valorRegistrado;
     }
 
@@ -396,7 +404,7 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Especifica o valor do atributo valorRegistrado.
      * @param valorRegistrado - java.math.BigDecimal do valorRegistrado a ser configurado.
      */
-    public void setValorRegistrado(Double valorRegistrado) {
+    public void setValorRegistrado(BigDecimal valorRegistrado) {
         this.valorRegistrado = valorRegistrado;
     }
 
@@ -404,7 +412,7 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Retorna o valor do atributo valorPago.
      * @return o valor do atributo valorPago
      */
-    public Double getValorPago() {
+    public BigDecimal getValorPago() {
         return valorPago;
     }
 
@@ -412,7 +420,7 @@ public class ManutencoesAnaliticoVO implements Serializable{
      * Especifica o valor do atributo valorPago.
      * @param valorPago - java.math.BigDecimal do valorPago a ser configurado.
      */
-    public void setValorPago(Double valorPago) {
+    public void setValorPago(BigDecimal valorPago) {
         this.valorPago = valorPago;
     }
     /**

@@ -15,7 +15,7 @@
 --%>
 abrirRelatorio = ${abrirRelatorio}
 tipoRelatorio = ${tipoRelatorio}
-	<s:hidden name="abrirRelatorio" value="false"/>	
+	<s:hidden name="abrirRelatorio" value="true"/>
    	<s:hidden id="tituloTabela" name="tituloTabela"/>
    	<s:hidden id="acaoOriginal" name="acaoOriginal" />
    	<s:hidden id="acaoFrm" name="acao" />

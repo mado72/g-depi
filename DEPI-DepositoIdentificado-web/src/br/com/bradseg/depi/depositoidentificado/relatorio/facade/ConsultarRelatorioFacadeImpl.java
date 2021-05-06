@@ -418,7 +418,6 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
     @Override    
     public List<DepartamentoCompanhiaVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
 		
-    
     	LOGGER.error("Inicio - obterPorFiltro(FiltroUtil filtro)");
     	
         List<DepartamentoCompanhiaVO> lista = new ArrayList<DepartamentoCompanhiaVO>();// daoDepartamento.obterPorFiltro(filtro);
@@ -444,7 +443,17 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Override
 	public List<ManutencoesAnaliticoVO> obterDadosManutencoesAnalitico(
 			FiltroUtil filtro) {
-		return daoManutAnalitico.obterDadosAnalitico(filtro);
+		List<ManutencoesAnaliticoVO> dados = daoManutAnalitico.obterDadosAnalitico(filtro);
+		
+		preencheDescricaoCia(dados);
+		preencheDescricoesBancoConta(dados);
+		
+		for (ManutencoesAnaliticoVO vo : dados) {
+			if (vo.getValorPago() == null) {
+				vo.setValorPago(BigDecimal.ZERO);
+			}
+		}
+		return dados;
 	}
 
 	@Override
@@ -490,8 +499,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
                     original.getCodigoAgencia()).append(original.getCodigoConta()).append(original.getCodigoTipoAcao())
                     .toString();
                 if (key.equals(chave)) {
-                	Double vlDouble = original.getValorRegistrado();
-                	BigDecimal vlBigDecimal = new BigDecimal(vlDouble);
+                	BigDecimal vlBigDecimal = original.getValorRegistrado();
                 	BigDecimal valor = sintetico.getValor().add(vlBigDecimal);
                      
                 	sintetico.setValor(valor);

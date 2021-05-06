@@ -503,7 +503,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 	
 			Map<String, Object> params = prepararParametrosComunsPdf();
 			params.put(VISUALIZACAO, "Analítio");
-			params.put(SITUACAO, filtro.getSituacaoManutencao() );
+			params.put(SITUACAO, model.getSituacaoManutencoes() );
 	
 			gerarPdf("relManutencoesAnalitico.jasper", params, dados);
 	

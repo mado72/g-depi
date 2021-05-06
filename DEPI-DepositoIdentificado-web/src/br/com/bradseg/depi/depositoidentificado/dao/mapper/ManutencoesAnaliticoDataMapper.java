@@ -21,7 +21,6 @@ public class ManutencoesAnaliticoDataMapper implements RowMapper<ManutencoesAnal
 
 		ManutencoesAnaliticoVO manutencoesAnaliticoVO = new ManutencoesAnaliticoVO();
 
-		
 		manutencoesAnaliticoVO.setCodigoSituacao(rs.getInt("CSIT_DEP_ARQ_TRNSF"));
 		manutencoesAnaliticoVO.setCodigoDigitoIdentificador(rs.getLong("CDIG_DEP_IDTFD"));
 		manutencoesAnaliticoVO.setBloquete(rs.getLong("NBLETO_COBR"));
@@ -33,12 +32,12 @@ public class ManutencoesAnaliticoDataMapper implements RowMapper<ManutencoesAnal
 		manutencoesAnaliticoVO.setEndosso(rs.getInt("NENDSS"));
 		manutencoesAnaliticoVO.setCodigoCia(rs.getInt("CINTRN_CIA_SEGDR"));
 		manutencoesAnaliticoVO.setParcelaPremio(rs.getInt("NPCELA_PRMIO"));
-//		manutencoesAnaliticoVO.set(rs.getInt("CDEP_IDTFD")); #Verificar
+		manutencoesAnaliticoVO.setCodigoAutorizador(rs.getLong("CDEP_IDTFD"));
 		manutencoesAnaliticoVO.setCodigoPessoa(rs.getLong("CPSSOA_DEPST"));
 		manutencoesAnaliticoVO.setVencimento(rs.getDate("DVCTO_DEP_IDTFD"));
 		manutencoesAnaliticoVO.setMatricResp(rs.getLong("CUSUAR_RESP_ATULZ"));
-		manutencoesAnaliticoVO.setValorPago(rs.getDouble("VDEP_IDTFD_ORIGN"));
-//		manutencoesAnaliticoVO.setValorRegistrado(rs.getDouble("LCTO_VTOT_DEP_IDTFD"));
+		manutencoesAnaliticoVO.setValorPago(rs.getBigDecimal("VDEP_IDTFD_ORIGN"));
+		manutencoesAnaliticoVO.setValorRegistrado(rs.getBigDecimal("VTOT_DEP_IDTFD"));
 		manutencoesAnaliticoVO.setCodigoBanco(rs.getInt("CBCO"));
 		manutencoesAnaliticoVO.setCodigoAgencia(rs.getInt("CAG_BCRIA"));
 		manutencoesAnaliticoVO.setCodigoConta(rs.getLong("CCTA_CORR"));

@@ -614,10 +614,6 @@ function ObtemDadosForm(){
 
 function gerarRelatorio(){
     // ObtemDadosForm();
-	var acao = document.forms[0].acaoOriginal.value;	
-	//document.location.href = document.forms[0].action + '?acao=' + acao;
-
-    //ObtemDadosForm();
     document.getElementById('formConsultarRelatorio').submit();
 }
 
