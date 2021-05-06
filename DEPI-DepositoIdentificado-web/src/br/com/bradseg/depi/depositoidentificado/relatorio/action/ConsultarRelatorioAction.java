@@ -1,7 +1,9 @@
 package br.com.bradseg.depi.depositoidentificado.relatorio.action;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,9 +15,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +48,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
-
-
-
-
 @Controller
 @Scope("session")
 public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
@@ -70,14 +71,12 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     public static final String ESTRUTURA_PASTA_IMAGENS = "/padroes_web/intranet/imagens/";
     public static final String ESTRUTURA_PASTA_CSS = "/padroes_web/intranet/css/";
 	
-	private static final String EXIBIRENVIORETORNOANALITICO = "exibirEnvioRetornoAnalitico";
-	private static final String EXIBIRENVIORETORNOSINTETICO = "exibirEnvioRetornoSintetico";
-	private static final String EXIBIREXTRATOANALITICO      = "exibirExtratoAnalitico";
-	private static final String EXIBIREXTRATOSINTETICO      = "exibirExtratoSintetico";
-	private static final String EXIBIRMANUTENCOESANALITICO  = "exibirManutencoesAnalitico";
-	private static final String EXIBIRMANUTENCOESSINTETICO  = "exibirManutencoesSintetico";
-	private static final String EXIBIRDADOSCOMPLEMENTARES   = "exibirDadosComplementares";
-	
+    private static final String TIPO_RELATORIO_ENVIO_RETORNO = "ER";
+    private static final String TIPO_RELATORIO_EXTRATO = "EX";
+    private static final String TIPO_RELATORIO_MANUTENCOES = "MN";
+    private static final String TIPO_RELATORIO_DADOS_COMPLEMENTARES = "DC";
+	private static final Object VISUALIZACAO_ANALITICO = "A";
+    
 	//Combos da tela
 	private FiltroUtil filtro;
 	
@@ -88,7 +87,6 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 	private InputStream fileInputStream;
 	
 	public String consultarRelatorio(){
-		String acao = model.getAcao();
 		try {
 			carregarComboCompanhia();
 			carregarComboDepartamentos();
@@ -97,25 +95,34 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			model.setAbrirRelatorio(false);
 			model.setDeposito(0);
 			
-			if (EXIBIRENVIORETORNOANALITICO.equals(acao)){
-				exibirEnvioRetornoAnalitico();			
+			String tipoRelatorio = model.getTipoRelatorio();
+			String visualizacao = model.getVisualizacao();
+			
+			if (TIPO_RELATORIO_ENVIO_RETORNO.equals(tipoRelatorio)) {
+				if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+					exibirEnvioRetornoAnalitico();			
+				}
+				else {
+					exibirEnvioRetornoSintetico();			
+				}
 			}
-			else if (EXIBIRENVIORETORNOSINTETICO.equals(acao)){
-				exibirEnvioRetornoSintetico();			
+			else if (TIPO_RELATORIO_EXTRATO.equals(tipoRelatorio)) {
+				if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+					exibirExtratoAnalitico();		
+				}
+				else {
+					exibirExtratoSintetico();		
+				}
 			}
-			else if (EXIBIREXTRATOANALITICO.equals(acao)){
-				exibirExtratoAnalitico();		
+			else if (TIPO_RELATORIO_MANUTENCOES.equals(tipoRelatorio)) {
+				if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+					exibirManutencoesAnalitico();			
+				}
+				else {
+					exibirManutencoesSintetico();			
+				}
 			}
-			else if (EXIBIREXTRATOSINTETICO.equals(acao)){
-				exibirExtratoSintetico();		
-			}
-			else if (EXIBIRMANUTENCOESANALITICO.equals(acao)){
-				exibirManutencoesAnalitico();			
-			}
-			else if (EXIBIRMANUTENCOESSINTETICO.equals(acao)){
-				exibirManutencoesSintetico();			
-			}
-			else if (EXIBIRDADOSCOMPLEMENTARES.equals(acao)){
+			else if (TIPO_RELATORIO_DADOS_COMPLEMENTARES.equals(tipoRelatorio)) {
 				exibirDadosComplementares();			
 			}
 		}
@@ -166,7 +173,6 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     	model.setTituloTabela("Dados de Manutenções - Sintético");
     	model.setTipoRelatorio("MN");
     	model.setVisualizacao("S");
-    	model.setAcao(EXIBIRMANUTENCOESSINTETICO);
     }
 	  
 	private void exibirDadosComplementares() throws DEPIIntegrationException {
@@ -175,7 +181,6 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     	model.setTipoRelatorio("DC");
     	model.setVisualizacao("A");
     	model.setSituacaoEnvioRetorno("A");
-    	model.setAcao(EXIBIRDADOSCOMPLEMENTARES);
 	}
 
 	/**
@@ -263,29 +268,38 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 
 	public String gerarRelatorio() {
 		LOGGER.error("XXXXXX="+model.toString());
-		String acao = this.model.getAcao();
 		String retorno = SUCCESS;
-		if(EXIBIRENVIORETORNOANALITICO.equals(acao)){
-			retorno = this.consultarEnvioRetornoAnalitico();
+		
+		String tipoRelatorio = model.getTipoRelatorio();
+		String visualizacao = model.getVisualizacao();
+		
+		if (TIPO_RELATORIO_ENVIO_RETORNO.equals(tipoRelatorio)) {
+			if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+				retorno = this.consultarEnvioRetornoAnalitico();
+			}
+			else {
+				retorno = this.consultarEnvioRetornoSintetico();
+			}
 		}
-		else if(EXIBIRENVIORETORNOSINTETICO.equals(acao)){
-			retorno = this.consultarEnvioRetornoSintetico();
+		else if (TIPO_RELATORIO_EXTRATO.equals(tipoRelatorio)) {
+			if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+				retorno = this.consultarExtratoAnalitico();
+			}
+			else {
+				retorno = this.consultarExtratoSintetico();
+			}
 		}
-		else if(EXIBIREXTRATOANALITICO.equals(acao)){
-			retorno = this.consultarExtratoAnalitico();
+		else if (TIPO_RELATORIO_MANUTENCOES.equals(tipoRelatorio)) {
+			if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+				retorno = this.consultarManutencoesAnalitico();				
+			}
+			else {
+				retorno = this.consultarManutencoesSintetico();
+			}
 		}
-		else if(EXIBIREXTRATOSINTETICO.equals(acao)){
-			retorno = this.consultarEnvioRetornoSintetico();
-		}
-		else if(EXIBIRMANUTENCOESANALITICO.equals(acao)){
-			retorno = this.consultarManutencoesAnalitico();				
-		}
-		else if(EXIBIRMANUTENCOESSINTETICO.equals(acao)){
-			retorno = this.consultarManutencoesSintetico();
-		}
-		else if(EXIBIRDADOSCOMPLEMENTARES.equals(acao)){		
+		else if (TIPO_RELATORIO_DADOS_COMPLEMENTARES.equals(tipoRelatorio)) {
 			retorno = this.consultarDadosComplementaresAnalitico();
-		}					     
+		}
 		
 		return retorno;
 	}
@@ -307,8 +321,13 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			addActionError(getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{DATA_FINAL}));
 		}
 		
-		if (BaseUtil.isNZB(model.getAcao())) {
-			addActionError(getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{"acao"}));
+		if (BaseUtil.isNZB(model.getTipoRelatorio())) {
+			addActionError(getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{"tipoRelatorio"}));
+		}
+		else {
+			if (! TIPO_RELATORIO_DADOS_COMPLEMENTARES.equals(model.getTipoRelatorio()) && BaseUtil.isNZB(model.getVisualizacao())) {
+				addActionError(getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{"visualizacao"}));
+			}
 		}
 	}
 	
@@ -741,19 +760,26 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     		// LOGGER.error("ConstantesDEPI.DP06_LOGO_JPG:"+ ConstantesDEPI.DP06_LOGO_JPG);
     		// LOGGER.error("PARAM_LOGO:"+ConstantesDEPI.PARAM_LOGO);
     		// LOGGER.error("pathImg:"+pathImg);
-    		byte[] bytes = null;
-    		bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, ds);
+    		
+    		InputStream in = new FileInputStream(reportFile);
+     		JasperReport jr = (JasperReport) JRLoader.loadObject(in);
+     		JasperPrint jp = JasperFillManager.fillReport(jr, parametros, ds);
+			
+     		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024 * 1024);
+     		JasperExportManager.exportReportToPdfStream(jp, outputStream);
+    		
+    		byte[] bytes = outputStream.toByteArray();
+//    		bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parametros, ds);
 
     		InputStream is = new ByteArrayInputStream(bytes);
     		LOGGER.error("Proposta Action - gerarCartaInterna - fim");
     		this.fileInputStream = is;
 
-    	} catch (JRException e) {
-    		LOGGER.error(e.getMessage());
-    		throw new DEPIIntegrationException(e.getMessage());
     	} catch (Exception e) {
-    		LOGGER.error(e.getMessage());
-    		throw new DEPIIntegrationException(e.getMessage());
+    		LOGGER.error("Falha na geração do relatório", e);
+    		
+			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CUSTOMIZADA,
+					new String[] { e.getMessage() });
     	}
     }
 

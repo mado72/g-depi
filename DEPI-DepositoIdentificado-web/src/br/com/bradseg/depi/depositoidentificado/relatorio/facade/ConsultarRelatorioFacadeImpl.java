@@ -310,7 +310,85 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 			preencheDescricaoCia(dados);
 			preencheDescricoesBancoConta(dados);
 			
-			return dados;
+			HashMap<String, RelatorioExtratoSinteticoVO> mapaPorCompanhiaBanco = new LinkedHashMap<>();
+			
+			AtomicInteger qtdAceitos = new AtomicInteger();
+			AtomicInteger qtdCancelados = new AtomicInteger();
+			AtomicInteger qtdEnviados = new AtomicInteger();
+			AtomicInteger qtdRejeitados = new AtomicInteger();
+			
+			BigDecimal totalAceitos = BigDecimal.ZERO;
+			BigDecimal totalCancelados = BigDecimal.ZERO;;
+			BigDecimal totalEnviados = BigDecimal.ZERO;;
+			BigDecimal totalRejeitados = BigDecimal.ZERO;
+			
+			for (RelatorioExtratoSinteticoVO item : dados) {
+				String companhiaBanco = item.getCodigoCia() + "." + item.getCodigoBanco();
+				
+				RelatorioExtratoSinteticoVO consolidado = mapaPorCompanhiaBanco.get(companhiaBanco);
+				if (consolidado == null) {
+					consolidado = item;
+					
+					consolidado.setQtdAceito(0);
+					consolidado.setQtdCancelado(0);
+					consolidado.setQtdEnviado(0);
+					consolidado.setQtdRejeitado(0);
+					
+					consolidado.setValorAceito(BigDecimal.ZERO);
+					consolidado.setValorCancelado(BigDecimal.ZERO);
+					consolidado.setValorEnviado(BigDecimal.ZERO);
+					consolidado.setValorRejeitado(BigDecimal.ZERO);
+					
+					mapaPorCompanhiaBanco.put(companhiaBanco, consolidado);
+				}
+				
+				if (item.getSituacaoEnvioRetorno() == ARQUIVO_ACEITO) {
+					totalAceitos = totalAceitos.add(item.getValorRegistrado());
+					qtdAceitos.incrementAndGet();
+					
+					consolidado.setQtdAceito(consolidado.getQtdAceito() + 1);
+					consolidado.setValorAceito(consolidado.getValorAceito().add(item.getValorRegistrado()));
+				}
+				else if (item.getSituacaoEnvioRetorno() == ARQUIVO_CANCELADO) {
+					totalCancelados = totalCancelados.add(item.getValorRegistrado());
+					qtdCancelados.incrementAndGet();
+					
+					consolidado.setQtdCancelado(consolidado.getQtdCancelado() + 1);
+					consolidado.setValorCancelado(consolidado.getValorCancelado().add(item.getValorRegistrado()));
+				}
+				else if (item.getSituacaoEnvioRetorno() == ARQUIVO_ENVIADO) {
+					totalEnviados = totalEnviados.add(item.getValorRegistrado());
+					qtdEnviados.incrementAndGet();
+					
+					consolidado.setQtdEnviado(consolidado.getQtdEnviado() + 1);
+					consolidado.setValorEnviado(consolidado.getValorEnviado().add(item.getValorRegistrado()));
+				}
+				else if (item.getSituacaoEnvioRetorno() == ARQUIVO_REJEITADO) {
+					totalRejeitados = totalRejeitados.add(item.getValorRegistrado());
+					qtdRejeitados.incrementAndGet();
+					
+					consolidado.setQtdRejeitado(consolidado.getQtdRejeitado() + 1);
+					consolidado.setValorRejeitado(consolidado.getValorRejeitado().add(item.getValorRegistrado()));
+				}
+			}
+			
+			ArrayList<RelatorioExtratoSinteticoVO> retorno = new ArrayList<>(mapaPorCompanhiaBanco.values());
+			RelatorioExtratoSinteticoVO totais = new RelatorioExtratoSinteticoVO();
+			
+			totais.setValorAceito(totalAceitos);
+			totais.setValorCancelado(totalCancelados);
+			totais.setValorEnviado(totalEnviados);
+			totais.setValorRejeitado(totalRejeitados);
+			
+			totais.setQtdAceito(qtdAceitos.get());
+			totais.setQtdCancelado(qtdCancelados.get());
+			totais.setQtdEnviado(qtdEnviados.get());
+			totais.setQtdRejeitado(qtdRejeitados.get());
+			
+			totais.setDescricaoSituacao("TODOS");
+			retorno.add(totais);
+			
+			return retorno;
 		} catch (Exception e) {
 			LOGGER.error("Falha na consulta", e);
 			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CUSTOMIZADA, new String[]{e.getMessage()});

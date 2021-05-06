@@ -18,13 +18,13 @@
 	<div class="itemmenu" onmouseover="over(2)" onmouseout="out(2)">
 		<a href="<s:url value="/index.do"/>" class="menu_horizontal">Relatórios</a>
 		<div class="dropdown" id="s2">
-			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirEnvioRetornoAnalitico"/>"  >Envio/Retorno Banco - Analítico</a>
-			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirEnvioRetornoSintetico"/>">Envio/Retorno Banco - Sintético</a>
-			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirExtratoAnalitico"/>">Extrato Banco - Analítico</a>
-			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirExtratoSintetico"/>">Extrato Banco - Sintético</a>
-			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirManutencoesAnalitico"/>">Manutenções - Analítico</a>
-			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirManutencoesSintetico"/>">Manutenções - Sintético</a>
-			<a href="<s:url value="/relatorio/consultarRelatorio.do?acao=exibirDadosComplementares"/>">Dados Complementares - Analítico</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?tipoRelatorio=ER&visualizacao=A"/>">Envio/Retorno Banco - Analítico</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?tipoRelatorio=ER&visualizacao=S"/>">Envio/Retorno Banco - Sintético</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?tipoRelatorio=EX&visualizacao=A"/>">Extrato Banco - Analítico</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?tipoRelatorio=EX&visualizacao=S"/>">Extrato Banco - Sintético</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?tipoRelatorio=MN&visualizacao=A"/>">Manutenções - Analítico</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?tipoRelatorio=MN&visualizacao=S"/>">Manutenções - Sintético</a>
+			<a href="<s:url value="/relatorio/consultarRelatorio.do?tipoRelatorio=DC&visualizacao="/>">Dados Complementares - Analítico</a>
 		</div>
 	</div>
 	<div class="itemmenu">

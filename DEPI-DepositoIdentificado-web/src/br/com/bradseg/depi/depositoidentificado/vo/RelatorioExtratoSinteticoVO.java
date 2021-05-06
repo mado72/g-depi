@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 
 /**
  * Método RelatorioExtratoSinteticoVO
- * @author F�bio Henrique
  */
 public class RelatorioExtratoSinteticoVO implements Serializable, RelatorioCompanhiaAware, RelatorioBancoContaAware {
 
@@ -58,8 +57,6 @@ public class RelatorioExtratoSinteticoVO implements Serializable, RelatorioCompa
     /**
      * Totais Manuten��o por Grupo
      */
-    private long qtdAceite;
-    private BigDecimal valorAceite = BigDecimal.ZERO;
     private long qtdTransferencia;
     private BigDecimal valorTransferencia = BigDecimal.ZERO;
     private long qtdDevolucao;
@@ -255,7 +252,7 @@ public class RelatorioExtratoSinteticoVO implements Serializable, RelatorioCompa
      * @return o valor do atributo valorAceite
      */
     public BigDecimal getValorAceite() {
-        return valorAceite;
+        return valorAceito;
     }
 
     /**
@@ -263,7 +260,7 @@ public class RelatorioExtratoSinteticoVO implements Serializable, RelatorioCompa
      * @param valorAceite - BigDecimal do valorAceite a ser configurado.
      */
     public void setValorAceite(BigDecimal valorAceite) {
-        this.valorAceite = valorAceite;
+        this.valorAceito = valorAceite;
     }
 
     /**
@@ -383,7 +380,7 @@ public class RelatorioExtratoSinteticoVO implements Serializable, RelatorioCompa
      * @return o valor do atributo qtdAceite
      */
     public long getQtdAceite() {
-        return qtdAceite;
+        return qtdAceito;
     }
 
     /**
@@ -391,7 +388,7 @@ public class RelatorioExtratoSinteticoVO implements Serializable, RelatorioCompa
      * @param qtdAceite - long do qtdAceite a ser configurado.
      */
     public void setQtdAceite(long qtdAceite) {
-        this.qtdAceite = qtdAceite;
+        this.qtdAceito = qtdAceite;
     }
 
     /**
