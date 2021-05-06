@@ -5,9 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -34,6 +34,7 @@ import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationExcepti
 import br.com.bradseg.depi.depositoidentificado.funcao.action.BaseModelAction;
 import br.com.bradseg.depi.depositoidentificado.relatorio.facade.ConsultarRelatorioFacade;
 import br.com.bradseg.depi.depositoidentificado.relatorio.util.RelogioUtil;
+import br.com.bradseg.depi.depositoidentificado.relatorio.vo.DadosRelatorioVO;
 import br.com.bradseg.depi.depositoidentificado.relatorio.vo.FiltroVO;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -81,6 +82,8 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 	private FiltroUtil filtro;
 	
 	private final FiltroVO model = new FiltroVO();
+	
+	private DadosRelatorioVO dadosRelatorio;
     
 	@Autowired
 	private ConsultarRelatorioFacade consultarRelatorioFacade;
@@ -266,7 +269,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 		return filtro;
 	}
 
-	public String gerarRelatorio() {
+	public String realizarConsulta() {
 		LOGGER.error("XXXXXX="+model.toString());
 		String retorno = SUCCESS;
 		
@@ -311,7 +314,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 		return super.input();
 	}
 	
-	public void validateGerarRelatorio() {
+	public void validateRealizarConsulta() {
 		filtro = montaFiltro(filtro);
 		if (BaseUtil.isNZB(filtro.getDataInicio())) {
 			addActionError(getText(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, new String[]{DATA_INICIAL}));
@@ -349,16 +352,18 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     			return INPUT;
     		}
 	
-			Map<String, Object> params = prepararParametrosComunsPdf();
+			Map<String, Serializable> params = prepararParametrosComunsPdf();
 	
-			gerarPdf( "relEnvioRetornoBancoAnalitico.jasper", params,  dados);
+			dadosRelatorio = new DadosRelatorioVO(
+					"relEnvioRetornoBancoAnalitico.pdf",
+					"relEnvioRetornoBancoAnalitico.jasper", params, dados);
 			
 		} catch (Exception e) {
 			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
 			addActionError(getText(ConstantesDEPI.ERRO_CUSTOMIZADA, new String[]{e.getMessage()}));
 			return INPUT;
 		}
-		return "relEnvioRetornoBancoAnalitico.pdf";// exibirEnvioRetornoAnalitico();
+		return SUCCESS;// exibirEnvioRetornoAnalitico();
 	}
 
 	public String consultarEnvioRetornoSintetico() throws DEPIIntegrationException {
@@ -380,9 +385,11 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     			return INPUT;
     		}
 	
-			Map<String, Object> params = prepararParametrosComunsPdf();
-	
-			gerarPdf( "relEnvioRetornoBancoSintetico.jasper", params, dados);
+			Map<String, Serializable> params = prepararParametrosComunsPdf();
+			
+			dadosRelatorio = new DadosRelatorioVO(
+					"relEnvioRetornoBancoSintetico.pdf",
+					"relEnvioRetornoBancoSintetico.jasper", params, dados);
 	
 		} catch (DEPIIntegrationException e) {
 			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
@@ -390,7 +397,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			model.setAbrirRelatorio(false);
 			return INPUT;
 		}
-		return "relEnvioRetornoBancoSintetico.pdf";// exibirEnvioRetornoSintetico();
+		return SUCCESS;
 	}
 
 	public String consultarExtratoAnalitico() throws DEPIIntegrationException {
@@ -434,11 +441,12 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			//List<RelatorioExtratoAnaliticoVO> dados
 			consultarRelatorioFacade.ordenarDadosAnalitico(dados);
 	
-			Map<String, Object> params = prepararParametrosComunsPdf();
+			Map<String, Serializable> params = prepararParametrosComunsPdf();
 			params.put(VISUALIZACAO, "Analítio");
 			params.put(SITUACAO, "TODOS");
-	
-			gerarPdf("relExtratoAnalitico.jasper", params, dados);
+			
+			dadosRelatorio = new DadosRelatorioVO("relExtratoAnalitico.pdf",
+					"relExtratoAnalitico.jasper", params, dados);
 	
 		} catch (Exception e) {
 			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
@@ -447,7 +455,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			return INPUT;
 		}
 	
-		return "relExtratoAnalitico.pdf";// exibirExtratoAnalitico();
+		return SUCCESS;
 	}
 
 	public String consultarExtratoSintetico() throws DEPIIntegrationException {
@@ -468,11 +476,12 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     			return INPUT;
     		}
 	
-    		Map<String, Object> params = prepararParametrosComunsPdf();
-    		params.put(VISUALIZACAO, "Sintético");
-    		params.put(SITUACAO, "TODOS");
-    		
-    		gerarPdf( "relExtratoSintetico.jasper", params, dados);
+			Map<String, Serializable> params = prepararParametrosComunsPdf();
+			params.put(VISUALIZACAO, "Sintético");
+			params.put(SITUACAO, "TODOS");
+			
+			dadosRelatorio = new DadosRelatorioVO("relExtratoSintetico.pdf",
+					"relExtratoSintetico.jasper", params, dados);
 
 		} catch (Exception e) {
 			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
@@ -481,7 +490,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			return INPUT;
 		}
 	
-		return "relExtratoSintetico.pdf";//       
+		return SUCCESS;       
 	}
 
 	public String consultarManutencoesAnalitico(){      
@@ -501,11 +510,13 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     			return INPUT;
     		}
 	
-			Map<String, Object> params = prepararParametrosComunsPdf();
+			Map<String, Serializable> params = prepararParametrosComunsPdf();
 			params.put(VISUALIZACAO, "Analítio");
-			params.put(SITUACAO, model.getSituacaoManutencoes() );
-	
-			gerarPdf("relManutencoesAnalitico.jasper", params, dados);
+			params.put(SITUACAO, "TODOS");
+			
+			dadosRelatorio = new DadosRelatorioVO(
+					"relManutencoesAnalitico.pdf",
+					"relManutencoesAnalitico.jasper", params, dados);
 	
 		} catch (IntegrationException e) {
 			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
@@ -513,7 +524,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			model.setAbrirRelatorio(false);
 			return INPUT;
 		}
-		return "relManutencoesAnalitico.pdf";//exibirManutencoesAnalitico();//();
+		return SUCCESS;
 	}
 
 	public String consultarManutencoesSintetico() throws DEPIIntegrationException {
@@ -535,7 +546,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     			return INPUT;
     		}
 
-    		Map<String, Object> params = prepararParametrosComunsPdf();
+			Map<String, Serializable> params = prepararParametrosComunsPdf();
     		
     		String situacao = "";//RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(c.getSituacaoManutencao());
 
@@ -547,14 +558,20 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     				.append(" - ").append("Sintético");
     		params.put(HEADER, sb.toString());
 
-    		gerarPdf("relManutencoesSintetico.jasper", params, dados);
+    		params.put(VISUALIZACAO, "Analítio");
+    		params.put(SITUACAO, "TODOS");
+    		
+			dadosRelatorio = new DadosRelatorioVO(
+					"relManutencoesSintetico.pdf",
+					"relManutencoesSintetico.jasper", params, dados);
+
     	} catch (DEPIIntegrationException e) {
     		LOGGER.error("Erro ao gerar relat\u00f3rio", e);
     		addActionError(getText(ConstantesDEPI.ERRO_CUSTOMIZADA, new String[]{e.getMessage()}));
 			model.setAbrirRelatorio(false);
     		return INPUT;
     	}
-    	return "relManutencoesSintetico.pdf";// exibirManutencoesSintetico();
+    	return SUCCESS;
     }
 
 
@@ -596,14 +613,15 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 	                return exibirDadosComplementares();
 	            }
 			 */
-			Map<String, Object> params = prepararParametrosComunsPdf();
+			Map<String, Serializable> params = prepararParametrosComunsPdf();
 			params.put(VISUALIZACAO, "Analítio");
 			params.put(SITUACAO, filtro.getSituacaoManutencao());
 	
 			params.put(VALOR_TOTAL_PAGO, valorTotalPago);
 			params.put(VALOR_TOTAL_REGISTRADO, valorTotalRegistrado);
-	
-			gerarPdf("relDadosComplementares.jasper", params, dados);
+				
+			dadosRelatorio = new DadosRelatorioVO("relDadosComplementares.pdf",
+					"relManutencoesAnalitico.jasper", params, dados);
 	
 		} catch (DEPIIntegrationException e) {
 			LOGGER.error("Erro ao gerar relat\u00f3rio", e);
@@ -611,11 +629,11 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			model.setAbrirRelatorio(false);
 			return INPUT;
 		}
-		return "relDadosComplementares.pdf";//exibirDadosComplementares();
+		return SUCCESS;
 	}
 
-	private Map<String, Object> prepararParametrosComunsPdf() {
-		Map<String, Object> params = new HashMap<String, Object>();
+	private Map<String, Serializable> prepararParametrosComunsPdf() {
+		Map<String, Serializable> params = new HashMap<String, Serializable>();
 		params.put(DATA_INICIO,  RelogioUtil.formataDate(filtro.getDataInicio()));
 		params.put(DATA_FIM, RelogioUtil.formataDate(filtro.getDataFinal()));
 	
@@ -743,16 +761,18 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 
     /**
      * Método utilizado para gerar relatório em PDF.
-     * @param nomeRelatorio Nome do Relatorio
-     * @param parametros Parametros do Relatorio
-     * @param dados Collection
      * @throws DEPIIntegrationException - Integração.
      */
-    public void gerarPdf( String nomeRelatorio,Map<String, Object> parametros, Collection<?> dados) throws DEPIIntegrationException {
+    public String gerarRelatorio() throws DEPIIntegrationException {
     	LOGGER.error("gerarPdf 1");  
     	try {
+    		List<? extends Serializable> dados = dadosRelatorio.getDados();
+    		Map<String, Serializable> parametros = dadosRelatorio.getParams();
+    		String nomeRelatorio = dadosRelatorio.getRelatorio();
+    		
     		JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(dados);
-    		File reportFile = new File(request.getSession().getServletContext().getRealPath(ConstantesDEPI.DIR_RELATORIOS + nomeRelatorio));
+			File reportFile = new File(request.getSession().getServletContext()
+					.getRealPath(ConstantesDEPI.DIR_RELATORIOS + nomeRelatorio));
     		String pathImg = this.getWww3()+ESTRUTURA_PASTA_IMAGENS;
     		parametros.put(ConstantesDEPI.PARAM_LOGO, pathImg + ConstantesDEPI.DP06_LOGO_JPG);
     		// LOGGER.error("pathImg:"+pathImg);
@@ -774,6 +794,8 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     		InputStream is = new ByteArrayInputStream(bytes);
     		LOGGER.error("Proposta Action - gerarCartaInterna - fim");
     		this.fileInputStream = is;
+    		
+    		return dadosRelatorio.getRetorno();
 
     	} catch (Exception e) {
     		LOGGER.error("Falha na geração do relatório", e);
@@ -795,5 +817,9 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     public FiltroVO getModel() {
     	return model;
     }
+    
+    public DadosRelatorioVO getDadosRelatorio() {
+		return dadosRelatorio;
+	}
 
 }

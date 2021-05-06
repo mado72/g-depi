@@ -32,10 +32,15 @@ FIXME: Não deve estar habilitado para publicar no servidor.
  	<logger name="org.apache" level="INFO" />
 	<logger name="com.opensymphony" level="DEBUG" />
 	<logger name="com.opensymphony.xwork2.ognl.accessor.XWorkMapPropertyAccessor" level="INFO" />
+	<logger name="com.opensymphony.xwork2.conversion.impl" level="INFO" />
 	
 	<logger name="org.springframework" level="DEBUG" />
+	<logger name="org.springframework.core.io.support.PathMatchingResourcePatternResolver" level="ERROR" />
+	<logger name="net.sf.jasperreports" level="DEBUG" />
 	<logger name="br.com.bradseg.bsad.framework" level="INFO" />
 	<logger name="br.com.bradseg.depi" level="DEBUG" />
+	<logger name="br.com.bradseg.depi.depositoidentificado.cics.CicsExecutor" level="INFO" />
+	<logger name="br.com.bradseg.depi.depositoidentificado.cics.BookConfiguration" level="INFO" />
 
 	<root level="DEBUG">
 		<appender-ref ref="CONSOLE" />

@@ -9,7 +9,7 @@
     <s:set name="vtpcCias" value="tpcCias"/>
     <s:set name="vtpcCiasOrdenadas" value="tpcCiasOrdenadas"/>
 		
-<s:form id="formConsultarRelatorio" action="gerarRelatorio.do" onload="loadPage()" method="GET"  >
+<s:form id="formConsultarRelatorio" action="realizarConsulta" onload="loadPage()" method="GET"  >
 <%-- 
 <s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank"  onload="loadPage()"   > 
 --%>
@@ -332,6 +332,11 @@ $.dpcoddesc.aninhar({
 	
 </s:form>
 
+<s:if test="abrirRelatorio">
+<s:form id="formGerarRelatorio" action="gerarRelatorio">
+</s:form>
+</s:if>
+
 <c:set var="scriptPage" scope="request">
 <script>
 jQuery(document).ready(function($){
@@ -350,7 +355,7 @@ jQuery(document).ready(function($){
 }(jQuery));
 <s:if test="abrirRelatorio">
 	if ($('.errorMessage li').length==0)
-		$.fn.abrirRelatorio("#formConsultarRelatorio", "_blank");
+		$.fn.abrirRelatorio("#formGerarRelatorio", "_blank");
 </s:if>
 </script>
 </c:set>
