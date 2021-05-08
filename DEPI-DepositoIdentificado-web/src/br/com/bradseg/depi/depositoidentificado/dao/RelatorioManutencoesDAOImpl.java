@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +14,7 @@ import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO;
 import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegate;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.ManutencoesAnaliticoDataMapper;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
@@ -67,8 +67,8 @@ public class RelatorioManutencoesDAOImpl extends JdbcDao implements RelatorioMan
  
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			
-        	params.addValue("dataInicio", filtro.getDataInicio());
-        	params.addValue("dataFim", filtro.getDataFinal());
+        	params.addValue("dtInicio", filtro.getDataInicio());
+        	params.addValue("dtFim", filtro.getDataFinal());
             
             if (filtro.getCodigoCia() > 0 ) {
                 sb.append(" AND DBPROD.DEP_IDTFD.CINTRN_CIA_SEGDR = :codcia ");
@@ -142,10 +142,9 @@ public class RelatorioManutencoesDAOImpl extends JdbcDao implements RelatorioMan
             query.replace(query.indexOf("#"), query.indexOf("#")+1 , sb.toString());
             manutencoes = getJdbcTemplate().query(query.toString(), params, new ManutencoesAnaliticoDataMapper());
 			
-		} catch(DataAccessException e) {
-			LOGGER.error("RelatorioManutencoesDAOImpl - obterDadosAnalitico", e);
 		} catch(Exception e) {
-			LOGGER.error("RelatorioManutencoesDAOImpl - obterDadosAnalitico", e);
+			LOGGER.error("Falha na consulta", e);
+			throw new DEPIIntegrationException(e);
 		}
         return manutencoes;
     }

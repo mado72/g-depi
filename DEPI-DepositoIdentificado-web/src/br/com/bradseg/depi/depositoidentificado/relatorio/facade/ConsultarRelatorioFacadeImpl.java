@@ -98,125 +98,6 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Autowired
 	private CICSDepiDAO cicsDepiDAO;
 	
-	private void preencheDescricaoCia(Collection<? extends RelatorioCompanhiaAware> dados) {
-		HashMap<Integer, CompanhiaSeguradoraVO> companhias = new HashMap<>();
-		
-		for (RelatorioCompanhiaAware item : dados) {
-			CompanhiaSeguradoraVO cia = null;
-			if (! companhias.containsKey(item.getCodigoCia())) {
-				try {
-					cia = cicsDepiDAO.obterCiaPorCodigo(item.getCodigoCia());
-					if (cia != null) {
-						companhias.put(cia.getCodigoCompanhia(), cia);
-					}
-				} catch (Exception e) {
-					LOGGER.warn("Erro ao obter companhia", e);
-				}
-			}
-			
-			if (cia != null) {
-				item.setDescricaoCia(
-						new StringBuilder().append(item.getCodigoCia()).append(SEPARADOR_CONTA).append(cia.getDescricaoCompanhia()).toString());
-			}
-		}
-	}
-
-	private void preencheDescricoesBancoConta(Collection<? extends RelatorioBancoContaAware> dados) {
-		HashMap<Integer, BancoVO> cacheBancos = new HashMap<>();
-		HashMap<String, String> contas = new HashMap<>();
-		
-		for (RelatorioBancoContaAware item : dados) {
-			
-			if (! cacheBancos.containsKey(item.getCodigoBanco())) {
-				try {
-					BancoVO banco = cicsDepiDAO.obterBanco(new BancoVO(item.getCodigoBanco()));
-					cacheBancos.put(item.getCodigoBanco(), banco);
-				} catch (Exception e) {
-					LOGGER.warn("Erro ao obter banco", e);
-				}
-			}
-			
-			BancoVO banco = cacheBancos.get(item.getCodigoBanco());
-			
-			if (banco != null) {
-				item.setDescricaoBanco(
-						new StringBuilder().append(banco.getCdBancoExterno()).append(SEPARADOR_CONTA).append(banco.getDescricaoBanco()).toString());
-				
-				ContaCorrenteAutorizadaVO cc = new ContaCorrenteAutorizadaVO(
-						banco, item.getCodigoAgencia(), item.getCodigoConta());
-				
-				String bancoAgenciaConta = cc.toString();
-				
-				if (! contas.containsKey(bancoAgenciaConta)) {
-					cc.setCia(new CompanhiaSeguradoraVO(item.getCodigoCia()));
-	
-					try {
-						cc = cicsDepiDAO.obterContaCorrente(cc);
-						
-						String descricaoConta = String.format("%d - %09d", cc.getCodigoAgencia(), cc.getContaCorrente());
-						contas.put(bancoAgenciaConta, descricaoConta);
-					} catch (Exception e) {
-						LOGGER.warn("Erro ao obter conta", e);
-					}
-				}
-				
-				item.setDescricaoConta(contas.get(bancoAgenciaConta));
-			}
-		}
-	}
-
-	private void preencheDescricaoSituacao(Collection<? extends RelatorioDescricaoSituacaoAware> dados) {
-		for (RelatorioDescricaoSituacaoAware item : dados) {
-			item.setDescricaoSituacao(obterSituacao(item.getCodigoSituacao()));
-		}
-	}
-	
-	private String obterSituacao(int codigo) {
-		switch (codigo) {
-		case ARQUIVO_ACEITO:
-			return "ACEITO";
-		case ARQUIVO_CANCELADO:
-			return "CANCELADO";
-		case ARQUIVO_ENVIADO:
-			return "ENVIADO";
-		case ARQUIVO_REJEITADO:
-			return "REJEITADO";
-		default:
-			return null;
-		}
-	}
-	
-	private void preencheCPFCNPJPessoa(String ipCliente, Integer codResponsavel, Collection<? extends RelatorioPessoaAware> dados) {
-
-		HashMap<Long, PessoaVO> cachePessoa = new HashMap<>();
-		
-		for (RelatorioPessoaAware item : dados) {
-			Long codPessoa = item.getCodigoPessoa();
-			if (codPessoa == null) {
-				continue;
-			}
-			
-			try {
-				if (! cachePessoa.containsKey(codPessoa)) {
-					PessoaVO pessoa = businessDelegate.obterDadosPessoa(ipCliente, codResponsavel, codPessoa);
-					cachePessoa.put(codPessoa, pessoa);
-				}
-			} catch (Exception e) {
-				throw new DEPIIntegrationException(e);
-			}
-			
-			PessoaVO pessoa = cachePessoa.get(codPessoa);
-			if (pessoa.isPessoaFisica()) {
-				item.setCpfCnpj(BaseUtil.getCpfFormatado(String.valueOf(pessoa.getCpfCnpj())));
-			} 
-			else if (pessoa.isPessoaJuridica()) {
-				item.setCpfCnpj(BaseUtil.getCnpjFormatado(String.valueOf(pessoa.getCpfCnpj())));
-			}
-		}
-
-	}
-	
-
 	@Override
 	public List<RelatorioEnvioRetornoVO> obterDadosEnvioRetornoAnalitico(
 			FiltroUtil filtro, String ipCliente, int codResponsavel) {
@@ -354,6 +235,147 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.depi.depositoidentificado.relatorio.facade.ConsultarRelatorioFacade#obterMotivoComRestricaoDeDeposito(int, int, br.com.bradseg.bsad.filtrologin.vo.LoginVo)
+	 */
+	@Override
+	public List<MotivoDepositoVO> obterMotivoComRestricaoDeDeposito(int codigCompanhia, int codigoDepartamento, LoginVo loginVO) {
+		int codigoUsuario =Integer.parseInt(loginVO.getId());  
+		return daoMotivoDeposito.obterComRestricaoDeGrupoAcesso(codigCompanhia, codigoDepartamento, codigoUsuario,Tabelas.DEPOSITO);
+	}
+
+	@Override
+	   public  List<DepartamentoVO> obterComDepositoRestricaoDeDeposito(int codigCompanhia, LoginVo loginVO){
+		int usuarioLogadoId =Integer.parseInt(loginVO.getId());  
+	
+		
+		return daoDepartamento.obterComRestricao(codigCompanhia, usuarioLogadoId, Tabelas.DEPOSITO );
+	}
+
+     /* (non-Javadoc)
+     * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#obterPorFiltro(br.com.bradseg.depi.depositoidentificado.util.FiltroUtil)
+     */
+    @Override    
+    public List<DepartamentoCompanhiaVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
+		
+    	LOGGER.error("Inicio - obterPorFiltro(FiltroUtil filtro)");
+    	
+        List<DepartamentoCompanhiaVO> lista = new ArrayList<DepartamentoCompanhiaVO>();// daoDepartamento.obterPorFiltro(filtro);
+        
+        HashMap<Integer, String> cache = new HashMap<>();
+        
+        for (DepartamentoCompanhiaVO vo : lista) {
+			int codigoCompanhia = vo.getCompanhia().getCodigoCompanhia();
+			
+			if (! cache.containsKey(codigoCompanhia)) {
+				CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(codigoCompanhia);
+				cache.put(codigoCompanhia, cia.getDescricaoCompanhia());
+			}
+			
+			String descricaoCompanhia = cache.get(codigoCompanhia);
+			vo.getCompanhia().setDescricaoCompanhia(descricaoCompanhia);
+		}
+        
+		return lista;
+    }
+
+
+	@Override
+	public List<ManutencoesAnaliticoVO> obterDadosManutencoesAnalitico(
+			FiltroUtil filtro, String ipCliente, int codResponsavel) {
+		List<ManutencoesAnaliticoVO> dados = daoManutAnalitico.obterDadosAnalitico(filtro);
+		
+		preencheDescricaoCia(dados);
+		preencheDescricoesBancoConta(dados);
+		preencheCPFCNPJPessoa(ipCliente, codResponsavel, dados);
+		
+		for (ManutencoesAnaliticoVO item : dados) {
+			item.setSituacao(obterDescricaoSituacaoMotivo(item.getCodigoTipoAcao()));
+			if (item.getValorPago() == null) {
+				item.setValorPago(BigDecimal.ZERO);
+			}
+		}
+		
+		return dados;
+	}
+
+	@Override
+	public List<ManutencoesSinteticoVO> obterDadosManutencoesSintetico(
+			FiltroUtil filtro, String ipCliente, int userId) {
+		return this.sintetizar(obterDadosManutencoesAnalitico(filtro, ipCliente, userId));
+		
+	}
+
+    @Override
+	public List<RelatorioDadosComplementaresVO> obterDadosComplementares(
+			FiltroUtil filtro) {
+		try {
+			return daoRelatorioDadosComplementares.obterDadosComplementaresAnalitico(filtro);
+		} catch (SQLException e) {
+			LOGGER.error(e.getMessage());
+	        throw new DEPIIntegrationException(e.getMessage());
+		}
+	}
+
+	@Override
+	public List<CompanhiaSeguradoraVO> carregarComboCompanhiaUsuLogado(LoginVo loginVO) {
+		int usuarioLogadoId =Integer.parseInt(loginVO.getId());
+		List<CompanhiaSeguradoraVO> lista = daoCiaSeg.obterComRestricaoDeGrupoAcesso(usuarioLogadoId);
+		
+		return populaDescricaoListaCompanhia(lista);
+
+	}
+	
+	/**
+	 * Gera lista com dados para o relatório Sintético usando a lista de dados do relatório Analítico.
+	 * @param dadosAnaliticos - List<ManutencoesSinteticoVO>.
+	 * @throws DEPIIntegrationException - DEPIIntegrationException.
+	 * @return List<ManutencoesSinteticoVO>.
+	 */
+	private List<ManutencoesSinteticoVO> sintetizar(List<ManutencoesAnaliticoVO> dadosAnaliticos) throws DEPIIntegrationException {
+		HashMap<String, List<ManutencoesAnaliticoVO>> mapAnalitico = new HashMap<>();
+		
+		// Agrupa os itens pela chave
+	    for (ManutencoesAnaliticoVO analitico : dadosAnaliticos) {
+	        String chave = obterChaveManutencoesAnalitico(analitico);
+	        if (! mapAnalitico.containsKey(chave)) {
+	        	mapAnalitico.put(chave, new ArrayList<ManutencoesAnaliticoVO>());
+	        }
+	        mapAnalitico.get(chave).add(analitico);
+	    }
+	    
+	    List<ManutencoesSinteticoVO> dadosSinteticos = new ArrayList<ManutencoesSinteticoVO>();
+	    
+	    for (List<ManutencoesAnaliticoVO> list : mapAnalitico.values()) {
+	    	
+	    	ManutencoesSinteticoVO sintetico = null;
+	    	
+	    	for (ManutencoesAnaliticoVO analitico : list) {
+				if (sintetico == null) {
+					sintetico = new ManutencoesSinteticoVO();
+					sintetico.setCodigoAgencia(analitico.getCodigoAgencia());
+					sintetico.setCodigoBanco(analitico.getCodigoBanco());
+					sintetico.setCodigoCia(analitico.getCodigoCia());
+					sintetico.setCodigoConta(analitico.getCodigoConta());
+					sintetico.setCodigoTipoAcao(analitico.getCodigoTipoAcao());
+					sintetico.setSituacao(analitico.getSituacao());
+					sintetico.setDescricaoBanco(analitico.getDescricaoBanco());
+					sintetico.setDescricaoCia(analitico.getDescricaoCia());
+					sintetico.setDescricaoConta(analitico.getDescricaoConta());
+					sintetico.setQuantidade(1l);
+					sintetico.setValor(analitico.getValorRegistrado());
+					dadosSinteticos.add(sintetico);
+				}
+				else {
+					sintetico.setQuantidade(sintetico.getQuantidade() + 1);
+					sintetico.setValor(sintetico.getValor().add(analitico.getValorRegistrado()));
+				}
+			}
+	    }
+	    
+	    return dadosSinteticos;
+	}
+
 	private ArrayList<RelatorioExtratoSinteticoVO> sintetizarExtrato(
 			Collection<RelatorioExtratoSinteticoVO> dados) {
 		
@@ -422,143 +444,109 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 		return new ArrayList<>(mapaPorCompanhiaBanco.values());
 	}
 
-	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.relatorio.facade.ConsultarRelatorioFacade#obterMotivoComRestricaoDeDeposito(int, int, br.com.bradseg.bsad.filtrologin.vo.LoginVo)
-	 */
-	@Override
-	public List<MotivoDepositoVO> obterMotivoComRestricaoDeDeposito(int codigCompanhia, int codigoDepartamento, LoginVo loginVO) {
-		int codigoUsuario =Integer.parseInt(loginVO.getId());  
-		return daoMotivoDeposito.obterComRestricaoDeGrupoAcesso(codigCompanhia, codigoDepartamento, codigoUsuario,Tabelas.DEPOSITO);
-	}
-
-	@Override
-	   public  List<DepartamentoVO> obterComDepositoRestricaoDeDeposito(int codigCompanhia, LoginVo loginVO){
-		int usuarioLogadoId =Integer.parseInt(loginVO.getId());  
-	
+	private void preencheDescricaoCia(Collection<? extends RelatorioCompanhiaAware> dados) {
+		HashMap<Integer, CompanhiaSeguradoraVO> companhias = new HashMap<>();
 		
-		return daoDepartamento.obterComRestricao(codigCompanhia, usuarioLogadoId, Tabelas.DEPOSITO );
-	}
-
-     /* (non-Javadoc)
-     * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade#obterPorFiltro(br.com.bradseg.depi.depositoidentificado.util.FiltroUtil)
-     */
-    @Override    
-    public List<DepartamentoCompanhiaVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException {
-		
-    	LOGGER.error("Inicio - obterPorFiltro(FiltroUtil filtro)");
-    	
-        List<DepartamentoCompanhiaVO> lista = new ArrayList<DepartamentoCompanhiaVO>();// daoDepartamento.obterPorFiltro(filtro);
-        
-        HashMap<Integer, String> cache = new HashMap<>();
-        
-        for (DepartamentoCompanhiaVO vo : lista) {
-			int codigoCompanhia = vo.getCompanhia().getCodigoCompanhia();
-			
-			if (! cache.containsKey(codigoCompanhia)) {
-				CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(codigoCompanhia);
-				cache.put(codigoCompanhia, cia.getDescricaoCompanhia());
+		for (RelatorioCompanhiaAware item : dados) {
+			if (! companhias.containsKey(item.getCodigoCia())) {
+				try {
+					CompanhiaSeguradoraVO cia = cicsDepiDAO.obterCiaPorCodigo(item.getCodigoCia());
+					if (cia != null) {
+						companhias.put(cia.getCodigoCompanhia(), cia);
+					}
+				} catch (Exception e) {
+					LOGGER.warn("Erro ao obter companhia", e);
+				}
 			}
 			
-			String descricaoCompanhia = cache.get(codigoCompanhia);
-			vo.getCompanhia().setDescricaoCompanhia(descricaoCompanhia);
-		}
-        
-		return lista;
-    }
-
-
-	@Override
-	public List<ManutencoesAnaliticoVO> obterDadosManutencoesAnalitico(
-			FiltroUtil filtro) {
-		List<ManutencoesAnaliticoVO> dados = daoManutAnalitico.obterDadosAnalitico(filtro);
-		
-		preencheDescricaoCia(dados);
-		preencheDescricoesBancoConta(dados);
-		
-		for (ManutencoesAnaliticoVO vo : dados) {
-			if (vo.getValorPago() == null) {
-				vo.setValorPago(BigDecimal.ZERO);
+			CompanhiaSeguradoraVO cia = companhias.get(item.getCodigoCia());
+			if (cia != null) {
+				item.setDescricaoCia(
+						new StringBuilder().append(item.getCodigoCia()).append(SEPARADOR_CONTA).append(cia.getDescricaoCompanhia()).toString());
 			}
 		}
-		return dados;
 	}
 
-	@Override
-	public List<RelatorioDadosComplementaresVO> obterDadosComplementares(
-			FiltroUtil filtro) {
-		try {
-			return daoRelatorioDadosComplementares.obterDadosComplementaresAnalitico(filtro);
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
-            throw new DEPIIntegrationException(e.getMessage());
+	private void preencheDescricoesBancoConta(Collection<? extends RelatorioBancoContaAware> dados) {
+		HashMap<Integer, BancoVO> cacheBancos = new HashMap<>();
+		HashMap<String, String> contas = new HashMap<>();
+		
+		for (RelatorioBancoContaAware item : dados) {
+			
+			if (! cacheBancos.containsKey(item.getCodigoBanco())) {
+				try {
+					BancoVO banco = cicsDepiDAO.obterBanco(new BancoVO(item.getCodigoBanco()));
+					cacheBancos.put(item.getCodigoBanco(), banco);
+				} catch (Exception e) {
+					LOGGER.warn("Erro ao obter banco", e);
+				}
+			}
+			
+			BancoVO banco = cacheBancos.get(item.getCodigoBanco());
+			
+			if (banco != null) {
+				item.setDescricaoBanco(
+						new StringBuilder().append(banco.getCdBancoExterno()).append(SEPARADOR_CONTA).append(banco.getDescricaoBanco()).toString());
+				
+				ContaCorrenteAutorizadaVO cc = new ContaCorrenteAutorizadaVO(
+						banco, item.getCodigoAgencia(), item.getCodigoConta());
+				
+				String bancoAgenciaConta = cc.toString();
+				
+				if (! contas.containsKey(bancoAgenciaConta)) {
+					cc.setCia(new CompanhiaSeguradoraVO(item.getCodigoCia()));
+	
+					try {
+						cc = cicsDepiDAO.obterContaCorrente(cc);
+						
+						String descricaoConta = String.format("%d - %09d", cc.getCodigoAgencia(), cc.getContaCorrente());
+						contas.put(bancoAgenciaConta, descricaoConta);
+					} catch (Exception e) {
+						LOGGER.warn("Erro ao obter conta", e);
+					}
+				}
+				
+				item.setDescricaoConta(contas.get(bancoAgenciaConta));
+			}
 		}
 	}
 
-	@Override
-	public List<ManutencoesSinteticoVO> obterDadosManutencoesSintetico(
-			FiltroUtil filtro) {
-		return this.sintetizar(daoManutAnalitico.obterDadosAnalitico(filtro));
-		
+	private void preencheDescricaoSituacao(Collection<? extends RelatorioDescricaoSituacaoAware> dados) {
+		for (RelatorioDescricaoSituacaoAware item : dados) {
+			item.setDescricaoSituacao(obterSituacao(item.getCodigoSituacao()));
+		}
 	}
 
-
-    /**
-     * Gera lista com dados para o relatório Sintético usando a lista de dados do relatório Analítico.
-     * @param dadosAnaliticos - List<ManutencoesSinteticoVO>.
-     * @throws DEPIIntegrationException - DEPIIntegrationException.
-     * @return List<ManutencoesSinteticoVO>.
-     */
-    private List<ManutencoesSinteticoVO> sintetizar(List<ManutencoesAnaliticoVO> dadosAnaliticos) throws DEPIIntegrationException {
-    	LinkedHashMap<String, ManutencoesSinteticoVO> map = new LinkedHashMap<String, ManutencoesSinteticoVO>();
-        for (ManutencoesAnaliticoVO original : dadosAnaliticos) {
-            ManutencoesSinteticoVO sintetico = new ManutencoesSinteticoVO();
-            String chave = obterChaveManutencoesAnalitico(original);
-            map.put(chave, sintetico);
-        }
-        
-        List<ManutencoesSinteticoVO> dadosSinteticos = new ArrayList<ManutencoesSinteticoVO>();
-        for (Map.Entry<String,ManutencoesSinteticoVO> entry : map.entrySet()) {
-        	String key = entry.getKey();
-        	ManutencoesSinteticoVO sintetico = entry.getValue();
-        	if (sintetico.getValor() == null) {
-        		sintetico.setValor(BigDecimal.ZERO);
-        	}
-        	
-            // calcula valores por situação
-            for (ManutencoesAnaliticoVO original : dadosAnaliticos) {
-                String chave = obterChaveManutencoesAnalitico(original);
-                
-                if (key.equals(chave)) {
-                	BigDecimal vlBigDecimal = original.getValorRegistrado();
-                	if (vlBigDecimal != null) {
-                		BigDecimal valor = sintetico.getValor().add(vlBigDecimal);
-                		sintetico.setValor(valor);
-                	}
-                    sintetico.setQuantidade((sintetico.getQuantidade() + 1));
-                }
-            }
-            dadosSinteticos.add(sintetico);
-        }
-        
-        return dadosSinteticos;
-    }
-
-	protected String obterChaveManutencoesAnalitico(ManutencoesAnaliticoVO vo) {
-		String chave = new StringBuilder().append(vo.getCodigoBanco()).append(vo.getCodigoCia()).append(
-		    vo.getCodigoAgencia()).append(vo.getCodigoConta()).append(vo.getCodigoTipoAcao())
-		    .toString();
-		return chave;
-	}
-    
-    @Override
-	public List<CompanhiaSeguradoraVO> carregarComboCompanhiaUsuLogado(LoginVo loginVO) {
-		int usuarioLogadoId =Integer.parseInt(loginVO.getId());
-		List<CompanhiaSeguradoraVO> lista = daoCiaSeg.obterComRestricaoDeGrupoAcesso(usuarioLogadoId);
-		
-		return populaDescricaoListaCompanhia(lista);
-
-	}
+	private void preencheCPFCNPJPessoa(String ipCliente, Integer codResponsavel, Collection<? extends RelatorioPessoaAware> dados) {
 	
+		HashMap<Long, PessoaVO> cachePessoa = new HashMap<>();
+		
+		for (RelatorioPessoaAware item : dados) {
+			Long codPessoa = item.getCodigoPessoa();
+			if (codPessoa == null) {
+				continue;
+			}
+			
+			try {
+				if (! cachePessoa.containsKey(codPessoa)) {
+					PessoaVO pessoa = businessDelegate.obterDadosPessoa(ipCliente, codResponsavel, codPessoa);
+					cachePessoa.put(codPessoa, pessoa);
+				}
+			} catch (Exception e) {
+				throw new DEPIIntegrationException(e);
+			}
+			
+			PessoaVO pessoa = cachePessoa.get(codPessoa);
+			if (pessoa.isPessoaFisica()) {
+				item.setCpfCnpj(BaseUtil.getCpfFormatado(String.valueOf(pessoa.getCpfCnpj())));
+			} 
+			else if (pessoa.isPessoaJuridica()) {
+				item.setCpfCnpj(BaseUtil.getCnpjFormatado(String.valueOf(pessoa.getCpfCnpj())));
+			}
+		}
+	
+	}
+
 	private List<CompanhiaSeguradoraVO> populaDescricaoListaCompanhia(List<CompanhiaSeguradoraVO>  lista) {
         for (int i = 0; i < lista.size(); i++) {
         	CompanhiaSeguradoraVO ele = lista.get(i);
@@ -571,6 +559,41 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 
 	}
 	
+	private String obterChaveManutencoesAnalitico(ManutencoesAnaliticoVO vo) {
+		String chave = new StringBuilder().append(vo.getCodigoBanco()).append(vo.getCodigoCia()).append(
+		    vo.getCodigoAgencia()).append(vo.getCodigoConta()).append(vo.getCodigoTipoAcao())
+		    .toString();
+		return chave;
+	}
+
+	private String obterSituacao(int codigo) {
+		switch (codigo) {
+		case ARQUIVO_ACEITO:
+			return "ACEITO";
+		case ARQUIVO_CANCELADO:
+			return "CANCELADO";
+		case ARQUIVO_ENVIADO:
+			return "ENVIADO";
+		case ARQUIVO_REJEITADO:
+			return "REJEITADO";
+		default:
+			return null;
+		}
+	}
+
+	private String obterDescricaoSituacaoMotivo(String situacaoMotivo) {
+	    if ("A".equals(situacaoMotivo)) {
+	        return "ACEITOS";
+	    } else if ("T".equals(situacaoMotivo)) {
+	        return "TRANSFERIDOS";
+	    } else if ("D".equals(situacaoMotivo)) {
+	        return "DEVOLVIDOS";
+	    } else if ("R".equals(situacaoMotivo)) {
+	        return "RECEITA";
+	    }
+	    return "";
+	}
+
 	private void obterTotais(List<RelatorioExtratoAnaliticoVO> lista) {
 		// TODO validar este código
 		ordenarPorDeposito(lista);

@@ -14,65 +14,48 @@ public class RelatorioExtratoAnaliticoVO implements Serializable,
     
     private static final long serialVersionUID = 4286054803965245801L;
 
-//    @TableField(name = "CSIT_DEP_ARQ_TRNSF")
     private int situacaoEnvioRetorno;
+
     private String situacao;
+    
     private String nomeGrupo;
 
-//    @TableField(name = "NBLETO_COBR")
     private Long bloquete;
 
-//    @TableField(name = "CSUCUR_EMISR")
     private Integer sucursal;
 
-//    @TableField(name = "CRAMO_SEGUR")
     private Integer ramo;
 
-//    @TableField(name = "NAPOLC")
     private Integer apolice;
 
-//    @TableField(name = "NITEM_APOLC")
     private Integer item;
 
-//    @TableField(name = "CTPO_GRP_RECEB")
     private Integer tipo;
 
-//    @TableField(name = "NENDSS")
     private Integer endosso;
 
-//    @TableField(name = "NPCELA_PRMIO")
     private Integer parcela;
 
     private String cpfCnpj;
 
-//    @TableField(name = "CDEP_IDTFD")
     private Long codigoAutorizador;
 
-//    @TableField(name = "CPSSOA_DEPST")
     private Long codigoPessoa;
 
-//    @TableField(name = "DVCTO_DEP_IDTFD")
     private Date vencimento;
 
-//    @TableField(name = "CUSUAR_RESP_ATULZ")
     private Long matricula;
 
-//    @TableField(name = "VDEP_IDTFD_ORIGN")
     private java.math.BigDecimal valorRegistrado;
 
-//    @TableField(name = "VTOT_DEP_IDTFD")
     private java.math.BigDecimal valorPago;
 
-//    @TableField(name = "CBCO")
     private Integer codigoBanco;
 
-//    @TableField(name = "CAG_BCRIA")
     private Integer codigoAgencia;
 
-//    @TableField(name = "CCTA_CORR")
     private Long codigoConta;
 
-//    @TableField(name = "CINTRN_CIA_SEGDR")
     private Integer codigoCia;
 
     private java.math.BigDecimal valorRegistradoUnico;

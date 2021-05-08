@@ -8,8 +8,8 @@ import java.util.Date;
  * Classe ManutencoesAnaliticoVO
  * @author Globality
  */
-public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaAware, RelatorioBancoContaAware {
-
+public class ManutencoesAnaliticoVO implements Serializable,
+		RelatorioCompanhiaAware, RelatorioBancoContaAware, RelatorioPessoaAware {
     
     /**
      * A(O)serialVersionUID.
@@ -22,18 +22,18 @@ public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaA
     private String situacao;
     private Long bloquete;
     private Integer sucursal;
-    private String ramoSegur;
+    private Integer ramo;
     private Integer apolice;
     private Integer item;
-    private Integer tipoDoc;
+    private Integer tipo;
     private Integer endosso;
-    private Integer parcelaPremio;
+    private Integer parcela;
     private String cpfCnpj;
     private Long codigoAutorizador;
     private Long codigoDigitoIdentificador;
     private Long codigoPessoa;
     private Date vencimento;
-    private Long matricResp;
+    private Long matricula;
     private BigDecimal valorRegistrado = BigDecimal.ZERO ;
     private BigDecimal valorPago = BigDecimal.ZERO ;
     private Integer codigoBanco;
@@ -176,7 +176,8 @@ public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaA
      * Retorna o valor do atributo codigoPessoa.
      * @return o valor do atributo codigoPessoa
      */
-    public Long getCodigoPessoa() {
+    @Override
+	public Long getCodigoPessoa() {
         return codigoPessoa;
     }
 
@@ -215,7 +216,8 @@ public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaA
      * Especifica o valor do atributo cpfCnpj.
      * @param cpfCnpj - String do cpfCnpj a ser configurado.
      */
-    public void setCpfCnpj(String cpfCnpj) {
+    @Override
+	public void setCpfCnpj(String cpfCnpj) {
         this.cpfCnpj = cpfCnpj;
     }
 
@@ -288,7 +290,7 @@ public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaA
      * @return o valor do atributo parcela
      */
     public Integer getParcela() {
-        return parcelaPremio;
+        return parcela;
     }
 
     /**
@@ -296,14 +298,14 @@ public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaA
      * @param parcelaPremio - Integer do parcela a ser configurado.
      */
     public void setParcela(Integer parcelaPremio) {
-        this.parcelaPremio = parcelaPremio;
+        this.parcela = parcelaPremio;
     }
     /**
      * Retorna o valor do atributo matricula.
      * @return o valor do atributo matricula
      */
     public Long getMatricula() {
-        return matricResp;
+        return matricula;
     }
 
     /**
@@ -311,22 +313,7 @@ public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaA
      * @param matricResp - Long do matricula a ser configurado.
      */
     public void setMatricula(Long matricResp) {
-        this.matricResp = matricResp;
-    }
-    /**
-     * Retorna o valor do atributo ramo.
-     * @return o valor do atributo ramo
-     */
-    public String getRamo() {
-        return ramoSegur;
-    }
-
-    /**
-     * Especifica o valor do atributo ramo.
-     * @param ramo - Integer do ramo a ser configurado.
-     */
-    public void setRamo(String ramo) {
-        this.ramoSegur = ramo;
+        this.matricula = matricResp;
     }
 
     /**
@@ -366,7 +353,7 @@ public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaA
      * @return o valor do atributo tipo
      */
     public Integer getTipo() {
-        return tipoDoc;
+        return tipo;
     }
 
     /**
@@ -374,7 +361,7 @@ public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaA
      * @param tipoDoc - Integer do tipo a ser configurado.
      */
     public void setTipo(Integer tipoDoc) {
-        this.tipoDoc = tipoDoc;
+        this.tipo = tipoDoc;
     }
     /**
      * Retorna o valor do atributo vencimento.
@@ -475,64 +462,16 @@ public class ManutencoesAnaliticoVO implements Serializable, RelatorioCompanhiaA
 	 * obtem ramoSegur.
 	 * @return the ramoSegur
 	 */
-	public String getRamoSegur() {
-		return ramoSegur;
+	public Integer getRamo() {
+		return ramo;
 	}
 
 	/**
 	 * Define ramoSegur.
 	 * @param ramoSegur the ramoSegur to set
 	 */
-	public void setRamoSegur(String ramoSegur) {
-		this.ramoSegur = ramoSegur;
-	}
-
-	/**
-	 * Obtem tipoDoc.
-	 * @return the tipoDoc
-	 */
-	public Integer getTipoDoc() {
-		return tipoDoc;
-	}
-
-	/**
-	 * Define tipoDoc.
-	 * @param tipoDoc the tipoDoc to set
-	 */
-	public void setTipoDoc(Integer tipoDoc) {
-		this.tipoDoc = tipoDoc;
-	}
-
-	/**
-	 * Obtem parcelaPremio.
-	 * @return the parcelaPremio
-	 */
-	public Integer getParcelaPremio() {
-		return parcelaPremio;
-	}
-
-	/**
-	 * Define parcelaPremio
-	 * @param parcelaPremio the parcelaPremio to set
-	 */
-	public void setParcelaPremio(Integer parcelaPremio) {
-		this.parcelaPremio = parcelaPremio;
-	}
-
-	/**
-	 * Obtem matricResp.
-	 * @return the matricResp
-	 */
-	public Long getMatricResp() {
-		return matricResp;
-	}
-
-	/**
-	 * Define matricResp.
-	 * @param matricResp the matricResp to set
-	 */
-	public void setMatricResp(Long matricResp) {
-		this.matricResp = matricResp;
+	public void setRamo(Integer ramoSegur) {
+		this.ramo = ramoSegur;
 	}
 
 	/**

@@ -56,6 +56,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 @Controller
 @Scope("session")
 public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
+	private static final String VISUALIZACAO_SINTETICO = "Sint\u00E9tico";
+	private static final String SITUACAO_TODOS = "TODOS";
+	private static final String VISUALIZACAO_ANALITICO = "Anal\u00EDtico";
 	private static final String ZERO_STR = "0";
 	private static final long serialVersionUID = 3407809247264650489L;
 	protected static final Logger LOGGER = LoggerFactory.getLogger(ConsultarRelatorioAction.class); 
@@ -80,7 +83,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     private static final String TIPO_RELATORIO_EXTRATO = "EX";
     private static final String TIPO_RELATORIO_MANUTENCOES = "MN";
     private static final String TIPO_RELATORIO_DADOS_COMPLEMENTARES = "DC";
-	private static final Object VISUALIZACAO_ANALITICO = "A";
+	private static final Object VISUALIZACAO_TIPO_ANALITICO = "A";
     
 	//Combos da tela
 	private FiltroUtil filtro;
@@ -105,7 +108,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			String visualizacao = model.getVisualizacao();
 			
 			if (TIPO_RELATORIO_ENVIO_RETORNO.equals(tipoRelatorio)) {
-				if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+				if (VISUALIZACAO_TIPO_ANALITICO.equals(visualizacao)) {
 					exibirEnvioRetornoAnalitico();			
 				}
 				else {
@@ -113,7 +116,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 				}
 			}
 			else if (TIPO_RELATORIO_EXTRATO.equals(tipoRelatorio)) {
-				if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+				if (VISUALIZACAO_TIPO_ANALITICO.equals(visualizacao)) {
 					exibirExtratoAnalitico();		
 				}
 				else {
@@ -121,7 +124,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 				}
 			}
 			else if (TIPO_RELATORIO_MANUTENCOES.equals(tipoRelatorio)) {
-				if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+				if (VISUALIZACAO_TIPO_ANALITICO.equals(visualizacao)) {
 					exibirManutencoesAnalitico();			
 				}
 				else {
@@ -141,7 +144,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 
 	private void exibirEnvioRetornoAnalitico() throws DEPIIntegrationException {
 		model.setSubtituloTela("Envio/Retorno Banco - Analítico");
-		model.setTituloTabela("Dados de Envio/Retorno Banco - Analítio");
+		model.setTituloTabela("Dados de Envio/Retorno Banco - Analítico");
 		model.setTipoRelatorio("ER");
 		model.setVisualizacao("A");
 	}
@@ -154,8 +157,8 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     }
 
 	private void exibirExtratoAnalitico() throws DEPIIntegrationException {
-    	model.setSubtituloTela("Extrato Banco - Analítio");
-    	model.setTituloTabela("Dados de Extrato Banco - Analítio");
+    	model.setSubtituloTela("Extrato Banco - Analítico");
+    	model.setTituloTabela("Dados de Extrato Banco - Analítico");
     	model.setTipoRelatorio("EX");
     	model.setVisualizacao("A");
     }
@@ -168,8 +171,8 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     }
 	  
 	private void exibirManutencoesAnalitico() throws DEPIIntegrationException {
-    	model.setSubtituloTela("Manutenções - Analítio");
-    	model.setTituloTabela("Dados de Manutenções - Analítio");
+    	model.setSubtituloTela("Manutenções - Analítico");
+    	model.setTituloTabela("Dados de Manutenções - Analítico");
     	model.setTipoRelatorio("MN");
     	model.setVisualizacao("A");
     }
@@ -182,15 +185,15 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     }
 	  
 	private void exibirDadosComplementares() throws DEPIIntegrationException {
-    	model.setSubtituloTela("Dados Complementares - Analítio");
-    	model.setTituloTabela("Dados Complementares - Analítio");
+    	model.setSubtituloTela("Dados Complementares - Analítico");
+    	model.setTituloTabela("Dados Complementares - Analítico");
     	model.setTipoRelatorio("DC");
     	model.setVisualizacao("A");
     	model.setSituacaoEnvioRetorno("A");
 	}
 
 	/**
-	 * Retorna valores do form para um nova inst�ncia do tipo FiltroUtil
+	 * Retorna valores do form para um nova instância do tipo FiltroUtil
 	 * @param FiltroUtil
 	 * @return FiltroUtil
 	 * @throws DEPIIntegrationException - DEPIIntegrationException
@@ -280,7 +283,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 		String visualizacao = model.getVisualizacao();
 		
 		if (TIPO_RELATORIO_ENVIO_RETORNO.equals(tipoRelatorio)) {
-			if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+			if (VISUALIZACAO_TIPO_ANALITICO.equals(visualizacao)) {
 				retorno = this.consultarEnvioRetornoAnalitico();
 			}
 			else {
@@ -288,7 +291,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			}
 		}
 		else if (TIPO_RELATORIO_EXTRATO.equals(tipoRelatorio)) {
-			if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+			if (VISUALIZACAO_TIPO_ANALITICO.equals(visualizacao)) {
 				retorno = this.consultarExtratoAnalitico();
 			}
 			else {
@@ -296,7 +299,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 			}
 		}
 		else if (TIPO_RELATORIO_MANUTENCOES.equals(tipoRelatorio)) {
-			if (VISUALIZACAO_ANALITICO.equals(visualizacao)) {
+			if (VISUALIZACAO_TIPO_ANALITICO.equals(visualizacao)) {
 				retorno = this.consultarManutencoesAnalitico();				
 			}
 			else {
@@ -428,8 +431,8 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     		}
 	
 			Map<String, Serializable> params = prepararParametrosComunsPdf();
-			params.put(VISUALIZACAO, "Analítio");
-			params.put(SITUACAO, "TODOS");
+			params.put(VISUALIZACAO, VISUALIZACAO_ANALITICO);
+			params.put(SITUACAO, SITUACAO_TODOS);
 			
 			model.setDadosRelatorio(new DadosRelatorioVO("relExtratoAnalitico.pdf",
 					"relExtratoAnalitico.jasper", params, dados));
@@ -463,8 +466,8 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     		}
 	
 			Map<String, Serializable> params = prepararParametrosComunsPdf();
-			params.put(VISUALIZACAO, "Sintético");
-			params.put(SITUACAO, "TODOS");
+			params.put(VISUALIZACAO, VISUALIZACAO_SINTETICO);
+			params.put(SITUACAO, SITUACAO_TODOS);
 			
 			model.setDadosRelatorio(new DadosRelatorioVO("relExtratoSintetico.pdf",
 					"relExtratoSintetico.jasper", params, dados));
@@ -488,7 +491,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 		}
 	
 		try {
-			List<ManutencoesAnaliticoVO> dados =  consultarRelatorioFacade.obterDadosManutencoesAnalitico(filtro);
+			List<ManutencoesAnaliticoVO> dados =  consultarRelatorioFacade.obterDadosManutencoesAnalitico(filtro, getIp(), getCodUsuarioLogado());
 
     		if (BaseUtil.isNZB(dados)) {
     			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
@@ -497,8 +500,8 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     		}
 	
 			Map<String, Serializable> params = prepararParametrosComunsPdf();
-			params.put(VISUALIZACAO, "Analítio");
-			params.put(SITUACAO, "TODOS");
+			params.put(VISUALIZACAO, VISUALIZACAO_ANALITICO);
+			params.put(SITUACAO, SITUACAO_TODOS);
 			
 			model.setDadosRelatorio(new DadosRelatorioVO(
 					"relManutencoesAnalitico.pdf",
@@ -524,7 +527,9 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 		
     	try {
 
-    		List<ManutencoesSinteticoVO> dados = consultarRelatorioFacade.obterDadosManutencoesSintetico(filtro);
+			List<ManutencoesSinteticoVO> dados = consultarRelatorioFacade
+					.obterDadosManutencoesSintetico(filtro, getIp(),
+							getCodUsuarioLogado());
 
     		if (BaseUtil.isNZB(dados)) {
     			addActionError(getText(ConstantesDEPI.MSG_CONSULTA_RETORNO_VAZIO));
@@ -537,14 +542,14 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     		String situacao = "";//RelatorioManutencoesUtil.getInstance().obterDescricaoSituacao(c.getSituacaoManutencao());
 
     		if (BaseUtil.isNZB(situacao)) {
-    			situacao = "Manutenções";
+    			situacao = "Manuten\u00E7\u00F5es";
     		}
 
-    		StringBuilder sb = new StringBuilder().append("DEPOSITOS IDENTIFICADOS - ").append(situacao)
-    				.append(" - ").append("Sintético");
+    		StringBuilder sb = new StringBuilder().append("DEP\u00d3SITOS IDENTIFICADOS - ").append(situacao)
+    				.append(" - ").append(VISUALIZACAO_SINTETICO);
     		params.put(HEADER, sb.toString());
 
-    		params.put(VISUALIZACAO, "Analítio");
+    		params.put(VISUALIZACAO, VISUALIZACAO_ANALITICO);
     		
     		model.setDadosRelatorio(new DadosRelatorioVO(
 					"relManutencoesSintetico.pdf",
@@ -597,7 +602,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 	            }
 			 */
 			Map<String, Serializable> params = prepararParametrosComunsPdf();
-			params.put(VISUALIZACAO, "Analítio");
+			params.put(VISUALIZACAO, VISUALIZACAO_ANALITICO);
 			params.put(SITUACAO, filtro.getSituacaoManutencao());
 	
 			params.put(VALOR_TOTAL_PAGO, valorTotalPago);

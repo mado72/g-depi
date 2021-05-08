@@ -55,12 +55,19 @@ public interface ConsultarRelatorioFacade {
    public List<DepartamentoCompanhiaVO> obterPorFiltro(FiltroUtil filtro) throws IntegrationException;
 
 
-   /**
-    * Obtém dados de manutenções para relatório analítico
-    * @param filtro Filtro
-    * @return ManutencoesAnaliticoVO
-    */
-   public List<ManutencoesAnaliticoVO> obterDadosManutencoesAnalitico(FiltroUtil filtro);
+	/**
+	 * Obtém dados de manutenções para relatório analítico
+	 * 
+	 * @param filtro
+	 *            Filtro
+	 * @param ipCliente
+	 *            IP corrente
+	 * @param uerId
+	 *            Código do usuário logado 
+	 * @return ManutencoesAnaliticoVO
+	 */
+	public List<ManutencoesAnaliticoVO> obterDadosManutencoesAnalitico(
+			FiltroUtil filtro, String ipCliente, int uerId);
 
    /**
     * Obtém dados complementares
@@ -69,12 +76,18 @@ public interface ConsultarRelatorioFacade {
     */
    public List<RelatorioDadosComplementaresVO> obterDadosComplementares(FiltroUtil filtro);
 
-   /**
-    * Obtém dados manutenções sintético
-    * @param filtro Filtro
-    * @return ManutencoesSinteticoVO
-    */
-   public List<ManutencoesSinteticoVO> obterDadosManutencoesSintetico(FiltroUtil filtro);
+   	/**
+	 * Obtém dados manutenções sintético
+	 * 
+	 * @param filtro
+	 *            Filtro
+	 * @param clienteIp
+	 *            IP corrente
+	 * @param userId
+	 *            usuário logado
+	 * @return ManutencoesSinteticoVO
+	 */
+   public List<ManutencoesSinteticoVO> obterDadosManutencoesSintetico(FiltroUtil filtro, String clienteIp, int userId);
 
 	/**
 	 * Obtém dados de envio analítico
