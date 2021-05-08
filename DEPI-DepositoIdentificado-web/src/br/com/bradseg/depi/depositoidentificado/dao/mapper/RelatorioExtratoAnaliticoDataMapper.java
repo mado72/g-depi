@@ -20,8 +20,7 @@ public class RelatorioExtratoAnaliticoDataMapper implements RowMapper<RelatorioE
 	public RelatorioExtratoAnaliticoVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 
 		RelatorioExtratoAnaliticoVO vo = new RelatorioExtratoAnaliticoVO();
-		vo.setSituacaoManutencao(rs.getString("CTPO_ACAO_MOVTO"));
-		vo.setSituacaoEnvioRetorno(rs.getString("CSIT_DEP_ARQ_TRNSF"));
+		vo.setSituacaoEnvioRetorno(rs.getInt("CSIT_DEP_ARQ_TRNSF"));
 		vo.setBloquete(rs.getLong("NBLETO_COBR"));
 		vo.setSucursal(rs.getInt("CSUCUR_EMISR"));
 		vo.setRamo(rs.getInt("CRAMO_SEGUR"));
@@ -40,6 +39,9 @@ public class RelatorioExtratoAnaliticoDataMapper implements RowMapper<RelatorioE
 		vo.setCodigoAgencia(rs.getInt("CAG_BCRIA"));
 		vo.setCodigoConta(rs.getLong("CCTA_CORR"));
 		vo.setCodigoCia(rs.getInt("CINTRN_CIA_SEGDR"));
+
+		int codDigVerificador = rs.getInt("CDIG_DEP_IDTFD");
+		vo.setCodigoAutorizadorComDv(String.format("%d - %d", vo.getCodigoAutorizador(), codDigVerificador));
 		
 		return vo;
 	}

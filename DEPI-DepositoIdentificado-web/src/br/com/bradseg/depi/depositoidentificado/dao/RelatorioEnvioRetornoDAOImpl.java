@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
-import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroEntradaVO;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO;
 import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegate;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioEnvioRetornoDataMapper;
@@ -32,6 +31,9 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
 	/** A(O) data source. */
 	@Autowired
 	private DataSource dataSource;
+	
+	@Autowired
+	private BUCBBusinessDelegate bucbDelegate;
 	
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.bsad.framework.core.jdbc.JdbcDao#getDataSource()
@@ -124,19 +126,10 @@ public class RelatorioEnvioRetornoDAOImpl extends JdbcDao implements RelatorioEn
 
 	private void filtroPessoa(FiltroUtil filtro, StringBuilder sb) {
 		if (!filtro.getCpfCnpj().isEmpty()) {
-			ListarPessoaPorFiltroEntradaVO f = new ListarPessoaPorFiltroEntradaVO();
-			f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
-			f.setCodigoTipoPesquisa(1);
-			f.setDataNascimento(0);
-			if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // ï¿½ cnpj
-				f.setCodigoTipoPessoa(4);
-			} else {
-				f.setCodigoTipoPessoa(3);
-			}
 
-			BUCBBusinessDelegate bucbDelegate = new BUCBBusinessDelegate (); 
-
-			List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
+			List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(),
+					filtro.getUsuario(), filtro.getCpfCnpj());
+			
 			if (lista.isEmpty()) {
 				StringBuilder in = new StringBuilder("(");
 				String token = "";

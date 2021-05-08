@@ -10,18 +10,12 @@ import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
  * @author Globality
  */
 public class RelatorioExtratoAnaliticoVO implements Serializable,
-		RelatorioCompanhiaAware, RelatorioBancoContaAware {
+		RelatorioCompanhiaAware, RelatorioBancoContaAware, RelatorioPessoaAware {
     
-    /**
-     * 
-     */
     private static final long serialVersionUID = 4286054803965245801L;
 
-//    @TableField(name = "CTPO_ACAO_MOVTO")
-    private String situacaoManutencao;
-
 //    @TableField(name = "CSIT_DEP_ARQ_TRNSF")
-    private String situacaoEnvioRetorno;
+    private int situacaoEnvioRetorno;
     private String situacao;
     private String nomeGrupo;
 
@@ -210,7 +204,8 @@ public class RelatorioExtratoAnaliticoVO implements Serializable,
      * Retorna o valor do atributo codigoPessoa.
      * @return o valor do atributo codigoPessoa
      */
-    public Long getCodigoPessoa() {
+    @Override
+	public Long getCodigoPessoa() {
         return codigoPessoa;
     }
 
@@ -234,7 +229,8 @@ public class RelatorioExtratoAnaliticoVO implements Serializable,
      * Especifica o valor do atributo cpfCnpj.
      * @param cpfCnpj - String do cpfCnpj a ser configurado.
      */
-    public void setCpfCnpj(String cpfCnpj) {
+    @Override
+	public void setCpfCnpj(String cpfCnpj) {
         this.cpfCnpj = cpfCnpj;
     }
 
@@ -389,7 +385,7 @@ public class RelatorioExtratoAnaliticoVO implements Serializable,
      * Retorna o valor do atributo situacaoEnvioRetorno.
      * @return o valor do atributo situacaoEnvioRetorno
      */
-    public String getSituacaoEnvioRetorno() {
+    public int getSituacaoEnvioRetorno() {
         return situacaoEnvioRetorno;
     }
 
@@ -397,24 +393,8 @@ public class RelatorioExtratoAnaliticoVO implements Serializable,
      * Especifica o valor do atributo situacaoEnvioRetorno.
      * @param situacaoEnvioRetorno - String do situacaoEnvioRetorno a ser configurado.
      */
-    public void setSituacaoEnvioRetorno(String situacaoEnvioRetorno) {
+    public void setSituacaoEnvioRetorno(int situacaoEnvioRetorno) {
         this.situacaoEnvioRetorno = situacaoEnvioRetorno;
-    }
-
-    /**
-     * Retorna o valor do atributo situacaoManutencao.
-     * @return o valor do atributo situacaoManutencao
-     */
-    public String getSituacaoManutencao() {
-        return situacaoManutencao;
-    }
-
-    /**
-     * Especifica o valor do atributo situacaoManutencao.
-     * @param situacaoManutencao - String do situacaoManutencao a ser configurado.
-     */
-    public void setSituacaoManutencao(String situacaoManutencao) {
-        this.situacaoManutencao = situacaoManutencao;
     }
 
     /**

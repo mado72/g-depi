@@ -1,6 +1,5 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -13,10 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
-import br.com.bradseg.bucb.servicos.model.ejb.PessoaSessionFacade;
-import br.com.bradseg.bucb.servicos.model.exception.BucBusinessException;
-import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaIDVO;
-import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroEntradaVO;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO;
 import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.AssociarMotivoDepositoDAO;
@@ -29,6 +24,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.LancamentoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MovimentoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegate;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.ContaCorrenteAutorizadaCampo;
@@ -51,6 +47,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.LancamentoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MovimentoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.PessoaVO;
 
 /**
  * Implementa a associação de motivo depósito
@@ -59,15 +56,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class DepositoFacadeImpl implements DepositoFacade {
 
-	/*
-	 * TODO Verificar CÓDIGO para simular acesso EJB 
-	 */
-	private static final boolean FAKE_COMP = String.valueOf(2).equals("3");
-
-	private static final int PESSOA_JURIDICA = 4;
-
-	private static final int PESSOA_FISICA = 3;
-	
 	private static final String MODULO = "Identifica\u00E7\u00E7o Dep\u00F3sitos";
     
 	protected static final Logger LOGGER = LoggerFactory.getLogger(DepositoFacadeImpl.class);
@@ -103,7 +91,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	private CICSDepiDAO cicsDAO;
 	
 	@Autowired
-	private PessoaSessionFacade pessoaFacade;
+	private BUCBBusinessDelegate businessDelegate;
 	
 	@Autowired
 	private ParametroDepositoDAO parametroDAO;
@@ -171,25 +159,15 @@ public class DepositoFacadeImpl implements DepositoFacade {
     	
         DepositoVO vo = depositoDAO.obterDepositoPorChave(chave);
         try {
-        	// TODO Remover este condicional para publicar
-        	if (!FAKE_COMP) {
-        		ListarPessoaIDVO pessoa = pessoaFacade.listarPessoaPorID(ipCliente,
-        				String.valueOf(codUsuario), 1L, vo.getPessoaDepositante(),
-        				0L, "");
-        		
-        		vo.setNomePessoa(pessoa.getNomePessoa());
-        		if (pessoa.getTipoPessoa() == PESSOA_FISICA) {
-        			vo.setCpfCnpj(BaseUtil.getCpfFormatado(String.valueOf(pessoa.getNumeroCpf())));
-        		}
-        		else if (pessoa.getTipoPessoa() == PESSOA_JURIDICA) {
-        			vo.setCpfCnpj(BaseUtil.getCpfFormatado(String.valueOf(pessoa.getNumeroCnpj())));
-        		}
-        	}
-        	else {
-        		// TODO Remover este código antes de publicar.
-        		vo.setCpfCnpj("01234567890");
-        		vo.setNomePessoa("Nome Fake");
-        	}
+			PessoaVO pessoaVO = businessDelegate.obterDadosPessoa(ipCliente,
+					codUsuario, vo.getPessoaDepositante());
+
+			if (pessoaVO.isPessoaFisica()) {
+				vo.setCpfCnpj(BaseUtil.getCpfFormatado(String.valueOf(pessoaVO.getCpfCnpj())));
+			}
+			else if (pessoaVO.isPessoaJuridica()) {
+				vo.setCpfCnpj(BaseUtil.getCpfFormatado(String.valueOf(pessoaVO.getCpfCnpj())));
+			}
         	
         	vo.setMotivoDeposito(motDepDAO.obterPorChave(vo.getMotivoDeposito()));
 			
@@ -201,57 +179,10 @@ public class DepositoFacadeImpl implements DepositoFacade {
     
     @Override
     public List<ListarPessoaPorFiltroSaidaVO> listarPessoas(String cpfCnpj, String ipCliente, int codUsuario) {
-    	final long numeroCpfCnpj = Long.parseLong(BaseUtil.retiraMascaraCNPJ(cpfCnpj));
-    	
-        ListarPessoaPorFiltroEntradaVO filtro = new ListarPessoaPorFiltroEntradaVO();
-		filtro.setCpfCgc(numeroCpfCnpj);
-        filtro.setCodigoTipoPesquisa(1);
-        filtro.setDataNascimento(0);
-        if (String.valueOf(cpfCnpj).length() > 11) { // É cnpj
-            filtro.setCodigoTipoPessoa(PESSOA_JURIDICA);
-
-        } else {
-            filtro.setCodigoTipoPessoa(PESSOA_FISICA);
-        }
+        List<ListarPessoaPorFiltroSaidaVO> lista = businessDelegate.listarPessoaPorFiltro(ipCliente,
+        		codUsuario, BaseUtil.retiraMascaraCNPJ(cpfCnpj));
         
-        LOGGER.error("@@@ Filtro: cpfCgc {}, tipoPesquisa {}, nascimento {}, tipoPessoa {}", 
-        		filtro.getCpfCgc(),
-        		filtro.getCodigoTipoPesquisa(),
-        		filtro.getDataNascimento(),
-        		filtro.getCodigoTipoPessoa());
-
-        if (! FAKE_COMP) {
-        	try {
-        		@SuppressWarnings("unchecked")
-        		List<ListarPessoaPorFiltroSaidaVO> lista = pessoaFacade.listarPessoaPorFiltro(ipCliente,
-        				String.valueOf(codUsuario), filtro);
-
-        		return lista;
-        	} catch (BucBusinessException e) {
-        		if ("10".toString().equals(e.getCodigoErroNegocio().toString())) {
-        			throw new DEPIIntegrationException("erro.bucb.cpfCnpj.inexistente", cpfCnpj);
-        		} else {
-        			LOGGER.error("Erro ao listarPessoaPorFiltro", e);
-        			throw new DEPIIntegrationException(e);
-        		}
-        	} catch (Exception e) {
-        		LOGGER.error("Erro ao listarPessoaPorFiltro", e);
-        		throw new DEPIIntegrationException(e);
-        	}
-        }
-        else {
-        	// FIXME Remover codigo fake
-        	List<ListarPessoaPorFiltroSaidaVO> lista;
-        	if (numeroCpfCnpj > 99999999999L) { // CNPJ
-        		lista = Arrays.asList(
-        				new ListarPessoaPorFiltroSaidaVO(123L, "Pessoa 123", numeroCpfCnpj, 0L, 0L),
-        				new ListarPessoaPorFiltroSaidaVO(1002804669, "Pessoa 234", numeroCpfCnpj, 0L, 0L));
-        		return lista;
-        	}
-    		lista = Arrays.asList(
-    				new ListarPessoaPorFiltroSaidaVO(1002804669, "Pessoa 345", numeroCpfCnpj, 0L, 0L));
-    		return lista;
-        }
+        return lista;
     }
 
 	/* (non-Javadoc)

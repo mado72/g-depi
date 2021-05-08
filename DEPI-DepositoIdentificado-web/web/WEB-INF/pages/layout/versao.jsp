@@ -26,8 +26,8 @@
 
 	<table id="tabela_interna" align="center" width="30%">
 		<tr><th align="center"><b>Bradesco Seguros e Previd�ncia</b></th></tr>
-		<tr><td><b>Sistema: DEPI DP06</b></td></tr>
+		<tr><td><b>Sistema: DEPI DepositoIdentificado</b></td></tr>
 		<tr><td width="120px"><b>Vers�o: 1.2</b></td></tr>
-		<tr><td><b>�ltima Atualiza��o: <bean:write name="dataAlteracao" /></b></td></tr>
+		<tr><td><b>Última Atualização: <bean:write name="dataAlteracao" /></b></td></tr>
 	</table>
 

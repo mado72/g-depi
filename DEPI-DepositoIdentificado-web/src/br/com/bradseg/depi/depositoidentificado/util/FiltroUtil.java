@@ -31,7 +31,7 @@ public class FiltroUtil {
 	private String  cpfCnpj;
 	private Integer situacaoArquivo; 
 	private String  ip; 
-	private String  usuario; 
+	private Integer  usuario; 
 	private String  descricaoBasica;
     private String  descricaoDetalhada;
 	private String  sigla;
@@ -58,14 +58,14 @@ public class FiltroUtil {
 	 * Obtem usuario.
 	 * @return the situacaoArquivo
 	 */
-	public String getUsuario() {
+	public Integer getUsuario() {
 		return usuario;
 	}
 	/**
 	 * Define usuario
 	 * @param usuario valor usuario a ser definido
 	 */
-	public void setUsuario(String usuario) {
+	public void setUsuario(Integer usuario) {
 		this.usuario = usuario;
 	}
 	/**

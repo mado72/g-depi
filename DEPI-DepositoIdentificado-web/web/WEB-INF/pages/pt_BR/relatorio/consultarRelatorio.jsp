@@ -352,8 +352,10 @@ jQuery(document).ready(function($){
 	ajustarPagina();
 }(jQuery));
 <s:if test="abrirRelatorio">
+<s:if test="%{dadosRelatorio != null}">
 	if ($('.errorMessage li').length==0)
 		$.fn.abrirRelatorio("#formGerarRelatorio", "_blank");
+</s:if>
 </s:if>
 </script>
 </c:set>

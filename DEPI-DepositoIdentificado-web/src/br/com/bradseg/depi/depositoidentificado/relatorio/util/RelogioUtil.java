@@ -525,6 +525,6 @@ public class RelogioUtil {
 	}
 	public static String obterSequencial() {
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyHHmm");
-		return sdf.format(new Date());
+		return new StringBuilder(sdf.format(new Date())).append("/01").toString();
 	}
 }

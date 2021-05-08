@@ -14,10 +14,10 @@
 <script src='<html:rewrite page="/includes/js/funcoes.js"/>'></script>
 <script src='<html:rewrite page="/includes/script/arquivo.js"/>'></script>
 <c:if test="${empty requestScope.titulo}">
-	<title>BS.DP06.IdentificarDepositos.MenuPrincipal</title>
+	<title>BS.DepositoIdentificado.IdentificarDepositos.MenuPrincipal</title>
 </c:if>
 <c:if test="${not empty requestScope.titulo}">
-	<title>BS.DP06.<c:out value="${requestScope.titulo}" /></title>
+	<title>BS.DepositoIdentificado.<c:out value="${requestScope.titulo}" /></title>
 </c:if>
 </head>
 <body>

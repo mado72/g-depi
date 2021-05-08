@@ -20,7 +20,7 @@
 </title>
 </c:if>
 <c:if test="${not empty requestScope.titulo}">
-<title>BS.DP06.<c:out value="${requestScope.titulo}" /></title>
+<title>BS.DepositoIdentificado.<c:out value="${requestScope.titulo}" /></title>
 </c:if>
 </head>
 <body>

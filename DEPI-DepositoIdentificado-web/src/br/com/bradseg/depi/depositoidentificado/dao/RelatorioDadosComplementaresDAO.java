@@ -14,7 +14,7 @@ public interface RelatorioDadosComplementaresDAO{
 	/**
      * Método obterDadosComplementaresAnalitico
      * @param filtro do relatório
-     * @throws IntegrationException - trata erro de neg�cio
+     * @throws SQLException - trata erro de negócio
      * @return List<DadosEnvioRetornoAnaliticoVO>
      */
     List<RelatorioDadosComplementaresVO> obterDadosComplementaresAnalitico(FiltroUtil filtro) throws SQLException ;

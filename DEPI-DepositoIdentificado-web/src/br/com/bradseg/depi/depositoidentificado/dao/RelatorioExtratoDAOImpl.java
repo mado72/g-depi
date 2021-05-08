@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
@@ -15,6 +13,7 @@ import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroEntradaVO;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO;
 import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegate;
+import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegateImpl;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioExtratoAnaliticoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.RelatorioExtratoSinteticoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
@@ -22,26 +21,26 @@ import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
-	/**
-	 * A(O) Class RelatorioExtratoDAOImpl.
-	 */
-	@Repository
-	public class RelatorioExtratoDAOImpl extends JdbcDao implements RelatorioExtratoDAO {
+/**
+ * A(O) Class RelatorioExtratoDAOImpl.
+ */
+@Repository
+public class RelatorioExtratoDAOImpl extends JdbcDao implements RelatorioExtratoDAO {
 
-		/** A Constante LOGGER. */
-		private static final Logger LOGGER = LoggerFactory.getLogger(RelatorioExtratoDAOImpl.class);
-		
-		/** A(O) data source. */
-		@Autowired
-		private DataSource dataSource;
-		
-		/* (non-Javadoc)
-		 * @see br.com.bradseg.bsad.framework.core.jdbc.JdbcDao#getDataSource()
-		 */
-		@Override
-		public DataSource getDataSource() {		
-			return dataSource;
-		}
+	/** A(O) data source. */
+	@Autowired
+	private DataSource dataSource;
+
+	@Autowired
+	private BUCBBusinessDelegate bucbDelegate;
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.bsad.framework.core.jdbc.JdbcDao#getDataSource()
+	 */
+	@Override
+	public DataSource getDataSource() {		
+		return dataSource;
+	}
 
     /**
      * Método obterDadosAnalitico
@@ -51,8 +50,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
     @Override
 	public List<RelatorioExtratoAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro) throws SQLException {
     	
-    	BUCBBusinessDelegate bucbDelegate = new BUCBBusinessDelegate ();
-
     	StringBuilder query = new StringBuilder(QueriesDepi.RELATORIO_EXTRATO_ANALITICO);
 
     	StringBuilder sb = new StringBuilder();
@@ -119,7 +116,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
     			f.setCodigoTipoPessoa(3);
     		}
 
-    		List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
+			List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(),
+					filtro.getUsuario(), filtro.getCpfCnpj());
     		if (lista.isEmpty()) {
     			StringBuilder in = new StringBuilder("(");
     			String token = "";
@@ -151,7 +149,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
     	List<?> lista  = null; 
     	
-    	BUCBBusinessDelegate bucb = new BUCBBusinessDelegate() ;
+    	BUCBBusinessDelegateImpl bucb = new BUCBBusinessDelegateImpl() ;
     	
     	List<RelatorioExtratoSinteticoVO> relatorio = null;
     	
@@ -211,18 +209,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 		}
 
 		if (!filtro.getCpfCnpj().isEmpty()) {
-			ListarPessoaPorFiltroEntradaVO f = new ListarPessoaPorFiltroEntradaVO();
-			f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
-			f.setCodigoTipoPesquisa(1);
-			f.setDataNascimento(0);
-			if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // � cnpj
-				f.setCodigoTipoPessoa(4);
-			} else {
-				f.setCodigoTipoPessoa(3);
-			}
-
 			lista = bucb.listarPessoaPorFiltro(filtro.getIp(),
-					String.valueOf(filtro.getUsuario()), f);
+					filtro.getUsuario(), filtro.getCpfCnpj());
 
 			if (lista.isEmpty()) {
 				StringBuilder in = new StringBuilder("(");

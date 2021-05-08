@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
-import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroEntradaVO;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO;
 import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegate;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.ManutencoesAnaliticoDataMapper;
@@ -20,41 +19,44 @@ import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
 
-	/**
-	 * A(O) Class RelatorioManutencoesDAOImpl.
+/**
+ * A(O) Class RelatorioManutencoesDAOImpl.
+ */
+@Repository
+public class RelatorioManutencoesDAOImpl extends JdbcDao implements RelatorioManutencoesDAO {
+
+	/** A Constante LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(RelatorioManutencoesDAOImpl.class);
+	
+	@Autowired
+	private BUCBBusinessDelegate bucbDelegate;
+
+
+	/** A(O) data source. */
+	@Autowired
+	private DataSource dataSource;
+
+	//		/** A(O) map sql parameter source. */
+	//		private MapSqlParameterSource mapSqlParameterSource;
+
+
+	/* (non-Javadoc)
+	 * @see br.com.bradseg.bsad.framework.core.jdbc.JdbcDao#getDataSource()
 	 */
-	@Repository
-	public class RelatorioManutencoesDAOImpl extends JdbcDao implements RelatorioManutencoesDAO {
-
-		/** A Constante LOGGER. */
-		private static final Logger LOGGER = LoggerFactory.getLogger(RelatorioManutencoesDAOImpl.class);
-		
-		
-		/** A(O) data source. */
-		@Autowired
-		private DataSource dataSource;
-		
-//		/** A(O) map sql parameter source. */
-//		private MapSqlParameterSource mapSqlParameterSource;
-		
-
-		/* (non-Javadoc)
-		 * @see br.com.bradseg.bsad.framework.core.jdbc.JdbcDao#getDataSource()
-		 */
-		@Override
-		public DataSource getDataSource() {		
-			return dataSource;
-		}
+	@Override
+	public DataSource getDataSource() {		
+		return dataSource;
+	}
 	
 	
-    /* Método obterDadosAnalitico
+    /*
+     *  Método obterDadosAnalitico
      * @param filtro do relatório
      * @return List<ManutencoesAnaliticoVO>
      */
     @Override
 	public List<ManutencoesAnaliticoVO> obterDadosAnalitico(FiltroUtil filtro) {
     	
-    	BUCBBusinessDelegate bucbDelegate = new BUCBBusinessDelegate ();
     	List<ManutencoesAnaliticoVO> manutencoes = null;
     	
         StringBuilder query = new StringBuilder(QueriesDepi.RELATORIOENVIORETORNO_OBTERDADOSANALITICO);
@@ -117,17 +119,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
             }
 
             if (!filtro.getCpfCnpj().isEmpty()) {
-                ListarPessoaPorFiltroEntradaVO f = new ListarPessoaPorFiltroEntradaVO();
-                f.setCpfCgc(Long.parseLong(filtro.getCpfCnpj()));
-                f.setCodigoTipoPesquisa(1);
-                f.setDataNascimento(0);
-                if (String.valueOf(filtro.getCpfCnpj()).length() > 11) { // É cnpj
-                    f.setCodigoTipoPessoa(4);
-                } else {
-                    f.setCodigoTipoPessoa(3);
-                }
-
-               List<?> lista = bucbDelegate.listarPessoaPorFiltro(filtro.getIp(), String.valueOf(filtro.getUsuario()), f);
+				List<?> lista = bucbDelegate.listarPessoaPorFiltro(
+						filtro.getIp(), filtro.getUsuario(),
+						filtro.getCpfCnpj());
                 if (lista.isEmpty()) {
                     StringBuilder in = new StringBuilder("(");
                     String token = "";

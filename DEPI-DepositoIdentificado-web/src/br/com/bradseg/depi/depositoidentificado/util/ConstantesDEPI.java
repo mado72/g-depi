@@ -168,7 +168,6 @@ public final class ConstantesDEPI {
 	public static final String DIR_RELATORIOS = "/WEB-INF/jasper/";
 	public static final String DIR_IMAGENS = "/images/";
 	public static final String PARAM_LOGO = "LOGO";
-	public static final String DP06_LOGO_JPG = "definir_aqui_a_imagem.jpg";
 	public static final String RELATORIO_VAZIO = "RELATORIO_VAZIO";
 
 	// Erros do CICS
@@ -316,5 +315,10 @@ public final class ConstantesDEPI {
 	public static final String MIME_TYPE_GIF = "image/gif";
 	public static final String MIME_TYPE_PNG = "image/png";
 	public static final String MIME_TYPE_BMP = "image/bmp";
+
+	public static final int TIPO_PESSOA_FISICA = 3;
+
+	public static final int TIPO_PESSOA_JURIDICA = 4;
+	
 
 }

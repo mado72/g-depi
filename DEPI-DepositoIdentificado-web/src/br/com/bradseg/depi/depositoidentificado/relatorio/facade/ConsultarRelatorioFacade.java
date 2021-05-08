@@ -36,8 +36,8 @@ public interface ConsultarRelatorioFacade {
     * @param loginVO Dados do login
     * @return Lista de movimentos
     */
-   public List<MotivoDepositoVO>  obterMotivoComRestricaoDeDeposito(int codigoCompanhia, int codigoDepartamento, LoginVo loginVO);
-
+	public List<MotivoDepositoVO> obterMotivoComRestricaoDeDeposito(
+			int codigoCompanhia, int codigoDepartamento, LoginVo loginVO);
    
    /**
     * Obtém departamentos com restrição
@@ -76,45 +76,56 @@ public interface ConsultarRelatorioFacade {
     */
    public List<ManutencoesSinteticoVO> obterDadosManutencoesSintetico(FiltroUtil filtro);
 
-   /**
-    * Obtém dados de envio analítico
-    * @param filtro Filtro
-    * @return lista de RelatorioEnvioRetornoVO
-    */
-   public List<RelatorioEnvioRetornoVO> obterDadosEnvioRetornoAnalitico(FiltroUtil filtro); 
+	/**
+	 * Obtém dados de envio analítico
+	 * 
+	 * @param filtro
+	 *            Filtro
+	 * @param ipCliente
+	 *            IP corrente
+	 * @param codResponsavel
+	 *            Código do usuário logado
+	 * @return lista de RelatorioEnvioRetornoVO
+	 */
+	public List<RelatorioEnvioRetornoVO> obterDadosEnvioRetornoAnalitico(
+			FiltroUtil filtro, String ipCliente, int codResponsavel);
    
-   /**
-    * Obtém dados de envio sintético
-    * @param filtro Filtro
-    * @return lista de RelatorioEnvioRetornoVO
-    */
-   public List<RelatorioEnvioRetornoVO> obterDadosEnvioRetornoSintetico(FiltroUtil filtro); 
+	/**
+	 * Obtém dados de envio sintético
+	 * 
+	 * @param filtro
+	 *            Filtro
+	 * @param ipCliente
+	 *            IP corrente
+	 * @param codResponsavel
+	 *            Código do usuário logado
+	 * @return lista de RelatorioEnvioRetornoVO
+	 */
+	public List<RelatorioEnvioRetornoVO> obterDadosEnvioRetornoSintetico(
+			FiltroUtil filtro, String ipCliente, int codResponsavel);
    
-   /**
-    * Obtém dados banco extrato analítico
-    * @param filtro Filtro
-    * @return Lista de RelatorioEnvioRetornoAnaliticoVO
-    */
-   public List<RelatorioExtratoAnaliticoVO> obterDadosBancoExtratoAnalitico(FiltroUtil filtro);
+	/**
+	 * Obtém dados banco extrato analítico
+	 * 
+	 * @param filtro
+	 *            Filtro
+	 * @param ipCliente
+	 *            IP corrente
+	 * @param codResponsavel
+	 *            Código do usuário logado
+	 * @return Lista de RelatorioEnvioRetornoAnaliticoVO
+	 */
+	public List<RelatorioExtratoAnaliticoVO> obterDadosBancoExtratoAnalitico(
+			FiltroUtil filtro, String ipCliente, int codResponsavel);
 
-   /**
-    * Obter dados extrato sintetico
-    * @param filtro Filtro
-    * @return Lista de RelatorioExtratoSinteticoVO
-    */
-   public List<RelatorioExtratoSinteticoVO> obterDadosBancoExtratoSintetico(FiltroUtil filtro);
-
-   /**
-    * Preenche dados de totais
-    * @param dados Dados
-    */
-   public void obterTotais(List<RelatorioExtratoAnaliticoVO> dados);
-
-   /**
-    * Preenche dados analítico
-    * @param dados Dados
-    */
-   public void ordenarDadosAnalitico(List<RelatorioExtratoAnaliticoVO> dados);
-
+	/**
+	 * Obter dados extrato sintetico
+	 * 
+	 * @param filtro
+	 *            Filtro
+	 * @return Lista de RelatorioExtratoSinteticoVO
+	 */
+	public List<RelatorioExtratoSinteticoVO> obterDadosBancoExtratoSintetico(
+			FiltroUtil filtro);
 
 }

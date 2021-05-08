@@ -49,6 +49,8 @@ public class FiltroVO implements Serializable {
 	private List<DepartamentoVO> listaDepartamentos = new ArrayList<DepartamentoVO>();
 	private List<MotivoDepositoVO> listaMotivosDepositos = new ArrayList<MotivoDepositoVO>();
 	
+	private DadosRelatorioVO dadosRelatorio;
+	
 	@Override
 	public String toString() {
 		return new StringBuilder("FiltroVO [" )
@@ -531,6 +533,22 @@ public class FiltroVO implements Serializable {
 	public void setListaMotivosDepositos(
 			List<MotivoDepositoVO> listaMotivosDepositos) {
 		this.listaMotivosDepositos = listaMotivosDepositos;
+	}
+
+	/**
+	 * Retorna dadosRelatorio
+	 * @return o dadosRelatorio
+	 */
+	public DadosRelatorioVO getDadosRelatorio() {
+		return dadosRelatorio;
+	}
+
+	/**
+	 * Define dadosRelatorio
+	 * @param dadosRelatorio o dadosRelatorio a ser configurado
+	 */
+	public void setDadosRelatorio(DadosRelatorioVO dadosRelatorio) {
+		this.dadosRelatorio = dadosRelatorio;
 	}
 	
 }

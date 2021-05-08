@@ -8,7 +8,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.ManutencoesAnaliticoVO;
 
 /** 
  * A(O) RelatorioManutencoesDAO.
- * @param RelatorioManutencoesDAO
  */
 public interface RelatorioManutencoesDAO {
 

@@ -11,7 +11,7 @@ import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
  */
 public class RelatorioEnvioRetornoVO implements Serializable,
 		RelatorioCompanhiaAware, RelatorioBancoContaAware,
-		RelatorioSituacaoAware {
+		RelatorioDescricaoSituacaoAware, RelatorioPessoaAware {
 
    private static final long serialVersionUID = -4759118749891158867L;
     
@@ -125,7 +125,8 @@ public class RelatorioEnvioRetornoVO implements Serializable,
      * Especifica o cpfCnpj.
      * @param cpfCnpj String do cpfCnpj a ser setado
      */
-    public void setCpfCnpj(String cpfCnpj) {
+    @Override
+	public void setCpfCnpj(String cpfCnpj) {
         this.cpfCnpj = cpfCnpj;
     }
 
@@ -478,7 +479,8 @@ public class RelatorioEnvioRetornoVO implements Serializable,
      * Retorna o valor do atributo codigoPessoa.
      * @return o valor do atributo codigoPessoa
      */
-    public Long getCodigoPessoa() {
+    @Override
+	public Long getCodigoPessoa() {
         return codigoPessoa;
     }
 
