@@ -69,8 +69,6 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsultarRelatorioFacadeImpl.class);
     private static final String SEPARADOR_CONTA = " - ";
-	private static final String MASCARA_CONTA = "000000000000";
-	
 	@Autowired
 	private RelatorioManutencoesDAO daoManutAnalitico;
 	
@@ -155,13 +153,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 					try {
 						cc = cicsDepiDAO.obterContaCorrente(cc);
 						
-						String conta = BaseUtil.formatarValor(cc.getContaCorrente(), MASCARA_CONTA);
-						String descricaoConta = new StringBuilder()
-								.append(cc.getCodigoAgencia())
-								.append(SEPARADOR_CONTA)
-								.append(conta)
-								.toString();
-						
+						String descricaoConta = String.format("%d - %09d", cc.getCodigoAgencia(), cc.getContaCorrente());
 						contas.put(bancoAgenciaConta, descricaoConta);
 					} catch (Exception e) {
 						LOGGER.warn("Erro ao obter conta", e);
@@ -258,8 +250,8 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 		AtomicInteger qtdRejeitados = new AtomicInteger();
 		
 		BigDecimal totalAceitos = BigDecimal.ZERO;
-		BigDecimal totalCancelados = BigDecimal.ZERO;;
-		BigDecimal totalEnviados = BigDecimal.ZERO;;
+		BigDecimal totalCancelados = BigDecimal.ZERO;
+		BigDecimal totalEnviados = BigDecimal.ZERO;
 		BigDecimal totalRejeitados = BigDecimal.ZERO;
 		
 		for (RelatorioEnvioRetornoVO item : dados) {
@@ -316,24 +308,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 			}
 		}
 		
-		ArrayList<RelatorioEnvioRetornoVO> retorno = new ArrayList<>(mapaPorCompanhiaBanco.values());
-/*
-		RelatorioEnvioRetornoVO totais = new RelatorioEnvioRetornoVO();
-		
-		totais.setTotalAceitos(totalAceitos);
-		totais.setTotalCancelados(totalCancelados);
-		totais.setTotalEnviados(totalEnviados);
-		totais.setTotalRejeitados(totalRejeitados);
-		
-		totais.setQtdAceitos(qtdAceitos.get());
-		totais.setQtdCancelados(qtdCancelados.get());
-		totais.setQtdEnviados(qtdEnviados.get());
-		totais.setQtdRejeitados(qtdRejeitados.get());
-		
-		totais.setDescricaoSituacao("TODOS");
-		retorno.add(totais);
-*/		
-		return retorno;
+		return new ArrayList<>(mapaPorCompanhiaBanco.values());
 	
 	}
 
@@ -390,8 +365,8 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 		AtomicInteger qtdRejeitados = new AtomicInteger();
 		
 		BigDecimal totalAceitos = BigDecimal.ZERO;
-		BigDecimal totalCancelados = BigDecimal.ZERO;;
-		BigDecimal totalEnviados = BigDecimal.ZERO;;
+		BigDecimal totalCancelados = BigDecimal.ZERO;
+		BigDecimal totalEnviados = BigDecimal.ZERO;
 		BigDecimal totalRejeitados = BigDecimal.ZERO;
 		
 		for (RelatorioExtratoSinteticoVO item : dados) {
@@ -444,22 +419,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 			}
 		}
 		
-		ArrayList<RelatorioExtratoSinteticoVO> retorno = new ArrayList<>(mapaPorCompanhiaBanco.values());
-		RelatorioExtratoSinteticoVO totais = new RelatorioExtratoSinteticoVO();
-		
-		totais.setValorAceito(totalAceitos);
-		totais.setValorCancelado(totalCancelados);
-		totais.setValorEnviado(totalEnviados);
-		totais.setValorRejeitado(totalRejeitados);
-		
-		totais.setQtdAceito(qtdAceitos.get());
-		totais.setQtdCancelado(qtdCancelados.get());
-		totais.setQtdEnviado(qtdEnviados.get());
-		totais.setQtdRejeitado(qtdRejeitados.get());
-		
-		totais.setDescricaoSituacao("TODOS");
-		retorno.add(totais);
-		return retorno;
+		return new ArrayList<>(mapaPorCompanhiaBanco.values());
 	}
 
 	/* (non-Javadoc)
@@ -641,32 +601,17 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	                StringBuilder chave2 = new StringBuilder();
 
 	                chave1.append(p1.getCodigoBanco()).append("|").append(p1.getCodigoCia()).append("|").append(p1.getCodigoConta())
-	                    .append("|").append(p1.getNomeGrupo()).append("|").append("|").append(obterOrdemSituacao(p1)).append("|")
+	                    .append("|").append(p1.getNomeGrupo()).append("|").append("|").append(p1.getSituacaoEnvioRetorno()).append("|")
 	                    .append(p1.getBloquete());
 
 	                chave2.append(p2.getCodigoBanco()).append("|").append(p2.getCodigoCia()).append("|").append(p2.getCodigoConta())
-	                    .append("|").append(p2.getNomeGrupo()).append("|").append("|").append(obterOrdemSituacao(p2)).append("|")
+	                    .append("|").append(p2.getNomeGrupo()).append("|").append("|").append(p2.getSituacaoEnvioRetorno()).append("|")
 	                    .append(p2.getBloquete());
 	                return chave1.toString().compareTo(chave2.toString());
 	            };
 	        };
 	        Collections.sort(lista, ordenacaoAnalitico);
 		
-	}
-
-	private String obterOrdemSituacao(RelatorioExtratoAnaliticoVO situacao) {
-
-		if ("ENVIADOS".equals(situacao.getSituacaoEnvioRetorno())) {
-			return "0";
-		} else if ("ACEITOS".equals(situacao.getSituacaoEnvioRetorno())) {
-			return "1";
-		} else if ("REJEITADOS".equals(situacao.getSituacaoEnvioRetorno())) {
-			return "2";
-		} else if ("CANCELADOS".equals(situacao.getSituacaoEnvioRetorno())) {
-			return "3";
-		} else {
-			return "4";
-		}
 	}
 	
 	private void ordenarPorDeposito(List<RelatorioExtratoAnaliticoVO> lista) {

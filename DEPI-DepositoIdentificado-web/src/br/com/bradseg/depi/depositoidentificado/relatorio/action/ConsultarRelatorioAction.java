@@ -49,6 +49,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
+/**
+ * Ação que trata da geração dos relatórios 
+ * @author Globality
+ */
 @Controller
 @Scope("session")
 public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
@@ -84,8 +88,9 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 	private final FiltroVO model = new FiltroVO();
 	
 	@Autowired
-	private ConsultarRelatorioFacade consultarRelatorioFacade;
-	private InputStream fileInputStream;
+	private transient ConsultarRelatorioFacade consultarRelatorioFacade;
+	
+	private transient InputStream fileInputStream;
 	
 	public String consultarRelatorio(){
 		try {

@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,8 +14,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.CriterioConsultaVO;
  * preparar as consultas no banco de dados utilizando o
  * {@link org.springframework.jdbc.core.JdbcTemplate}.</p>
  */
-public class FiltroUtil {
+public class FiltroUtil implements Serializable {
 
+	private static final long serialVersionUID = 3754888056016538122L;
+	
 	private Date    dataInicio;
 	private Date    dataFinal;
 	private Integer codigoCia;

@@ -89,7 +89,8 @@ public class FiltroVO implements Serializable {
     }
     
     /**
-     * @return true se deve abrir nova janela com relatóroi
+     * Se deve abrir o relatório
+     * @return true se deve abrir nova janela com relatório
      */
     public boolean isAbrirRelatorio() {
 		return abrirRelatorio;
@@ -112,6 +113,7 @@ public class FiltroVO implements Serializable {
 	}
 
 	/**
+	 * Define fileNameReport
 	 * @param fileNameReport fileNameReport
 	 */
 	public void setFileNameReport(String fileNameReport) {

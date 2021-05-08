@@ -5,7 +5,7 @@ import java.io.Serializable;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 
 /**
- * 
+ * Possui informações da pessoa
  * @author Globality
  */
 public class PessoaVO implements Serializable {
