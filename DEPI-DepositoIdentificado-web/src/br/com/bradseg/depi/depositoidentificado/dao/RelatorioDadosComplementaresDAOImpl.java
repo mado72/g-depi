@@ -59,10 +59,8 @@ public class RelatorioDadosComplementaresDAOImpl extends JdbcDao implements Rela
 
 		
 			MapSqlParameterSource params = new MapSqlParameterSource();
-        	params.addValue("dtInicioA", filtro.getDataInicio());
-        	params.addValue("dtFimA", filtro.getDataFinal());
-        	params.addValue("dtInicioB", filtro.getDataInicio());
-        	params.addValue("dtFimB", filtro.getDataFinal());
+        	params.addValue("dtInicio", filtro.getDataInicio());
+        	params.addValue("dtFim", filtro.getDataFinal());
 
             if (filtro.getCodigoCia() > 0) {
                 sb.append(" AND DBPROD.DEP_IDTFD.CINTRN_CIA_SEGDR = :codCia ");

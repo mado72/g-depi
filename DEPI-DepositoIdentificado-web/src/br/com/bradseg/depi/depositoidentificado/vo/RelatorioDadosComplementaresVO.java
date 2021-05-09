@@ -7,8 +7,8 @@ import java.sql.Timestamp;
  * Classe ManutencoesAnaliticoVO
  * @author Globality
  */
-public class RelatorioDadosComplementaresVO implements Serializable{
-    
+public class RelatorioDadosComplementaresVO implements Serializable,
+		RelatorioCompanhiaAware, RelatorioBancoContaAware {    
     
     /**
      * 
@@ -110,6 +110,7 @@ public class RelatorioDadosComplementaresVO implements Serializable{
 	 * Retorna o valor do atributo codigoBanco.
 	 * @return o valor do atributo codigoBanco
 	 */
+	@Override
 	public Integer getCodigoBanco() {
 		return codigoBanco;
 	}
@@ -126,6 +127,7 @@ public class RelatorioDadosComplementaresVO implements Serializable{
 	 * Retorna o valor do atributo codigoAgencia.
 	 * @return o valor do atributo codigoAgencia
 	 */
+	@Override
 	public Integer getCodigoAgencia() {
 		return codigoAgencia;
 	}
@@ -142,6 +144,7 @@ public class RelatorioDadosComplementaresVO implements Serializable{
 	 * Retorna o valor do atributo codigoConta.
 	 * @return o valor do atributo codigoConta
 	 */
+	@Override
 	public Long getCodigoConta() {
 		return codigoConta;
 	}
@@ -254,6 +257,7 @@ public class RelatorioDadosComplementaresVO implements Serializable{
 	 * Retorna o valor do atributo codigoCia.
 	 * @return o valor do atributo codigoCia
 	 */
+	@Override
 	public Integer getCodigoCia() {
 		return codigoCia;
 	}
@@ -342,6 +346,7 @@ public class RelatorioDadosComplementaresVO implements Serializable{
 	 * Especifica o valor do atributo descricaoBanco.
 	 * @param descricaoBanco - String do descricaoBanco a ser configurado.
 	 */
+	@Override
 	public void setDescricaoBanco(String descricaoBanco) {
 		this.descricaoBanco = descricaoBanco;
 	}
@@ -358,6 +363,7 @@ public class RelatorioDadosComplementaresVO implements Serializable{
 	 * Especifica o valor do atributo descricaoCia.
 	 * @param descricaoCia - String do descricaoCia a ser configurado.
 	 */
+	@Override
 	public void setDescricaoCia(String descricaoCia) {
 		this.descricaoCia = descricaoCia;
 	}
@@ -374,6 +380,7 @@ public class RelatorioDadosComplementaresVO implements Serializable{
 	 * Especifica o valor do atributo descricaoConta.
 	 * @param descricaoConta - String do descricaoConta a ser configurado.
 	 */
+	@Override
 	public void setDescricaoConta(String descricaoConta) {
 		this.descricaoConta = descricaoConta;
 	}

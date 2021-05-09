@@ -241,7 +241,7 @@
 					</textElement>
 				<text><![CDATA[TIPO DEPÓSITO.... :]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="82"
 						y="8"
@@ -884,7 +884,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Courier New" pdfFontName="Courier" size="7"/>
 					</textElement>
-				<text><![CDATA[DEPOSITOS IDENTIFICADOS - DADOS COMPLEMENTARES]]></text>
+				<text><![CDATA[DEPÓSITOS IDENTIFICADOS - DADOS COMPLEMENTARES]]></text>
 				</staticText>
 				<staticText>
 					<reportElement

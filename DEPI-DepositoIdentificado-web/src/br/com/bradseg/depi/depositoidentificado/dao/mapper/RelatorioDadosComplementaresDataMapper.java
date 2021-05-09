@@ -19,10 +19,42 @@ public class RelatorioDadosComplementaresDataMapper implements RowMapper<Relator
 	@Override
 	public RelatorioDadosComplementaresVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-		RelatorioDadosComplementaresVO complementaresVO = new RelatorioDadosComplementaresVO();
+		RelatorioDadosComplementaresVO vo = new RelatorioDadosComplementaresVO();
+		vo.setCodigoAutorizador(rs.getLong("CDEP_IDTFD"));
+		vo.setDigitoCodigoAutorizador(rs.getInt("CDIG_DEP_IDTFD"));
+	    vo.setCodigoBanco(rs.getInt("CBCO"));
+	    vo.setCodigoAgencia(rs.getInt("CAG_BCRIA"));
+	    vo.setCodigoConta(rs.getLong("CCTA_CORR"));
+	    vo.setCodigoTipoGrupoRecebimento(rs.getInt("CTPO_GRP_RECEB"));
+	    vo.setCodigoSituacao(rs.getInt("CSIT_DEP_ARQ_TRNSF"));
+	    vo.setDataHoraInclusaoDeposito(rs.getTimestamp("DHORA_INCL_DEP"));
+	    vo.setDataHoraInclusaoLancamento(rs.getTimestamp("DHORA_INCL_LCTO"));
+	    vo.setValorRegistrado(rs.getBigDecimal("VDEP_IDTFD_ORIGN"));
+	    vo.setValorPago(rs.getBigDecimal("VTOT_DEP_IDTFD"));
+	    vo.setCodigoCia(rs.getInt("CINTRN_CIA_SEGDR"));
+	    vo.setCodigoDepartamentoDeposito(rs.getInt("CDEPTO_DEP_IDTFD"));
+	    vo.setCodigoMotivoDeposito(rs.getInt("CMOTVO_DEP_IDTFD"));
+	    vo.setObservacaoParametrizacaoDeposito(rs.getString("ROBS_PARMZ_DEP"));
+	    vo.setObservacaoDeposito(rs.getString("ROBS_DEP_IDTFD"));
 
+	    int codDigVerificador = rs.getInt("CDIG_DEP_IDTFD");
+		vo.setCodigoAutorizadorComDv(String.format(
+				"%d - %d", vo.getCodigoAutorizador(),
+				codDigVerificador));
 		
-		return complementaresVO;
+		switch (vo.getCodigoTipoGrupoRecebimento()) {
+		case 1:
+			vo.setDescricaoTipoGrupoRecebimento("PR\u00CAMIO");
+			break;
+		case 2:
+			vo.setDescricaoTipoGrupoRecebimento("DIVERSOS");
+			break;
+		default:
+			vo.setDescricaoTipoGrupoRecebimento("OUTROS");
+			break;
+		}
+
+	    return vo;
 	}
 
 }

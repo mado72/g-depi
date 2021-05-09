@@ -310,7 +310,12 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	public List<RelatorioDadosComplementaresVO> obterDadosComplementares(
 			FiltroUtil filtro) {
 		try {
-			return daoRelatorioDadosComplementares.obterDadosComplementaresAnalitico(filtro);
+			List<RelatorioDadosComplementaresVO> dados = daoRelatorioDadosComplementares
+					.obterDadosComplementaresAnalitico(filtro);
+			
+			preencheDescricaoCia(dados);
+			preencheDescricoesBancoConta(dados);
+			return dados;
 		} catch (SQLException e) {
 			LOGGER.error(e.getMessage());
 	        throw new DEPIIntegrationException(e.getMessage());
