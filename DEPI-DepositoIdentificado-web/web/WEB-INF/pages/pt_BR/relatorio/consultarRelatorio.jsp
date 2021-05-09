@@ -9,10 +9,7 @@
     <s:set name="vtpcCias" value="tpcCias"/>
     <s:set name="vtpcCiasOrdenadas" value="tpcCiasOrdenadas"/>
 		
-<s:form id="formConsultarRelatorio" action="realizarConsulta" onload="loadPage()" method="GET"  >
-<%-- 
-<s:form id="formConsultarRelatorio" action="gerarRelatorio.do" target="_blank"  onload="loadPage()"   > 
---%>
+<s:form id="formConsultarRelatorio" action="realizarConsulta" onload="loadPage()" >
 	<s:hidden name="abrirRelatorio" value="true"/>
    	<s:hidden id="tituloTabela" name="tituloTabela"/>
    	<s:hidden id="acaoOriginal" name="acaoOriginal" />
@@ -342,10 +339,10 @@ jQuery(document).ready(function($){
 	${scriptDepto};
 	
 	$.fn.abrirRelatorio = function(form, target) {
-		$(form).attr('target', target);
+		// $(form).attr('target', target);
 		$(form).find("input[name='abrirRelatorio']").val(true);
 		$(form).submit();
-		$(form).removeAttr('target');
+		// $(form).removeAttr('target');
 		$(form).find("input[name='abrirRelatorio']").val(false);
 	};
 	
