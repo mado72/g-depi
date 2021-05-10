@@ -9,6 +9,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.RelatorioEnvioRetornoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoAnaliticoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.RelatorioExtratoSinteticoVO;
 
+/**
+ * Métodos de consultas para gerar relatórios
+ * @author Globality
+ */
 public interface RelatorioDao {
 
 	/**
