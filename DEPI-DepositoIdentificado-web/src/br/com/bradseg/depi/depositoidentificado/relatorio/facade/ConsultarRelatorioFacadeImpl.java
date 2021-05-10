@@ -6,7 +6,6 @@ import static br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.ARQUI
 import static br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI.ARQUIVO_REJEITADO;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,10 +29,7 @@ import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
-import br.com.bradseg.depi.depositoidentificado.dao.RelatorioDadosComplementaresDAO;
-import br.com.bradseg.depi.depositoidentificado.dao.RelatorioEnvioRetornoDAO;
-import br.com.bradseg.depi.depositoidentificado.dao.RelatorioExtratoDAO;
-import br.com.bradseg.depi.depositoidentificado.dao.RelatorioManutencoesDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.RelatorioDao;
 import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegate;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
@@ -70,7 +66,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsultarRelatorioFacadeImpl.class);
     private static final String SEPARADOR_CONTA = " - ";
 	@Autowired
-	private RelatorioManutencoesDAO daoManutAnalitico;
+	private RelatorioDao relatorioDao;
 	
 	@Autowired
 	private CompanhiaSeguradoraDAO daoCiaSeg;
@@ -83,17 +79,6 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	
 	@Autowired
 	private MotivoDepositoDAO daoMotivoDeposito;
-	@Autowired
-	private RelatorioEnvioRetornoDAO daoRelatorioEnvioRetornoDAO;
-	
-	@Autowired
-	private RelatorioDadosComplementaresDAO daoRelatorioDadosComplementares;
-	
-	@Autowired
-	private RelatorioManutencoesDAO daoRelatorioManutencoes;
-	
-	@Autowired
-	private RelatorioExtratoDAO daoRelatorioExtrato;
 	
 	@Autowired
 	private CICSDepiDAO cicsDepiDAO;
@@ -102,7 +87,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	public List<RelatorioEnvioRetornoVO> obterDadosEnvioRetornoAnalitico(
 			FiltroUtil filtro, String ipCliente, int codResponsavel) {
 		
-		List<RelatorioEnvioRetornoVO> dados = this.daoRelatorioEnvioRetornoDAO.obterDados(filtro);
+		List<RelatorioEnvioRetornoVO> dados = this.relatorioDao.obterDadosEnvioRetorno(filtro);
 		
 		preencheDescricaoCia(dados);
 		preencheDescricoesBancoConta(dados);
@@ -197,7 +182,8 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	public List<RelatorioExtratoAnaliticoVO> obterDadosBancoExtratoAnalitico(
 			FiltroUtil filtro, String ipCliente, int codResponsavel) {
 		try {
-			List<RelatorioExtratoAnaliticoVO> dados = daoRelatorioExtrato.obterDadosAnalitico(filtro);
+			List<RelatorioExtratoAnaliticoVO> dados = relatorioDao
+					.obterDadosExtratoAnalitico(filtro);
 			
 			preencheDescricaoCia(dados);
 			preencheDescricoesBancoConta(dados);
@@ -222,7 +208,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 			FiltroUtil filtro) {
 		try {
 			
-			List<RelatorioExtratoSinteticoVO> dados = daoRelatorioExtrato.obterDadosSintetico(filtro);
+			List<RelatorioExtratoSinteticoVO> dados = relatorioDao.obterDadosExtratoSintetico(filtro);
 			
 			preencheDescricaoCia(dados);
 			preencheDescricoesBancoConta(dados);
@@ -283,7 +269,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 	@Override
 	public List<ManutencoesAnaliticoVO> obterDadosManutencoesAnalitico(
 			FiltroUtil filtro, String ipCliente, int codResponsavel) {
-		List<ManutencoesAnaliticoVO> dados = daoManutAnalitico.obterDadosAnalitico(filtro);
+		List<ManutencoesAnaliticoVO> dados = relatorioDao.obterDadosManutencoesAnalitico(filtro);
 		
 		preencheDescricaoCia(dados);
 		preencheDescricoesBancoConta(dados);
@@ -309,17 +295,12 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
     @Override
 	public List<RelatorioDadosComplementaresVO> obterDadosComplementares(
 			FiltroUtil filtro) {
-		try {
-			List<RelatorioDadosComplementaresVO> dados = daoRelatorioDadosComplementares
-					.obterDadosComplementaresAnalitico(filtro);
-			
-			preencheDescricaoCia(dados);
-			preencheDescricoesBancoConta(dados);
-			return dados;
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
-	        throw new DEPIIntegrationException(e.getMessage());
-		}
+    	List<RelatorioDadosComplementaresVO> dados = relatorioDao
+    			.obterDadosComplementaresAnalitico(filtro);
+    	
+    	preencheDescricaoCia(dados);
+    	preencheDescricoesBancoConta(dados);
+    	return dados;
 	}
 
 	@Override
