@@ -282,6 +282,10 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 		String tipoRelatorio = model.getTipoRelatorio();
 		String visualizacao = model.getVisualizacao();
 		
+		carregarComboCompanhia();
+		carregarComboDepartamentos();
+		carregarComboMotivos();
+		
 		if (TIPO_RELATORIO_ENVIO_RETORNO.equals(tipoRelatorio)) {
 			if (VISUALIZACAO_TIPO_ANALITICO.equals(visualizacao)) {
 				retorno = this.consultarEnvioRetornoAnalitico();

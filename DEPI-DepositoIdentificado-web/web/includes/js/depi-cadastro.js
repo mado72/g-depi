@@ -217,6 +217,8 @@ var fnReady = function ($) {
 		
 		var onChange = function(ev){
 			var v = $(ev.currentTarget).val();
+			
+			if (v == 0) return;
 
 			if (typeof opcoes.onStart === 'function') {
 				opcoes.onStart(origem[0], origem[1], destino[0], destino[1]);
@@ -266,7 +268,12 @@ var fnReady = function ($) {
 					}
 				},
 				error : function(data) {
-					opcoes.error(data);
+					if (opcoes.error) {
+						opcoes.error(data)
+					}
+					else {
+						alert(data.responseText);
+					}
 				}
 			});
 		};

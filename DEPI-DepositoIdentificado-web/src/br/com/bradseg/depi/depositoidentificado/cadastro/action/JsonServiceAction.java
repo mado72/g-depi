@@ -282,6 +282,8 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 		} catch (Exception e) {
 			LOGGER.error("Falha ao carregar motivos", e);
 			addActionError(e.getMessage());
+			model.setErro(e.getMessage());
+			model.setResponse(null);
 			return ERROR;
 		}
 		

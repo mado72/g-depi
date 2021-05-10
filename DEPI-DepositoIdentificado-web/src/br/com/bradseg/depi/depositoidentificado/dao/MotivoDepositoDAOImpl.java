@@ -235,7 +235,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 			List<MotivoDepositoVO> motivoDepto = getJdbcTemplate().query(query.toString(), params, new MotivoDepositoDataMapper());
 			
             if (motivoDepto == null || motivoDepto.isEmpty()) {
-                throw new BusinessException(concatenarComHifen(ConstantesDEPI.ERRO_RELACIONAMENTOS_NAO_CADASTRADOS, msg));
+                throw new DEPIBusinessException(ConstantesDEPI.ERRO_RELACIONAMENTOS_NAO_CADASTRADOS, new String[]{msg});
             }
                 
             return motivoDepto;

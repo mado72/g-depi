@@ -78,7 +78,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
-		if (LOGGER.isInfoEnabled()) {
+		if (LOGGER.isDebugEnabled()) {
 			StringBuilder msg = new StringBuilder("@@@ DEPI Requisitado ").append(request.getRequestURL());
 			LOGGER.info(msg.toString());
 		}
@@ -109,7 +109,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
         	LOGGER.error("Não encontrou usuário logado");
             throw new IntegrationException(getText(MSG_LOGIN_USUARIO));
         }
-        LOGGER.info("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
+        LOGGER.debug("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		
 		return loginVO;
 	}

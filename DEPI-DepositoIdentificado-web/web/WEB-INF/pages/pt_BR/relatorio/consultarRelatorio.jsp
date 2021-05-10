@@ -129,7 +129,14 @@ $.dpcoddesc.aninhar({
 	fn: function(v) {
 		return [v.codigoMotivoDeposito, v.descricaoBasica, v.descricaoDetalhada];
 	},
-	error: void(0)
+	error: function(error) {
+		var error = JSON.parse(error.responseText);
+		alert(error.erro);
+		$('#listaMotivosDepositos, #listaMotivosDepositosOrd').each(function(i, v){
+			$(v).find('option').remove().end();
+			$(v).append($('<option>', {value: 0, text: '-- Todos --'}));
+		});
+	}
 });
 </c:set>
 								<s:select 
@@ -138,8 +145,8 @@ $.dpcoddesc.aninhar({
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoDepartamento" 
-						  			listValue="codigoDepartamento" 
-						  			name="filtroVO.codigoDepartamento"
+						  			listValue="siglaDepartamento" 
+						  			name="codigoDepartamento"
 						  			style="width: 100%;"
 						            onkeydown="return tabEnter(event);"
 						            /> 
@@ -165,11 +172,10 @@ $.dpcoddesc.aninhar({
 							<s:select 
 									list="listaMotivosDepositos" 
 									id="listaMotivosDepositos" 
-									onchange="changeCombo('listaMotivosDepositosOrd',this.value);"
 									headerKey="0" 
 									headerValue=" -- Todos  -- " 
 						  			listKey="codigoMotivoDeposito" 
-						  			listValue="codigoMotivoDeposito" 
+						  			listValue="descricaoBasica" 
 						  			name="filtroVO.codigoMotivoDeposito"
 						  			style="width: 100%;" 
 						  			/>

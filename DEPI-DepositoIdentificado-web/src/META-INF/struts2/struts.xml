@@ -81,6 +81,9 @@
 		<global-results>
 			<result name="success" type="json"/>
 			<result name="input" type="json"/>
+			<result name="error" type="json">
+				<param name="statusCode">400</param>
+			</result>
 		</global-results>
 		
 		<action name="*" method="{1}" />
