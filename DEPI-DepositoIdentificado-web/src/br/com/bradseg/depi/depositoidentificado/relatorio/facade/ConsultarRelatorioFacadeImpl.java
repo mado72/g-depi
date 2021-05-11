@@ -348,7 +348,7 @@ public class ConsultarRelatorioFacadeImpl implements ConsultarRelatorioFacade {
 					sintetico.setDescricaoBanco(analitico.getDescricaoBanco());
 					sintetico.setDescricaoCia(analitico.getDescricaoCia());
 					sintetico.setDescricaoConta(analitico.getDescricaoConta());
-					sintetico.setQuantidade(1l);
+					sintetico.setQuantidade(1L);
 					sintetico.setValor(analitico.getValorRegistrado());
 					dadosSinteticos.add(sintetico);
 				}

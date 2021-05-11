@@ -102,7 +102,7 @@ public final class ProgramDefinition<T> extends CTGProgramImpl {
 		return fields.toArray(new FieldType[0]);
 	}
 
-	public static AbstractFieldType createFieldType(FieldDefinitions field, String fieldName) {
+	private static AbstractFieldType createFieldType(FieldDefinitions field, String fieldName) {
 		
 		final CicsField cicsField = field.getCicsField();
 		final int fieldSize = cicsField.size();
