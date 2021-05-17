@@ -7,7 +7,7 @@
 <jsp:include page="/WEB-INF/pages/pt_BR/includes/logo-sistema.jsp"></jsp:include>
 <br>
 
-<!--mensagem de erro de negocio-->
+
 <logic:messagesPresent message="true">
 	<br />
 	<table width="90%" border="0" class="tabela_verm" align="center">

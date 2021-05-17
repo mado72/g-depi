@@ -21,19 +21,19 @@
 			<td class="td_label" width="8%" ><s:text name="label.cadastro.parametrodeposito.cia" /><span class="obrigatorio">*</span>
 			</td>
 			<td>
-				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.codigoCompanhia-->
+				
 				<s:select list="cias" value="codigoCompanhia" listValue="codigoCompanhia" 
 					listKey="codigoCompanhia" cssClass="dropbox w-100 companhia-codigo-dropbox" name="codigoCompanhia"
 					disabled="%{detalhar}"/>
 			</td>
 			<td colspan="5">
-				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
+				
 				<s:select list="cias" value="codigoCompanhia" listValue="descricaoCompanhia" listKey="codigoCompanhia" 
 					cssClass="dropbox w-100 companhia-nome-dropbox" disabled="%{detalhar}"/>
 			</td>
 		</tr>
  		<tr>
-			<!-- combo departamentos -->
+			
 			<td class="td_label" ><s:text name="label.cadastro.parametrodeposito.departamento" /><span class="obrigatorio">*</span></td>
 			<td>
 				<s:select list="deptos" key="codigoDepartamento" listValue="siglaDepartamento" listKey="codigoDepartamento" 
@@ -50,7 +50,7 @@
 				<s:text name="label.cadastro.motivodeposito.descricaoBasica" />
 			</td>
 			<td colspan="5">
-				<!-- combo motivo -->
+				
 				<s:select key="codigoMotivoDeposito" list="motivos" listValue="descricaoBasica" listKey="codigoMotivoDeposito" 
 					cssClass="dropbox w-100" disabled="%{detalhar}"/>
 			</td>

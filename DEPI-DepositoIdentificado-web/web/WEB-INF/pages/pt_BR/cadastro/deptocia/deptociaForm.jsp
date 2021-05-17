@@ -26,7 +26,7 @@
 					disabled="desabiltarChave"/>
 			</td>
 			<td colspan="2" width="82%">
-				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
+				
 				<s:select list="cias" value="codCompanhia" listValue="descricaoCompanhia" listKey="codigoCompanhia" 
 					cssClass="dropbox w-100 companhia-nome-dropbox" disabled="desabiltarChave"/>
 			</td>
@@ -43,7 +43,7 @@
 						<img src="${www3}padroes_web/intranet/imagens/ic_sbox_sair.gif" alt="Excluir" class="pointer btnRemover btn ${btnDesabilitar}"/>
 					</span>
 				</div>
-				<!-- DEPARTAMENTOS -->
+				
 <c:set value="${deptos}" var="deptos" scope="request"/>
 <div class="tblDepartamento">
 <s:include value="/WEB-INF/pages/pt_BR/filtro/tblDepartamento.jsp"/>

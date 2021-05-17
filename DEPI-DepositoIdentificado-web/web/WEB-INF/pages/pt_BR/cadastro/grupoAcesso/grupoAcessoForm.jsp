@@ -20,13 +20,13 @@
 			<td class="td_label" width="8%" ><s:text name="label.cadastro.grupoacesso.cia" /><span class="obrigatorio">*</span>
 			</td>
 			<td width="10%">
-				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.codigoCompanhia-->
+				
 				<s:select list="cias" value="codCompanhia" listValue="codigoCompanhia" 
 					listKey="codigoCompanhia" cssClass="dropbox w-100 companhia-codigo-dropbox" name="codCompanhia"
 					disabled="%{codigoGrupoAcesso gt 0}"/>
 			</td>
 			<td colspan="2" width="82%">
-				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
+				
 				<s:select list="cias" value="codCompanhia" listValue="descricaoCompanhia" listKey="codigoCompanhia" 
 					cssClass="dropbox w-100 companhia-nome-dropbox" disabled="%{codigoGrupoAcesso gt 0}"/>
 			</td>
@@ -34,12 +34,12 @@
 		<tr>
 			<td class="td_label" ><s:text name="label.cadastro.grupoacesso.departamento" /><span class="obrigatorio">*</span></td>
 			<td>
-				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.codigoCompanhia-->
+				
 				<s:select list="deptos" name="siglaDepartamento" value="siglaDepartamento" listValue="siglaDepartamento" listKey="siglaDepartamento" 
 					cssClass="dropbox w-100 departamento-codigo-dropbox" disabled="%{codigoGrupoAcesso gt 0}"/>
 			</td>
 			<td colspan="2">
-				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
+				
 				<s:select list="deptos" value="siglaDepartamento" listValue="nomeDepartamento" listKey="siglaDepartamento" 
 					cssClass="dropbox w-100 departamento-nome-dropbox"  style="WIDTH: 100%" disabled="%{codigoGrupoAcesso gt 0}"/>
 			</td>
@@ -56,7 +56,7 @@
 						<img src="${www3}padroes_web/intranet/imagens/ic_sbox_sair.gif" alt="Excluir" class="pointer btnRemover btn ${btnDesabilitar}"/>
 					</span>
 				</div>
-				<!-- FUNCIONARIOS -->
+				
 <c:set var="matriculaNome" value="true" scope="request"/>
 <div class="tblFuncionarios">
 <s:include value="/WEB-INF/pages/pt_BR/filtro/tblFuncionario.jsp"/>

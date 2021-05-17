@@ -33,8 +33,14 @@
 		<a href="<s:url value="/sobre.do"/>" class="menu_horizontal">Sobre</a>
 	</div>
 	<div class="itemmenu">
-		<a href="#" onclick="window.close() || window.location.assign('about:blank')" class="menu_horizontal">Sair</a>
+		<a href="#" onclick="closeSession()" class="menu_horizontal">Sair</a>
 	</div>
 	</div>
-</div>	
+</div>
+<script type="text/javascript">
+function closeSession() {
+	document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+	window.close() || window.location.assign('about:blank');
+}
+</script>
 

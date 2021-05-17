@@ -25,13 +25,13 @@
 				<s:text name="label.cadastro.contacorrenteautorizada.cia" /><span class="obrigatorio">*</span>
 			</td>
 			<td width="10%">
-				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.codigoCompanhia-->
+				
 				<s:select list="cias" value="codigoCompanhia" listValue="codigoCompanhia" 
 					listKey="codigoCompanhia" cssClass="dropbox w-100 companhia-codigo-dropbox" name="codigoCompanhia"
 					disabled="%{detalhar}"/>
 			</td>
 			<td width="40%">
-				<!-- combo codCompanhia listaCodigosCompanhiaSeguradora.nome-->
+				
 				<s:select list="cias" value="codigoCompanhia" listValue="descricaoCompanhia" listKey="codigoCompanhia" 
 					cssClass="dropbox w-100 companhia-nome-dropbox" disabled="%{detalhar}"/>
 			</td>

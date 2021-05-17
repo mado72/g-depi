@@ -51,7 +51,7 @@
 	<tr>
 		<td>
 			<s:if test="hasActionMessages()">
-				<!-- mensagens layout -->
+				
 				<table class="tabela_sucesso" id="msgSucesso">
 					<tbody>
 						<tr>
@@ -64,7 +64,7 @@
 				<depi:clearMessages messages="true"/>
 			</s:if>
 			<s:if test="hasFieldErrors()">
-				<!-- field errors layout -->
+				
 				<table class="tabela_verm" id="msgErros">
 					<tbody>
 						<tr>
@@ -77,7 +77,7 @@
 				<depi:clearMessages fieldErrors="true"/>
 			</s:if>
 			<s:if test="hasActionErrors()">
-				<!-- action errors layout -->
+				
 				<table class="tabela_verm" id="msgErros">
 					<tbody>
 						<tr>

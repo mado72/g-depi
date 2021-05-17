@@ -39,7 +39,7 @@
 						</td>
 					
 							<td colspan="6">
-								<!-- checked="checked"  -->
+								
 								<s:radio name="tipoRelatorio" 
 									list="#{'ER': 'Envio/Retorno Banco', 'EX': 'Extrato-Banco', 'MN': 'Manutenções', 'DC': 'Dados Complementares'}"
 									cssClass="optionButton"

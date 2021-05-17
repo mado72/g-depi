@@ -39,9 +39,9 @@ var webRoot = '<c:out value="${pageContext.request.contextPath}" />';
 </table>
 <tiles:insert attribute="param-include-menu" />
 <%--
-<!--subtitulo da funcionalidade-->
+
 <tiles:insert attribute="param-include-subtitulo" />
-<!--mensagem de erro de negocio-->
+
 <logic:messagesPresent message="true">
 <br />
 <table width="90%" border="0" class="tabela_verm">
@@ -60,7 +60,7 @@ var webRoot = '<c:out value="${pageContext.request.contextPath}" />';
 <table width="100%" id="tabela_principal" align="center">
 <tr>
 <td>
-<!-- instrucoes -->
+
 <p><tiles:getAsString name="param-string-instrucoes" /> </p>
 <tiles:insert attribute="param-include-corpo" />
 </td>
