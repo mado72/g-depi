@@ -59,22 +59,22 @@ public class DepositoSalvarAction extends
 	public void validateSalvar() {
 		DepositoEditarFormModel model = getModel();
 		if (StringUtils.isEmpty(model.getCodigoCompanhia())) {
-			addErrorRequired("codigoCompanhia", "label.cadastro.associarmotivodeposito.cia");
+			addErrorRequired("codigoCompanhia", getText("label.cadastro.associarmotivodeposito.cia"));
 		}
 		if (StringUtils.isEmpty(model.getCodigoDepartamento())) {
-			addErrorRequired("codigoDepartamento", "label.cadastro.associarmotivodeposito.departamento");
+			addErrorRequired("codigoDepartamento", getText("label.cadastro.associarmotivodeposito.departamento"));
 		}
 		if (StringUtils.isEmpty(model.getCodigoMotivoDeposito())) {
-			addErrorRequired("codigoMotivoDeposito", "label.cadastro.associarmotivodeposito.motivo");
+			addErrorRequired("codigoMotivoDeposito", getText("label.cadastro.associarmotivodeposito.motivo"));
 		}
 		if (StringUtils.isEmpty(model.getCodBanco())) {
-			addErrorRequired("codBanco", "label.cadastro.associarmotivodeposito.banco");
+			addErrorRequired("codBanco", getText("label.cadastro.associarmotivodeposito.banco"));
 		}
 		if (StringUtils.isEmpty(model.getCodigoAgencia())) {
-			addErrorRequired("codigoAgencia", "label.cadastro.associarmotivodeposito.agencia");
+			addErrorRequired("codigoAgencia", getText("label.cadastro.associarmotivodeposito.agencia"));
 		}
 		if (StringUtils.isEmpty(model.getContaCorrente())) {
-			addErrorRequired("contaCorrente", "label.cadastro.associarmotivodeposito.conta");
+			addErrorRequired("contaCorrente", getText("label.cadastro.associarmotivodeposito.conta"));
 		}
 	}
 	
