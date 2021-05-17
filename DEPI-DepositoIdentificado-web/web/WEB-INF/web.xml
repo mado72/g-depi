@@ -112,6 +112,10 @@
 		<filter-name>sitemesh</filter-name>
 		<url-pattern>/index.do</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>/sobre.do</url-pattern>
+	</filter-mapping>
 
 	<!--
 		Struts2 - Executa as actions do struts2

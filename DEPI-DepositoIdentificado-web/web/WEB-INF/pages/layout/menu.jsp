@@ -33,7 +33,7 @@
 		<a href="<s:url value="/sobre.do"/>" class="menu_horizontal">Sobre</a>
 	</div>
 	<div class="itemmenu">
-		<a href="#" onclick="window.close();" class="menu_horizontal">Sair</a>
+		<a href="#" onclick="window.close() || window.location.assign('about:blank')" class="menu_horizontal">Sair</a>
 	</div>
 	</div>
 </div>	

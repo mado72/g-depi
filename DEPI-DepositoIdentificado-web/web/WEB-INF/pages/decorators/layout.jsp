@@ -53,47 +53,6 @@
 	<tr>
 		<td>
 			<s:include value="/WEB-INF/pages/layout/menu.jsp"/>
-<%--
-			<div id="Mensagens">
-			<s:if test="hasActionMessages()">
-				<!-- mensagens layout -->
-				<table class="tabela_sucesso" id="msgSucesso">
-					<tbody>
-						<tr>
-							<td><ul><s:iterator value="actionMessages">
-								<li><s:property escapeHtml="false"/></li>
-							</s:iterator></ul></td>
-						</tr>
-					</tbody>
-				</table>
-				<depi:clearMessages messages="true"/>
-			</s:if>
-			<s:if test="hasFieldErrors()">
-				<!-- field errors layout -->
-				<table class="tabela_verm" id="msgErros">
-					<tbody>
-						<tr>
-							<td><ul><s:iterator value="fieldErrors">
-								<li><s:property escapeHtml="false" value="value[0]" /></li>
-							</s:iterator></ul></td>
-						</tr>
-					</tbody>
-				</table>
-				<depi:clearMessages fieldErrors="true"/>
-			</s:if>
-			<s:if test="hasActionErrors()">
-				<!-- action errors layout -->
-				<table class="tabela_verm" id="msgErros">
-					<tbody>
-						<tr>
-							<td><ul><s:actionerror escape="false"/></ul></td>
-						</tr>
-					</tbody>
-				</table>
-				<depi:clearMessages actionErrors="true"/>
-			</s:if>
-			</div>
- --%>
 			<div id="logoSistema">
 			<s:include value="/WEB-INF/pages/pt_BR/includes/logo-sistema.jsp"/>
 			</div>

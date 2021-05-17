@@ -59,9 +59,9 @@
             <result>/WEB-INF/pages/navegador.jsp</result>
         </action>        
 
-<!--	<action name="sobre" class="VersaoAction" method="execute">
-			<result>/WEB-INF/jsp/layout/versao.jsp</result>
-		</action> -->
+		<action name="sobre" class="versaoAction" method="execute">
+			<result>/WEB-INF/pages/layout/versao.jsp</result>
+		</action>
 		
 	</package>
 
