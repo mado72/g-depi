@@ -29,7 +29,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class DepartamentoFacadeImpl implements DepartamentoFacade {
 
-    private static final String CODIGO_RESPONSAVEL = "Código do Responsável";
+    private static final String CODIGO_RESPONSAVEL = "C\u00f3digo do Respons\u00e1vel";
     
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoFacadeImpl.class);
@@ -98,7 +98,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
         }
         if (sb.length() > 0) {
 			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO, sb.toString(),
-							"Associação Departamentos x Companhia");
+							"Associa\u00e7\00e3o Departamentos x Companhia");
         }
     }
 
@@ -211,7 +211,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
         if (vo.getCodigoDepartamento() == 0) {
 			throw new DEPIIntegrationException(
 					ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO,
-					"Código do Departamento");
+					"C\u00f3digo do Departamento");
         }
     }
 

@@ -220,7 +220,7 @@ public class ContaCorrenteFacadeImpl implements ContaCorrenteFacade {
     	
         try {
 			BaseUtil.assertTrueThrowException(BaseUtil.isNZB(vo), ConstantesDEPI.MSG_CUSTOMIZADA,
-			    "ContaCorrenteAutorizadaVO vo é null : validar");
+			    "ContaCorrenteAutorizadaVO vo \u00e9 null : validar");
 
 			if (inclusao) {
 				BaseUtil.validarParametro(vo.getCia(), "Cia");

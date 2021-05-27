@@ -281,15 +281,15 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 	private String escolhaMensagem(Tabelas e) {
 		final String msg;
 		if (e.equals(Tabelas.GRUPO_ACESSO)) {
-			msg = " um Grupo de Acesso vinculado ao usuário.";
+			msg = " um Grupo de Acesso vinculado ao usu\u00e1rio.";
 		} else if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
-			msg = " um Parametro de Depósito ou Grupo de Acesso vinculado ao usuário.";
+			msg = " um Parametro de Dep\u00f3sito ou Grupo de Acesso vinculado ao usu\u00e1rio.";
 		} else if (e.equals(Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO)) {
-			msg = " uma Associação de Motivo ou Grupo de Acesso vinculado ao usuário.";
+			msg = " uma Associa\u00e7\u00e3o de Motivo ou Grupo de Acesso vinculado ao usu\u00e1rio.";
 		} else if (e.equals(Tabelas.DEPOSITO)) {
-			msg = " um Depósito ou Grupo de Acesso vinculado ao usuário.";
+			msg = " um Dep\u00f3sito ou Grupo de Acesso vinculado ao usu\u00e1rio.";
 		} else {
-			throw new IntegrationException("Enum inválido.");
+			throw new IntegrationException("Enum inv\u00e1lido.");
 		}
 		return msg;
 	}
@@ -306,7 +306,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		} else if (e.equals(Tabelas.DEPOSITO)) {
 			query = QueriesDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEDEPOSITO.replaceAll("%s", restricaoAdicional);
 		} else {
-			throw new IntegrationException("Enum inválido.");
+			throw new IntegrationException("Enum inv\u00e1lido.");
 		}
 		return query;
 	}
@@ -323,7 +323,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		} else if (e.equals(Tabelas.DEPOSITO)) {
 			restricao = " AND DEP.DEP_IDTFD = :prm1";
 		} else {
-			throw new IntegrationException("Enum inválido.");
+			throw new IntegrationException("Enum inv\u00e1lido.");
 		}
 		return restricao;
 	}

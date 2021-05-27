@@ -95,7 +95,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
             Integer num = getJdbcTemplate().update(QueriesDepi.DEPOSITO_MOVIMENTO_INSERT, params);
             
             if (num == 0) {
-                throw new BusinessException("A atualiza��o não afetou nenhum registro.");
+                throw new BusinessException("A atualiza��o n\u00e3o afetou nenhum registro.");
             }
 
         } catch (SQLException e) {
@@ -137,7 +137,7 @@ public class MovimentoDepositoDAOImpl extends JdbcDao implements MovimentoDeposi
             Integer num = getJdbcTemplate().update(QueriesDepi.DEPOSITO_MOVIMENTO_UPDATE, params);
             
             if (num == 0) {
-                throw new BusinessException("A atualiza��o não afetou nenhum registro.");
+                throw new BusinessException("A atualiza��o n\u00e3o afetou nenhum registro.");
             }
 
         } catch (SQLException e) {

@@ -94,7 +94,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String exibir() {
-		LOGGER.debug("Preparando formulário para exibir um registro");
+		LOGGER.debug("Preparando formul\u00e1rio para exibir um registro");
 		
 		CrudHelper<C, VO, F> crudHelper = getCrudHelper();
 		model.setEstado(EstadoCrud.EXIBIR);
@@ -112,7 +112,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String incluir() {
-		LOGGER.debug("Preparando formulário para inclusão de um novo registro");
+		LOGGER.debug("Preparando formul\u00e1rio para inclus\u00e3o de um novo registro");
 
 		prepararFormularioIncluir();
 		
@@ -129,7 +129,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	 * @return {@link com.opensymphony.xwork2.Action#INPUT}
 	 */
 	public String alterar() {
-		LOGGER.debug("Preparando formulário para alterar um registro");
+		LOGGER.debug("Preparando formul\u00e1rio para alterar um registro");
 
 		prepararFormularioAlterar();
 		

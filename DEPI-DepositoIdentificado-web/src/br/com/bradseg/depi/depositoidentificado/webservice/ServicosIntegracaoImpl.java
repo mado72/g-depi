@@ -185,15 +185,15 @@ public class ServicosIntegracaoImpl {
 	
 	protected LoginVo getUsuarioLogado(ServletRequest request) {
 
-		LOGGER.debug("Tentando recuperar o usuário logado usando LoginUtils.getLoginObject(this.request)");
+		LOGGER.debug("Tentando recuperar o usu\u00e1rio logado usando LoginUtils.getLoginObject(this.request)");
 		LoginVo loginVO = LoginUtils.getLoginObject(request);
-		LOGGER.debug("Usuário logado {}", loginVO);
+		LOGGER.debug("Usu\u00e1rio logado {}", loginVO);
 		
         if (BaseUtil.isNZB(loginVO) || BaseUtil.isNZB(loginVO.getId())) {
-        	LOGGER.error("Não encontrou usuário logado");
+        	LOGGER.error("N\u00e3o encontrou usu\u00e1rio logado");
             throw new IntegrationException(BaseUtil.getTexto(ConstantesDEPI.Geral.ERRO_USUARIO_LOGADO));
         }
-        LOGGER.info("Sucesso: usuário logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
+        LOGGER.info("Sucesso: usu\u00e1rio logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		
 		return loginVO;
 

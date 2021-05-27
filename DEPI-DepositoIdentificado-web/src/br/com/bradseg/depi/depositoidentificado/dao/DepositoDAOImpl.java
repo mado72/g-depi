@@ -94,7 +94,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
     @Override
     public void inserir(DepositoVO vo) {
-        throw new IntegrationException("O método inserir não foi implementado.");
+        throw new IntegrationException("O m\u00e9todo inserir n\u00e3o foi implementado.");
     }
     
     @Override

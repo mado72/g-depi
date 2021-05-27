@@ -73,7 +73,7 @@ public class ConsultarLancamentoAction
 			
 			return INPUT;
 		} catch (Exception e) {
-			LOGGER.error("Erro ao consultar lançamento.", e);
+			LOGGER.error("Erro ao consultar lan\u00e7amento.", e);
 			addActionError(e.getMessage());
 			return ERROR;
 		}

@@ -10,7 +10,7 @@ public enum RetornoGTABEnum {
 	OK					(0,"Sucesso"), 
 	ERRO_DB2			(1,"Erro no DB2"),
 	INEXISTENTE			(2,"Registro Inexistente"),
-	ERRO_PREENCHIMENTO	(3,"Erro de preenchimento do Código do Ramo")
+	ERRO_PREENCHIMENTO	(3,"Erro de preenchimento do C\u00f3digo do Ramo")
 	
 	;
 	private Integer codigo;

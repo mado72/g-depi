@@ -17,6 +17,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.UsuarioDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.MotivoDepositoCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
@@ -117,13 +118,20 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
                     sb.append("; ");
                 }
                 ParametroDepositoVO param = parametroDepositoDAO.obterPorChave(vo);
-                sb.append(" Par\u00e3metro de Dep\u00f3sito: [Cia: ").append(param.getCompanhia().getCodigoCompanhia()).append(
-                    " Departamento: ").append(param.getDepartamento().getSiglaDepartamento()).append(" Motivo: ").append(
-                    param.getMotivoDeposito().getDescricaoBasica()).append("]");
+                DepartamentoVO depto = deptoDAO.obterPorChave(param.getDepartamento());
+                MotivoDepositoVO motivo = motivoDAO.obterPorChave(param.getMotivoDeposito());
+				sb.append(" Par\u00e2metro de Dep\u00f3sito: [Cia: ")
+						.append(param.getCompanhia().getCodigoCompanhia())
+						.append(" Departamento: ")
+						.append(depto.getSiglaDepartamento())
+						.append(" Motivo: ")
+						.append(motivo.getDescricaoBasica()).append("]");
             }
         }
         if (sb.length() > 0) {
-            throw new IntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO + " - " + sb.toString() + " - " +  "Associa\u00e7\u00e3o de Motivos");
+			throw new DEPIIntegrationException(
+					ConstantesDEPI.ERRO_DEPENDENCIA_MODULO, sb.toString(),
+					"Associa\u00e7\u00e3o de Motivos");
         }
     }
 
@@ -195,12 +203,12 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     private void validaOperacao(ParametroDepositoVO vo) throws IntegrationException {
         validarChave(vo);
         if (!BaseUtil.isSorN(vo.getCodigoBancoVencimento())) {
-            throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Retira do Banco Após Vencimento?");
+            throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Retira do Banco Ap\u00f3s Vencimento?");
         } else if (ConstantesDEPI.CODIGO_SIM.equals(vo.getCodigoBancoVencimento())) {
             if (BaseUtil.isGreater(vo.getNumeroDiasAposVencimento(), 99)) { // 3 meses
-                throw new DEPIBusinessException(Geral.ERRO_CAMPO_EXCESSO, "Dias Após Vencido: 99");
+                throw new DEPIBusinessException(Geral.ERRO_CAMPO_EXCESSO, "Dias Ap\u00f3s Vencido: 99");
             } else if (BaseUtil.isNZB(vo.getNumeroDiasAposVencimento())) {
-                throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Dias Após Vencido");
+                throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Dias Ap\u00f3s Vencido");
             }
         }
         if (!BaseUtil.isSorN(vo.getCodigoSucursal())) {
@@ -213,7 +221,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
             throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Tipo");
         }
         if (!BaseUtil.isSorN(vo.getCodigoApolice())) {
-            throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Apólice");
+            throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Ap\u00f3lice");
         }
         if (!BaseUtil.isSorN(vo.getCodigoCpfCnpj())) {
             throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Cpf/Cnpj");
@@ -225,13 +233,13 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
             throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Endosso");
         }
         if (!BaseUtil.isSorN(vo.getCodigoDossie())) {
-            throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Dossiê");
+            throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Dossi\u00ea");
         }
         if (!BaseUtil.isSorN(vo.getCodigoParcela())) {
             throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Parcela");
         }
         if (!BaseUtil.isSorN(vo.getCodigoItem())) {
-            throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Item Contábil");
+            throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Item Cont\u00e1bil");
         }
         if (!BaseUtil.isSorN(vo.getCodigoProtocolo())) {
             throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Protocolo");
@@ -239,7 +247,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
         boolean b = !(BaseUtil.isNZB(vo.getOutrosDocumentosNecessarios()))
             && BaseUtil.isGreater(vo.getOutrosDocumentosNecessarios(), 200);
         if (b) {
-            throw new DEPIBusinessException(Geral.ERRO_CAMPO_EXCESSO,  "Outros Documentos Necess�rios: 200");
+            throw new DEPIBusinessException(Geral.ERRO_CAMPO_EXCESSO,  "Outros Documentos Necess\u00e1rios: 200");
         }
     }
 
@@ -256,7 +264,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
             throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Departamento");
         }
         if (BaseUtil.isNZB(vo.getMotivoDeposito())) {
-            throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Motivo de Depósito");
+            throw new DEPIBusinessException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Motivo de Dep\u00f3sito");
         }
     }
     

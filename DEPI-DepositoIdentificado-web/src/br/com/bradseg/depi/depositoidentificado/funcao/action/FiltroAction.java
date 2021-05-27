@@ -239,7 +239,7 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 			getModel().setColecaoDados(Collections.emptyList());
 			addActionError(e.getMessage());
 		} catch (Exception e) {
-			LOGGER.error("Falha não tratada ao processar criterios de consulta", e);
+			LOGGER.error("Falha n\u00e3o tratada ao processar criterios de consulta", e);
 			getModel().setColecaoDados(Collections.emptyList());
 			addActionError(e.getMessage());
 		}

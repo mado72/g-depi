@@ -86,6 +86,10 @@
 			    <param name="actionName">refrescar</param>
 			    <param name="namespace">/cadastro/departamento-companhia/consultar</param>
 			</result>
+			<result name="input" type="redirectAction">
+			    <param name="actionName">refrescar</param>
+			    <param name="namespace">/cadastro/departamento-companhia/consultar</param>
+			</result>
         </action>
         
         <action name="salvar" class="departamentoCompanhiaSalvarAction">

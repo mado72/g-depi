@@ -106,7 +106,7 @@ public class DepartamentoCrudHelper implements
 					SQLDataException sqlE = (SQLDataException) dataE.getCause();
 					if (sqlE.getSQLState().contains("22001")) {
 						LOGGER.error(
-								"Falha ao processar criterios de consulta. Parâmetro inválido. SQLSTATE=22001",
+								"Falha ao processar criterios de consulta. Par\u00e2metro inv\u00e1lido. SQLSTATE=22001",
 								e);
 						throw new DEPIIntegrationException(sqlE,
 								"erro.SQLSTATE.22001");

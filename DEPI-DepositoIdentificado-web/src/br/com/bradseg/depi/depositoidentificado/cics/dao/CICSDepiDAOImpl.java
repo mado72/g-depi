@@ -22,6 +22,7 @@ import br.com.bradseg.depi.depositoidentificado.cics.book.GTAB0031;
 import br.com.bradseg.depi.depositoidentificado.cics.book.GTAB1412;
 import br.com.bradseg.depi.depositoidentificado.cics.book.STES0512;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
@@ -68,6 +69,10 @@ public class CICSDepiDAOImpl implements CICSDepiDAO {
 		CompanhiaSeguradoraVO vo = new CompanhiaSeguradoraVO();
 		vo.setCodigoCompanhia(Integer.parseInt(retorno.getCiaInterno()));
 		vo.setDescricaoCompanhia(retorno.getNome());
+		
+		if (BaseUtil.isNZB(retorno.getCiaExterno())) {
+			vo.setCodExterno(Integer.parseInt(retorno.getCiaExterno()));
+		}
 		return vo;
 	}
 	

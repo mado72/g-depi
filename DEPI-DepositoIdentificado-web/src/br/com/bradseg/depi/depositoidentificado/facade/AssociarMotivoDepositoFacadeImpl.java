@@ -78,7 +78,7 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
     public void excluir(List<AssociarMotivoDepositoVO> vos) throws IntegrationException {
     	
         if (vos == null || vos.isEmpty()) {
-            throw new IntegrationException("Lista inválida!");
+            throw new IntegrationException("Lista inv\u00e1lida!");
         }
 
         StringBuilder codsAssocMotivos = new StringBuilder();

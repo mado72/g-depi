@@ -89,7 +89,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 	        }
 	
 	        if (vo.getMotivoDeposito() == null || vo.getMotivoDeposito().getCodigoMotivoDeposito() <= 0) {
-	            throw new IntegrationException(BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Motivo Depósito."));
+	            throw new IntegrationException(BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Motivo Dep\u00f3sito."));
 	        }
 	
 	        if (vo.getContaCorrente() <= 0) {
@@ -97,7 +97,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 	        }
 	
 	        if (vo.getCodigoResponsavelUltimaAtualizacao().doubleValue() <= 0) {
-	            throw new IntegrationException(BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Código Usuário Responsável"));
+	            throw new IntegrationException(BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "C\u00f3digo Usu\u00e1rio Respons\u00e1vel"));
 	        }
     	} finally {
     	    LOGGER.info("validarID(AssociarMotivoDepositoVO vo))");
@@ -125,7 +125,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
                     sb.append("; Departamento: ").append(vo.getDepartamento().getCodigoDepartamento());
                     sb.append("; Motivo: ").append(vo.getMotivoDeposito().getCodigoMotivoDeposito());
                     sb.append(" Banco: ").append(vo.getBanco().getCdBancoExterno());
-                    sb.append(", Agência: ").append(vo.getCodigoAgencia());
+                    sb.append(", Ag\u00eancia: ").append(vo.getCodigoAgencia());
                     sb.append(", Conta Corrente: ").append(vo.getContaCorrente()).append("]");
                     throw new DEPIBusinessException(ConstantesDEPI.ERRO_REGISTRO_JA_CADASTRADO, sb.toString());
                     

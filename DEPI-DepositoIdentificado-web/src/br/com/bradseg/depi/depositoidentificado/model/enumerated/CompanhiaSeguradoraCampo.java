@@ -14,12 +14,12 @@ public enum CompanhiaSeguradoraCampo implements IEntidadeCampo {
     /**
      * Código Companhia
      */
-    CodigoCompanhia(ConstantesDEPI.TABELA_CIA_ID, "Código Companhia", TipoCampo.NUM, false, 4),
+    CodigoCompanhia(ConstantesDEPI.TABELA_CIA_ID, "C\u00f3digo Companhia", TipoCampo.NUM, false, 4),
 
     /**
      * Descrição Companhia.
      */
-	DescricaoCompanhia(ConstantesDEPI.TABELA_CIA_NOME, "Descrição Companhia",
+	DescricaoCompanhia(ConstantesDEPI.TABELA_CIA_NOME, "Descri\u00e7\u00e3o Companhia",
 			TipoCampo.ALFA_OBRIG, true, 20);
 
     private String nome;

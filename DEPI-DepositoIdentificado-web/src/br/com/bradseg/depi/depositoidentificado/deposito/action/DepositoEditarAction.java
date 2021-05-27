@@ -135,7 +135,7 @@ public class DepositoEditarAction
 			
 			return INPUT;
 		} catch (Exception e) {
-			LOGGER.error("Falha ao preparar formulário", e);
+			LOGGER.error("Falha ao preparar formul\u00e1rio", e);
 			addActionError(e.getMessage());
 			return INPUT;
 		}

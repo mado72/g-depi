@@ -144,7 +144,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
             	int codGrupoAcesso = keyHolder.getKey().intValue();
                 vo.setCodigoGrupoAcesso(codGrupoAcesso);
             } else {
-                throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CUSTOMIZADA, "Não foi possível incluir o Grupo de Acesso.");
+                throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CUSTOMIZADA, "N\u00e3o foi poss\u00edvel incluir o Grupo de Acesso.");
             }
 
             StringBuilder queryAlocar = new StringBuilder(QueriesDepi.GRUPOACESSO_ALOCARFUNCIONARIO);

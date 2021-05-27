@@ -137,25 +137,6 @@ public class DepartamentoCompanhiaFacadeImpl implements DepartamentoCompanhiaFac
 			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_DEPENDENCIAS, msgErros.toString());
 	    }
 	}
-
-	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.facade.DepartamentoCompanhiaFacade#excluir(br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO)
-	 */
-	@Override
-	public void excluir(DepartamentoCompanhiaVO vo) throws IntegrationException {
-		
-		LOGGER.error("Fim - excluir(DepartamentoVO vo)");
-		
-		try {
-			excluirItem(vo);
-		} catch (DEPIBusinessException e) {
-			String msg = BaseUtil.getTextoFormatado(Geral.ERRO_EXCLUSAO_ITEM, e.getMessage());
-			throw new DEPIBusinessException(Geral.ERRO_EXCLUSAO_LISTA, msg);
-		}
-		
-		LOGGER.error("Fim - excluir(DepartamentoVO vo)");
-		
-	}
 	
 	private void excluirItem(DepartamentoCompanhiaVO vo) {
 		

@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <webappbnd:WebAppBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:webappbnd="webappbnd.xmi" xmi:id="WebAppBinding_202010210832184" virtualHostName="default_host">
   <webapp href="WEB-INF/web.xml#WebApp_ID"/>
-  
-  <resourceEnvRefBindings xmi:id="ResourceRef_1366035580586" jndiName="jdbc/DEPI-DepositoIdentificado">
-    <bindingResourceEnvRef href="WEB-INF/web.xml#ResourceRef_1366035580586"/>
-  </resourceEnvRefBindings>
-  
   <resRefBindings xmi:id="ResourceRef_1547660949546" jndiName="url/IBusc2">
     <bindingResourceRef href="WEB-INF/web.xml#ResourceRef_1547660949546"/>
   </resRefBindings>
-  
   <resRefBindings xmi:id="ResourceRef_1244470445292" jndiName="url/www3">
     <bindingResourceRef href="WEB-INF/web.xml#ResourceRef_1244470445292"/>
   </resRefBindings>
-    
-  <ejbRefBindings xmi:id="EjbRef_1264160332218" jndiName="cell/persistent/ejb/br/com/bradseg/bucb/servicos/model/ejb/PessoaSessionFacadeHome">
-    <bindingEjbRef href="WEB-INF/web.xml#EjbRef_1264160332218"/>
-  </ejbRefBindings>
-
   <resRefBindings xmi:id="ResourceRef_1369062285248" jndiName="eis/DEPI-DepositoIdentificado">
     <bindingResourceRef href="WEB-INF/web.xml#ResourceRef_1369062285248"/>
   </resRefBindings>
-    
+  <ejbRefBindings xmi:id="EjbRefBinding_1621537469280" jndiName="cell/persistent/ejb/br/com/bradseg/bucb/servicos/model/ejb/PessoaSessionFacadeHome">
+    <bindingEjbRef href="WEB-INF/web.xml#EjbRef_1621537469280"/>
+  </ejbRefBindings>
+  <resourceEnvRefBindings xmi:id="ResourceRef_1366035580586" jndiName="jdbc/DEPI-DepositoIdentificado">
+    <bindingResourceEnvRef href="WEB-INF/web.xml#ResourceRef_1366035580586"/>
+  </resourceEnvRefBindings>
 </webappbnd:WebAppBinding>

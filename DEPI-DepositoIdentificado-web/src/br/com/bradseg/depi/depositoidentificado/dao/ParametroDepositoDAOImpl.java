@@ -171,21 +171,21 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
              * Verificação de preenchimento de Campo obrigatório.
              */
             if (parametro.getCompanhia().getCodigoCompanhia() <= 0) {
-                throw new BusinessException("Código Cia não informado para o DAO");
+                throw new BusinessException("C\u00f3digo Cia n\u00e3o informado para o DAO");
             }
 
             /**
              * Verificação de preenchimento de Campo obrigatório.
              */
             if (parametro.getMotivoDeposito().getCodigoMotivoDeposito() <= 0) {
-                throw new BusinessException("Código do Motivo não informado para o DAO");
+                throw new BusinessException("C\u00f3digo do Motivo n\u00e3o informado para o DAO");
             }
 
             /**
              * Verificação de preenchimento de Campo obrigatório.
              */
             if (parametro.getDepartamento().getCodigoDepartamento() <= 0) {
-                throw new BusinessException("Código Departamento não informado para o DAO");
+                throw new BusinessException("C\u00f3digo Departamento n\u00e3o informado para o DAO");
             }
 
             if (referenciado) {
@@ -339,7 +339,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
             if (retorno >= 1) {return true;}
 
     	} catch (EmptyResultDataAccessException e) {
-    		LOGGER.info("Não encontrou registros para o parametro: Depto({}, Motivo Dep({}), Cia ({})", 
+    		LOGGER.info("N\u00e3o encontrou registros para o parametro: Depto({}, Motivo Dep({}), Cia ({})", 
     				vo.getDepartamento().getCodigoDepartamento(), 
     				vo.getMotivoDeposito().getCodigoMotivoDeposito(),
     				vo.getCompanhia().getCodigoCompanhia());
@@ -365,21 +365,21 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
              * Verificação de preenchimento de Campo obrigatório.
              */
             if (parametro.getCompanhia().getCodigoCompanhia() <= 0) {
-                throw new BusinessException("Código Cia não informado para o DAO");
+                throw new BusinessException("C\u00f3digo Cia n\u00e3o informado para o DAO");
             }
 
             /**
              * Verificação de preenchimento de Campo obrigatório.
              */
             if (parametro.getMotivoDeposito().getCodigoMotivoDeposito() <= 0) {
-                throw new BusinessException("Código do Motivo não informado para o DAO");
+                throw new BusinessException("C\u00f3digo do Motivo n\u00e3o informado para o DAO");
             }
 
             /**
              * Verificação de preenchimento de Campo obrigatório.
              */
             if (parametro.getDepartamento().getCodigoDepartamento() <= 0) {
-                throw new BusinessException("Código Departamento não informado para o DAO");
+                throw new BusinessException("C\u00f3digo Departamento n\u00e3o informado para o DAO");
             }
 
             String retorno = obterIndicadorAtivo(parametro);

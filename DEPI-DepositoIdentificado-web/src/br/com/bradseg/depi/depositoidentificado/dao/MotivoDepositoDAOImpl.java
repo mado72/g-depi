@@ -3,8 +3,6 @@
  */
 package br.com.bradseg.depi.depositoidentificado.dao;
 
-import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.concatenarComHifen;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -22,6 +20,7 @@ import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.MotivoDepositoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
@@ -160,13 +159,13 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
                     codsMotivos.append("; ");
                 }
                 MotivoDepositoVO m = obterPorChave(vo);
-                codsMotivos.append("Motivo Depósito: ").append(m.getDescricaoBasica());
+                codsMotivos.append("Motivo Dep\u00f3sito: ").append(m.getDescricaoBasica());
             } else {
             	excluir(vo);
             }
         }
         if (codsMotivos.length() > 0) {
-            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO, codsMotivos.toString(), "Parâmetros de Depósito"));
+            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO, codsMotivos.toString(), "Par\u00e2metros de Dep\u00f3sito");
         }
         
     }
@@ -214,15 +213,15 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 
             if (e.equals(Tabelas.PARAMETRO_DEPOSITO)) {
             	query.append(QueriesDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODEPARAMETRODEPOSITO);
-                msg = " um Parâmetro de Depósito ou Grupo de Acesso vinculado ao usuário.";
+                msg = " um Par\u00e2metro de Dep\u00f3sito ou Grupo de Acesso vinculado ao usu\u00e1rio.";
             } else if (e.equals(Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO)) {
             	query.append(QueriesDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODECONTACORRENTEMOTIVODEPOSITO);
-                msg = " uma Associação de Motivo ou Grupo de Acesso vinculado ao usuário";
+                msg = " uma Associa\u00e7\00e3o de Motivo ou Grupo de Acesso vinculado ao usu\u00e1rio";
             } else if (e.equals(Tabelas.DEPOSITO)) {
             	query.append(QueriesDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODEDEPOSITO);
-                msg = " um Depósito ou Grupo de Acesso vinculado ao usuário";
+                msg = " um Dep\u00f3sito ou Grupo de Acesso vinculado ao usu\u00e1rio";
             } else {
-                throw new IntegrationException("Enum inválido.");
+                throw new IntegrationException("Enum inv\u00e1lido.");
             }
 
             /**

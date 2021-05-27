@@ -80,7 +80,7 @@ public enum PaisEnum {
 	EE("EE","Est�nia"),
 	ET("ET","Eti�pia"),
 	US("US","EUA"),
-	RU("RU","Federação Russa"),
+	RU("RU","Federa\u00e7\u00e3o Russa"),
 	FJ("FJ","Fiji"),
 	PH("PH","Filipinas"),
 	FI("FI","Finl�ndia"),

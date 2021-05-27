@@ -137,56 +137,56 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
 		}
 		catch (Exception e) {
 			addActionError(e.getMessage());
-			LOGGER.error("Erro na exibição do formulário", e);
+			LOGGER.error("Erro na exibi\u00e7\u00e3o do formul\u00e1rio", e);
 		}
 		return SUCCESS;	
 	}
 
 	private void exibirEnvioRetornoAnalitico() throws DEPIIntegrationException {
-		model.setSubtituloTela("Envio/Retorno Banco - Analítico");
-		model.setTituloTabela("Dados de Envio/Retorno Banco - Analítico");
+		model.setSubtituloTela("Envio/Retorno Banco - Anal\u00edtico");
+		model.setTituloTabela("Dados de Envio/Retorno Banco - Anal\u00edtico");
 		model.setTipoRelatorio("ER");
 		model.setVisualizacao("A");
 	}
 	
 	private void exibirEnvioRetornoSintetico() throws DEPIIntegrationException {
-    	model.setSubtituloTela("Envio/Retorno Banco - Sintético");
-    	model.setTituloTabela("Dados de Envio/Retorno Banco - Sintético");
+    	model.setSubtituloTela("Envio/Retorno Banco - Sint\u00e9tico");
+    	model.setTituloTabela("Dados de Envio/Retorno Banco - Sint\u00e9tico");
     	model.setTipoRelatorio("ER");
     	model.setVisualizacao("S");
     }
 
 	private void exibirExtratoAnalitico() throws DEPIIntegrationException {
-    	model.setSubtituloTela("Extrato Banco - Analítico");
-    	model.setTituloTabela("Dados de Extrato Banco - Analítico");
+    	model.setSubtituloTela("Extrato Banco - Anal\u00edtico");
+    	model.setTituloTabela("Dados de Extrato Banco - Anal\u00edtico");
     	model.setTipoRelatorio("EX");
     	model.setVisualizacao("A");
     }
 
 	private void exibirExtratoSintetico() throws DEPIIntegrationException {
-    	model.setSubtituloTela("Extrato Banco - Sintético");
-    	model.setTituloTabela("Dados de Extrato Banco - Sintético");
+    	model.setSubtituloTela("Extrato Banco - Sint\u00e9tico");
+    	model.setTituloTabela("Dados de Extrato Banco - Sint\u00e9tico");
     	model.setTipoRelatorio("EX");
     	model.setVisualizacao("S");
     }
 	  
 	private void exibirManutencoesAnalitico() throws DEPIIntegrationException {
-    	model.setSubtituloTela("Manutenções - Analítico");
-    	model.setTituloTabela("Dados de Manutenções - Analítico");
+    	model.setSubtituloTela("Manuten\u00e7\u00f5es - Anal\u00edtico");
+    	model.setTituloTabela("Dados de Manuten\u00e7\u00f5es - Anal\u00edtico");
     	model.setTipoRelatorio("MN");
     	model.setVisualizacao("A");
     }
 
 	private void exibirManutencoesSintetico() throws DEPIIntegrationException {
-    	model.setSubtituloTela("Manutenções - Sintético");
-    	model.setTituloTabela("Dados de Manutenções - Sintético");
+    	model.setSubtituloTela("Manuten\u00e7\u00f5es - Sint\u00e9tico");
+    	model.setTituloTabela("Dados de Manuten\u00e7\u00f5es - Sint\u00e9tico");
     	model.setTipoRelatorio("MN");
     	model.setVisualizacao("S");
     }
 	  
 	private void exibirDadosComplementares() throws DEPIIntegrationException {
-    	model.setSubtituloTela("Dados Complementares - Analítico");
-    	model.setTituloTabela("Dados Complementares - Analítico");
+    	model.setSubtituloTela("Dados Complementares - Anal\u00edtico");
+    	model.setTituloTabela("Dados Complementares - Anal\u00edtico");
     	model.setTipoRelatorio("DC");
     	model.setVisualizacao("A");
     	model.setSituacaoEnvioRetorno("A");
@@ -784,7 +784,7 @@ public class ConsultarRelatorioAction extends BaseModelAction<FiltroVO>  {
     		return retorno;
 
     	} catch (Exception e) {
-    		LOGGER.error("Falha na geração do relatório", e);
+    		LOGGER.error("Falha na gera\u00e7\u00e3o do relat\u00f3rio", e);
     		
 			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CUSTOMIZADA,
 					new String[] { e.getMessage() });

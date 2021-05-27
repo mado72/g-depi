@@ -132,6 +132,6 @@ public enum CamposGenericos implements IEntidadeCampo {
 				return campo;
 			}
 		}
-		throw new DEPIIntegrationException("Não foi possivel localizar o enum: ".concat(nome));
+		throw new DEPIIntegrationException("N\u00e3o foi possivel localizar o enum: ".concat(nome));
 	}
 }

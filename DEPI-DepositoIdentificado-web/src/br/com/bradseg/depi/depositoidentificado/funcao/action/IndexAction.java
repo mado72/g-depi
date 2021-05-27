@@ -50,7 +50,7 @@ public class IndexAction extends BaseAction implements SessionAware, ServletRequ
 			URL url = new URL(www3);
 			session.put("www3", url);
 		} catch (MalformedURLException e) {
-			LOGGER.warn("Falha na construção da URL", e);
+			LOGGER.warn("Falha na constru\u00e7\u00e3o da URL", e);
 		}
 
 		return SUCCESS;

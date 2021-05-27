@@ -44,13 +44,6 @@ public interface DepartamentoCompanhiaFacade {
 			Integer codUsuario);
 
 	/**
-	 * Exclui associações entre companhia e os departamentos associados
-	 * @param vo Companhia que possui as associações
-	 * @throws IntegrationException
-	 */
-	void excluir(DepartamentoCompanhiaVO vo) throws IntegrationException;
-
-	/**
 	 * Exclui todas as associações
 	 * @param ciaVOList Lista de associações
 	 * @throws IntegrationException

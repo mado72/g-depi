@@ -79,7 +79,7 @@ public class DepositoSalvarAction extends
 	}
 	
 	public String salvar() {
-		LOGGER.info("Formulário validado. Chamando método para concluir a operação.");
+		LOGGER.info("Formul\u00e1rio validado. Chamando m\u00e9todo para concluir a opera\u00e7\u00e3o.");
 		String resultado = super.execute();
 		clearMessages();
 		

@@ -47,12 +47,12 @@ public abstract class SalvarAction<C extends IEntidadeCampo,  VO, F extends Crud
 	}
 	
 	public void validateInput() {
-		LOGGER.debug("Validação possui erros: {}", hasErrors());
+		LOGGER.debug("Valida\u00e7\u00e3o possui erros: {}", hasErrors());
 		clearErrorsAndMessages();
 	}
 
 	protected void persistirDados() {
-		LOGGER.info("Persistindo dados do formulário");
+		LOGGER.info("Persistindo dados do formul\u00e1rio");
 		
 		clearErrorsAndMessages();
 

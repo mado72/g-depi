@@ -57,10 +57,10 @@
        <jaxrs:providers>
        		<ref bean="cors-filter" />
 			<bean class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
-				<property name="ignoreNamespaces" value="true" />
-				<property name="dropRootElement" value="true" />
+				<property name="ignoreNamespaces" value="false" />
+				<property name="dropRootElement" value="false" />
 				<property name="writeXsiType" value="false" />
-				<property name="dropCollectionWrapperElement" value="true" />
+				<property name="dropCollectionWrapperElement" value="false" />
 				<property name="serializeAsArray" value="true" />
 				<property name="supportUnwrapped" value="true" />
 			</bean>
@@ -92,7 +92,7 @@
 		cache-home="true" 
 		lookup-home-on-startup="false"
 		jndi-name="cell/persistent/ejb/br/com/bradseg/bucb/servicos/model/ejb/PessoaSessionFacadeHome"
-		resource-ref="false">
+		resource-ref="true">
 	</jee:remote-slsb>
 
 	<!--

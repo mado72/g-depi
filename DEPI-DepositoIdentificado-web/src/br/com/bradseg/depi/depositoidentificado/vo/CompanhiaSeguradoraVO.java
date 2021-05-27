@@ -28,6 +28,8 @@ public class CompanhiaSeguradoraVO implements Serializable {
      * Descrição da Cia
      */
     private String descricaoCompanhia;
+    
+    private Integer codExterno;
 
     /**
      * Construtor padrão
@@ -76,5 +78,21 @@ public class CompanhiaSeguradoraVO implements Serializable {
     public void setDescricaoCompanhia(String descricaoCompanhia) {
         this.descricaoCompanhia = descricaoCompanhia;
     }
+
+	/**
+	 * Retorna codExterno
+	 * @return o codExterno
+	 */
+	public Integer getCodExterno() {
+		return codExterno;
+	}
+
+	/**
+	 * Define codExterno
+	 * @param codExterno o codExterno a ser configurado
+	 */
+	public void setCodExterno(Integer codExterno) {
+		this.codExterno = codExterno;
+	}
 
 }

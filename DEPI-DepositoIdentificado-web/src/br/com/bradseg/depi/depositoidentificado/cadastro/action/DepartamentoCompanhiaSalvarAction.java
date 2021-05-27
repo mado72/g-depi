@@ -53,7 +53,7 @@ public class DepartamentoCompanhiaSalvarAction extends
 	@Override
 	public void validate() {
 		if (CollectionUtils.isEmpty(getModel().getSiglaDepartamentos())) {
-			LOGGER.info("Departamento não informado.");
+			LOGGER.info("Departamento n\u00e3o informado.");
 			addFieldError(
 					"siglaDepartmentos",
 					getText(ConstantesDEPI.ERRO_CAMPO_REQUERIDO,
@@ -64,7 +64,7 @@ public class DepartamentoCompanhiaSalvarAction extends
 
 	@Override
 	public String execute() {
-		LOGGER.info("Formulário validado. Chamando método para concluir a operação.");
+		LOGGER.info("Formul\u00e1rio validado. Chamando m\u00e9todo para concluir a opera\u00e7\u00e3o.");
 		return super.execute();
 	}
 

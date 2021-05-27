@@ -104,7 +104,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
     public void excluir(List<DepositoVO> vos) throws IntegrationException {
     	
         if (vos == null || vos.isEmpty()) {
-            throw new IntegrationException("Lista inválida!");
+            throw new IntegrationException("Lista inv\u00e1lida!");
         }
 
         StringBuilder codsAssocMotivos = new StringBuilder();
