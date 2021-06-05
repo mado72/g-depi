@@ -164,8 +164,8 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     }
 
     /**
-     * Atualizar grupo de acesso. Obt�m os usuários. Para cada usuário obtido, verificar se o mesmo existe na nova lista. Para cada
-     * usuário obtivo, inclui ou exclui de acordo com a exist�ncia na nova lista de usuários. | *
+     * Atualizar grupo de acesso. Obtém os usuários. Para cada usuário obtido, verificar se o mesmo existe na nova lista. Para cada
+     * usuário obtido, inclui ou exclui de acordo com a existência na nova lista de usuários. | *
      * @param vo - GrupoAcessoVO.
      */
     @Override
@@ -280,7 +280,7 @@ public class GrupoAcessoDAOImpl extends JdbcDao implements GrupoAcessoDAO {
     
         try {
 	        /**
-	         * Alterar Desaloca usuários na alteração, pois a lista de usuários não � enviada.
+	         * Alterar Desaloca usuários na alteração, pois a lista de usuários não é enviada.
 	         */
 	        alterar(grupo); 
         } finally {

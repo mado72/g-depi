@@ -162,7 +162,7 @@ public class ParametroDepositoFacadeImpl implements ParametroDepositoFacade {
     /**
      * Método de obter por filtro
      * @param codigoUsuario - BigDecimal.
-     * @param filtro par�metro depósito com o código do objeto requisitado
+     * @param filtro parâmetro depósito com o código do objeto requisitado
      * @throws IntegrationException - trata erro de negócio
      * @return List<ParametroDepositoVO>
      */

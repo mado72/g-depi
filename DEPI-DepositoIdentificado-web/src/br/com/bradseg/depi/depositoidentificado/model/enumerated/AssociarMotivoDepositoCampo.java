@@ -19,11 +19,11 @@ public enum AssociarMotivoDepositoCampo implements IEntidadeCampo {
     CodigoCia(ConstantesDEPI.TABELA_COMPANHIA_DEPARTAMENTO_ID, CompanhiaSeguradoraCampo.CodigoCompanhia),
 
     /**
-     * Descri玢o Cia. DescricaoCia(CompanhiaSeguradoraCampo.DescricaoCompanhia),
+     * Descri莽茫o Cia. DescricaoCia(CompanhiaSeguradoraCampo.DescricaoCompanhia),
      */
 
     /**
-     * C骴igo Departamento.
+     * C贸digo Departamento.
      */
     CodigoDepartamento(ConstantesDEPI.TABELA_DEPARTAMENTO_ID, DepartamentoCampo.Codigo),
 
@@ -38,12 +38,12 @@ public enum AssociarMotivoDepositoCampo implements IEntidadeCampo {
     NomeDepartamento(DepartamentoCampo.Nome),
 
     /**
-     * C骴igo Motivo.
+     * C贸digo Motivo.
      */
     CodigoMotivo(ConstantesDEPI.TABELA_MOTIVO_ID, MotivoDepositoCampo.Codigo),
 
     /**
-     * Motivo Dep髎ito.
+     * Motivo Dep贸sito.
      */
     MotivoDepositoDescricaoBasica(MotivoDepositoCampo.DescricaoBasica),
 
@@ -132,7 +132,7 @@ public enum AssociarMotivoDepositoCampo implements IEntidadeCampo {
 
     /**
      * retorna o nome
-     * @param nome - nome do campo de motivo dep髎ito
+     * @param nome - nome do campo de motivo dep贸sito
      * @return - retorna o nome do campo
      */
     public static AssociarMotivoDepositoCampo obterPorNome(String nome) {

@@ -103,7 +103,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
     }
 
     /**
-     * método para inserir uma associa��o de motivo
+     * método para inserir uma associação de motivo
      * @param vo - objeto que será inserido
      */
     @Override
@@ -196,8 +196,8 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 	}
 
     /**
-     * Método responsável por excluir uma Associa��o de Motivo.
-     * @param vo - opbjeto a ser exclu�do.
+     * Método responsável por excluir uma associação de Motivo.
+     * @param vo - opbjeto a ser excluído.
      */
     @Override
     public void excluir(AssociarMotivoDepositoVO vo) {
@@ -265,7 +265,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 
     /**
      * Método de obter por filtro
-     * @param filtro par�metro depósito com o código do objeto requisitado
+     * @param filtro parâmetro depósito com o código do objeto requisitado
      * @param codigoUsuario - BigDecimal.
      * @return List<AssociarMotivoDepositoVO>
      */

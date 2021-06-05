@@ -504,9 +504,9 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     }
 
     /**
-     * Método de obter dep�sito por conta corrente
+     * Método de obter depósito por conta corrente
      * @param vo - DepartamentoVO vo
-     * @throws IntegrationException - trata erro de neg�cio
+     * @throws IntegrationException - trata erro de negócio
      * @return DepositoVO
      */
     @Override

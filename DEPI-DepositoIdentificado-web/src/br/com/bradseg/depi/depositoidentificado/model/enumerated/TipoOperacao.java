@@ -114,9 +114,9 @@ public enum TipoOperacao {
 	}
     
     /**
-     * Utiliza o pattern da cl�usula para inserir campo e par�metro
+     * Utiliza o pattern da cl�usula para inserir campo e parâmetro
      * @param campo Campo a ser inclu�do na cl�usula
-     * @param nomeParametro Par�metro a ser utilizado na cl�usula
+     * @param nomeParametro parâmetro a ser utilizado na cl�usula
      * @return Cl�usula formatada.
      */
     public String formatarClausula(String campo, String nomeParametro) {

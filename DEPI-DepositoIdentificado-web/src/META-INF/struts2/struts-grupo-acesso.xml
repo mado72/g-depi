@@ -53,6 +53,10 @@
 			    <param name="actionName">listar</param>
 			    <param name="namespace">/cadastro/grupo-acesso/consultar</param>
 			</result>
+			<result name="error" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/grupo-acesso/consultar</param>
+			</result>
 		</global-results>
 		
 		<action name="incluir" method="incluir">
@@ -64,14 +68,6 @@
 		<action name="alterar" method="alterar">
 			<result name="input" type="redirectAction">input</result>
 		</action>
-        
-        <action name="salvar" class="grupoAcessoSalvarAction">
-            <interceptor-ref name="store">
-                <param name="operationMode">STORE</param>
-            </interceptor-ref>
-            <interceptor-ref name="applicationStack" />
-			<result name="input" type="redirectAction">input</result>
-        </action>
         
         <action name="excluir" method="excluir">
             <interceptor-ref name="store">
@@ -85,10 +81,14 @@
         </action>
         
         <action name="*" method="{1}">
-			<interceptor-ref name="store">
-				<param name="operationMode">RETRIEVE</param>
-			</interceptor-ref>
-			<interceptor-ref name="applicationStack" />
+        </action>
+        
+        <action name="salvar" class="grupoAcessoSalvarAction">
+            <interceptor-ref name="store">
+                <param name="operationMode">STORE</param>
+            </interceptor-ref>
+            <interceptor-ref name="applicationStack" />
+			<result name="input" type="redirectAction">input</result>
         </action>
         
 	</package>

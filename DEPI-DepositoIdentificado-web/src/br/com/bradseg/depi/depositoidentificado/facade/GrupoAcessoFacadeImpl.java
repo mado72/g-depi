@@ -82,7 +82,7 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
     public void excluir(List<GrupoAcessoVO> grupos) throws IntegrationException {
         StringBuilder sb = new StringBuilder();
         if (grupos == null || grupos.isEmpty()) {
-            throw new BusinessException("Lista de Grupos de Acesso inv�lida na atualiza��o do Grupo de Acesso.");
+            throw new BusinessException("Lista de Grupos de Acesso inválida na atualização do Grupo de Acesso.");
         }
         for (GrupoAcessoVO grupo : grupos) {
             if (grupoAcessoDAO.isReferenciado(grupo)) {

@@ -18,7 +18,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 public interface MotivoDepositoDAO{
 	
 	/**
-     * Obtém apenas os Motivos que est�o associados a Parâmetros de Depósito.
+     * Obtém apenas os Motivos que estão associados a Parâmetros de Depósito.
 	 * @param codigoCia código da companhia
 	 * @param codigoDep código do departamento
 	 * @param codigoUsuario código do usuário

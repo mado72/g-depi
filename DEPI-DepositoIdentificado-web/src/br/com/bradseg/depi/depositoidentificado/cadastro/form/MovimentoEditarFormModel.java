@@ -57,7 +57,7 @@ public class MovimentoEditarFormModel extends CrudForm {
 
 	@Override
 	public void preencherDadosIniciais() {
-		// N�o preenche dados iniciais
+		// Não preenche dados iniciais
 	}
 
 	public void preencherDeposito(DepositoVO vo) {

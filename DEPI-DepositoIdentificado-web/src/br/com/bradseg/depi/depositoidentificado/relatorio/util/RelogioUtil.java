@@ -472,7 +472,7 @@ public class RelogioUtil {
 			SimpleDateFormat sdf = new SimpleDateFormat(DD_MM_YYYY);
 			dataFormatada = sdf.format(date);
 		} catch (ParseException e) {
-			LOGGER.error("N�o foi possivel converter a data.");
+			LOGGER.error("Nao foi possivel converter a data.");
 		}  
 		
 		return dataFormatada;

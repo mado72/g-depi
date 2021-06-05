@@ -13,17 +13,10 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
  */
 
 public interface ParametroDepositoDAO  {
-//
-//    /**
-//     * Método de obter por filtro
-//     * @param filtro par�metro dep�sito com o código do objeto requisitado
-//     * @return List<ParametroDepositoVO>
-//     */
-//    List<ParametroDepositoVO> obterPorFiltro(FiltroUtil filtro);
 
     /**
      * Método de obter por filtro
-     * @param filtro par�metro dep�sito com o código do objeto requisitado
+     * @param filtro parâmetro depósito com o código do objeto requisitado
      * @param codigoUsuario - Integer.
      * @return List<ParametroDepositoVO>
      */
@@ -31,14 +24,14 @@ public interface ParametroDepositoDAO  {
 
     /**
      * isReferenciado. 
-     * Se a tabela possui depend�ncia.
+     * Se a tabela possui dependência.
      * @return Boolean.
      * @param vo - ParametroDepositoVO.
      */
     Boolean isReferenciadoDeposito(ParametroDepositoVO vo);
 
     /**
-     * Alterar Par�metro
+     * Alterar Parâmetro
      * @param parametro - ParametroDepositoVO.
      * @param referenciado - boolean.
      */

@@ -24,7 +24,7 @@ public abstract class BaseForm implements Serializable {
     private String chaveComposta;
 
     /**
-     * Par�metro para fuction JavaScript setFocusOnLoad.
+     * parâmetro para fuction JavaScript setFocusOnLoad.
      */
     private String focusOn;
 
