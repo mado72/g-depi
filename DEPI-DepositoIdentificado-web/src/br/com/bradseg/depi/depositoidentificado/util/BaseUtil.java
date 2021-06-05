@@ -926,7 +926,9 @@ public final class BaseUtil {
 	 */
 	public String getMensagem(String valor, String... params) {
 		String mensagem = getResources().getString(valor);
-		return MessageFormat.format(mensagem, (Object[]) params);
+		Object[] arguments = new Object[params.length];
+		System.arraycopy(params, 0, arguments, 0, arguments.length);
+		return MessageFormat.format(mensagem, arguments);
 	}
 
 	private final static Pattern PATTERN_REF_PROP = Pattern

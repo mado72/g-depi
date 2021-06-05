@@ -155,7 +155,15 @@ public class ContaCorrenteFacadeImpl implements ContaCorrenteFacade {
 	 */
 	@Override
 	public Integer obterContaInterna(ContaCorrenteAutorizadaVO ccVO) {
-		ContaCorrenteAutorizadaVO vo = cicsDAO.obterContaCorrente(ccVO);
+		ContaCorrenteAutorizadaVO vo;
+		try {
+			vo = cicsDAO.obterContaCorrente(ccVO);
+		} catch (Exception e) {
+			throw new DEPIBusinessException(
+					"msg.erro.contacorrenteautorizada.invalida",
+					String.valueOf(ccVO.getContaCorrente()),
+					String.valueOf(ccVO.getCia().getCodigoCompanhia()));
+		}
 		return vo.getCodigoInternoCC();
 	}
 

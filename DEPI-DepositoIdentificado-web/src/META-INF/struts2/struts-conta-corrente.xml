@@ -50,7 +50,11 @@
 			<result name="voltar" type="redirectAction">
 			    <param name="actionName">listar</param>
 			    <param name="namespace">/cadastro/conta-corrente/consultar</param>
-			</result>			
+			</result>
+			<result name="error" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/conta-corrente/consultar</param>
+			</result>
 		</global-results>
 		
 		<action name="incluir" method="incluir">

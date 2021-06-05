@@ -54,7 +54,7 @@
             <result name="voltar" type="redirectAction">
                 <param name="actionName">listar</param>
                 <param name="namespace">/cadastro/departamento/consultar</param>
-            </result>            
+            </result>
             <result name="error" type="redirectAction">
                 <param name="actionName">listar</param>
                 <param name="namespace">/cadastro/departamento/consultar</param>
