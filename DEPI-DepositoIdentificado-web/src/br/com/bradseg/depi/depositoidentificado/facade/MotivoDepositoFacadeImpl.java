@@ -1,7 +1,5 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
-import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.concatenarComHifen;
-
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -134,14 +132,14 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
      */
     private void validaOperacao(MotivoDepositoVO vo) throws IntegrationException {
         if (vo.getDescricaoBasica() == null || vo.getDescricaoBasica().equals(ConstantesDEPI.VAZIO)) {
-            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Descri\u00e7\u00e3o B\u00e1sica"));
+            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Descri\u00e7\u00e3o B\u00e1sica");
         } else if (vo.getDescricaoBasica().length() > 20) {
-            throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, "Descri\u00e7\u00e3o B\u00e1sica", "20"));
+            throw new DEPIIntegrationException(Geral.ERRO_CAMPO_EXCESSO, "Descri\u00e7\u00e3o B\u00e1sica", "20");
         }
         if (vo.getDescricaoDetalhada() == null || vo.getDescricaoDetalhada().equals(ConstantesDEPI.VAZIO)) {
-            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO,  "Descri\u00e7\u00e3o Detalhada"));
+            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO,  "Descri\u00e7\u00e3o Detalhada");
         } else if (vo.getDescricaoDetalhada().length() > 200) {
-            throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, "Descri\u00e7\u00e3o Detalhada", "200"));
+            throw new DEPIIntegrationException(Geral.ERRO_CAMPO_EXCESSO, "Descri\u00e7\u00e3o Detalhada", "200");
         }
         validaResponsavel(vo);
     }
@@ -156,12 +154,12 @@ public class MotivoDepositoFacadeImpl implements MotivoDepositoFacade {
     	LOGGER.error("Inicio - validaResponsavel(MotivoDepositoVO vo)"); 
     	
         if (BaseUtil.isNZB(vo.getCodigoResponsavelUltimaAtualizacao())) {
-            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "C\u00f3digo do Respons\u00e1vel"));
+            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "C\u00f3digo do Respons\u00e1vel");
         }
         if (vo.getCodigoResponsavelUltimaAtualizacao().doubleValue() > ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO) {
-			throw new IntegrationException(concatenarComHifen(
+			throw new DEPIIntegrationException(
 					Geral.ERRO_CAMPO_EXCESSO, "C\u00f3digo do Respons\u00e1vel",
-					String.valueOf(ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO)));
+					String.valueOf(ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO));
         }
     }
 

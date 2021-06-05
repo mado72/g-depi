@@ -30,7 +30,10 @@ FIXME: Não deve estar habilitado para publicar no servidor.
 	</appender>
 
  	<logger name="org.apache" level="INFO" />
+ 	
+	<logger name="org.apache.struts2.interceptor" level="TRACE" />
 	<logger name="com.opensymphony" level="DEBUG" />
+	<logger name="com.opensymphony.xwork2" level="TRACE" />
 	<logger name="com.opensymphony.xwork2.conversion" level="INFO" />
 	<logger name="com.opensymphony.xwork2.ognl.accessor" level="INFO" />
 	<!-- 

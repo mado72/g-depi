@@ -21,6 +21,10 @@
 		</action>
 		
 		<action name="listar" method="listar">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/motivoDeposito/motivoDeposito.jsp</param>
 			</result>
@@ -48,6 +52,10 @@
 			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
 			</result>
 			<result name="voltar" type="redirectAction">
+			    <param name="actionName">listar</param>
+			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
+			</result>
+			<result name="error" type="redirectAction">
 			    <param name="actionName">listar</param>
 			    <param name="namespace">/cadastro/motivoDeposito/consultar</param>
 			</result>

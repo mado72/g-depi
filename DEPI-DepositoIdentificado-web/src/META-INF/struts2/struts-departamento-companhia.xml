@@ -65,6 +65,10 @@
                 <param name="actionName">listar</param>
                 <param name="namespace">/cadastro/departamento-companhia/consultar</param>
             </result>            
+            <result name="error" type="redirectAction">
+                <param name="actionName">listar</param>
+                <param name="namespace">/cadastro/departamento-companhia/consultar</param>
+            </result>            
         </global-results>
         
 		<action name="incluir" method="incluir">

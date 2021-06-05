@@ -160,7 +160,7 @@ public class DepositoEditarAction
 			return SUCCESS;
 		} catch (Exception e) {
 			addActionError(e.getMessage());
-			return voltar();
+			return ERROR;
 		}
 	}
 	

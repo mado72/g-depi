@@ -11,7 +11,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.BooleanDataHelper;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.DepartamentoDataMapper;
@@ -289,7 +288,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		} else if (e.equals(Tabelas.DEPOSITO)) {
 			msg = " um Dep\u00f3sito ou Grupo de Acesso vinculado ao usu\u00e1rio.";
 		} else {
-			throw new IntegrationException("Enum inv\u00e1lido.");
+			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_ENUM_INVALIDO);
 		}
 		return msg;
 	}
@@ -306,7 +305,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		} else if (e.equals(Tabelas.DEPOSITO)) {
 			query = QueriesDepi.DEPARTAMENTO_OBTERCOMRESTRICAODEDEPOSITO.replaceAll("%s", restricaoAdicional);
 		} else {
-			throw new IntegrationException("Enum inv\u00e1lido.");
+			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_ENUM_INVALIDO);
 		}
 		return query;
 	}
@@ -323,7 +322,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 		} else if (e.equals(Tabelas.DEPOSITO)) {
 			restricao = " AND DEP.DEP_IDTFD = :prm1";
 		} else {
-			throw new IntegrationException("Enum inv\u00e1lido.");
+			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_ENUM_INVALIDO);
 		}
 		return restricao;
 	}
@@ -371,6 +370,7 @@ public class DepartamentoDAOImpl extends JdbcDao implements DepartamentoDAO {
 				params = filtro.getMapParamFiltro();
 			} 
 			
+			query.append(QueriesDepi.DEPARTAMENTO_ORDERBY);
 			return getJdbcTemplate().query(query.toString(), params, new DepartamentoDataMapper());
 			 
 	    } finally {

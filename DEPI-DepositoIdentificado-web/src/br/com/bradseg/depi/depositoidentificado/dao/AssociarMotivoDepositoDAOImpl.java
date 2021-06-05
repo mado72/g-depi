@@ -11,12 +11,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.AssociarMotivoDepositoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
-import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
@@ -81,23 +79,23 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
          */
     	try { 
 	        if (vo.getCia() == null || vo.getCia().getCodigoCompanhia() <= 0) {
-	            throw new IntegrationException(BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Cia."));
+	            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Cia.");
 	        }
 	
 	        if (vo.getDepartamento() == null || vo.getDepartamento().getCodigoDepartamento() <= 0) {
-	            throw new IntegrationException(BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Departamento."));
+	            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Departamento.");
 	        }
 	
 	        if (vo.getMotivoDeposito() == null || vo.getMotivoDeposito().getCodigoMotivoDeposito() <= 0) {
-	            throw new IntegrationException(BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Motivo Dep\u00f3sito."));
+	            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Motivo Dep\u00f3sito.");
 	        }
 	
 	        if (vo.getContaCorrente() <= 0) {
-	            throw new IntegrationException(BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Conta Corrente."));
+	            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Conta Corrente.");
 	        }
 	
 	        if (vo.getCodigoResponsavelUltimaAtualizacao().doubleValue() <= 0) {
-	            throw new IntegrationException(BaseUtil.concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "C\u00f3digo Usu\u00e1rio Respons\u00e1vel"));
+	            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "C\u00f3digo Usu\u00e1rio Respons\u00e1vel");
 	        }
     	} finally {
     	    LOGGER.info("validarID(AssociarMotivoDepositoVO vo))");

@@ -94,6 +94,9 @@ public final class ConstantesDEPI {
 	public static final String ERRO_REGISTRO_COM_DEPENDENCIA = "msg.erro.registrocomdependencia";
 	public static final String ERRO_REGISTRO_JA_CADASTRADO = "msg.erro.registrojacadastrado";
 	public static final String ERRO_REGISTRO_JA_CADASTRADO2 = "msg.erro.registrojacadastrado2";
+	public static final String ERRO_LISTA_INVALIDA = "msg.erro.lista.invalida";
+	public static final String ERRO_ENUM_INVALIDO = "msg.erro.enum.invalida";
+	
 
 	public static final String ERRO_CUSTOMIZADA = "msg.erro.customizada";
 
@@ -319,6 +322,6 @@ public final class ConstantesDEPI {
 	public static final int TIPO_PESSOA_FISICA = 3;
 
 	public static final int TIPO_PESSOA_JURIDICA = 4;
-	
+
 
 }

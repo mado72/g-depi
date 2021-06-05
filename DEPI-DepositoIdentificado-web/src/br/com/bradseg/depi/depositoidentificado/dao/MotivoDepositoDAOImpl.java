@@ -16,7 +16,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
-import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.MotivoDepositoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
@@ -216,12 +215,12 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
                 msg = " um Par\u00e2metro de Dep\u00f3sito ou Grupo de Acesso vinculado ao usu\u00e1rio.";
             } else if (e.equals(Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO)) {
             	query.append(QueriesDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODECONTACORRENTEMOTIVODEPOSITO);
-                msg = " uma Associa\u00e7\00e3o de Motivo ou Grupo de Acesso vinculado ao usu\u00e1rio";
+                msg = " uma Associa\u00e7\u00e3o de Motivo ou Grupo de Acesso vinculado ao usu\u00e1rio";
             } else if (e.equals(Tabelas.DEPOSITO)) {
             	query.append(QueriesDepi.MOTIVODEPOSITO_OBTERCOMRESTRICAODEDEPOSITO);
                 msg = " um Dep\u00f3sito ou Grupo de Acesso vinculado ao usu\u00e1rio";
             } else {
-                throw new IntegrationException("Enum inv\u00e1lido.");
+                throw new DEPIIntegrationException(ConstantesDEPI.ERRO_ENUM_INVALIDO);
             }
 
             /**
@@ -304,6 +303,7 @@ public class MotivoDepositoDAOImpl extends JdbcDao implements MotivoDepositoDAO 
 				params = filtro.getMapParamFiltro();
 			} 
 			
+			query.append(QueriesDepi.MOTIVODEPOSITO_ORDERBY);
         	List<MotivoDepositoVO> motivoDepto = getJdbcTemplate().query(query.toString(), params, new MotivoDepositoDataMapper());
 			
             if (motivoDepto == null || motivoDepto.isEmpty() ) {

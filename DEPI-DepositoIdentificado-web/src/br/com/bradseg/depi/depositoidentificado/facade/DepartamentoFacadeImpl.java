@@ -1,7 +1,5 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
-import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.concatenarComHifen;
-
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -98,7 +96,7 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
         }
         if (sb.length() > 0) {
 			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_DEPENDENCIA_MODULO, sb.toString(),
-							"Associa\u00e7\00e3o Departamentos x Companhia");
+							"Associa\u00e7\u00e3o Departamentos x Companhia");
         }
     }
 
@@ -115,10 +113,10 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
      */
     private void validarExcluir(DepartamentoVO vo) throws IntegrationException {
         if (BaseUtil.isNZB(vo.getCodigoResponsavelUltimaAtualizacao())) {
-            throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, CODIGO_RESPONSAVEL));
+            throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, CODIGO_RESPONSAVEL);
         }
         if (vo.getCodigoResponsavelUltimaAtualizacao() > 9999999) {
-            throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, CODIGO_RESPONSAVEL, "9999999"));
+            throw new DEPIIntegrationException(Geral.ERRO_CAMPO_EXCESSO, CODIGO_RESPONSAVEL, "9999999");
         }
     }
 
@@ -175,27 +173,27 @@ public class DepartamentoFacadeImpl implements DepartamentoFacade {
 	/**
 	 * Validar o VO de inserção
 	 * @param vo VO de Departamento
-	 * @throws IntegrationException Exceção de aplicação
+	 * @throws DEPIIntegrationException Exceção de aplicação
 	 */
-	private void validarInserir(DepartamentoVO vo) throws IntegrationException {
+	private void validarInserir(DepartamentoVO vo) throws DEPIIntegrationException {
 		
 	    if (BaseUtil.isNZB(vo.getSiglaDepartamento())) {
-	        throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Sigla do Departamento"));
+	        throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Sigla do Departamento");
 	    }
 	    if (vo.getSiglaDepartamento().length() > ConstantesDEPI.MAX_SIZE_SIGLA_DEPARTAMENTO) {
-	        throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, "Sigla do Departamento", String.valueOf(ConstantesDEPI.MAX_SIZE_SIGLA_DEPARTAMENTO)));
+	        throw new DEPIIntegrationException(Geral.ERRO_CAMPO_EXCESSO, "Sigla do Departamento", String.valueOf(ConstantesDEPI.MAX_SIZE_SIGLA_DEPARTAMENTO));
 	    }
 	    if (BaseUtil.isNZB(vo.getNomeDepartamento())) {
-	        throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Nome do Departamento"));
+	        throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, "Nome do Departamento");
 	    }
 	    if (vo.getNomeDepartamento().length() > ConstantesDEPI.MAX_SIZE_DEFAULT_NOME) {
-	        throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, "Nome do Departamento", String.valueOf(ConstantesDEPI.MAX_SIZE_DEFAULT_NOME)));
+	        throw new DEPIIntegrationException(Geral.ERRO_CAMPO_EXCESSO, "Nome do Departamento", String.valueOf(ConstantesDEPI.MAX_SIZE_DEFAULT_NOME));
 	    }
 	    if (vo.getCodigoResponsavelUltimaAtualizacao() == 0) {
-	        throw new IntegrationException(concatenarComHifen(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, CODIGO_RESPONSAVEL));
+	        throw new DEPIIntegrationException(ConstantesDEPI.ERRO_CAMPO_OBRIGATORIO, CODIGO_RESPONSAVEL);
 	    }
 	    if (vo.getCodigoResponsavelUltimaAtualizacao() > ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO) {
-	        throw new IntegrationException(concatenarComHifen(Geral.ERRO_CAMPO_EXCESSO, CODIGO_RESPONSAVEL, String.valueOf(ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO)));
+	        throw new DEPIIntegrationException(Geral.ERRO_CAMPO_EXCESSO, CODIGO_RESPONSAVEL, String.valueOf(ConstantesDEPI.MAX_SIZE_CODIGO_USUARIO));
 	    }
 	}
 

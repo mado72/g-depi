@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 
 import br.com.bradseg.bsad.filtrologin.filters.LoginUtils;
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
-import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.IEntidadeCampo;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
@@ -107,7 +107,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 		
         if (BaseUtil.isNZB(loginVO) || BaseUtil.isNZB(loginVO.getId())) {
         	LOGGER.error("N\u00e3o encontrou usu\u00e1rio logado");
-            throw new IntegrationException(getText(MSG_LOGIN_USUARIO));
+            throw new DEPIIntegrationException(getText(MSG_LOGIN_USUARIO));
         }
         LOGGER.debug("Sucesso: usu\u00e1rio logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import br.com.bradseg.bsad.filtrologin.filters.LoginUtils;
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.DepartamentoFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.GrupoAcessoFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.MotivoDepositoFacade;
@@ -191,7 +192,7 @@ public class ServicosIntegracaoImpl {
 		
         if (BaseUtil.isNZB(loginVO) || BaseUtil.isNZB(loginVO.getId())) {
         	LOGGER.error("N\u00e3o encontrou usu\u00e1rio logado");
-            throw new IntegrationException(BaseUtil.getTexto(ConstantesDEPI.Geral.ERRO_USUARIO_LOGADO));
+            throw new DEPIIntegrationException(BaseUtil.getTexto(ConstantesDEPI.Geral.ERRO_USUARIO_LOGADO));
         }
         LOGGER.info("Sucesso: usu\u00e1rio logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		

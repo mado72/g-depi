@@ -18,6 +18,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.ContaCorrenteDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.ContaCorrenteAutorizadaCampo;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.TipoOperacao;
@@ -78,7 +79,7 @@ public class AssociarMotivoDepositoFacadeImpl implements AssociarMotivoDepositoF
     public void excluir(List<AssociarMotivoDepositoVO> vos) throws IntegrationException {
     	
         if (vos == null || vos.isEmpty()) {
-            throw new IntegrationException("Lista inv\u00e1lida!");
+            throw new DEPIIntegrationException("Lista inv\u00e1lida!");
         }
 
         StringBuilder codsAssocMotivos = new StringBuilder();

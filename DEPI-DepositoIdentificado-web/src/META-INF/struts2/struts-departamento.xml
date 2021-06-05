@@ -21,6 +21,10 @@
 		</action>
 		
 		<action name="listar" method="listar">
+			<interceptor-ref name="store">
+				<param name="operationMode">RETRIEVE</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack" />
 			<result name="input">
 			    <param name="location">/WEB-INF/pages/pt_BR/cadastro/departamento/departamento.jsp</param>
 			</result>
@@ -51,6 +55,10 @@
                 <param name="actionName">listar</param>
                 <param name="namespace">/cadastro/departamento/consultar</param>
             </result>            
+            <result name="error" type="redirectAction">
+                <param name="actionName">listar</param>
+                <param name="namespace">/cadastro/departamento/consultar</param>
+            </result>
         </global-results>
         
 		<action name="incluir" method="incluir">
