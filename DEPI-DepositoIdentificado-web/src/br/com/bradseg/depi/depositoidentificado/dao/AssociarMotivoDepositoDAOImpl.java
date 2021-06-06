@@ -15,6 +15,7 @@ import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.AssociarMotivoDepositoDataMapper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
@@ -26,31 +27,9 @@ import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
 @Repository
 public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMotivoDepositoDAO {
 
-	private static final String PARAM_PRM1 = "prm1";
+	private static final String PARAM_PRM = "prm";
 
-	private static final String PARAM_PRM2 = "prm2";
-
-	private static final String PARAM_PRM3 = "prm3";
-
-	private static final String PARAM_PRM4 = "prm4";
-
-	private static final String PARAM_PRM5 = "prm5";
-
-	private static final String PARAM_PRM6 = "prm6";
-
-	private static final String PARAM_PRM7 = "prm7";
-
-	private static final String PARAM_WHR1 = "whr1";
-
-	private static final String PARAM_WHR2 = "whr2";
-
-	private static final String PARAM_WHR3 = "whr3";
-
-	private static final String PARAM_WHR4 = "whr4";
-
-	private static final String PARAM_WHR5 = "whr5";
-
-	private static final String PARAM_WHR6 = "whr6";
+	private static final String PARAM_WHR = "whr";
 
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoDAOImpl.class);
@@ -142,13 +121,15 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 
 	private void queryReativar(AssociarMotivoDepositoVO vo) {
 		MapSqlParameterSource paramsReativar = new MapSqlParameterSource();
-		paramsReativar.addValue(PARAM_PRM1,vo.getCodigoResponsavelUltimaAtualizacao());
-		paramsReativar.addValue(PARAM_WHR1,vo.getCia().getCodigoCompanhia());
-		paramsReativar.addValue(PARAM_WHR2,vo.getDepartamento().getCodigoDepartamento());
-		paramsReativar.addValue(PARAM_WHR3,vo.getMotivoDeposito().getCodigoMotivoDeposito());
-		paramsReativar.addValue(PARAM_WHR4,vo.getBanco().getCdBancoExterno());
-		paramsReativar.addValue(PARAM_WHR5,vo.getCodigoAgencia());
-		paramsReativar.addValue(PARAM_WHR6,vo.getContaCorrente());
+		BaseUtil.prepararQuery(paramsReativar, PARAM_PRM, vo.getCodigoResponsavelUltimaAtualizacao());
+		
+		BaseUtil.prepararQuery(paramsReativar, PARAM_WHR, 
+				vo.getCia().getCodigoCompanhia(),
+				vo.getDepartamento().getCodigoDepartamento(),
+				vo.getMotivoDeposito().getCodigoMotivoDeposito(),
+				vo.getBanco().getCdBancoExterno(),
+				vo.getCodigoAgencia(),
+				vo.getContaCorrente());
 		
 		Integer count = getJdbcTemplate().update(QueriesDepi.ASSOCIARMOTIVODEPOSITO_REATIVAR, paramsReativar);
 
@@ -159,13 +140,15 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 
 	private void queryInsert(AssociarMotivoDepositoVO vo) {
 		MapSqlParameterSource paramsInserir = new MapSqlParameterSource();
-		paramsInserir.addValue(PARAM_PRM1,vo.getCia().getCodigoCompanhia());
-		paramsInserir.addValue(PARAM_PRM2,vo.getDepartamento().getCodigoDepartamento());
-		paramsInserir.addValue(PARAM_PRM3,vo.getMotivoDeposito().getCodigoMotivoDeposito());
-		paramsInserir.addValue(PARAM_PRM4,vo.getBanco().getCdBancoExterno());
-		paramsInserir.addValue(PARAM_PRM5,vo.getCodigoAgencia());
-		paramsInserir.addValue(PARAM_PRM6,vo.getContaCorrente());
-		paramsInserir.addValue(PARAM_PRM7,vo.getCodigoResponsavelUltimaAtualizacao());
+		
+		BaseUtil.prepararQuery(paramsInserir, PARAM_PRM, 
+				vo.getCia().getCodigoCompanhia(),
+				vo.getDepartamento().getCodigoDepartamento(),
+				vo.getMotivoDeposito().getCodigoMotivoDeposito(),
+				vo.getBanco().getCdBancoExterno(),
+				vo.getCodigoAgencia(),
+				vo.getContaCorrente(),
+				vo.getCodigoResponsavelUltimaAtualizacao());
 
 		Integer count = getJdbcTemplate().update(QueriesDepi.ASSOCIARMOTIVODEPOSITO_INSERT, paramsInserir);
 
@@ -179,13 +162,13 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
 		
 		try {
 			MapSqlParameterSource params = new MapSqlParameterSource();
-			params.addValue(PARAM_WHR1,vo.getCia().getCodigoCompanhia());
-			params.addValue(PARAM_WHR2,vo.getDepartamento().getCodigoDepartamento());
-			params.addValue(PARAM_WHR3,vo.getMotivoDeposito().getCodigoMotivoDeposito());
-			params.addValue(PARAM_WHR4,vo.getBanco().getCdBancoExterno());
-			params.addValue(PARAM_WHR5,vo.getCodigoAgencia());
-			params.addValue(PARAM_WHR6,vo.getContaCorrente());
-			
+			BaseUtil.prepararQuery(params, PARAM_WHR,
+					vo.getCia().getCodigoCompanhia(),
+					vo.getDepartamento().getCodigoDepartamento(),
+					vo.getMotivoDeposito().getCodigoMotivoDeposito(),
+					vo.getBanco().getCdBancoExterno(),
+					vo.getCodigoAgencia(),
+					vo.getContaCorrente());
 
 			return getJdbcTemplate().queryForObject(
 					QueriesDepi.ASSOCIARMOTIVODEPOSITO_EXISTS, params,
@@ -208,17 +191,18 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
             /**
              * Novos valores
              */
-        	paramsInativar.addValue(PARAM_PRM1,vo.getCodigoResponsavelUltimaAtualizacao());
+        	BaseUtil.prepararQuery(paramsInativar, PARAM_PRM, vo.getCodigoResponsavelUltimaAtualizacao());
 
             /**
              * Where
              */
-        	paramsInativar.addValue(PARAM_WHR1,vo.getCia().getCodigoCompanhia());
-        	paramsInativar.addValue(PARAM_WHR2,vo.getDepartamento().getCodigoDepartamento());
-        	paramsInativar.addValue(PARAM_WHR3,vo.getMotivoDeposito().getCodigoMotivoDeposito());
-        	paramsInativar.addValue(PARAM_WHR4,vo.getBanco().getCdBancoExterno());
-        	paramsInativar.addValue(PARAM_WHR5,vo.getCodigoAgencia());
-        	paramsInativar.addValue(PARAM_WHR6,vo.getContaCorrente());
+        	BaseUtil.prepararQuery(paramsInativar, PARAM_WHR, 
+        			vo.getCia().getCodigoCompanhia(),
+        			vo.getDepartamento().getCodigoDepartamento(),
+        			vo.getMotivoDeposito().getCodigoMotivoDeposito(),
+        			vo.getBanco().getCdBancoExterno(),
+        			vo.getCodigoAgencia(),
+        			vo.getContaCorrente());
 
             int count = getJdbcTemplate().update(QueriesDepi.ASSOCIARMOTIVODEPOSITO_INATIVAR, paramsInativar);
 
@@ -242,13 +226,13 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
     	try {
             
     		MapSqlParameterSource params = new MapSqlParameterSource();
-    		
-    		params.addValue(PARAM_WHR1,vo.getCia().getCodigoCompanhia());
-    		params.addValue(PARAM_WHR2,vo.getDepartamento().getCodigoDepartamento());
-    		params.addValue(PARAM_WHR3,vo.getMotivoDeposito().getCodigoMotivoDeposito());
-    		params.addValue(PARAM_WHR4,vo.getBanco().getCdBancoExterno());
-    		params.addValue(PARAM_WHR5,vo.getCodigoAgencia());
-    		params.addValue(PARAM_WHR6,vo.getContaCorrente());
+    		BaseUtil.prepararQuery(params, PARAM_WHR, 
+    				vo.getCia().getCodigoCompanhia(),
+    				vo.getDepartamento().getCodigoDepartamento(),
+    				vo.getMotivoDeposito().getCodigoMotivoDeposito(),
+    				vo.getBanco().getCdBancoExterno(),
+    				vo.getCodigoAgencia(),
+    				vo.getContaCorrente());
     		
         	try {
 				Boolean exists = getJdbcTemplate().queryForObject(query.toString(), params, Boolean.class);
@@ -279,7 +263,7 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
         try {
 
         	MapSqlParameterSource params = filtro.getMapParamFiltro(); 
-        	params.addValue(PARAM_WHR1,codigoUsuario);
+        	params.addValue("whr1",codigoUsuario);
         	
 			if (!filtro.getCriterios().isEmpty()) {
 				String complemento = filtro.getClausulasParciais(" AND ", true);
@@ -312,13 +296,13 @@ public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMo
         try {
 
     		MapSqlParameterSource params = new MapSqlParameterSource();
-
-    		params.addValue(PARAM_WHR1, vo.getCodigoAgencia());
-    		params.addValue(PARAM_WHR2, vo.getBanco().getCdBancoExterno());
-    		params.addValue(PARAM_WHR3,vo.getContaCorrente());
-    		params.addValue(PARAM_WHR4,vo.getDepartamento().getCodigoDepartamento());
-    		params.addValue(PARAM_WHR5,vo.getCia().getCodigoCompanhia());
-    		params.addValue(PARAM_WHR6,vo.getMotivoDeposito().getCodigoMotivoDeposito());
+    		BaseUtil.prepararQuery(params, PARAM_WHR, 
+    				vo.getCodigoAgencia(), 
+    				vo.getBanco().getCdBancoExterno(),
+    				vo.getContaCorrente(),
+    				vo.getDepartamento().getCodigoDepartamento(),
+    				vo.getCia().getCodigoCompanhia(),
+    				vo.getMotivoDeposito().getCodigoMotivoDeposito());
 			
     		try {
 				associarMotivoDeposito = getJdbcTemplate().queryForObject(query.toString(), params, new AssociarMotivoDepositoDataMapper());
