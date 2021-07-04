@@ -1,5 +1,8 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.PARAM_PRM;
+import static br.com.bradseg.depi.depositoidentificado.util.BaseUtil.PARAM_WHR;
+
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -26,10 +29,6 @@ import br.com.bradseg.depi.depositoidentificado.vo.AssociarMotivoDepositoVO;
  */
 @Repository
 public class AssociarMotivoDepositoDAOImpl extends JdbcDao implements AssociarMotivoDepositoDAO {
-
-	private static final String PARAM_PRM = "prm";
-
-	private static final String PARAM_WHR = "whr";
 
 	/** A Constante LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DepartamentoDAOImpl.class);

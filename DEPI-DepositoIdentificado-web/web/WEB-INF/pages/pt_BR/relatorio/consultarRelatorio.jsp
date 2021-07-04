@@ -70,20 +70,7 @@
 <c:url value='/json/ciaDeptosComRestricao.do?codigoCia=%d' var="urlDepto"></c:url>
 <c:set var="scriptCompanhia">
 urlDepto = '${urlDepto}';
-$.dpcoddesc.combinar(['#listaCompanhia','#listaCompanhiaOrd']);
-$.dpcoddesc.aninhar({
-	origem: ['#listaCompanhia', '#listaCompanhiaOrd'],
-	destino: ['#listaDepartamentos', '#listaDepartamentosOrd'],
-	todos: {
-		value: 0,
-		text: '-- Todos --'
-	},
-	url: urlDepto,
-	fn: function(v) {
-		return [v.codigoDepartamento, v.siglaDepartamento, v.nomeDepartamento];
-	},
-	error: void(0)
-});
+$.relatorio.scriptCompanhia(urlDepto);
 </c:set>
 								<s:select 
 									list="listaCompanhia" 

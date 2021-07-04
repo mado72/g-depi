@@ -1,5 +1,9 @@
 package br.com.bradseg.depi.depositoidentificado.dao;
 
+import java.util.List;
+
+import br.com.bradseg.depi.depositoidentificado.vo.ParcelaCobrancaVO;
+
 /**
  * Interface DAO de parcelas pendentes.
  * @author M68887
@@ -17,10 +21,9 @@ public interface ParcelasPendentesDAO {
 	 * Método que lista os códigos das parcelas associadas.
 	 * @param parcelaCobranca - objeto com os parâmetros.
 	 * @return List<ParcelaCobrancaVO> - lista com os dados de retorno.
-	 * @throws IntegrationException - exception.
 	 */
-	/*public List<ParcelaCobrancaVO> listarParcelasAssociadas(ParcelaCobrancaVO parcelaCobranca);
-	*/
+	public List<ParcelaCobrancaVO> listarParcelasAssociadas(ParcelaCobrancaVO parcelaCobranca);
+	
 	/**
 	 * Método que lista os detalhes das parcelas associadas.
 	 * @param parcelaCobranca - objeto com os parâmetros de consulta.

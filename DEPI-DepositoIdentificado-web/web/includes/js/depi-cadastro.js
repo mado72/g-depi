@@ -201,6 +201,8 @@ var fnReady = function ($) {
 			ev.stopPropagation();
 			dpcod.val(dpdesc.val());
 		});
+		
+		dpdesc.val(dpcod.val());
 	};
 	
 	$.dpcoddesc.aninhar = function(opcoes) {
@@ -389,8 +391,13 @@ var fnReady = function ($) {
 			ev.preventDefault();
 			var opt = jqRecipiente.find('option:selected');
 
-			dados.recipiente.splice(opt.index());
-			opt.remove();
+			if (opt.length < 1) {
+				alert('É necessário selecionar pelo menos um filtro em <Critério(s) de Consulta> para remover do filtro.');
+			}
+			else {
+				dados.recipiente.splice(opt.index());
+				opt.remove();
+			}
 			return false;
 		});
 
@@ -1322,6 +1329,26 @@ var fnReady = function ($) {
 		
 		BtnCancelar.click(function() {
 			window.location.href = window.location.href.replace(/\/deposito\/.*/, '/deposito/consultar/index.do');
+		});
+	};
+	
+	// relatorio
+	$.namespace('$.relatorio');
+	
+	$.relatorio.scriptCompanhia = function(urlDepto) {
+		$.dpcoddesc.combinar(['#listaCompanhia','#listaCompanhiaOrd']);
+		$.dpcoddesc.aninhar({
+			origem: ['#listaCompanhia', '#listaCompanhiaOrd'],
+			destino: ['#listaDepartamentos', '#listaDepartamentosOrd'],
+			todos: {
+				value: 0,
+				text: '-- Todos --'
+			},
+			url: urlDepto,
+			fn: function(v) {
+				return [v.codigoDepartamento, v.siglaDepartamento, v.nomeDepartamento];
+			},
+			error: void(0)
 		});
 	};
 	

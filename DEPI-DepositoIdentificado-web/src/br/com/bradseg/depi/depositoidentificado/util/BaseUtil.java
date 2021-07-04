@@ -54,6 +54,10 @@ public final class BaseUtil {
 	public static final NumberFormat DECIMAL_FMT = NumberFormat.getNumberInstance();
 
 	public static final String NULL_VALUE = "null";
+
+	public static final String PARAM_PRM = "prm";
+
+	public static final String PARAM_WHR = "whr";
 	
 	/**
 	 * Construtor privado.

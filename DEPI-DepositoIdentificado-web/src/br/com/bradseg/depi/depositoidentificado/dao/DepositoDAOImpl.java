@@ -82,6 +82,8 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 			
 			BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, codigoUsuario);
 			
+			query.append(QueriesDepi.DEPOSITO_ORDERBY);
+			
     		List<DepositoVO> depositosVo = getJdbcTemplate().query(query.toString(), params, new DepositoDataMapper());
     		
     		return depositosVo;

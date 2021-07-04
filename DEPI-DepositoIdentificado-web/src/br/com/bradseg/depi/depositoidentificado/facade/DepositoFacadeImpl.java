@@ -24,6 +24,7 @@ import br.com.bradseg.depi.depositoidentificado.dao.LancamentoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.MovimentoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.ParametroDepositoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.ParcelasPendentesDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.delagate.BUCBBusinessDelegate;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
@@ -47,6 +48,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.LancamentoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.MovimentoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ParametroDepositoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.ParcelaCobrancaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.PessoaVO;
 
 /**
@@ -95,6 +97,9 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	
 	@Autowired
 	private ParametroDepositoDAO parametroDAO;
+	
+	@Autowired
+	private ParcelasPendentesDAO parcelasDAO;
 
     /**
      * Excluir AssociarMotivoDepositos
@@ -170,6 +175,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
 			}
         	
         	vo.setMotivoDeposito(motDepDAO.obterPorChave(vo.getMotivoDeposito()));
+        	vo.setListaParcelas(montarListaParcelas(vo));
 			
 			return vo;
 		} catch (Exception e) {
@@ -177,7 +183,15 @@ public class DepositoFacadeImpl implements DepositoFacade {
 		}
     }
     
-    @Override
+    private List<ParcelaCobrancaVO> montarListaParcelas(DepositoVO deposito) {
+    	
+    	ParcelaCobrancaVO parcelaCobranca = new ParcelaCobrancaVO();
+    	parcelaCobranca.setDeposito(deposito);
+		return parcelasDAO.listarParcelasAssociadas(parcelaCobranca);
+		
+	}
+
+	@Override
     public List<ListarPessoaPorFiltroSaidaVO> listarPessoas(String cpfCnpj, String ipCliente, int codUsuario) {
         List<ListarPessoaPorFiltroSaidaVO> lista = businessDelegate.listarPessoaPorFiltro(ipCliente,
         		codUsuario, BaseUtil.retiraMascaraCNPJ(cpfCnpj));

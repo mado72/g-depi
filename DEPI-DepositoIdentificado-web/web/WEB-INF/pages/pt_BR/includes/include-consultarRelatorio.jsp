@@ -285,17 +285,9 @@ function refresh() {
 	return true;
 }
 function limpar() {
-   var acaoOriginal = document.getElementById("acaoOriginal").value;// document.forms[0].acaoOriginal.value;
-   var acao = document.getElementById("acaoOriginal").value;// document.forms[0].acaoOriginal.value;
-   //alert("acao:"+acao +"  -   acaoOriginal:"+acaoOriginal);
-   //document.location.href = '<c:out value="${pageContext.request.contextPath}" />/relatorio/ConsultarRelatorio.do?acao='+acaoOriginal;
-   //submitForm2(undefined,  "/DEP-DepositoIdentificado/relatorio/consultarRelatorio.do?acao="+acaoOriginal);
-    limparCampos();
+    // limparCampos();
+    $("#formConsultarRelatorio")[0].reset();
 	limpaTela(acaoOriginal);
-	
-	document.forms[0].acao.value = acao;
-	document.getElementById("acaoOriginal").value = acao;
-	
 	
 	ajustarPagina();
 	return true;

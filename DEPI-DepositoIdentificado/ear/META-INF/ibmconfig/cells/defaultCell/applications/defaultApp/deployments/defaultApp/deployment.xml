@@ -4,6 +4,7 @@
     <modules xmi:type="appdeployment:WebModuleDeployment" xmi:id="WebDep_202010210832184" startingWeight="10000" uri="DEPI-DepositoIdentificado-web.war"/>
     <classloader xmi:id="CL_202010210832184" mode="PARENT_LAST">
       <libraries xmi:id="LibraryRef_1620846297124" libraryName="BSAD"/>
+      <libraries xmi:id="LibraryRef_1624851694279" libraryName="BUCB-Servicos"/>
     </classloader>
   </deployedObject>
 </appdeployment:Deployment>

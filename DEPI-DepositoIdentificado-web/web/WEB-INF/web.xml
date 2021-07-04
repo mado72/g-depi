@@ -226,10 +226,10 @@
 		<res-sharing-scope>Shareable</res-sharing-scope>
 	</resource-ref>
 
-	<ejb-ref id="EjbRef_1621537469280">
+	<ejb-ref id="EjbRef_1624879510011">
 		<description>
 		</description>
-		<ejb-ref-name>PessoaSessionFacade</ejb-ref-name>
+		<ejb-ref-name>pessoaSessionFacade</ejb-ref-name>
 		<ejb-ref-type>Session</ejb-ref-type>
 		<home>br.com.bradseg.bucb.servicos.model.ejb.PessoaSessionFacadeHome</home>
 		<remote>br.com.bradseg.bucb.servicos.model.ejb.PessoaSessionFacade</remote>

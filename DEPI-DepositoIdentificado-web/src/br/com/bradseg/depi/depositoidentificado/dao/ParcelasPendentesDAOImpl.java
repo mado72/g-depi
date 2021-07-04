@@ -76,27 +76,16 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 	 * @param parcelaCobranca - objeto com os parâmetros.
 	 * @return List<ParcelaCobrancaVO> - lista com os dados de retorno.
 	 */	
+	@Override
 	public List<ParcelaCobrancaVO> listarParcelasAssociadas(ParcelaCobrancaVO parcelaCobranca){
 
-		// List<ParcelaCobrancaVO> listaParcelas = new ArrayList<ParcelaCobrancaVO>();
-		List<ParcelaCobrancaVO> listaParcelas = null;
-		
-		
-        StringBuilder query = new StringBuilder(QueriesDepi.PARCELASPENDENTES_LISTARPARCELASASSOCIADAS);
+		MapSqlParameterSource params = new MapSqlParameterSource();
 
-		try {
-
-			MapSqlParameterSource params = new MapSqlParameterSource();
-                
-			params.addValue("whr1", parcelaCobranca.getDeposito().getCodigoDepositoIdentificado());
-			listaParcelas = getJdbcTemplate().query(query.toString(), params, new ParcelaCobrancaDataMapper());
-        
-            
-		} finally {
-			LOGGER.info("listarParcelasAssociadas(ParcelaCobrancaVO parcelaCobranca)");
-		}
+		params.addValue("whr1", parcelaCobranca.getDeposito().getCodigoDepositoIdentificado());
 		
-        return listaParcelas; 
+		return getJdbcTemplate()
+				.query(QueriesDepi.PARCELASPENDENTES_LISTARPARCELASASSOCIADAS, params, new ParcelaCobrancaDataMapper());
+		
 	}
 
 	/**
