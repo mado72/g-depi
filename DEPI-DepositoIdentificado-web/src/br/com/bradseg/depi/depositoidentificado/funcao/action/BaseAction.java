@@ -107,7 +107,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware {
 		
         if (BaseUtil.isNZB(loginVO) || BaseUtil.isNZB(loginVO.getId())) {
         	LOGGER.error("N\u00e3o encontrou usu\u00e1rio logado");
-            throw new DEPIIntegrationException(getText(MSG_LOGIN_USUARIO));
+            throw new DEPIIntegrationException(MSG_LOGIN_USUARIO);
         }
         LOGGER.debug("Sucesso: usu\u00e1rio logado!!! id: {}, nome: {}", loginVO.getId(), loginVO.getNome());
 		
