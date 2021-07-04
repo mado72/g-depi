@@ -9,6 +9,7 @@
 	</decorator>
 
 	<excludes>
+		<pattern>erro.do</pattern>
 		<pattern>*json.do</pattern>
 		<pattern>*pdf.do</pattern>
 		<pattern>*excel.do</pattern>
