@@ -307,6 +307,9 @@ public final class ConstantesDEPI {
 		
 	}
 	
+	/**
+	 * Constantes para Associar Motivos Depósito 
+	 */
 	public static final class AssociarMotivoDeposito {
 		public static final String ERRO_CIA_DEPTO_SEM_MOTIVODEPOSITO = "msg.erro.associarmotivodeposito.semMotivoDeposito";
 	}
