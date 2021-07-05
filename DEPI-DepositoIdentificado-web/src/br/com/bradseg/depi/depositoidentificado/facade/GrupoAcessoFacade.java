@@ -5,8 +5,10 @@ import java.util.List;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
 /**
@@ -80,5 +82,15 @@ public interface GrupoAcessoFacade {
 	 * @return lista
 	 */
 	List<UsuarioVO> obterUsuarios(List<Integer> codFuncionarios);
+
+	/**
+	 * Obtém os motivos associados à companhia e ao depto
+	 * @param ciaDepto Companhia x Depto
+	 * @param codUsuarioLogado Usuário logado
+	 * @return Lista de motivos
+	 */
+	List<MotivoDepositoVO> obterMotivosDeposito(
+			DepartamentoCompanhiaVO ciaDepto,
+			int codUsuarioLogado);
 
 }

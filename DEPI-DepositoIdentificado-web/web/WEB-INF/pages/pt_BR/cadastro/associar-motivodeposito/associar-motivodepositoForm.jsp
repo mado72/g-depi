@@ -48,8 +48,9 @@
 			<td class="td_label"><s:text name="label.cadastro.parametrodeposito.motivo" /><span class="obrigatorio">*</span></td>
 			<td>
 				
-				<s:select key="codigoMotivoDeposito" list="motivos" listValue="descricaoBasica" listKey="codigoMotivoDeposito" 
-					cssClass="dropbox w-100" disabled="%{detalhar}"/>
+				<s:select key="codigoMotivoDeposito" 
+					list="motivos" listValue="descricaoBasica" listKey="codigoMotivoDeposito" 
+					cssClass="dropbox w-100 codigoMotivoDeposito" disabled="%{detalhar}"/>
 			</td>
 			<td>
 				<s:textarea key="descricaoDetalhadaMotivo" rows="5" cols="70" value="%{descricaoDetalhadaMotivo}" readonly="true" disabled="detalhar"/>
@@ -136,6 +137,7 @@ jQuery(document).ready(function($){
 	 		motivos : ${motivos},
 			urlCias : '<c:url value="/json/ciaListar.do"/>',
 			urlDepto : '<c:url value="/json/ciaDeptosComRestricao.do?codigoCia=%d"></c:url>',
+			urlMotivo: '<c:url value="/json/motivosComRestricao.do?codigo.cia=%d&codigo.depto=%d"></c:url>',
 			urlBancos : '<c:url value="/json/ciaBancos.do?codigo.cia=%d"></c:url>',
 			urlAgencias : '<c:url value="/json/ciaBancoAgencias.do?codigo.cia=%d&codigo.banco=%d"></c:url>',
 			urlContas : '<c:url value="/json/ciaBancoAgenciaConta.do?codigo.cia=%d&codigo.banco=%d&codigo.agencia=%d"></c:url>',

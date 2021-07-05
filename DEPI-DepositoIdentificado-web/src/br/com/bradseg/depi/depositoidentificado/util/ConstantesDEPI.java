@@ -307,6 +307,10 @@ public final class ConstantesDEPI {
 		
 	}
 	
+	public static final class AssociarMotivoDeposito {
+		public static final String ERRO_CIA_DEPTO_SEM_MOTIVODEPOSITO = "msg.erro.associarmotivodeposito.semMotivoDeposito";
+	}
+	
 	
 	public static final String MIME_TYPE_PDF = "application/pdf";
 	public static final String MIME_TYPE_HTML = "text/html";

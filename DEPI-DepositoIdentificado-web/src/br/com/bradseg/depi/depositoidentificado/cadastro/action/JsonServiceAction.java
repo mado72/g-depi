@@ -13,9 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 
 import br.com.bradseg.bsad.filtrologin.vo.LoginVo;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO;
+import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
 import br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.ContaCorrenteFacade;
 import br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade;
@@ -27,6 +29,7 @@ import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.EventoContabilVO;
@@ -139,6 +142,32 @@ public class JsonServiceAction extends BaseModelAction<JsonRequestVO> {
 			}
 			
 			model.setResponse(deptos);
+		} catch (Exception e) {
+			handleException(e);
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String motivosComRestricao() {
+		try {
+			int codCia = Integer.parseInt(model.getCodigo().get("cia"));
+			int codDepto = Integer.parseInt(model.getCodigo().get("depto"));
+			int codUsuarioLogado = getCodUsuarioLogado();
+			
+			List<MotivoDepositoVO> motivos = grupoAcessoFacade.obterMotivosDeposito(
+					new DepartamentoCompanhiaVO(
+						new CompanhiaSeguradoraVO(codCia),
+						new DepartamentoVO(codDepto)),
+					codUsuarioLogado);
+			
+			if (CollectionUtils.isEmpty(motivos)) {
+				throw new DEPIIntegrationException(
+						ConstantesDEPI.AssociarMotivoDeposito.ERRO_CIA_DEPTO_SEM_MOTIVODEPOSITO,
+						String.valueOf(codCia), String.valueOf(codDepto));
+			}
+			
+			model.setResponse(motivos);
 		} catch (Exception e) {
 			handleException(e);
 		}

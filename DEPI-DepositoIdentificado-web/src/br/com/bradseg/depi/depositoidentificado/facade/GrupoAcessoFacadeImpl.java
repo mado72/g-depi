@@ -19,6 +19,7 @@ import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.CompanhiaSeguradoraDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.DepartamentoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.GrupoAcessoDAO;
+import br.com.bradseg.depi.depositoidentificado.dao.MotivoDepositoDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.UsuarioDAO;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
@@ -27,8 +28,10 @@ import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoCompanhiaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.GrupoAcessoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.UsuarioVO;
 
 /**
@@ -55,6 +58,9 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 	
 	@Autowired
 	private UsuarioDAO usuarioDAO;
+	
+	@Autowired
+	private MotivoDepositoDAO motivoDAO;
 
     /**
      * alterar
@@ -293,4 +299,15 @@ public class GrupoAcessoFacadeImpl implements GrupoAcessoFacade {
 		}
 		return usuarios;
 	}
+	
+	@Override
+	public List<MotivoDepositoVO> obterMotivosDeposito(
+			DepartamentoCompanhiaVO ciaDepto, int codUsuarioLogado) {
+
+		return motivoDAO.obterComRestricaoDeGrupoAcesso(ciaDepto.getCompanhia()
+				.getCodigoCompanhia(), ciaDepto.getDepartamento()
+				.getCodigoDepartamento(), codUsuarioLogado,
+				Tabelas.PARAMETRO_DEPOSITO);
+	}
+	
 }

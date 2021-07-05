@@ -1049,6 +1049,7 @@ var fnReady = function ($) {
 	$.associarMotivos.prepararEditar = function(opcoes) {
 		opcoes.error = opcoes.error || function(erro) { console.error(erro); };
 		var afterInit = false;
+		var cacheMotivos = opcoes.motivos;;
 
 		$("#AcaoForm_contaCorrente").change(function() {
 			var conta = $("#AcaoForm_contaCorrente").val(),
@@ -1059,28 +1060,17 @@ var fnReady = function ($) {
 	 	$("#AcaoForm_codigoMotivoDeposito").change(function(){
 	 		var item = $("#AcaoForm_codigoMotivoDeposito").val();
 	 		console.log('mudou motivo');
-			$("#AcaoForm_descricaoDetalhadaMotivo").val(opcoes.motivos[item]);
+			$("#AcaoForm_descricaoDetalhadaMotivo").val(cacheMotivos[item]);
 	 	});
 
 		$('.companhia-codigo-dropbox').change(function(){
 			if (! afterInit) return;
-			console.log('mudou companhia');			$('.agencia-codigo-dropbox').change();
-	 		/*
-			$('.agencia-codigo-dropbox, .agencia-descricao-dropbox, #AcaoForm_contaCorrente').find("option").remove();
-			$('.agencia-codigo-dropbox, .agencia-descricao-dropbox, #AcaoForm_contaCorrente').each(function(i,v){
-				$(v).add($("<option>", {text: 'Carregando...'}));
-			});
-			*/
+			console.log('mudou companhia');
+			$('.agencia-codigo-dropbox').change();
 		});
 		$('.banco-codigo-dropbox, .banco-descricao-dropbox').change(function(){
 			if (! afterInit) return;
 			console.log('mudou banco');
-			/*
-			$('#AcaoForm_contaCorrente').find("option").remove();
-			$('#AcaoForm_contaCorrente').each(function(i,v){
-				$(v).add($("<option>", {text: 'Carregando...'}));
-			});
-			*/
 		});
 		$('.banco-codigo-dropbox').on('carregando', function(ev){
 			if (! afterInit) return;
@@ -1108,6 +1098,24 @@ var fnReady = function ($) {
 			error: opcoes.error,
 			onFinish: function() {console.log('definiu departamento');}
 		});
+		$.dpcoddesc.aninhar({
+			origem: ['.departamento-codigo-dropbox', '.departamento-nome-dropbox'],
+			destino: ['.codigoMotivoDeposito'],
+			url: function(depto) {
+				cacheMotivos = {};
+				var codCia = $('.companhia-codigo-dropbox').val();
+				return opcoes.urlMotivo.replace('%d', codCia).replace('%d', depto);
+			},
+			fn: function(v) {
+				cacheMotivos[v.codigoMotivoDeposito] = v.descricaoDetalhada;
+				return [v.codigoMotivoDeposito, v.descricaoBasica];
+			},
+			error: opcoes.error,
+			onFinish: function() {
+				$("#AcaoForm_codigoMotivoDeposito").change();
+				console.log('definiu motivo');
+			}
+		})
 		$.dpcoddesc.aninhar({
 			origem: ['.companhia-codigo-dropbox', '.companhia-nome-dropbox'],
 			destino: ['.banco-codigo-dropbox', '.banco-descricao-dropbox'],

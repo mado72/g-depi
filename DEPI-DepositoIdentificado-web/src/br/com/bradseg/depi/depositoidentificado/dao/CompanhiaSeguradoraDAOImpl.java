@@ -67,8 +67,10 @@ public class CompanhiaSeguradoraDAOImpl extends JdbcDao implements
 		
 		params.addValue(WHR1, codUsuario);
 		
+		String sql = QueriesDepi.CIA_OBTERCOMRESTRICAODEGRUPOACESSO.replaceAll(PARAM_SUBST, "");
+		
 		List<CompanhiaSeguradoraVO> lista = getJdbcTemplate().query(
-				QueriesDepi.CIA_OBTERCOMRESTRICAODEGRUPOACESSO.replaceAll(PARAM_SUBST, ""), params,
+				sql, params,
 				new CompanhiaSeguradoraDataMapper());
 		
 		return lista;
