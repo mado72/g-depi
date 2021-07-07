@@ -5,6 +5,7 @@
     <classloader xmi:id="CL_202010210832184" mode="PARENT_LAST">
       <libraries xmi:id="LibraryRef_1620846297124" libraryName="BSAD"/>
       <libraries xmi:id="LibraryRef_1624851694279" libraryName="BUCB-Servicos"/>
+      <libraries xmi:id="LibraryRef_1625629443891" libraryName="DEPI-SAP"/>
     </classloader>
   </deployedObject>
 </appdeployment:Deployment>

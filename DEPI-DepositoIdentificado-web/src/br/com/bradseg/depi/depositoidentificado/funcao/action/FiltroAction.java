@@ -277,9 +277,9 @@ public abstract class FiltroAction<C extends IEntidadeCampo, T extends FiltroCon
 			if (model.getColecaoDados() != null) {
 				model.setColecaoDados(null);
 			}
-			if (model.getCriterios() != null) {
+			/*if (model.getCriterios() != null) {
 				model.clearCriterios();
-			}
+			}*/
 		}
 	}
 	

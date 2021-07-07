@@ -8,4 +8,7 @@
   <libraries:Library xmi:id="Library_1624851694101" name="BUCB-Servicos">
     <classPath>E:\Desenv\globality\@Java\@Libs\BRADSEG-Servicos</classPath>
   </libraries:Library>
+  <libraries:Library xmi:id="Library_1625629443870" name="DEPI-SAP">
+    <classPath>E:\Desenv\globality\@Java\@Workspaces\@DEPI-DepositoIdentificado\DEPI-DepositoIdentificado-web\Libs</classPath>
+  </libraries:Library>
 </xmi:XMI>

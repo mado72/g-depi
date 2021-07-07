@@ -86,7 +86,7 @@ public class FiltroConsultarForm<T extends IEntidadeCampo> implements Serializab
 	public void limparDados() {
 		setNamespaceEditar(null);
 		setColecaoDados(null);
-		setCriteriosInformados(null);
+//		setCriteriosInformados(null);
 	}
 	
 	public String getSubtitulo() {
