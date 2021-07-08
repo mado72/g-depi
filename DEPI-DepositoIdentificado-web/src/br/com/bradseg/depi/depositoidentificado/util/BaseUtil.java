@@ -147,7 +147,7 @@ public final class BaseUtil {
 	 */
 	public static BigDecimal stringToBigDecimal(String value) {
 		if (isNZB(value)) {
-			return BigDecimal.valueOf(0);
+			return null;
 		}
 		return new BigDecimal(value.replace(".", "").replace(",", "."));
 	}

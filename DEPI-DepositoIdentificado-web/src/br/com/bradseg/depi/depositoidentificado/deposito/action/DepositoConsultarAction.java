@@ -36,7 +36,7 @@ public class DepositoConsultarAction extends FiltroAction<DepositoCampo, FiltroC
 	@Override
 	protected CrudHelper<DepositoCampo, ?, ?> getFiltroHelper() {
 		if (filtroHelper == null) {
-			filtroHelper = new DepositoCrudHelper();
+			filtroHelper = DepositoCrudHelper.singleton();
 		}
 		return filtroHelper;
 	}

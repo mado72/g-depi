@@ -3,6 +3,8 @@ package br.com.bradseg.depi.depositoidentificado.cadastro.form;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.util.Assert;
+
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm;
 import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
@@ -21,6 +23,8 @@ import br.com.bradseg.depi.depositoidentificado.vo.ParcelaCobrancaVO;
  * @author Marcelo Damasceno
  */
 public class DepositoEditarFormModel extends CrudForm {
+
+	private static final String DD_MM_YYYY = "dd/MM/yyyy";
 
 	private static final long serialVersionUID = 957768938376772158L;
 	
@@ -126,6 +130,10 @@ public class DepositoEditarFormModel extends CrudForm {
 	
 	private TipoAcao tipoAcao = TipoAcao.PADRAO;
 	
+	public DepositoEditarFormModel() {
+		// Default
+	}
+	
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm#limparDados()
 	 */
@@ -184,6 +192,12 @@ public class DepositoEditarFormModel extends CrudForm {
 	 */
 	public void obterValores(DepositoVO vo) {
 		
+		Assert.notNull(getIpCliente(), "IP Cliente = null");
+		vo.setIpCliente(getIpCliente());
+		
+		if (! BaseUtil.isNZB(getCodigoDepositoIdentificado())) {
+			vo.setCodigoDepositoIdentificado(getCodigoDepositoIdentificado());
+		}
 		vo.setAgencia(new AgenciaVO(Integer.parseInt(getCodigoAgencia())));
 		vo.setBanco(new BancoVO(Integer.parseInt(getCodBanco())));
 		vo.setCia(new CompanhiaSeguradoraVO(Integer.parseInt(getCodigoCompanhia())));
@@ -191,6 +205,33 @@ public class DepositoEditarFormModel extends CrudForm {
 		vo.setDepartamento(new DepartamentoVO(Integer.parseInt(getCodigoDepartamento())));
 		vo.setMotivoDeposito(new MotivoDepositoVO(Integer.parseInt(getCodigoMotivoDeposito())));
 		
+		vo.setTrps(getTrps());
+		vo.setCpfCnpj(getCpfCnpj());
+		vo.setNomePessoa(getNomePessoa());
+
+		if (getPessoaDepositante() != null) {
+			vo.setPessoaDepositante(getPessoaDepositante());
+		}
+		
+		vo.setSucursal(getSucursal());
+		vo.setBloqueto(getBloqueto());
+		vo.setTipoDocumento(getTipoDocumento());
+		vo.setApolice(getApolice());
+		vo.setProtocolo(getProtocolo());
+		vo.setRamo(getRamo());
+		vo.setEndosso(getEndosso());
+		vo.setDossie(getDossie());
+		vo.setParcela(getParcela());
+		vo.setItem(getItem());
+		
+		vo.setObservacaoDeposito(getObservacaoDeposito());
+		
+		vo.setVlrDepositoRegistrado(BaseUtil.stringToBigDecimal(vlrDepositoRegistrado));
+		
+		vo.setDtVencimentoDeposito(BaseUtil.parserStringToDate(
+				getDtVencimentoDeposito(), DD_MM_YYYY));
+		vo.setDtCancelamentoDepositoIdentificado(BaseUtil.parserStringToDate(
+				getDtCancelamentoDepositoIdentificado(), DD_MM_YYYY));
 	}
 	
 	/**
@@ -888,6 +929,24 @@ public class DepositoEditarFormModel extends CrudForm {
 	 */
 	public void setCodigoDepositoIdentificado(Long codigoDepositoIdentificado) {
 		this.codigoDepositoIdentificado = codigoDepositoIdentificado;
+	}
+	
+	@Override
+	public String getCodigo() {
+		if (BaseUtil.isNZB(getCodigoDepositoIdentificado())) {
+			return null;
+		}
+		return getCodigoDepositoIdentificado().toString();
+	}
+	
+	@Override
+	public void setCodigo(String codigo) {
+		if (BaseUtil.isNZB(codigo)) {
+			setCodigoDepositoIdentificado(null);
+		}
+		else {
+			setCodigoDepositoIdentificado(Long.valueOf(codigo));
+		}
 	}
 
 	/**

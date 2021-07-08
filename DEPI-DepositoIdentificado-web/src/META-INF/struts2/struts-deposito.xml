@@ -74,6 +74,10 @@
 		</action>
 		
 		<action name="alterar" method="alterar">
+			<interceptor-ref name="scope">
+				<param name="session">model</param>
+			</interceptor-ref>
+			<interceptor-ref name="applicationStack"/>
 			<result name="input" type="redirectAction">input</result>
 		</action>
         
@@ -89,6 +93,9 @@
         </action>
         
         <action name="salvar" class="depositoSalvarAction" method="salvar">
+			<interceptor-ref name="scope">
+				<param name="session">model</param>
+			</interceptor-ref>
             <interceptor-ref name="store">
                 <param name="operationMode">STORE</param>
             </interceptor-ref>

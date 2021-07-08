@@ -28,13 +28,13 @@ public class DepositoVO implements Serializable {
      * Código seqüencial da identificação do depósito.
      */
     @IgnorarLog
-    private long codigoDepositoIdentificado;
+    private Long codigoDepositoIdentificado;
 
     /**
      * Dígito Verificador gerado a partir do Código seqüencial da identificação do depósito.
      */
     @IgnorarLog
-    private int codigoDigitoDeposito;
+    private Integer codigoDigitoDeposito;
 
     /**
      * Código (FK) da associação Conta_corrente_motivo_deposito - Companhia Seguradora.
@@ -58,6 +58,8 @@ public class DepositoVO implements Serializable {
     private String ramo;
 
     private long contaCorrente;
+    
+    private String ipCliente;
     
     /**
      * CPN/CNPJ
@@ -305,7 +307,7 @@ public class DepositoVO implements Serializable {
      * Retorna o valor do atributo codigoDepositoIdentificado.
      * @return o valor do atributo codigoDepositoIdentificado
      */
-    public long getCodigoDepositoIdentificado() {
+    public Long getCodigoDepositoIdentificado() {
         return codigoDepositoIdentificado;
     }
 
@@ -313,7 +315,7 @@ public class DepositoVO implements Serializable {
      * Especifica o valor do atributo codigoDepositoIdentificado.
      * @param codigoDepositoIdentificado - int do codigoDepositoIdentificado a ser configurado.
      */
-    public void setCodigoDepositoIdentificado(long codigoDepositoIdentificado) {
+    public void setCodigoDepositoIdentificado(Long codigoDepositoIdentificado) {
         this.codigoDepositoIdentificado = codigoDepositoIdentificado;
     }
 
@@ -321,7 +323,7 @@ public class DepositoVO implements Serializable {
      * Retorna o valor do atributo codigoDigitodeposito.
      * @return o valor do atributo codigoDigitodeposito
      */
-    public int getCodigoDigitoDeposito() {
+    public Integer getCodigoDigitoDeposito() {
         return codigoDigitoDeposito;
     }
 
@@ -329,7 +331,7 @@ public class DepositoVO implements Serializable {
      * Especifica o valor do atributo codigoDigitodeposito.
      * @param codigoDigitodeposito - int do codigoDigitodeposito a ser configurado.
      */
-    public void setCodigoDigitoDeposito(int codigoDigitodeposito) {
+    public void setCodigoDigitoDeposito(Integer codigoDigitodeposito) {
         this.codigoDigitoDeposito = codigoDigitodeposito;
     }
 
@@ -797,6 +799,14 @@ public class DepositoVO implements Serializable {
 
 	public void setDataInclusao(Date dataInclusao) {
 		this.dataInclusao = BaseUtil.getDate(dataInclusao);
+	}
+	
+	public String getIpCliente() {
+		return ipCliente;
+	}
+	
+	public void setIpCliente(String ipCliente) {
+		this.ipCliente = ipCliente;
 	}
 	
 	

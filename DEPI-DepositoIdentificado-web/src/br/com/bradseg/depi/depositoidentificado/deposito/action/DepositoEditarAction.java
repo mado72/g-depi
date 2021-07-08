@@ -50,7 +50,7 @@ public class DepositoEditarAction
 	@Override
 	protected CrudHelper<DepositoCampo, DepositoVO, DepositoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
-			crudHelper = new DepositoCrudHelper();
+			crudHelper = DepositoCrudHelper.singleton();
 		}
 		return crudHelper;
 	}
@@ -72,6 +72,12 @@ public class DepositoEditarAction
 		return lista;
 	}
 	
+	@Override
+	protected void prepararFormularioIncluir() {
+		getModel().preencherDadosIniciais();
+		super.prepararFormularioIncluir();
+	}
+	
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#incluir()
 	 */
@@ -80,12 +86,14 @@ public class DepositoEditarAction
 		try {
 			int codUsuario = getCodUsuarioLogado();
 			
-			String retorno = super.incluir();
 			DepositoEditarFormModel model = getModel();
+			model.setIpCliente(getIp());
+			
+			String retorno = super.incluir();
 			
 			List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias(codUsuario);
-			model.setCias(cias);
 			
+			model.setCias(cias);
 			if (cias != null && !cias.isEmpty()) {
 				CompanhiaSeguradoraVO ciaVO = cias.get(0);
 				definirCompanhia(codUsuario, ciaVO);
@@ -131,6 +139,7 @@ public class DepositoEditarAction
 			BancoVO banco = crudHelper.obterBanco(new BancoVO(CODIGO_BANCO_BRADESCO));
 			model.setCodBanco(String.valueOf(CODIGO_BANCO_BRADESCO));
 			model.setDescricaoBanco(banco.getDescricaoBanco());
+			model.setIpCliente(getIp());
 			model.setEstado(EstadoCrud.ALTERAR);
 			
 			return INPUT;

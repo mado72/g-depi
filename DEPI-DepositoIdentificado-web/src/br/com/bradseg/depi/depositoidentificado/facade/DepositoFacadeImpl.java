@@ -1,5 +1,6 @@
 package br.com.bradseg.depi.depositoidentificado.facade;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.bradseg.bsad.framework.core.exception.BusinessException;
 import br.com.bradseg.bsad.framework.core.exception.IntegrationException;
+import br.com.bradseg.bsad.framework.core.message.Message;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO;
 import br.com.bradseg.depi.depositoidentificado.cics.dao.CICSDepiDAO;
 import br.com.bradseg.depi.depositoidentificado.dao.AssociarMotivoDepositoDAO;
@@ -134,17 +136,122 @@ public class DepositoFacadeImpl implements DepositoFacade {
 
     /**
      * Inserir AssociarMotivoDeposito
-     * @param vo - DepositoVO.
+     * @param deposito - DepositoVO.
      * @throws IntegrationException - Integração.
      */
     @Override
-	public void inserir(DepositoVO vo) throws IntegrationException {
+	public void inserir(DepositoVO deposito) throws IntegrationException {
+        ParametroDepositoVO param = new ParametroDepositoVO();
+        param.setCompanhia(new CompanhiaSeguradoraVO(deposito.getCia().getCodigoCompanhia()));
+        param.setDepartamento(new DepartamentoVO(deposito.getDepartamento().getCodigoDepartamento(), null, deposito.getDepartamento().getSiglaDepartamento()));
+        param.setMotivoDeposito(new MotivoDepositoVO(deposito.getMotivoDeposito().getCodigoMotivoDeposito(), null, null));
+        param = parametroDAO.obterPorChave(param);
+                
+        validarObjetos(deposito);
+        validarChave(deposito);
 
-//    	amdDAO.inserir(vo);
-    	
+        validarParametros(deposito, param);
+        depositoDAO.inserir(deposito, param);
+        
+        complementaListaParcelas(deposito);
+        
+        if(!deposito.getListaParcelas().isEmpty()) {
+        	parcelasDAO.inserirDepositoCobranca(deposito.getListaParcelas());
+        }
+    }
+    
+    private void complementaListaParcelas(DepositoVO deposito) {
+		for(ParcelaCobrancaVO parcela : deposito.getListaParcelas()) {
+			DepositoVO dep = new DepositoVO();
+			dep.setCodigoDepositoIdentificado(deposito.getCodigoDepositoIdentificado());
+			parcela.setDeposito(dep);
+		}
+	}
+
+	private void validarObjetos(DepositoVO deposito) {
+    	BaseUtil.validarParametro(deposito, "Dep\u00f3sito");
+    	BaseUtil.validarParametro(deposito.getCia(), "Cia");
+    	BaseUtil.validarParametro(deposito.getDepartamento(), "Departamento");
+    	BaseUtil.validarParametro(deposito.getMotivoDeposito(), "Motivo");
+    	BaseUtil.validarParametro(deposito.getBanco(), "Banco");
+	}
+
+	@Override
+    public void alterar(DepositoVO deposito) {
+        ParametroDepositoVO param = new ParametroDepositoVO();
+        param.setCompanhia(deposito.getCia());
+        param.setDepartamento(deposito.getDepartamento());
+        param.setMotivoDeposito(deposito.getMotivoDeposito());
+        param = parametroDAO.obterPorChave(param);
+
+        validarChave(deposito);
+        validarParametros(deposito, param);
+        DepositoVO oldObj = depositoDAO.obterDepositoPorChave(deposito);
+
+        /**
+         * enviar - ok reeviar - ok rejeitado - ok
+         */
+        if (oldObj.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_ENVIADO) {
+            throw new DEPIBusinessException("msg.erro.deposito.naoPodeAlterar.tramite", String.valueOf(oldObj.getCodigoDepositoIdentificado()));
+        }
+
+        if (oldObj.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_ACEITO) {
+            throw new DEPIBusinessException("msg.erro.deposito.naoPodeAlterar.aceito", String.valueOf(oldObj.getCodigoDepositoIdentificado()));
+        }
+
+        if (oldObj.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_CANCELADO
+            || ConstantesDEPI.SIM.equals(oldObj.getIndicadorDepositoCancelado())) {
+            throw new DEPIBusinessException("msg.erro.deposito.naoPodeAlterar.cancelado", String.valueOf(oldObj.getCodigoDepositoIdentificado()));
+        }
+        
+        depositoDAO.atualizar(deposito, param);
     }
 
-    /**
+    private void validarParametros(DepositoVO deposito,
+			ParametroDepositoVO param) {
+        BaseUtil.assertTrueThrowException(BaseUtil.isNZB(deposito), ConstantesDEPI.MSG_CUSTOMIZADA,
+                "Dep\u00f3sito: deposito - DepositoVO \u00e9 null");
+
+            BaseUtil.assertTrueThrowException(BaseUtil.isNZB(param), ConstantesDEPI.MSG_CUSTOMIZADA,
+                "Par\u00e2metro: param - ParametroDepositoVO \u00e9 null");
+            
+            if (BaseUtil.isNZB(deposito.getObservacaoDeposito()) && BaseUtil.isNZB(param.getOutrosDocumentosNecessarios())){
+            	throw new DEPIBusinessException(ConstantesDEPI.MSG_CUSTOMIZADA,  
+            		"Obrigat\u00f3rio o preenchimento do campo 'Hist\u00f3rico de Dep\u00f3sito'");
+            }
+            
+            /**
+             * Linhas em ordem de preechimento.
+             */
+
+            BaseUtil.validarParametro(deposito.getIpCliente(), "IP do cliente");
+
+            BaseUtil.validarParametro(deposito.getPessoaDepositante(), "Depositante");
+
+            //LINHA PARA ACERTO NA INCLUS�O DE C�DIGO DEVIDO � INTEGRA��O COM AS PARCELAS DO CBBS.
+            if(!"GRV".equals(param.getDepartamento().getSiglaDepartamento()) && !"GRC".equals(param.getDepartamento().getSiglaDepartamento())) {
+            	BaseUtil.validarParametro(param.getCodigoSucursal(), deposito.getSucursal(), "Sucursal");
+            	BaseUtil.validarParametro(param.getCodigoApolice(), deposito.getApolice(), "Ap\u00f3lice");
+            	BaseUtil.validarParametro(param.getCodigoRamo(), deposito.getRamo(), "Ramo");
+            	BaseUtil.validarParametro(param.getCodigoEndosso(), deposito.getEndosso(), "Endosso");
+            	BaseUtil.validarParametro(param.getCodigoTipo(), deposito.getTipoDocumento(), "Tipo");
+            	BaseUtil.validarParametro(param.getCodigoItem(), deposito.getItem(), "ItemContabil");
+            }
+            
+            BaseUtil.validarParametro(param.getCodigoBloqueto(), deposito.getBloqueto(), "Bloqueto");
+            
+            BaseUtil.validarParametro(param.getCodigoProtocolo(), deposito.getProtocolo(), "Protocolo");
+            
+            BaseUtil.validarParametro(param.getCodigoDossie(), deposito.getDossie(), "Dossie");
+            BaseUtil.validarParametro(param.getCodigoParcela(), deposito.getParcela(), "Parcela");
+
+            BaseUtil.validarParametro(deposito.getTipoGrupoRecebimento(), "Tipo Grupo Recebimento");
+            BaseUtil.validarParametro(deposito.getDtVencimentoDeposito(), "Data Vencimento");
+
+            BaseUtil.validarParametro(deposito.getVlrDepositoRegistrado(), "Valor");
+	}
+
+	/**
      * Método de obter por filtro
      * @param codUsuario - BigDecimal.
      * @param filtro parâmetro depósito com o código do objeto requisitado
@@ -204,23 +311,37 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	 */
 	@Override
 	public void excluirLista(List<DepositoVO> voList) {
-/*		
-		StringBuilder referenciados = new StringBuilder();
+		List<Message> messages = new ArrayList<>();
+        
 		for (DepositoVO vo : voList) {
-			if (amdDAO.isReferenciado(vo)) {
-				referenciados.append(BaseUtil.getTextoFormatado(ConstantesDEPI.Geral.ERRO_EXCLUSAO_ITEM, vo.toString()));
+			
+			validarChave(vo);
+			BaseUtil.validarParametro(vo.getCodigoResponsavelUltimaAtualizacao(), "Usu\u00e1rio Logado");
+			DepositoVO dep = depositoDAO.obterDepositoPorChave(vo);
+			
+			if (dep.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_ENVIADO) {
+
+				messages.add(new Message("msg.erro.deposito.naoPodeExcluir.tramite", dep.getCodigoDepositoIdentificado()));
+				
+			} else if (dep.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_ACEITO) {
+				
+				messages.add(new Message("msg.erro.deposito.naoPodeExcluir.aceito", dep.getCodigoDepositoIdentificado()));
+
+			} else if (dep.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_CANCELADO
+					|| ConstantesDEPI.SIM.equals(dep.getIndicadorDepositoCancelado())) {
+
+				messages.add(new Message("msg.erro.deposito.naoPodeExcluir.cancelado", dep.getCodigoDepositoIdentificado()));
+				
+			} else {
+				
+				depositoDAO.excluir(dep);
+				
 			}
 		}
 		
-		if (referenciados.length() > 0) {
-			throw new DEPIBusinessException(ConstantesDEPI.ERRO_DEPENDENCIAS,
-					referenciados.toString(), "Dep\u00F3sito Identificado");
-		}
-		
-		for (DepositoVO vo : voList) {
-			amdDAO.excluir(vo);
-		}
-*/		
+        if (!messages.isEmpty()) {
+			throw new BusinessException(messages);
+        }
 	}
 
 	/* (non-Javadoc)
@@ -238,12 +359,12 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterDepartamentos(int, br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO)
 	 */
 	@Override
-	public List<DepartamentoVO> obterDepartamentosComRestricaoParametroDeposito(int codUsuario,
+	public List<DepartamentoVO> obterDepartamentosComRestricaoDeposito(int codUsuario,
 			CompanhiaSeguradoraVO ciaVO) {
 		LOGGER.trace("Obtendo departamentos com restri\u00E7\u00E3o de Parametro Dep\u00F3sito");
 		List<DepartamentoVO> deptos = deptoDAO.obterComRestricao(
 				ciaVO.getCodigoCompanhia(), codUsuario,
-				Tabelas.PARAMETRO_DEPOSITO);
+				Tabelas.DEPOSITO);
 		LOGGER.debug("Encontrou {} deptos", deptos.size());
 		return deptos;
 	}
@@ -260,7 +381,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
 						deptoCia.getCompanhia().getCodigoCompanhia(), 
 						deptoCia.getDepartamento().getCodigoDepartamento(), 
 						codUsuario,
-						Tabelas.PARAMETRO_DEPOSITO);
+						Tabelas.DEPOSITO);
 		LOGGER.debug("Encontrou {} motivos dep\u00F3sitos", motivos.size());
 		return motivos;
 	}

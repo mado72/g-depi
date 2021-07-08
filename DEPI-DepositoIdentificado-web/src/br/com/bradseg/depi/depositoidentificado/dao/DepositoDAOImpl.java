@@ -141,7 +141,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
             	throw new DEPIBusinessException(ConstantesDEPI.Geral.ERRO_INCLUSAO);
             }
             
-            vo.setCodigoDepositoIdentificado(key.getKey().intValue());
+            vo.setCodigoDepositoIdentificado(key.getKey().longValue());
             vo.setCodigoDigitoDeposito((int) vo.getDv());
             inserirDV(vo);
 
@@ -181,7 +181,7 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
         try {
         	
         	MapSqlParameterSource params = new MapSqlParameterSource();
-        	BaseUtil.prepararQuery(params, PREFIX_PARAM, 
+			BaseUtil.prepararQuery(params, PREFIX_PARAM, 
         			vo.getCia().getCodigoCompanhia(), // CCIA_SEGDR
         			vo.getSituacaoArquivoTransferencia(), // CSIT_DEP_ARQ_TRNSF
         			vo.getDepartamento().getCodigoDepartamento(), // CDEPTO_DEP_IDTFD
@@ -271,8 +271,10 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
     	MapSqlParameterSource params = new MapSqlParameterSource();
     	
     	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, 
-    			vo.getCodigoResponsavelUltimaAtualizacao(),
     			vo.getCodigoDepositoIdentificado());
+    	
+    	BaseUtil.prepararQuery(params, PREFIX_PARAM,
+    			vo.getCodigoResponsavelUltimaAtualizacao());
     	
     	Integer count = getJdbcTemplate().update(QueriesDepi.DEPOSITO_INATIVAR, params);
     	

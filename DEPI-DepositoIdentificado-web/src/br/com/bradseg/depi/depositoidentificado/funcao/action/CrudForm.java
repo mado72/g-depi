@@ -23,6 +23,8 @@ public abstract class CrudForm implements Serializable {
 	
 	private EstadoCrud estado;
 	
+	private String ipCliente;
+	
 	public abstract void preencherDadosIniciais();
 	
 	public boolean isDetalhar() {
@@ -79,6 +81,14 @@ public abstract class CrudForm implements Serializable {
 	 */
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+	}
+	
+	public String getIpCliente() {
+		return ipCliente;
+	}
+	
+	public void setIpCliente(String ipCliente) {
+		this.ipCliente = ipCliente;
 	}
 
 }

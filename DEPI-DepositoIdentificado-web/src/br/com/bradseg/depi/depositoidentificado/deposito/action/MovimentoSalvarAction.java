@@ -45,7 +45,7 @@ public class MovimentoSalvarAction extends
 	@Override
 	protected CrudHelper<DepositoCampo, DepositoVO, DepositoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
-			crudHelper = new DepositoCrudHelper();
+			crudHelper = DepositoCrudHelper.singleton();
 		}
 		return crudHelper;
 	}

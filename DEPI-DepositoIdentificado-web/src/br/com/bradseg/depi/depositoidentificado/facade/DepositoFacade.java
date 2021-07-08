@@ -66,7 +66,7 @@ public interface DepositoFacade {
 	 * @param ciaVO Companhia
 	 * @return Lista de departamentos
 	 */
-	List<DepartamentoVO> obterDepartamentosComRestricaoParametroDeposito(int codUsuario,
+	List<DepartamentoVO> obterDepartamentosComRestricaoDeposito(int codUsuario,
 			CompanhiaSeguradoraVO ciaVO);
 
 	/**
@@ -198,5 +198,7 @@ public interface DepositoFacade {
 	void alterarMovimento(MovimentoDepositoVO vo);
 
 	LancamentoDepositoVO obterLancamentoDeposito(DepositoVO vo);
+
+	void alterar(DepositoVO vo);
 
 }

@@ -23,6 +23,8 @@ public interface ParcelasPendentesDAO {
 	 * @return List<ParcelaCobrancaVO> - lista com os dados de retorno.
 	 */
 	public List<ParcelaCobrancaVO> listarParcelasAssociadas(ParcelaCobrancaVO parcelaCobranca);
+
+	public void inserirDepositoCobranca(List<ParcelaCobrancaVO> listaParcelas);
 	
 	/**
 	 * Método que lista os detalhes das parcelas associadas.

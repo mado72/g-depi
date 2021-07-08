@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.ParcelaCobrancaDataMapper;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.ParcelaCobrancaVO;
 
@@ -45,23 +46,25 @@ public class ParcelasPendentesDAOImpl extends JdbcDao implements ParcelasPendent
 	 * Método que insere um registro relativo é um deposito.
 	 * @param listaParcelas - objeto com os dados populados.
 	 */	
+	@Override
 	public void inserirDepositoCobranca(List<ParcelaCobrancaVO> listaParcelas) {
 
 		try {
 			
 			MapSqlParameterSource params = new MapSqlParameterSource();
 			
-            for(ParcelaCobrancaVO parcelaCobranca : listaParcelas) {
+            for (ParcelaCobrancaVO parcelaCobranca : listaParcelas) {
             	
-            	params.addValue("prm1",  parcelaCobranca.getDeposito().getCodigoDepositoIdentificado());
-            	params.addValue("prm2",  parcelaCobranca.getCodigoParcela());
-            	params.addValue("prm3",  parcelaCobranca.getCodigoIdentificadorOrigem());
-            	params.addValue("prm4",  parcelaCobranca.getValorParcelaCobrado());
-            	params.addValue("prm5",  parcelaCobranca.getValorIofCobrado());
-            	params.addValue("prm6",  Double.valueOf(0));
-            	params.addValue("prm7",  Double.valueOf(0));
-            	params.addValue("prm8",  new Date(parcelaCobranca.getDataVencimento().getTime()));
-            	params.addValue("prm9",  parcelaCobranca.getCodigoUsuarioAtualizador());
+				BaseUtil.prepararQuery(params, BaseUtil.PARAM_PRM,
+						parcelaCobranca.getDeposito().getCodigoDepositoIdentificado(),
+						parcelaCobranca.getCodigoParcela(), 
+						parcelaCobranca.getCodigoIdentificadorOrigem(),
+						parcelaCobranca.getValorParcelaCobrado(),  
+						parcelaCobranca.getValorIofCobrado(),  
+						Double.valueOf(0),  
+						Double.valueOf(0),  
+						new Date(parcelaCobranca.getDataVencimento().getTime()),  
+						parcelaCobranca.getCodigoUsuarioAtualizador());
                 
                 getJdbcTemplate().update(QueriesDepi.PARCELASPENDENTES_INSERIRDEPOSITOCOBRANCA, params);	
             }

@@ -52,6 +52,18 @@ public class DepositoCrudHelper implements
 	private transient DepositoFacade facade;
 	
 	private transient final SimpleDateFormat ddmmmyyyy = new SimpleDateFormat("dd/MM/yyyy");
+	
+	private final static DepositoCrudHelper SINGLETON = new DepositoCrudHelper();
+	
+	private DepositoEditarFormModel model;
+	
+	private DepositoCrudHelper() {
+		// Ocultado
+	}
+	
+	public static DepositoCrudHelper singleton() {
+		return SINGLETON;
+	}
 
 	public DepositoFacade getFacade() {
 		return facade;
@@ -141,7 +153,10 @@ public class DepositoCrudHelper implements
 
 	@Override
 	public DepositoEditarFormModel criarCrudModel() {
-		return new DepositoEditarFormModel();
+		if (model == null) {
+			model = new DepositoEditarFormModel();
+		}
+		return model;
 	}
 	
 	@Override
@@ -287,8 +302,13 @@ public class DepositoCrudHelper implements
 		vo.setCodigoResponsavelUltimaAtualizacao(usuarioId);
 		vo.setDataHoraAtualizacao(new Date());
 		
-		facade.inserir(vo);
-		return EstadoRegistro.NOVO;
+		if (BaseUtil.isNZB(vo.getCodigoDepositoIdentificado())) {
+			facade.inserir(vo);
+			return EstadoRegistro.NOVO;
+		}
+		
+		facade.alterar(vo);
+		return EstadoRegistro.PERSISTIDO;
 	}
 
 	@Override
@@ -319,7 +339,7 @@ public class DepositoCrudHelper implements
 	 * @return Lista de Departamentos
 	 */
 	public List<DepartamentoVO> obterDepartamentos(int codUsuario, CompanhiaSeguradoraVO ciaVO) {
-		return facade.obterDepartamentosComRestricaoParametroDeposito(codUsuario, ciaVO);
+		return facade.obterDepartamentosComRestricaoDeposito(codUsuario, ciaVO);
 	}
 	
 	/**

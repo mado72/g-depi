@@ -120,6 +120,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	}
 
 	protected void prepararFormularioIncluir() {
+		this.model.setIpCliente(getIp());
 		this.model.setEstado(EstadoCrud.INSERIR);
 		this.model.setSubtitulo(getText(getCrudHelper().getChaveTituloIncluir()));
 	}
@@ -139,6 +140,7 @@ public abstract class EditarFormAction<C extends IEntidadeCampo, VO, F extends C
 	protected void prepararFormularioAlterar() {
 		CrudHelper<C, VO, F> crudHelper = getCrudHelper();
 
+		this.model.setIpCliente(getIp());
 		this.model.setEstado(EstadoCrud.ALTERAR);
 		this.model.setSubtitulo(getText(crudHelper.getChaveTituloAlterar()));
 		

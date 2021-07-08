@@ -14,6 +14,7 @@ import br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.CrudForm.EstadoCrud;
 import br.com.bradseg.depi.depositoidentificado.funcao.action.SalvarAction;
 import br.com.bradseg.depi.depositoidentificado.model.enumerated.DepositoCampo;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.vo.DepositoVO;
 
@@ -47,7 +48,7 @@ public class DepositoSalvarAction extends
 	@Override
 	protected CrudHelper<DepositoCampo, DepositoVO, DepositoEditarFormModel> getCrudHelper() {
 		if (crudHelper == null) {
-			crudHelper = new DepositoCrudHelper();
+			crudHelper = DepositoCrudHelper.singleton();
 		}
 		return crudHelper;
 	}
@@ -80,18 +81,31 @@ public class DepositoSalvarAction extends
 	
 	public String salvar() {
 		LOGGER.info("Formul\u00e1rio validado. Chamando m\u00e9todo para concluir a opera\u00e7\u00e3o.");
-		String resultado = super.execute();
+		
+		return execute();
+	}
+	
+	@Override
+	protected void persistirDados() {
 		clearMessages();
 		
 		DepositoEditarFormModel model = getModel();
-		if (model.getEstado() == EstadoCrud.INSERIR) {
+		model.setIpCliente(getIp());
+        
+    	try {
+			Long pessoaDepositante = Long.valueOf(BaseUtil.retiraMascaraCNPJ(model.getCpfCnpj()));
+			model.setPessoaDepositante(pessoaDepositante);
+		} catch (NumberFormatException e) {
+			model.setPessoaDepositante(null);
+		}
+    	
+		super.persistirDados();
+		if (getModel().getEstado() == EstadoCrud.INSERIR) {
 			addActionMessage(getText(ConstantesDEPI.MSG_INSERIR_EXITO));
 		}
 		else {
 			addActionMessage(getText(ConstantesDEPI.MSG_ALTERAR_EXITO));
 		}
-
-		return resultado;
 	}
 
 	public void validateSalvarProrrogarCancelar() {
