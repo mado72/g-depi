@@ -355,10 +355,13 @@ public class DepositoCrudHelper implements
 	/**
 	 * Lista os bancos associados a uma companhia
 	 * @param cia Companhia
+	 * @param depto Depto
+	 * @param motivoVO Motivo
 	 * @return Lista de bancos
 	 */
-	public List<BancoVO> obterBancos(CompanhiaSeguradoraVO cia) {
-		return facade.obterBancos(cia);
+	public List<BancoVO> obterBancos(CompanhiaSeguradoraVO cia,
+			DepartamentoVO depto, MotivoDepositoVO motivoVO) {
+		return facade.obterBancos(cia, depto, motivoVO);
 	}
 	
 	/**
@@ -420,27 +423,31 @@ public class DepositoCrudHelper implements
 	/**
 	 * Obtém lista de agências de um banco
 	 * @param ciaVO Companhia
+	 * @param depto Departamento
 	 * @param bancoVO Banco
+	 * @param motivoVO Motivo
 	 * @return Agências
 	 */
-	public List<AgenciaVO> obterAgencias(CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO) {
-		return facade.obterAgencias(ciaVO, bancoVO);
+	public List<AgenciaVO> obterAgencias(CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto, BancoVO bancoVO, MotivoDepositoVO motivoVO) {
+		return facade.obterAgenciasMotivo(ciaVO, depto, bancoVO, motivoVO);
 	}
 
 	/**
 	 * Obtém lista de contas
 	 * @param codUsuario Usuário logado
 	 * @param ciaVO Companhia
+	 * @param depto Depto
+	 * @param motivoVO Motivo
 	 * @param bancoVO Banco
 	 * @param agenciaVO Agência
 	 * @return Lista de contas
 	 */
 	public List<ContaCorrenteAutorizadaVO> obterContasCorrente(
 			int codUsuario,
-			CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO,
-			AgenciaVO agenciaVO) {
+			CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto,
+			MotivoDepositoVO motivoVO, BancoVO bancoVO, AgenciaVO agenciaVO) {
 		
-		return facade.obterContas(codUsuario, ciaVO, bancoVO, agenciaVO);
+		return facade.obterContasComRestricaoAssociacaoMotivos(ciaVO, depto, motivoVO, bancoVO, agenciaVO);
 	}
 
 	public void prorrogar(DepositoEditarFormModel model, int codUsuarioLogado) {

@@ -6,7 +6,12 @@ package br.com.bradseg.depi.depositoidentificado.dao;
 import java.util.List;
 
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
+import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
  * Oferece métodos para consultar e atualizar dados de conta corrente no
@@ -56,5 +61,9 @@ public interface ContaCorrenteDAO {
 	 */
 	List<ContaCorrenteAutorizadaVO> obterPorFiltroComRestricao(int codUsuario,
 			FiltroUtil filtro);
+
+	List<ContaCorrenteAutorizadaVO> obterComRestricaoAssociacaoMotivos(
+			CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto,
+			MotivoDepositoVO motivoVO, BancoVO bancoVO, AgenciaVO agenciaVO);
 
 }

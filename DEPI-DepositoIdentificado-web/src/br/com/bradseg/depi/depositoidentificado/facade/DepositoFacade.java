@@ -80,9 +80,11 @@ public interface DepositoFacade {
 	/**
 	 * Lista os bancos relacionados a uma companhia
 	 * @param cia Companhia
+	 * @param depto depto
+	 * @param motivoVO motivoVO
 	 * @return Lista de bancos
 	 */
-	List<BancoVO> obterBancos(CompanhiaSeguradoraVO cia);
+	List<BancoVO> obterBancos(CompanhiaSeguradoraVO cia, DepartamentoVO depto, MotivoDepositoVO motivoVO);
 
 	/**
 	 * Obtém os dados de um banco
@@ -142,23 +144,17 @@ public interface DepositoFacade {
 	DepartamentoVO obterDepartamento(DepartamentoVO departamentoVO);
 
 	/**
-	 * Obtém lista de agências de um banco associadas a um banco
-	 * @param ciaVO Companhia
-	 * @param bancoVO Banco
-	 * @return Agências
-	 */
-	List<AgenciaVO> obterAgencias(CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO);
-
-	/**
 	 * Obtém lista de contas
-	 * @param codUsuario código do usuário
 	 * @param ciaVO Companhia
+	 * @param depto Depto
+	 * @param motivoVO Motivo
 	 * @param bancoVO Banco
 	 * @param agenciaVO Agência
 	 * @return Lista de contas
 	 */
-	List<ContaCorrenteAutorizadaVO> obterContas(int codUsuario,
-			CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO, AgenciaVO agenciaVO);
+	List<ContaCorrenteAutorizadaVO> obterContasComRestricaoAssociacaoMotivos(
+			CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto,
+			MotivoDepositoVO motivoVO, BancoVO bancoVO, AgenciaVO agenciaVO);
 
 	/**
 	 * Obtém os dados de uma conta
@@ -200,5 +196,17 @@ public interface DepositoFacade {
 	LancamentoDepositoVO obterLancamentoDeposito(DepositoVO vo);
 
 	void alterar(DepositoVO vo);
+
+
+	/**
+	 * Obtém lista de agências de um banco associadas a um banco
+	 * @param ciaVO Companhia
+	 * @param depto TODO
+	 * @param bancoVO Banco
+	 * @param motivoVO motivo
+	 * @return Agências
+	 */
+	List<AgenciaVO> obterAgenciasMotivo(CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto,
+			BancoVO bancoVO, MotivoDepositoVO motivoVO);
 
 }

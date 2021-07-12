@@ -15,10 +15,14 @@ import org.springframework.stereotype.Repository;
 import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.AgenciaDataMapper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.model.enumerated.Tabelas;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
 import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
 import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
 import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
  * Fornece métodos para acessar dados de banco 
@@ -67,6 +71,36 @@ public class BancoDAOImpl extends JdbcDao implements BancoDAO {
 		
 	}
 	
+	@Override
+	public List<BancoVO> obterBancosMotivoDeposito(CompanhiaSeguradoraVO cia, DepartamentoVO depto, MotivoDepositoVO motivo) {
+		
+		try {
+			MapSqlParameterSource params = new MapSqlParameterSource();
+			
+			BaseUtil.prepararQuery(params, BaseUtil.PARAM_WHR, 
+					cia.getCodigoCompanhia(),
+					depto.getCodigoDepartamento(),
+					motivo.getCodigoMotivoDeposito());
+			
+			List<Integer> codigosBanco = getJdbcTemplate().queryForList(
+					QueriesDepi.CONTACORRENTEAUTORIZADA_OBTERBANCOSCOMRESTRICAODEASSOCIACAODEMOTIVOS, params,
+					Integer.class);
+			
+			ArrayList<BancoVO> bancos = new ArrayList<>();
+			for (Integer codBancoExterno : codigosBanco) {
+				BancoVO banco = new BancoVO(codBancoExterno);
+				bancos.add(banco);
+			}
+			
+			return bancos;
+			
+		}
+		catch (Exception e) {
+			throw new DEPIIntegrationException(e);
+		}
+		
+	}
+	
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.dao.BancoDAO#obterAgencias(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, br.com.bradseg.depi.depositoidentificado.vo.BancoVO)
 	 */
@@ -80,6 +114,24 @@ public class BancoDAOImpl extends JdbcDao implements BancoDAO {
 		
 		return getJdbcTemplate().query(
 				QueriesDepi.CONTACORRENTEAUTORIZADA_OBTERAGENCIAS, params,
+				new AgenciaDataMapper());
+	}
+	
+	@Override
+	public List<AgenciaVO> obterAgenciasComRestricaoMotivo(
+			CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto, BancoVO bancoVO,
+			MotivoDepositoVO motivoVO, Tabelas contaCorrenteMotivoDeposito) {
+		
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		BaseUtil.prepararQuery(params, BaseUtil.PARAM_WHR, 
+				ciaVO.getCodigoCompanhia(),
+				depto.getCodigoDepartamento(),
+				motivoVO.getCodigoMotivoDeposito(),
+				bancoVO.getCdBancoExterno());
+		
+		return getJdbcTemplate().query(
+				QueriesDepi.CONTACORRENTEAUTORIZADA_OBTERAGENCIASCOMRESTRICAODEASSOCIACAODEMOTIVOS, params,
 				new AgenciaDataMapper());
 	}
 }

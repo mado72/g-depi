@@ -16,10 +16,16 @@ import br.com.bradseg.bsad.framework.core.jdbc.JdbcDao;
 import br.com.bradseg.depi.depositoidentificado.dao.mapper.ContaCorrenteRowMapper;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIBusinessException;
 import br.com.bradseg.depi.depositoidentificado.exception.DEPIIntegrationException;
+import br.com.bradseg.depi.depositoidentificado.util.BaseUtil;
 import br.com.bradseg.depi.depositoidentificado.util.ConstantesDEPI;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.util.QueriesDepi;
+import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.BancoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO;
 import br.com.bradseg.depi.depositoidentificado.vo.ContaCorrenteAutorizadaVO;
+import br.com.bradseg.depi.depositoidentificado.vo.DepartamentoVO;
+import br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO;
 
 /**
  * Implementa os métodos de {@link ContaCorrenteDAO}
@@ -161,6 +167,25 @@ public class ContaCorrenteDAOImpl extends JdbcDao implements ContaCorrenteDAO {
 		StringBuilder query = new StringBuilder(QueriesDepi.CONTACORRENTEAUTORIZADA_OBTERPORFILTROCOMRESTRICAODEGRUPOACESSO);
 		
 		return consultarPorFiltro(filtro, query, params);
+	}
+	
+	@Override
+	public List<ContaCorrenteAutorizadaVO> obterComRestricaoAssociacaoMotivos(
+			CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto,
+			MotivoDepositoVO motivoVO, BancoVO bancoVO, AgenciaVO agenciaVO) {
+		
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		BaseUtil.prepararQuery(params, BaseUtil.PARAM_WHR,
+				ciaVO.getCodigoCompanhia(),
+				depto.getCodigoDepartamento(),
+				motivoVO.getCodigoMotivoDeposito(),
+				bancoVO.getCdBancoExterno(),
+				agenciaVO.getCdAgenciaExterno());
+	
+		String sql = QueriesDepi.CONTACORRENTEAUTORIZADA_OBTERCONTACORRENTECOMRESTRICAODEASSOCIACAODEMOTIVOS;
+		
+		return getJdbcTemplate().query(sql, params,
+				new ContaCorrenteRowMapper());
 	}
 
 	private List<ContaCorrenteAutorizadaVO> consultarPorFiltro(

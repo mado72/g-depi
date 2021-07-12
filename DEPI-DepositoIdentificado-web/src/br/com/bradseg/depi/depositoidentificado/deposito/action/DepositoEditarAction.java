@@ -91,9 +91,8 @@ public class DepositoEditarAction
 			
 			String retorno = super.incluir();
 			
-			List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias(codUsuario);
-			
-			model.setCias(cias);
+			List<CompanhiaSeguradoraVO> cias = carregarComboCias(codUsuario,
+					model);
 			if (cias != null && !cias.isEmpty()) {
 				CompanhiaSeguradoraVO ciaVO = cias.get(0);
 				definirCompanhia(codUsuario, ciaVO);
@@ -108,7 +107,7 @@ public class DepositoEditarAction
 			return INPUT;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#alterar()
 	 */
@@ -149,7 +148,7 @@ public class DepositoEditarAction
 			return INPUT;
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see br.com.bradseg.depi.depositoidentificado.funcao.action.EditarFormAction#excluir()
 	 */
@@ -205,51 +204,58 @@ public class DepositoEditarAction
 		return retorno;
 	}
 
+	private List<CompanhiaSeguradoraVO> carregarComboCias(int codUsuario,
+			DepositoEditarFormModel model) {
+		List<CompanhiaSeguradoraVO> cias = crudHelper.obterCompanhias(codUsuario);
+		
+		model.setCias(cias);
+		return cias;
+	}
+
+	private List<DepartamentoVO> carregarComboDeptos(int codUsuario,
+			CompanhiaSeguradoraVO ciaVO, DepositoEditarFormModel model) {
+		List<DepartamentoVO> deptos = crudHelper.obterDepartamentos(codUsuario, ciaVO);
+		model.setDeptos(deptos);
+		return deptos;
+	}
+
 	private void definirCompanhia(int codUsuario, CompanhiaSeguradoraVO ciaVO) {
 		int codigoCompanhia = ciaVO.getCodigoCompanhia();
 		
 		DepositoEditarFormModel model = getModel();
 		model.setCodigoCompanhia(String.valueOf(codigoCompanhia));
 		
-		List<DepartamentoVO> deptos = crudHelper.obterDepartamentos(codUsuario, ciaVO);
-		model.setDeptos(deptos);
+		List<DepartamentoVO> deptos = carregarComboDeptos(codUsuario, ciaVO,
+				model);
 		
 		if (! deptos.isEmpty()) {
 			DepartamentoVO deptoVO = deptos.get(0);
 			definirDepartamento(codUsuario, ciaVO, deptoVO);
 		}
-		
-		List<BancoVO> bancos = crudHelper.obterBancos(ciaVO);
-		model.setBancos(bancos);
-		
-		if (! bancos.isEmpty()) {
-			BancoVO bancoVO = bancos.get(0);
-			definirBanco(ciaVO, bancoVO);
-		}
 	}
-	
-	private void definirBanco(CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO) {
+
+	private void definirBanco(CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto, BancoVO bancoVO, MotivoDepositoVO motivoVO) {
 		DepositoEditarFormModel model = getModel();
 		model.setCodBanco(String.valueOf(bancoVO.getCdBancoExterno()));
 
-		List<AgenciaVO> agencias = crudHelper.obterAgencias(ciaVO, bancoVO);
+		List<AgenciaVO> agencias = crudHelper.obterAgencias(ciaVO, depto, bancoVO, motivoVO);
 		model.setAgencias(agencias);
 		
 		if (! agencias.isEmpty()) {
 			AgenciaVO agenciaVO = agencias.get(0);
-			definirAgencia(ciaVO, bancoVO, agenciaVO);
+			definirAgencia(ciaVO, depto, bancoVO, agenciaVO, motivoVO);
 		}
 	}
 
-	private void definirAgencia(CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO,
-			AgenciaVO agenciaVO) {
+	private void definirAgencia(CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto,
+			BancoVO bancoVO, AgenciaVO agenciaVO, MotivoDepositoVO motivoVO) {
 		DepositoEditarFormModel model = getModel();
 		model.setCodigoAgencia(String.valueOf(agenciaVO.getCdAgenciaExterno()));
 		
 		int codUsuario = getCodUsuarioLogado();
 		
-		List<ContaCorrenteAutorizadaVO> contas = crudHelper
-				.obterContasCorrente(codUsuario, ciaVO, bancoVO, agenciaVO);
+		List<ContaCorrenteAutorizadaVO> contas = crudHelper.obterContasCorrente(
+				codUsuario, ciaVO, depto, motivoVO, bancoVO, agenciaVO);
 		model.setContas(contas);
 		
 		if (!contas.isEmpty()) {
@@ -268,14 +274,24 @@ public class DepositoEditarAction
 			CompanhiaSeguradoraVO ciaVO, DepartamentoVO deptoVO) {
 		DepartamentoCompanhiaVO deptoCia = new DepartamentoCompanhiaVO(ciaVO, deptoVO);
 		
-		String codDepto = String.valueOf(deptoVO.getCodigoDepartamento());
-		getModel().setCodigoDepartamento(codDepto);
+		DepositoEditarFormModel model = getModel();
 		
+		String codDepto = String.valueOf(deptoVO.getCodigoDepartamento());
+		model.setCodigoDepartamento(codDepto);
+
 		List<MotivoDepositoVO> motivos = crudHelper.obterMotivosDeposito(codUsuario, deptoCia);
-		getModel().setMotivos(motivos);
+		model.setMotivos(motivos);
 		
 		MotivoDepositoVO motivo = motivos.get(0);
 		definirMotivo(motivo);
+
+		List<BancoVO> bancos = crudHelper.obterBancos(ciaVO, deptoVO, motivo);
+		model.setBancos(bancos);
+		
+		if (! bancos.isEmpty()) {
+			BancoVO bancoVO = bancos.get(0);
+			definirBanco(ciaVO, deptoVO, bancoVO, motivo);
+		}
 	}
 
 	private void definirMotivo(MotivoDepositoVO motivo) {

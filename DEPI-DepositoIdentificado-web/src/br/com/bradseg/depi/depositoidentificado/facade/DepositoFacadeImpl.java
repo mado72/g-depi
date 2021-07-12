@@ -364,7 +364,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
 		LOGGER.trace("Obtendo departamentos com restri\u00E7\u00E3o de Parametro Dep\u00F3sito");
 		List<DepartamentoVO> deptos = deptoDAO.obterComRestricao(
 				ciaVO.getCodigoCompanhia(), codUsuario,
-				Tabelas.DEPOSITO);
+				Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO);
 		LOGGER.debug("Encontrou {} deptos", deptos.size());
 		return deptos;
 	}
@@ -381,7 +381,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
 						deptoCia.getCompanhia().getCodigoCompanhia(), 
 						deptoCia.getDepartamento().getCodigoDepartamento(), 
 						codUsuario,
-						Tabelas.DEPOSITO);
+						Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO);
 		LOGGER.debug("Encontrou {} motivos dep\u00F3sitos", motivos.size());
 		return motivos;
 	}
@@ -390,9 +390,9 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterBancos(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO)
 	 */
 	@Override
-	public List<BancoVO> obterBancos(CompanhiaSeguradoraVO cia) {
+	public List<BancoVO> obterBancos(CompanhiaSeguradoraVO cia, DepartamentoVO depto, MotivoDepositoVO motivoVO) {
 		LOGGER.trace("Obtendo bancos");
-		List<BancoVO> bancos = bancoDAO.obterBancos(cia);
+		List<BancoVO> bancos = bancoDAO.obterBancosMotivoDeposito(cia, depto, motivoVO);
 		LOGGER.debug("Encontrou {} bancos", bancos.size());
 		return cicsDAO.obterBancos(bancos);
 	}
@@ -458,14 +458,16 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	public DepartamentoVO obterDepartamento(DepartamentoVO departamentoVO) {
 		return deptoDAO.obterPorChave(departamentoVO);
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterAgencias(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, br.com.bradseg.depi.depositoidentificado.vo.BancoVO)
+	 * @see br.com.bradseg.depi.depositoidentificado.facade.DepositoFacade#obterAgenciasMotivo(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, br.com.bradseg.depi.depositoidentificado.vo.BancoVO, br.com.bradseg.depi.depositoidentificado.vo.MotivoDepositoVO)
 	 */
 	@Override
-	public List<AgenciaVO> obterAgencias(CompanhiaSeguradoraVO ciaVO,
-			BancoVO bancoVO) {
-		List<AgenciaVO> agencias = bancoDAO.obterAgencias(ciaVO, bancoVO);
+	public List<AgenciaVO> obterAgenciasMotivo(CompanhiaSeguradoraVO ciaVO,
+			DepartamentoVO depto, BancoVO bancoVO, MotivoDepositoVO motivoVO) {
+		List<AgenciaVO> agencias = bancoDAO.obterAgenciasComRestricaoMotivo(
+				ciaVO, depto, bancoVO, motivoVO,
+				Tabelas.CONTA_CORRENTE_MOTIVO_DEPOSITO);
 		for (AgenciaVO vo : agencias) {
 			String nomeAgencia = cicsDAO.obterAgencia(vo.getCdBancoExterno(), vo.getCdAgenciaExterno());
 			vo.setDescricaoAgencia(nomeAgencia);
@@ -477,32 +479,12 @@ public class DepositoFacadeImpl implements DepositoFacade {
 	 * @see br.com.bradseg.depi.depositoidentificado.facade.AssociarMotivoDepositoFacade#obterContas(br.com.bradseg.depi.depositoidentificado.vo.CompanhiaSeguradoraVO, br.com.bradseg.depi.depositoidentificado.vo.BancoVO, br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO)
 	 */
 	@Override
-	public List<ContaCorrenteAutorizadaVO> obterContas(
-			int codUsuario, CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO, AgenciaVO agenciaVO) {
+	public List<ContaCorrenteAutorizadaVO> obterContasComRestricaoAssociacaoMotivos(
+			CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto,
+			MotivoDepositoVO motivoVO, BancoVO bancoVO, AgenciaVO agenciaVO) {
 
-		CriterioConsultaVO<?> criterioCia = new CriterioConsultaVO<>(
-				ContaCorrenteAutorizadaCampo.CodigoCia,
-				TipoOperacao.IgualNumerico, String.valueOf(ciaVO
-						.getCodigoCompanhia()), "param1");
-		
-		CriterioConsultaVO<?> criterioBanco = new CriterioConsultaVO<>(
-				ContaCorrenteAutorizadaCampo.CodigoBanco,
-				TipoOperacao.IgualNumerico,
-				String.valueOf(bancoVO.getCdBancoExterno()),
-				"param2");
-		
-		CriterioConsultaVO<?> criterioAgencia = new CriterioConsultaVO<>(
-				ContaCorrenteAutorizadaCampo.CodigoAgencia,
-				TipoOperacao.IgualNumerico,
-				String.valueOf(agenciaVO.getCdAgenciaExterno()),
-				"param3");
-
-		FiltroUtil filtro = new FiltroUtil();
-		filtro.adicionaCriterio(criterioCia);
-		filtro.adicionaCriterio(criterioBanco);
-		filtro.adicionaCriterio(criterioAgencia);
-		
-		return contaDAO.obterPorFiltroComRestricao(codUsuario, filtro);
+		return contaDAO.obterComRestricaoAssociacaoMotivos(ciaVO, depto,
+				motivoVO, bancoVO, agenciaVO);
 	}
 	
 	/* (non-Javadoc)
