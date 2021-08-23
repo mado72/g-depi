@@ -421,90 +421,30 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
 
     @Override
 	public DepositoVO obterPorMotivo(MotivoDepositoVO vo)  {
-/*    	beginMethod(LOGGER, "obterPorMotivo(MotivoDepositoVO vo)");
-        DataSource ds;
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        String sql = this.getSQL("deposito.obterPorMotivo");
-        DepositoVO deposito = new DepositoVO();
-
-        try {
-
-            ds = getDAO().getDataSource();
-            conn = ds.getConnection();
-
-            pstm = conn.prepareStatement(sql);
-
-            pstm.setInt(1, vo.getCodigoMotivoDeposito());
-
-            rs = pstm.executeQuery();
-
-            if (rs != null) {
-                while (rs.next()) {
-                    deposito.setCodigoDepositoIdentificado(rs.getLong(1));
-                    deposito.setSituacaoArquivoTransferencia(rs.getInt(1));
-                }
-            }
-            return deposito;
-        } catch (DAOException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } catch (SQLException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } finally {
-        	closeResultSet(rs);
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "obterPorMotivo(MotivoDepositoVO vo)");
-        }
-        return null;*/
-    	 return null;
+    	MapSqlParameterSource params = new MapSqlParameterSource();
+    	
+    	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, 
+    			vo.getCodigoMotivoDeposito());
+    	
+    	try {
+    		return getJdbcTemplate().queryForObject(QueriesDepi.DEPOSITO_OBTERPORMOTIVO, params, new DepositoDataMapper());
+    	} catch (EmptyResultDataAccessException e) {
+    		throw new DEPIIntegrationException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+    	}
     }
 
     @Override
 	public DepositoVO obterPorDepartamento(DepartamentoVO vo)  {
-    	/* beginMethod(LOGGER, "obterPorDepartamento(DepartamentoVO vo)");
-        DataSource ds;
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        String sql = this.getSQL("deposito.obterPorDepartamento");
-        DepositoVO deposito = new DepositoVO();
-
-        try {
-
-            ds = getDAO().getDataSource();
-            conn = ds.getConnection();
-
-            pstm = conn.prepareStatement(sql);
-
-            pstm.setInt(1, vo.getCodigoDepartamento());
-
-            rs = pstm.executeQuery();
-
-            if (rs != null) {
-                while (rs.next()) {
-                    deposito.setCodigoDepositoIdentificado(rs.getLong(1));
-                    deposito.setSituacaoArquivoTransferencia(rs.getInt(1));
-                }
-            }
-            return deposito;
-        } catch (DAOException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } catch (SQLException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } finally {
-          	closeResultSet(rs);
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "obterPorDepartamento(DepartamentoVO vo)");
-        }
-        return null; */
-    	return null;
+    	MapSqlParameterSource params = new MapSqlParameterSource();
+    	
+    	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, 
+    			vo.getCodigoDepartamento());
+    	
+    	try {
+    		return getJdbcTemplate().queryForObject(QueriesDepi.DEPOSITO_OBTERPORDEPARTAMENTO, params, new DepositoDataMapper());
+    	} catch (EmptyResultDataAccessException e) {
+    		throw new DEPIIntegrationException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+    	}
     }
 
     /**
@@ -515,172 +455,53 @@ public class DepositoDAOImpl extends JdbcDao implements DepositoDAO {
      */
     @Override
 	public DepositoVO obterPorContaCorrente(ContaCorrenteAutorizadaVO vo)  {
-		return null;
-   /* 	beginMethod(LOGGER, "obterPorContaCorrente(ContaCorrenteAutorizadaVO vo)");
-        DataSource ds;
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        String sql = this.getSQL("deposito.obterPorContaCorrente");
-        DepositoVO deposito = new DepositoVO();
-
-        try {
-
-            ds = getDAO().getDataSource();
-            conn = ds.getConnection();
-
-            pstm = conn.prepareStatement(sql);
-
-            pstm.setLong(1, vo.getContaCorrente());
-            pstm.setInt(2, vo.getBanco().getCdBancoExterno());
-            pstm.setInt(3, vo.getCodigoAgencia());
-
-            rs = pstm.executeQuery();
-
-            if (rs != null) {
-                while (rs.next()) {
-                    deposito.setCodigoDepositoIdentificado(rs.getLong(1));
-                    deposito.setSituacaoArquivoTransferencia(rs.getInt(1));
-                }
-            }
-            return deposito;
-        } catch (DAOException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } catch (SQLException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } finally {
-          	closeResultSet(rs);
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "obterPorContaCorrente(ContaCorrenteAutorizadaVO vo)");
-        }
-        return null; */
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		
+		BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, 
+				vo.getBanco().getCdBancoExterno(),
+				vo.getCodigoAgencia(),
+				vo.getContaCorrente());
+		
+		try {
+			return getJdbcTemplate().queryForObject(QueriesDepi.DEPOSITO_OBTERPORCONTACORRENTE, params, new DepositoDataMapper());
+		} catch (EmptyResultDataAccessException e) {
+			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+		}
     }
 
     @Override
 	public long obterSituacaoDeposito(DepositoVO deposito)  {
-		return 0;
-    /*	beginMethod(LOGGER, "obterSituacaoDeposito(DepositoVO deposito)");
-        DataSource ds;
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        Long situacaoDeposito = null;
-        String sql = this.getSQL("deposito.obterSituacao");
 
-        try {
-            ds = getDAO().getDataSource();
-            conn = ds.getConnection();
-            pstm = conn.prepareStatement(sql);
-
-            pstm.setLong(1, deposito.getCodigoDepositoIdentificado());
-
-            rs = pstm.executeQuery();
-
-            if (rs != null) {
-                while (rs.next()) {
-                    situacaoDeposito = rs.getLong(1);
-                }
-                
-            }
-        } catch (DAOException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } catch (SQLException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } finally {
-        	closeResultSet(rs);
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "obterSituacaoDeposito(DepositoVO deposito)");
-        }
-        return situacaoDeposito; */
+    	MapSqlParameterSource params = new MapSqlParameterSource();
+    	
+    	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, deposito.getCodigoDepositoIdentificado());
+    	
+    	try {
+			return getJdbcTemplate().queryForLong(QueriesDepi.DEPOSITO_OBTERSITUACAO, params);
+		} catch (EmptyResultDataAccessException e) {
+			throw new DEPIIntegrationException(ConstantesDEPI.ERRO_REGISTRO_INEXISTENTE);
+		}
     }
 
     @Override
 	public boolean verificarLancamentoDeposito(DepositoVO deposito){
-		return false;
-/*    	beginMethod(LOGGER, "verificarLancamentoDeposito(DepositoVO deposito)");
-        DataSource ds;
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        Boolean lancamento = false;
-        String sql = this.getSQL("deposito.verificarLancamento");
-
-        try {
-            ds = getDAO().getDataSource();
-            conn = ds.getConnection();
-            pstm = conn.prepareStatement(sql);
-
-            pstm.setLong(1, deposito.getCodigoDepositoIdentificado());
-
-            rs = pstm.executeQuery();
-
-            if (rs.next()) {
-                lancamento = true;
-             }else{
-                lancamento = false;
-             }
-        } catch (DAOException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } catch (SQLException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } finally {
-        	closeResultSet(rs);
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "verificarLancamentoDeposito(DepositoVO deposito)");
-        }
-        return lancamento; */
+    	
+    	MapSqlParameterSource params = new MapSqlParameterSource();
+    	
+    	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, deposito.getCodigoDepositoIdentificado());
+    	
+    	return getJdbcTemplate().queryForLong(QueriesDepi.DEPOSITO_VERIFICARLANCAMENTO, params) > 0;
 
     }
 
     @Override
 	public boolean verificarEnvioArquivoTransferencia(DepositoVO deposito)  {
-		return false;
-/*    	beginMethod(LOGGER, "verificarEnvioArquivoTransferencia(DepositoVO deposito)");
-        DataSource ds;
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet rs = null;
-        Boolean arquivo = null;
-        String sql = this.getSQL("deposito.verificarArquivoTransferencia");
-
-        try {
-            ds = getDAO().getDataSource();
-            conn = ds.getConnection();
-            pstm = conn.prepareStatement(sql);
-
-            pstm.setLong(1, deposito.getCodigoDepositoIdentificado());
-
-            rs = pstm.executeQuery();
-
-            if (rs.next()) {
-                arquivo = true;
-            }else{
-                arquivo = false;
-                }
-        } catch (DAOException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } catch (SQLException pe) {
-        	LOGGER.error(pe);
-            tratarExcecao(pe);
-        } finally {
-        	closeResultSet(rs);
-        	closeStatement(pstm);
-        	closeConnection(conn);
-        	endMethod(LOGGER, "verificarEnvioArquivoTransferencia(DepositoVO deposito)");
-        }
-        return arquivo; */
-
-   
+    	
+    	MapSqlParameterSource params = new MapSqlParameterSource();
+    	
+    	BaseUtil.prepararQuery(params, PREFIX_WHERE_PARAM, deposito.getCodigoDepositoIdentificado());
+    	
+    	return getJdbcTemplate().queryForLong(QueriesDepi.DEPOSITO_VERIFICARARQUIVOTRANSFERENCIA, params) > 0;
     }
 
 }

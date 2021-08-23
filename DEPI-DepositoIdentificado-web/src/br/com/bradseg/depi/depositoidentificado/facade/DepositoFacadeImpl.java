@@ -178,7 +178,10 @@ public class DepositoFacadeImpl implements DepositoFacade {
 
 	@Override
     public void alterar(DepositoVO deposito) {
-        ParametroDepositoVO param = new ParametroDepositoVO();
+		int situacaoArquivoTransferenciaDeposito = obtemSituacaoArquivoTransferenciaDeposito(deposito);
+		deposito.setSituacaoArquivoTransferencia(situacaoArquivoTransferenciaDeposito);
+		
+		ParametroDepositoVO param = new ParametroDepositoVO();
         param.setCompanhia(deposito.getCia());
         param.setDepartamento(deposito.getDepartamento());
         param.setMotivoDeposito(deposito.getMotivoDeposito());
@@ -186,6 +189,12 @@ public class DepositoFacadeImpl implements DepositoFacade {
 
         validarChave(deposito);
         validarParametros(deposito, param);
+        
+        depositoDAO.atualizar(deposito, param);
+    }
+
+	@Override
+	public int obtemSituacaoArquivoTransferenciaDeposito(DepositoVO deposito) {
         DepositoVO oldObj = depositoDAO.obterDepositoPorChave(deposito);
 
         /**
@@ -204,8 +213,8 @@ public class DepositoFacadeImpl implements DepositoFacade {
             throw new DEPIBusinessException("msg.erro.deposito.naoPodeAlterar.cancelado", String.valueOf(oldObj.getCodigoDepositoIdentificado()));
         }
         
-        depositoDAO.atualizar(deposito, param);
-    }
+        return oldObj.getSituacaoArquivoTransferencia();
+	}
 
     private void validarParametros(DepositoVO deposito,
 			ParametroDepositoVO param) {
@@ -283,6 +292,7 @@ public class DepositoFacadeImpl implements DepositoFacade {
         	
         	vo.setMotivoDeposito(motDepDAO.obterPorChave(vo.getMotivoDeposito()));
         	vo.setListaParcelas(montarListaParcelas(vo));
+			vo.setIpCliente(ipCliente);
 			
 			return vo;
 		} catch (Exception e) {
@@ -314,34 +324,40 @@ public class DepositoFacadeImpl implements DepositoFacade {
 		List<Message> messages = new ArrayList<>();
         
 		for (DepositoVO vo : voList) {
-			
-			validarChave(vo);
-			BaseUtil.validarParametro(vo.getCodigoResponsavelUltimaAtualizacao(), "Usu\u00e1rio Logado");
-			DepositoVO dep = depositoDAO.obterDepositoPorChave(vo);
-			
-			if (dep.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_ENVIADO) {
-
-				messages.add(new Message("msg.erro.deposito.naoPodeExcluir.tramite", dep.getCodigoDepositoIdentificado()));
-				
-			} else if (dep.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_ACEITO) {
-				
-				messages.add(new Message("msg.erro.deposito.naoPodeExcluir.aceito", dep.getCodigoDepositoIdentificado()));
-
-			} else if (dep.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_CANCELADO
-					|| ConstantesDEPI.SIM.equals(dep.getIndicadorDepositoCancelado())) {
-
-				messages.add(new Message("msg.erro.deposito.naoPodeExcluir.cancelado", dep.getCodigoDepositoIdentificado()));
-				
-			} else {
-				
-				depositoDAO.excluir(dep);
-				
+			if (podeExcluirDeposito(vo, messages)) {
+				depositoDAO.excluir(vo);
 			}
 		}
 		
         if (!messages.isEmpty()) {
 			throw new BusinessException(messages);
         }
+	}
+
+	@Override
+	public boolean podeExcluirDeposito(DepositoVO vo, List<Message> messages) {
+		validarChave(vo);
+		BaseUtil.validarParametro(vo.getCodigoResponsavelUltimaAtualizacao(), "Usu\u00e1rio Logado");
+		DepositoVO dep = depositoDAO.obterDepositoPorChave(vo);
+		
+		if (dep.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_ENVIADO) {
+
+			messages.add(new Message("msg.erro.deposito.naoPodeExcluir.tramite", dep.getCodigoDepositoIdentificado()));
+			
+		} else if (dep.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_ACEITO) {
+			
+			messages.add(new Message("msg.erro.deposito.naoPodeExcluir.aceito", dep.getCodigoDepositoIdentificado()));
+
+		} else if (dep.getSituacaoArquivoTransferencia() == ConstantesDEPI.ARQUIVO_CANCELADO
+				|| ConstantesDEPI.SIM.equals(dep.getIndicadorDepositoCancelado())) {
+
+			messages.add(new Message("msg.erro.deposito.naoPodeExcluir.cancelado", dep.getCodigoDepositoIdentificado()));
+		}
+		else {
+			return true;
+		}
+		
+		return false;
 	}
 
 	/* (non-Javadoc)

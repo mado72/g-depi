@@ -165,6 +165,8 @@ public class DepositoCrudHelper implements
 		
 		DepositoVO vo = obterPeloCodigo(model.getCodigo(), codUsuario, ipCliente);
 		
+		facade.obtemSituacaoArquivoTransferenciaDeposito(vo);
+		
 		CompanhiaSeguradoraVO ciaVO = facade.obterCompanhiaSeguradora(vo.getCia());
 		DepartamentoVO depto = facade.obterDepartamento(vo.getDepartamento());
 		MotivoDepositoVO motivoDepositoVO = facade.obterMotivoDeposito(vo.getMotivoDeposito());

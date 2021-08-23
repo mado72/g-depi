@@ -145,7 +145,7 @@ public class DepositoEditarAction
 		} catch (Exception e) {
 			LOGGER.error("Falha ao preparar formul\u00e1rio", e);
 			addActionError(e.getMessage());
-			return INPUT;
+			return ERROR;
 		}
 	}
 

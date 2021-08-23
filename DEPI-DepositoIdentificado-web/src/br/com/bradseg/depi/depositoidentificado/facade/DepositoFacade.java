@@ -2,6 +2,7 @@ package br.com.bradseg.depi.depositoidentificado.facade;
 
 import java.util.List;
 
+import br.com.bradseg.bsad.framework.core.message.Message;
 import br.com.bradseg.bucb.servicos.model.pessoa.vo.ListarPessoaPorFiltroSaidaVO;
 import br.com.bradseg.depi.depositoidentificado.util.FiltroUtil;
 import br.com.bradseg.depi.depositoidentificado.vo.AgenciaVO;
@@ -208,5 +209,23 @@ public interface DepositoFacade {
 	 */
 	List<AgenciaVO> obterAgenciasMotivo(CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto,
 			BancoVO bancoVO, MotivoDepositoVO motivoVO);
+
+	/**
+	 * Verifica se o registro pode ser excluído
+	 * @param depositoIdentificado Deposito Identificado
+	 * @param messages Lista de mensagens de validação
+	 * @return true quando puder ser excluído
+	 */
+	boolean podeExcluirDeposito(DepositoVO depositoIdentificado, List<Message> messages);
+
+	/**
+	 * Valida se pode alterar o depósito e retorna a situação de transferência.
+	 * Gera uma exceção quando a situação não permitir alteração
+	 * 
+	 * @param deposito
+	 *            Depósito
+	 * @return Situação de transferência
+	 */
+	int obtemSituacaoArquivoTransferenciaDeposito(DepositoVO deposito);
 
 }

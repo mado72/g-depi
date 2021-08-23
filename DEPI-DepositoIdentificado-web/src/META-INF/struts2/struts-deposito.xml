@@ -64,7 +64,11 @@
             <result name="voltar" type="redirectAction">
                 <param name="actionName">listar</param>
                 <param name="namespace">/deposito/consultar</param>
-            </result>            
+            </result>
+            <result name="error" type="redirectAction">
+                <param name="actionName">listar</param>
+                <param name="namespace">/deposito/consultar</param>
+            </result>
         </global-results>
         
 		<action name="incluir" method="incluir">
@@ -74,6 +78,9 @@
 		</action>
 		
 		<action name="alterar" method="alterar">
+			<interceptor-ref name="store">
+				<param name="operationMode">STORE</param>
+			</interceptor-ref>
 			<interceptor-ref name="scope">
 				<param name="session">model</param>
 			</interceptor-ref>

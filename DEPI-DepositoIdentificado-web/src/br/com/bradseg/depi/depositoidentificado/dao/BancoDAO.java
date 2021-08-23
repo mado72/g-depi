@@ -46,16 +46,22 @@ public interface BancoDAO {
 	List<AgenciaVO> obterAgencias(CompanhiaSeguradoraVO ciaVO, BancoVO bancoVO);
 
 	/**
-	 * Obtém as agências com restrição de acesso
-	 * @param ciaVO Companhia
 	 * @param depto TODO
-	 * @param bancoVO Banco
 	 * @param contaCorrenteMotivoDeposito Restrição de acesso
 	 * @param codMotivo Código do motivo
 	 * @return Lista de agências
 	 */
+	/**
+	 * Obtém as agências com restrição de acesso
+	 * @param ciaVO Companhia
+	 * @param depto Depto
+	 * @param bancoVO Banco
+	 * @param motivoVO Motivo
+	 * @param tabela Tabela de restrição
+	 * @return Lista de agências
+	 */
 	List<AgenciaVO> obterAgenciasComRestricaoMotivo(
 			CompanhiaSeguradoraVO ciaVO, DepartamentoVO depto, BancoVO bancoVO,
-			MotivoDepositoVO motivoVO, Tabelas contaCorrenteMotivoDeposito);
+			MotivoDepositoVO motivoVO, Tabelas tabela);
 
 }

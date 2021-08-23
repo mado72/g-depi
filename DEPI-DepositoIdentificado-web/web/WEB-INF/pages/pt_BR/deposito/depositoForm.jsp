@@ -149,7 +149,9 @@
 			<td>
 				<s:textfield maxlength="4" key="sucursal" id="codigoSucursal" cssClass="w-90 text-right"/>
 			</td>
-			<td class="td_label"><s:text name="label.deposito.bloqueto"/></td>
+			<td class="td_label">
+				<s:text name="label.deposito.bloqueto"/><span class="obrigatorio">*</span>
+			</td>
 			<td>
 				<s:textfield maxlength="4" key="bloqueto" id="codigoBloqueto" cssClass="w-90 text-right"/>
 			</td>
